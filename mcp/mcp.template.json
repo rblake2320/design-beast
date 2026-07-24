@@ -1,0 +1,15 @@
+{
+  "_comment": "MCP wiring for design work. Blender/magic are usually already in the global ~/.claude.json; the UE entry is generated per-project by the engine itself: in UE console run ModelContextProtocol.StartServer then GenerateClientConfig ClaudeCode (writes .mcp.json to the UE project root, endpoint http://127.0.0.1:8000/mcp).",
+  "mcpServers": {
+    "blender": {
+      "_comment": "Bridge lives INSIDE Blender on :9876 — Blender must be running.",
+      "command": "uvx",
+      "args": ["blender-mcp"]
+    },
+    "magic": {
+      "_comment": "21st.dev component builder/inspiration/refiner + logo search.",
+      "command": "npx",
+      "args": ["-y", "@21st-dev/magic"]
+    }
+  }
+}

@@ -1,0 +1,25 @@
+# Repos this hub orchestrates. `scripts/sync_repos.ps1` clones/updates them as siblings
+# of this repo's parent directory (C:\Users\techai\<name> by default).
+# role: what the repo contributes to the design stack.
+
+repos:
+  - name: route-rush-unreal
+    url: https://github.com/rblake2320/route-rush-unreal.git
+    role: UE 5.6 arcade game — live proving ground for the game pipeline
+
+  - name: mood-buddy
+    url: https://github.com/rblake2320/mood-buddy.git
+    role: photoreal companion avatar — proof of consistent-character recipe (PRIVATE)
+
+  - name: Sand-Scape-codex-
+    url: https://github.com/rblake2320/Sand-Scape-codex-.git
+    role: modular sand-physics visual engine (ESM, 193 palettes)
+
+  - name: sand-portrait
+    url: https://github.com/rblake2320/sand-portrait.git
+    role: photo-to-sand hourglass PWA (PRIVATE concept)
+
+external:
+  - name: VibeUE
+    url: https://github.com/kevinpbuckley/VibeUE.git
+    role: UE MCP toolsets (MIT) — staged locally at ~\ue-plugins\VibeUE; copy into <UEProject>\Plugins\
