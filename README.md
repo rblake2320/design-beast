@@ -33,6 +33,14 @@ workflow, not model — and this repo encodes the workflow.
 | `repos.yml` | Linked project repos + `scripts/sync_repos.ps1` to clone/update them all |
 | `mcp/mcp.template.json` | MCP wiring template (Blender :9876, UE :8000/mcp, magic) |
 
+## Beast Studio (the UI)
+
+```powershell
+python studio/server.py     # → http://localhost:8787
+```
+Brief + variations in a form, candidates stream into a grid with judge scores, winner
+gets badged and auto-graded. Runs land in `studio/runs/<id>/` (final.png = deliverable).
+
 ## Quickstart
 
 ```powershell

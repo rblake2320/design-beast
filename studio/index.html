@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beast Studio</title>
+<style>
+  :root { --bg:#0d1117; --panel:#161b22; --line:#2d333b; --text:#e6edf3;
+          --dim:#8b949e; --accent:#e3b341; --cyan:#39c5cf; --red:#f85149; }
+  * { box-sizing:border-box; margin:0; }
+  body { background:var(--bg); color:var(--text);
+         font:15px/1.5 "Segoe UI", system-ui, sans-serif; padding:2rem; }
+  h1 { font-size:1.3rem; letter-spacing:.04em; margin-bottom:.2rem; }
+  h1 span { color:var(--accent); }
+  .sub { color:var(--dim); margin-bottom:1.5rem; font-size:.85rem; }
+  .wrap { display:grid; grid-template-columns:340px 1fr; gap:1.5rem;
+          max-width:1500px; margin:0 auto; }
+  @media (max-width:900px){ .wrap { grid-template-columns:1fr; } }
+  .panel { background:var(--panel); border:1px solid var(--line);
+           border-radius:10px; padding:1.2rem; }
+  label { display:block; color:var(--dim); font-size:.75rem;
+          text-transform:uppercase; letter-spacing:.08em; margin:.9rem 0 .3rem; }
+  textarea, input, select { width:100%; background:var(--bg); color:var(--text);
+    border:1px solid var(--line); border-radius:6px; padding:.55rem .7rem;
+    font:inherit; }
+  textarea:focus, input:focus, select:focus { outline:1px solid var(--cyan); }
+  button { width:100%; margin-top:1.2rem; padding:.7rem; border:0;
+    border-radius:6px; background:var(--accent); color:#1c1500;
+    font:600 1rem inherit; cursor:pointer; }
+  button:disabled { opacity:.45; cursor:wait; }
+  .hint { color:var(--dim); font-size:.75rem; margin-top:.3rem; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+          gap:1rem; }
+  .card { background:var(--panel); border:1px solid var(--line);
+          border-radius:10px; overflow:hidden; position:relative; }
+  .card img { width:100%; display:block; aspect-ratio:1; object-fit:cover; }
+  .card .meta { padding:.6rem .8rem; font-size:.8rem; color:var(--dim); }
+  .score { position:absolute; top:.5rem; left:.5rem; background:#000c;
+    padding:.15rem .55rem; border-radius:99px; font-weight:700;
+    color:var(--cyan); }
+  .winner { outline:2px solid var(--accent); }
+  .winner .score { color:var(--accent); }
+  .badge { position:absolute; top:.5rem; right:.5rem; background:var(--accent);
+    color:#1c1500; font:700 .7rem inherit; padding:.2rem .5rem;
+    border-radius:99px; }
+  .kill .score { color:var(--red); }
+  .spin { padding:3rem; text-align:center; color:var(--dim); }
+  #history { margin-top:1.5rem; }
+  #history a { color:var(--cyan); text-decoration:none; display:block;
+    font-size:.82rem; padding:.25rem 0; }
+  .phase { color:var(--accent); font-size:.85rem; margin-bottom:.8rem; }
+</style>
+</head>
+<body>
+<h1>🦬 BEAST <span>STUDIO</span></h1>
+<div class="sub">brief → candidates → judge → graded winner · local quality loop</div>
+<div class="wrap">
+  <div>
+    <div class="panel">
+      <label>Brief — subject, mood, constraints</label>
+      <textarea id="brief" rows="5"
+        placeholder="colossal bioluminescent world-tree, molten-gold path to a glowing hollow, single focal point, teal-and-amber grade, restrained saturation"></textarea>
+      <label>Recipe (opens the card for prompt anatomy)</label>
+      <select id="recipe"></select>
+      <label>Variations — one per line, one axis only (blank = 4 identical)</label>
+      <textarea id="vars" rows="4"
+        placeholder="QUIET STARRY SKY&#10;SUBTLE AURORA RIBBONS&#10;BROODING STORM CLOUDS&#10;PALE DAWN HAZE"></textarea>
+      <label>Model / aspect</label>
+      <div style="display:flex;gap:.5rem">
+        <select id="model">
+          <option value="gpt_image_2">GPT Image 2 (quality)</option>
+          <option value="nano_banana_2">Nano Banana 2 (character/ref)</option>
+          <option value="z_image">Z Image (fast + cheap)</option>
+        </select>
+        <select id="ar" style="width:110px">
+          <option>1:1</option><option>16:9</option><option>9:16</option>
+          <option>4:3</option><option>3:4</option>
+        </select>
+      </div>
+      <button id="go">Run the loop</button>
+      <div class="hint">Higgsfield credits are spent per candidate. Judge is local (free).</div>
+    </div>
+    <div class="panel" id="history"><label style="margin-top:0">Past runs</label></div>
+  </div>
+  <div>
+    <div class="phase" id="phase">Idle — fill the brief and run.</div>
+    <div class="grid" id="grid"></div>
+  </div>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+let timer = null;
+
+fetch('/api/recipes').then(r => r.json()).then(rs => {
+  $('recipe').innerHTML = rs.map(r => `<option value="${r.name}">${r.title}</option>`).join('');
+});
+
+function loadHistory() {
+  fetch('/api/runs').then(r => r.json()).then(rs => {
+    $('history').innerHTML = '<label style="margin-top:0">Past runs</label>' +
+      rs.map(r => `<a href="#" onclick="watch('${r.id}');return false">
+        ${r.id} · ${r.phase} · ${r.brief}</a>`).join('');
+  });
+}
+loadHistory();
+
+$('go').onclick = async () => {
+  const brief = $('brief').value.trim();
+  if (!brief) return alert('Brief first — no brief, no quality.');
+  $('go').disabled = true;
+  const variations = $('vars').value.split('\n').map(s => s.trim()).filter(Boolean);
+  const res = await fetch('/api/run', { method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ brief, variations, model: $('model').value,
+                           aspect_ratio: $('ar').value }) });
+  watch((await res.json()).id);
+};
+
+function watch(id) {
+  clearInterval(timer);
+  timer = setInterval(() => render(id), 4000);
+  render(id);
+}
+
+async function render(id) {
+  const s = await (await fetch('/api/run/' + id)).json();
+  $('phase').textContent = `${s.id} — ${s.phase}` +
+    (s.phase === 'generating' ? ' (each candidate takes a few minutes)…' : '');
+  const cards = (s.candidates || []).map(c => {
+    const img = c.file ? `<img src="/runs/${id}/${c.file}">`
+                       : `<div class="spin">${c.state || 'queued'}…</div>`;
+    const cls = ['card', s.winner === c.i ? 'winner' : '', c.kill ? 'kill' : ''].join(' ');
+    return `<div class="${cls}">
+      ${c.score !== undefined ? `<div class="score">${c.score}/10</div>` : ''}
+      ${s.winner === c.i ? '<div class="badge">WINNER</div>' : ''}
+      ${img}<div class="meta">${c.fix || c.error || c.state}</div></div>`;
+  });
+  if (s.final) cards.unshift(`<div class="card winner">
+    <div class="badge">FINAL · GRADED</div><img src="/runs/${id}/${s.final}">
+    <div class="meta">right-click → save, or find it in studio/runs/${id}/</div></div>`);
+  $('grid').innerHTML = cards.join('') ||
+    '<div class="spin">spinning up candidates…</div>';
+  if (['done', 'failed'].includes(s.phase)) {
+    clearInterval(timer); $('go').disabled = false; loadHistory();
+  }
+}
+</script>
+</body>
+</html>

@@ -36,7 +36,8 @@ def judge(path: str, brief: str, model: str) -> dict:
         "think": False,
     }).encode()
     req = urllib.request.Request(OLLAMA, body, {"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=120) as r:
+    # generous timeout: first call cold-loads the vision model into VRAM
+    with urllib.request.urlopen(req, timeout=420) as r:
         out = json.loads(r.read())
     # thinking models sometimes emit the JSON into "thinking" with an empty "response"
     return json.loads(out["response"] or out.get("thinking", ""))
