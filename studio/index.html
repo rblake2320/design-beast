@@ -6,140 +6,287 @@
 <title>Beast Studio</title>
 <style>
   :root { --bg:#0d1117; --panel:#161b22; --line:#2d333b; --text:#e6edf3;
-          --dim:#8b949e; --accent:#e3b341; --cyan:#39c5cf; --red:#f85149; }
+          --dim:#8b949e; --accent:#e3b341; --cyan:#39c5cf; --red:#f85149;
+          --green:#3fb950; }
   * { box-sizing:border-box; margin:0; }
   body { background:var(--bg); color:var(--text);
-         font:15px/1.5 "Segoe UI", system-ui, sans-serif; padding:2rem; }
-  h1 { font-size:1.3rem; letter-spacing:.04em; margin-bottom:.2rem; }
+         font:15px/1.5 "Segoe UI", system-ui, sans-serif; padding:1.5rem; }
+  h1 { font-size:1.3rem; letter-spacing:.04em; }
   h1 span { color:var(--accent); }
-  .sub { color:var(--dim); margin-bottom:1.5rem; font-size:.85rem; }
-  .wrap { display:grid; grid-template-columns:340px 1fr; gap:1.5rem;
-          max-width:1500px; margin:0 auto; }
-  @media (max-width:900px){ .wrap { grid-template-columns:1fr; } }
+  .sub { color:var(--dim); margin-bottom:1.2rem; font-size:.85rem; }
+  .wrap { display:grid; grid-template-columns:370px 1fr; gap:1.4rem;
+          max-width:1600px; margin:0 auto; }
+  @media (max-width:950px){ .wrap { grid-template-columns:1fr; } }
   .panel { background:var(--panel); border:1px solid var(--line);
-           border-radius:10px; padding:1.2rem; }
-  label { display:block; color:var(--dim); font-size:.75rem;
-          text-transform:uppercase; letter-spacing:.08em; margin:.9rem 0 .3rem; }
+           border-radius:10px; padding:1.1rem; margin-bottom:1.2rem; }
+  label { display:block; color:var(--dim); font-size:.72rem;
+          text-transform:uppercase; letter-spacing:.08em; margin:.85rem 0 .3rem; }
   textarea, input, select { width:100%; background:var(--bg); color:var(--text);
-    border:1px solid var(--line); border-radius:6px; padding:.55rem .7rem;
+    border:1px solid var(--line); border-radius:6px; padding:.5rem .65rem;
     font:inherit; }
   textarea:focus, input:focus, select:focus { outline:1px solid var(--cyan); }
-  button { width:100%; margin-top:1.2rem; padding:.7rem; border:0;
-    border-radius:6px; background:var(--accent); color:#1c1500;
-    font:600 1rem inherit; cursor:pointer; }
+  button { border:0; border-radius:6px; cursor:pointer; font:600 .9rem inherit;
+           padding:.6rem .9rem; }
   button:disabled { opacity:.45; cursor:wait; }
-  .hint { color:var(--dim); font-size:.75rem; margin-top:.3rem; }
-  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  .primary { width:100%; margin-top:1rem; padding:.7rem; background:var(--accent);
+             color:#1c1500; font-size:1rem; }
+  .row { display:flex; gap:.5rem; align-items:center; }
+  .ghost { background:var(--bg); color:var(--cyan); border:1px solid var(--line); }
+  .ghost:hover { border-color:var(--cyan); }
+  .hint { color:var(--dim); font-size:.72rem; margin-top:.3rem; }
+  /* dropzone */
+  #drop { border:2px dashed var(--line); border-radius:10px; padding:1rem;
+    text-align:center; color:var(--dim); font-size:.85rem; cursor:pointer;
+    transition:border-color .15s; position:relative; }
+  #drop.over, #drop:hover { border-color:var(--cyan); color:var(--text); }
+  #drop img { max-width:100%; max-height:170px; border-radius:6px; display:block;
+              margin:0 auto .4rem; }
+  #drop .x { position:absolute; top:.4rem; right:.6rem; color:var(--red);
+             font-weight:700; display:none; }
+  #drop.has .x { display:block; }
+  /* actions on image */
+  .imgacts { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:.5rem;
+             margin-top:.6rem; }
+  /* results */
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(235px,1fr));
           gap:1rem; }
   .card { background:var(--panel); border:1px solid var(--line);
           border-radius:10px; overflow:hidden; position:relative; }
-  .card img { width:100%; display:block; aspect-ratio:1; object-fit:cover; }
-  .card .meta { padding:.6rem .8rem; font-size:.8rem; color:var(--dim); }
+  .card img, .card video { width:100%; display:block; aspect-ratio:1;
+                           object-fit:cover; }
+  .card video { aspect-ratio:auto; }
+  .card .meta { padding:.55rem .75rem; font-size:.78rem; color:var(--dim); }
   .score { position:absolute; top:.5rem; left:.5rem; background:#000c;
-    padding:.15rem .55rem; border-radius:99px; font-weight:700;
-    color:var(--cyan); }
+    padding:.15rem .55rem; border-radius:99px; font-weight:700; color:var(--cyan); }
   .winner { outline:2px solid var(--accent); }
   .winner .score { color:var(--accent); }
   .badge { position:absolute; top:.5rem; right:.5rem; background:var(--accent);
-    color:#1c1500; font:700 .7rem inherit; padding:.2rem .5rem;
-    border-radius:99px; }
+    color:#1c1500; font:700 .68rem inherit; padding:.2rem .5rem; border-radius:99px; }
   .kill .score { color:var(--red); }
-  .spin { padding:3rem; text-align:center; color:var(--dim); }
-  #history { margin-top:1.5rem; }
+  .spin { padding:2.5rem 1rem; text-align:center; color:var(--dim); }
+  .err { background:#2d1618; border:1px solid var(--red); color:#ffb3ad;
+         border-radius:8px; padding:.7rem .9rem; font-size:.85rem;
+         margin-bottom:1rem; display:none; }
   #history a { color:var(--cyan); text-decoration:none; display:block;
-    font-size:.82rem; padding:.25rem 0; }
+    font-size:.8rem; padding:.22rem 0; }
   .phase { color:var(--accent); font-size:.85rem; margin-bottom:.8rem; }
+  .mic.rec { color:var(--red); border-color:var(--red); }
+  #judgeout { font-size:.85rem; margin-top:.6rem; display:none;
+              border-left:3px solid var(--cyan); padding-left:.7rem; }
 </style>
 </head>
 <body>
 <h1>🦬 BEAST <span>STUDIO</span></h1>
-<div class="sub">brief → candidates → judge → graded winner · local quality loop</div>
+<div class="sub">drop an image or speak a brief → expand → candidates → judge → refine → animate</div>
 <div class="wrap">
   <div>
     <div class="panel">
-      <label>Brief — subject, mood, constraints</label>
-      <textarea id="brief" rows="5"
-        placeholder="colossal bioluminescent world-tree, molten-gold path to a glowing hollow, single focal point, teal-and-amber grade, restrained saturation"></textarea>
-      <label>Recipe (opens the card for prompt anatomy)</label>
+      <div id="drop">
+        <span class="x" title="clear">✕</span>
+        <div id="dropmsg">📥 drop / paste / click — image becomes reference &amp; refine/judge/animate target</div>
+      </div>
+      <input type="file" id="file" accept="image/*" hidden>
+      <div class="imgacts">
+        <button class="ghost" id="bjudge" title="free, local">⚖ Judge</button>
+        <button class="ghost" id="brefine" title="Nano Banana ref edit">🛠 Refine</button>
+        <button class="ghost" id="banimate" title="Seedance image-to-video">🎬 Animate</button>
+        <button class="ghost" id="b3d" title="TRELLIS image-to-3D (GLB)">🧊 3D</button>
+      </div>
+      <div id="judgeout"></div>
+
+      <label>Brief — idea in your words (vague is fine)</label>
+      <div class="row">
+        <textarea id="brief" rows="3" placeholder="make a cat dog"></textarea>
+        <button class="ghost mic" id="mic" title="voice input">🎤</button>
+      </div>
+      <div class="row" style="margin-top:.5rem">
+        <button class="ghost" id="expand" style="flex:1">✨ Expand brief → pro prompt</button>
+      </div>
+
+      <label>Structured prompt (what actually gets sent — edit freely)</label>
+      <textarea id="prompt" rows="4" placeholder="click ✨ Expand, or write your own"></textarea>
+
+      <label>Variations — one per line, one axis (blank = 4 identical)</label>
+      <textarea id="vars" rows="4"></textarea>
+
+      <label>Recipe / model / aspect</label>
       <select id="recipe"></select>
-      <label>Variations — one per line, one axis only (blank = 4 identical)</label>
-      <textarea id="vars" rows="4"
-        placeholder="QUIET STARRY SKY&#10;SUBTLE AURORA RIBBONS&#10;BROODING STORM CLOUDS&#10;PALE DAWN HAZE"></textarea>
-      <label>Model / aspect</label>
-      <div style="display:flex;gap:.5rem">
+      <div class="row" style="margin-top:.5rem">
         <select id="model">
-          <option value="gpt_image_2">GPT Image 2 (quality)</option>
-          <option value="nano_banana_2">Nano Banana 2 (character/ref)</option>
-          <option value="z_image">Z Image (fast + cheap)</option>
+          <optgroup label="NVIDIA NIM — free with your key">
+            <option value="nim:flux.1-schnell">FLUX schnell (fast, free)</option>
+            <option value="nim:flux.1-dev">FLUX dev (quality, free)</option>
+          </optgroup>
+          <optgroup label="Higgsfield — credits">
+            <option value="gpt_image_2">GPT Image 2 (quality)</option>
+            <option value="nano_banana_2">Nano Banana 2 (character/ref)</option>
+            <option value="z_image">Z Image (fast)</option>
+          </optgroup>
         </select>
-        <select id="ar" style="width:110px">
+        <select id="ar" style="width:100px">
           <option>1:1</option><option>16:9</option><option>9:16</option>
           <option>4:3</option><option>3:4</option>
         </select>
       </div>
-      <button id="go">Run the loop</button>
-      <div class="hint">Higgsfield credits are spent per candidate. Judge is local (free).</div>
+      <button class="primary" id="go">Run the loop</button>
+      <div class="hint">Judge & expand are local + free. NIM models are free with your NVIDIA key. Higgsfield spends credits.</div>
     </div>
     <div class="panel" id="history"><label style="margin-top:0">Past runs</label></div>
   </div>
   <div>
-    <div class="phase" id="phase">Idle — fill the brief and run.</div>
+    <div class="err" id="err"></div>
+    <div class="phase" id="phase">Idle.</div>
     <div class="grid" id="grid"></div>
   </div>
 </div>
 <script>
 const $ = id => document.getElementById(id);
-let timer = null;
+let timer = null, upload = null;
 
+// ---------- recipes ----------
 fetch('/api/recipes').then(r => r.json()).then(rs => {
-  $('recipe').innerHTML = rs.map(r => `<option value="${r.name}">${r.title}</option>`).join('');
+  $('recipe').innerHTML = rs.map(r =>
+    `<option value="${r.name}">${r.title.replace('Recipe — ','')}</option>`).join('');
 });
 
+// ---------- image intake: drop / paste / click ----------
+const drop = $('drop');
+drop.onclick = e => { if (e.target.className !== 'x') $('file').click(); };
+drop.querySelector('.x').onclick = () => setImage(null);
+$('file').onchange = () => $('file').files[0] && intake($('file').files[0]);
+['dragover','dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => {
+  e.preventDefault(); drop.classList.toggle('over', ev === 'dragover');
+  if (ev === 'drop' && e.dataTransfer.files[0]) intake(e.dataTransfer.files[0]);
+}));
+document.addEventListener('paste', e => {
+  const f = [...e.clipboardData.items].find(i => i.type.startsWith('image'));
+  if (f) intake(f.getAsFile());
+});
+function intake(file) {
+  const rd = new FileReader();
+  rd.onload = async () => {
+    const res = await api('/api/upload', { name: file.name || 'pasted.png', data: rd.result });
+    if (res) setImage(res.file, rd.result);
+  };
+  rd.readAsDataURL(file);
+}
+function setImage(fname, dataUrl) {
+  upload = fname;
+  drop.classList.toggle('has', !!fname);
+  $('dropmsg').innerHTML = fname
+    ? `<img src="${dataUrl || '/uploads/' + fname}"><b>${fname}</b> — reference active`
+    : '📥 drop / paste / click — image becomes reference & refine/judge/animate target';
+  $('judgeout').style.display = 'none';
+}
+
+// ---------- voice ----------
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+if (SR) {
+  const rec = new SR(); rec.continuous = true; rec.interimResults = false;
+  let on = false;
+  rec.onresult = e => { $('brief').value += ' ' + e.results[e.results.length-1][0].transcript; };
+  $('mic').onclick = () => { on ? rec.stop() : rec.start(); on = !on;
+                             $('mic').classList.toggle('rec', on); };
+} else $('mic').style.display = 'none';
+
+// ---------- helpers ----------
+async function api(url, body) {
+  const r = await fetch(url, { method: 'POST',
+    headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const j = await r.json();
+  if (!r.ok || j.error) { showErr(j.error || r.statusText); return null; }
+  hideErr(); return j;
+}
+function showErr(m) { $('err').textContent = m; $('err').style.display = 'block'; }
+function hideErr() { $('err').style.display = 'none'; }
+function needImage() { if (!upload) { showErr('Drop or upload an image first.'); return true; } }
+
+// ---------- expand ----------
+$('expand').onclick = async () => {
+  const brief = $('brief').value.trim();
+  if (!brief) return showErr('Type or speak a brief first.');
+  $('expand').disabled = true; $('expand').textContent = '✨ expanding (local LLM)…';
+  const j = await api('/api/expand', { brief, recipe: $('recipe').value });
+  if (j) { $('prompt').value = j.prompt; $('vars').value = (j.variations||[]).join('\n'); }
+  $('expand').disabled = false; $('expand').textContent = '✨ Expand brief → pro prompt';
+};
+
+// ---------- judge / refine / animate ----------
+$('bjudge').onclick = async () => {
+  if (needImage()) return;
+  $('judgeout').style.display = 'block';
+  $('judgeout').textContent = 'judging (local vision model)…';
+  const j = await api('/api/judge', { file: upload,
+    brief: $('brief').value || 'well-composed professional image' });
+  if (j) $('judgeout').innerHTML =
+    `<b style="color:var(--cyan)">${j.score}/10</b>${j.kill ? ' <b style="color:var(--red)">KILL</b>' : ''}<br>${j.fix || ''}`;
+};
+$('brefine').onclick = async () => {
+  if (needImage()) return;
+  const instruction = prompt('Refine instruction (what to change, keep everything else):',
+                             'fix the weakest region, keep identity and composition');
+  if (!instruction) return;
+  const j = await api('/api/refine', { file: upload, instruction, brief: $('brief').value });
+  if (j) watch(j.id);
+};
+$('banimate').onclick = async () => {
+  if (needImage()) return;
+  const motion = prompt('Motion prompt:', 'slow cinematic dolly-in, subtle ambient movement');
+  if (!motion) return;
+  const j = await api('/api/animate', { file: upload, motion, duration: 5 });
+  if (j) watch(j.id);
+};
+$('b3d').onclick = async () => {
+  if (needImage()) return;
+  const j = await api('/api/to3d', { file: upload });
+  if (j) watch(j.id);
+};
+
+// ---------- create loop ----------
+$('go').onclick = async () => {
+  const brief = $('brief').value.trim();
+  if (!brief && !$('prompt').value.trim()) return showErr('Brief or prompt first.');
+  $('go').disabled = true;
+  const j = await api('/api/run', { brief: brief || $('prompt').value,
+    prompt: $('prompt').value.trim(),
+    variations: $('vars').value.split('\n').map(s => s.trim()).filter(Boolean),
+    model: $('model').value, aspect_ratio: $('ar').value, reference: upload || '' });
+  if (j) watch(j.id); else $('go').disabled = false;
+};
+
+// ---------- polling & render ----------
 function loadHistory() {
   fetch('/api/runs').then(r => r.json()).then(rs => {
     $('history').innerHTML = '<label style="margin-top:0">Past runs</label>' +
       rs.map(r => `<a href="#" onclick="watch('${r.id}');return false">
-        ${r.id} · ${r.phase} · ${r.brief}</a>`).join('');
+        ${r.id} · ${r.kind} · ${r.phase} · ${r.brief}</a>`).join('');
   });
 }
 loadHistory();
 
-$('go').onclick = async () => {
-  const brief = $('brief').value.trim();
-  if (!brief) return alert('Brief first — no brief, no quality.');
-  $('go').disabled = true;
-  const variations = $('vars').value.split('\n').map(s => s.trim()).filter(Boolean);
-  const res = await fetch('/api/run', { method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ brief, variations, model: $('model').value,
-                           aspect_ratio: $('ar').value }) });
-  watch((await res.json()).id);
-};
-
-function watch(id) {
-  clearInterval(timer);
-  timer = setInterval(() => render(id), 4000);
-  render(id);
-}
+function watch(id) { clearInterval(timer); timer = setInterval(() => render(id), 4000); render(id); }
 
 async function render(id) {
   const s = await (await fetch('/api/run/' + id)).json();
-  $('phase').textContent = `${s.id} — ${s.phase}` +
-    (s.phase === 'generating' ? ' (each candidate takes a few minutes)…' : '');
+  $('phase').textContent = `${s.id} · ${s.kind || 'create'} — ${s.phase}` +
+    (s.phase === 'generating' ? ' (minutes per candidate)…' : '');
+  if (s.phase === 'failed' && s.error) showErr(s.error);
   const cards = (s.candidates || []).map(c => {
-    const img = c.file ? `<img src="/runs/${id}/${c.file}">`
-                       : `<div class="spin">${c.state || 'queued'}…</div>`;
+    const media = c.video ? `<video src="/runs/${id}/${c.file}" controls loop muted autoplay></video>`
+      : c.glb ? `<div class="spin" style="font-size:2.2rem">🧊<br>
+          <a href="/runs/${id}/${c.file}" download style="color:var(--cyan);font-size:.9rem">download model.glb</a></div>`
+      : c.file ? `<img src="/runs/${id}/${c.file}">`
+      : `<div class="spin">${c.state || 'queued'}…</div>`;
     const cls = ['card', s.winner === c.i ? 'winner' : '', c.kill ? 'kill' : ''].join(' ');
     return `<div class="${cls}">
       ${c.score !== undefined ? `<div class="score">${c.score}/10</div>` : ''}
       ${s.winner === c.i ? '<div class="badge">WINNER</div>' : ''}
-      ${img}<div class="meta">${c.fix || c.error || c.state}</div></div>`;
+      ${media}<div class="meta">${c.fix || c.error || c.state}</div></div>`;
   });
-  if (s.final) cards.unshift(`<div class="card winner">
+  if (s.final && !s.video) cards.unshift(`<div class="card winner">
     <div class="badge">FINAL · GRADED</div><img src="/runs/${id}/${s.final}">
-    <div class="meta">right-click → save, or find it in studio/runs/${id}/</div></div>`);
-  $('grid').innerHTML = cards.join('') ||
-    '<div class="spin">spinning up candidates…</div>';
+    <div class="meta">saved in studio/runs/${id}/${s.final}</div></div>`);
+  $('grid').innerHTML = cards.join('') || '<div class="spin">working…</div>';
   if (['done', 'failed'].includes(s.phase)) {
     clearInterval(timer); $('go').disabled = false; loadHistory();
   }

@@ -1,5 +1,6 @@
 __pycache__/
 studio/runs/
+studio/uploads/
 *.pyc
 .env
 *.env
