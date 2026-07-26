@@ -462,11 +462,18 @@ async function render(id) {
   // stage: final > winner > placeholder
   const stage = $('stage');
   const win = (s.candidates || []).find(c => c.i === s.winner);
-  if (s.glb) {
+  if (s.ue_asset) {
+    stage.innerHTML = `<div class="idle"><span class="ox">🎮</span>
+      <p>asset landed in Unreal</p>
+      <p style="font-size:.75rem;color:var(--cyan);margin-top:.5rem">${s.ue_asset}</p></div>
+      <div class="plate">unreal · routerush</div>`;
+  } else if (s.glb) {
     stage.innerHTML = `<div class="idle"><span class="ox">🧊</span>
       <p>mesh ready</p></div>
       <div class="plate">TRELLIS · 3D</div>
-      <div class="plate dl"><a href="/runs/${id}/${s.final}" download>⭳ model.glb</a></div>`;
+      <div class="plate dl">
+        <a href="/runs/${id}/${s.final}" download>⭳ model.glb</a> ·
+        <a href="#" onclick="toUE('runs/${id}/${s.final}');return false">🎮 → unreal</a></div>`;
   } else if (s.video && s.final) {
     stage.innerHTML = `<video src="/runs/${id}/${s.final}" controls loop autoplay muted></video>
       <div class="plate">motion · wan 2.2 local</div>`;
@@ -494,6 +501,10 @@ async function render(id) {
   }).join('');
 
   if (!busy) { clearInterval(timer); $('go').disabled = false; loadHistory(); }
+}
+async function toUE(file) {
+  const j = await api('/api/to_ue', { file });
+  if (j) watch(j.id);
 }
 function stageSwap(src) {
   $('stage').innerHTML = `<img src="${src}"><div class="plate">candidate — click strip to compare</div>`;

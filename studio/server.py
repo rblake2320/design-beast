@@ -41,6 +41,10 @@ KONTEXT_LOCAL = "http://localhost:8019/v1/infer"
 ESRGAN = Path(r"D:\ai\tools\realesrgan\realesrgan-ncnn-vulkan.exe")
 KOKORO_DIR = Path(r"D:\ai\tools\kokoro")
 _kokoro = None
+BLENDER = Path(r"C:\Program Files\Blender Foundation\Blender 5.1\blender.exe")
+UE_CMD = Path(r"D:\Epic Games\UE_5.6\Engine\Binaries\Win64\UnrealEditor-Cmd.exe")
+UE_PROJECT = Path(r"C:\Users\techai\route-rush-unreal\RouteRush.uproject")
+BRIDGE = ROOT / "bridge"
 NIM_SIZES = {"1:1": (1024, 1024), "16:9": (1344, 768), "9:16": (768, 1344),
              "4:3": (1152, 896), "3:4": (896, 1152)}
 
@@ -597,6 +601,49 @@ def tts(req: TtsReq):
         return {"file": fname, "url": f"/uploads/{fname}"}
     except Exception as e:  # noqa: BLE001 — surface TTS failure in UI
         return JSONResponse({"error": f"TTS failed: {str(e)[:200]}"}, 500)
+
+
+class ToUEReq(BaseModel):
+    file: str  # runs/<id>/model.glb
+
+
+@app.post("/api/to_ue")
+def to_ue(req: ToUEReq):
+    src = _resolve(req.file)
+    if not src or not src.exists():
+        return JSONResponse({"error": "glb not found"}, 404)
+    if not UE_CMD.exists():
+        return JSONResponse({"error": "Unreal Engine not found at expected path"}, 500)
+    run_dir = _new_run(f"UE import: {src.name}", "ue-bridge", "unreal")
+
+    def work():
+        _status(run_dir, phase="generating", candidates=[
+            {"i": 1, "state": "blender: glb → fbx"}])
+        fbx = run_dir / "asset.fbx"
+        b = subprocess.run([str(BLENDER), "-b", "-P", str(BRIDGE / "glb_to_fbx.py"),
+                            "--", str(src), str(fbx)],
+                           capture_output=True, text=True, timeout=300)
+        if not fbx.exists():
+            _status(run_dir, phase="failed", error=f"blender convert failed: {b.stderr[-200:]}")
+            return
+        _status(run_dir, phase="generating", candidates=[
+            {"i": 1, "state": "unreal: importing (first run can take minutes)"}])
+        u = subprocess.run([str(UE_CMD), str(UE_PROJECT), "-run=pythonscript",
+                            f"-script={BRIDGE / 'ue_import.py'} {fbx} /Game/BeastAssets",
+                            "-stdout", "-unattended", "-nopause", "-nosplash"],
+                           capture_output=True, text=True, timeout=1800)
+        m = re.search(r"BEAST_IMPORTED: \[(.*?)\]", u.stdout)
+        if not m or not m.group(1).strip():
+            _status(run_dir, phase="failed",
+                    error=f"UE import produced no asset: {(u.stdout or u.stderr)[-250:]}")
+            return
+        asset = m.group(1).strip().strip("'\"")
+        _status(run_dir, phase="done", candidates=[
+            {"i": 1, "state": "done", "fix": f"in RouteRush at {asset}"}],
+            ue_asset=asset)
+
+    threading.Thread(target=work, daemon=True).start()
+    return {"id": run_dir.name}
 
 
 @app.post("/api/run")
