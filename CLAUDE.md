@@ -18,7 +18,7 @@ Any AI agent (Claude Code, Codex, mesh peer) working in or from this repo follow
 |---|---|
 | Higgsfield (image/video/soul) | `higgsfield` CLI + higgsfield-* skills (native Skill tool) |
 | Blender 5.1 | mcp__blender__* tools, bridge :9876 — Blender must be RUNNING |
-| Unreal Engine | UE first-party MCP `http://127.0.0.1:8000/mcp` + VibeUE; probe via `scripts/probe_unreal.ps1` in codex skill |
+| Unreal Engine | UE 5.8 first-party MCP `http://127.0.0.1:8000/mcp` (headless BeastLab; start via Studio Backends panel "unreal-mcp"); `/api/to_ue` imports go to UE 5.6 RouteRush — separate installs, both current |
 | 2D/3D/game pipeline | `skills/game-content-pipeline/SKILL.md` (also installed at `~/.claude/skills/`) |
 | Web components | magic MCP (21st.dev) + frontend-design/impeccable skills |
 | Local vision judge | `python scripts/judge_image.py` (Ollama llava) or Read the image directly |
@@ -28,7 +28,9 @@ Any AI agent (Claude Code, Codex, mesh peer) working in or from this repo follow
 - RTX 5090 = Blackwell sm_120 → CUDA deps need cu128+ builds
 - Blender bridge lives INSIDE Blender; launch it if :9876 is down
 - Higgsfield auth expires → user runs `higgsfield auth login` (interactive)
-- UE 5.6.1 at `D:\Epic Games\UE_5.6`; VS Build Tools 2022 = C++ builds OK
+- UE 5.6.1 at `D:\Epic Games\UE_5.6` (used by /api/to_ue → RouteRush); UE 5.8 at
+  `D:\DEpic GamesUE_5.8\UE_5.8` (garbled folder name, working install — do NOT move
+  it) hosts the MCP via BeastLab; VS Build Tools 2022 = C++ builds OK
 
 ## Sync rule
 The canonical skill lives in `~/.claude/skills/game-content-pipeline/`. If you improve it

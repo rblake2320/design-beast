@@ -59,7 +59,8 @@ Get-ChildItem design-system/recipes
 - **Images** — Higgsfield CLI (GPT Image 2, Nano Banana 2/Pro, Soul ID) + quality loop
 - **Video** — Seedance 2.0, Kling 3.0, Marketing Studio, ffmpeg assembly
 - **3D** — Blender 5.1 (50-tool MCP bridge), image-to-3D (Tripo / Hunyuan3D / TRELLIS.2)
-- **Game** — Unreal Engine 5.6+ (first-party MCP + VibeUE), Paper2D/PaperZD, packaging
+- **Game** — Unreal Engine 5.8 (first-party MCP via BeastLab) + 5.6.1 (`/api/to_ue`
+  → RouteRush imports), Paper2D/PaperZD, packaging
 - **Web / sites** — frontend-design, impeccable, theme-factory, dataviz skills; magic MCP
   (21st.dev components); real design systems, not screenshots
 - **Faces / avatars** — NVIDIA ACE (Audio2Face-3D), Soul ID identity training

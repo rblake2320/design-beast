@@ -8,7 +8,8 @@ One line per capability; re-verify dates when checked. Machine: Windows 11, RTX 
 |---|---|---|
 | Higgsfield CLI | `higgsfield` — GPT Image 2, Nano Banana 2/Pro, Seedance 2.0, Kling 3.0, Marketing Studio, Soul ID | ✅ 2026-07-19 |
 | Blender 5.1.2 | MCP bridge :9876 (~50 tools) — model, geo nodes, physics, animate, render | ✅ 2026-07 |
-| Unreal Engine 5.6.1 | `D:\Epic Games\UE_5.6`; first-party MCP :8000/mcp; VibeUE staged at `~\ue-plugins\VibeUE` | ✅ 2026-07-19 |
+| Unreal Engine 5.8 | `D:\DEpic GamesUE_5.8\UE_5.8` (folder name is garbled but the install works — do not move it); hosts first-party MCP :8000/mcp via headless BeastLab project (`D:\Epic Games\Projects\BeastLab`); toggled from the Studio Backends panel | ✅ 2026-07-26 |
+| Unreal Engine 5.6.1 | `D:\Epic Games\UE_5.6`; used by `/api/to_ue` to import into the RouteRush project (`C:\Users\techai\route-rush-unreal`); VibeUE staged at `~\ue-plugins\VibeUE` (not compiled into either engine) | ✅ 2026-07-19 |
 | NVIDIA ACE | Audio2Face-3D lip-sync + Claire/James/Mark models, staged `~\nvidia-blueprints\` | ✅ 2026-07-19 |
 | Image-to-3D | Tripo API / Hunyuan3D-2.1 / TRELLIS.2 (both fit on 5090) | per pipeline skill |
 | ffmpeg 8.1.2 / ImageMagick 7.1.2 / rembg[gpu] | CLI — assembly, grading, background removal | ✅ 2026-07-02 |
@@ -30,4 +31,6 @@ Win32/SelfConnect desktop control · gh CLI
 - sm_120 (Blackwell): CUDA Python deps need cu128 builds or "no kernel image"
 - BRIA RMBG-2.0 is non-commercial — use birefnet-general for shippable work
 - AI music (Suno/Udio) not ship-safe until Sony suit resolves
-- UE 5.8 not yet installed (5.6.1 is); ~120GB if/when — see skill setup-checklist
+- Two UE installs coexist on purpose: 5.8 serves the MCP (BeastLab), 5.6.1 serves
+  `/api/to_ue` (RouteRush). Migrating to_ue to 5.8 is future work — do not assume
+  one engine does both.

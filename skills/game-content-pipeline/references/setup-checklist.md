@@ -1,6 +1,6 @@
 # Setup Checklist — install order + verification
 
-State on 2026-07-02: Blender 5.1.2 ✅ (bridge :9876), Higgsfield CLI 0.1.35 ✅ (Plus plan), Python 3.12 ✅, Node ✅, git-lfs ✅. Missing: UE 5.8, Visual Studio, ffmpeg, ImageMagick, rembg. C: has ~358GB free — enough but tight; clean up if below 200GB before UE install.
+State on 2026-07-26: Blender 5.1.2 ✅ (bridge :9876), Higgsfield CLI 0.1.35 ✅ (Plus plan), Python 3.12 ✅, Node ✅, git-lfs ✅, VS Build Tools 2022 ✅, ffmpeg/ImageMagick/rembg ✅ (2026-07-02). **UE 5.8 ✅ INSTALLED** at `D:\DEpic GamesUE_5.8\UE_5.8` (folder name is garbled from the install — the engine works; do NOT move or reinstall it) — sections 1's install steps below are historical. MCP verified live via the headless BeastLab project (`D:\Epic Games\Projects\BeastLab`) on :8000/mcp. UE 5.6.1 also remains at `D:\Epic Games\UE_5.6` for RouteRush `/api/to_ue` imports.
 
 ## 1. Unreal Engine 5.8 (~120 GB — C: conservative; D: OK after SMART check, repaired 2026-06-20)
 

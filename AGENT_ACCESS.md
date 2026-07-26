@@ -40,7 +40,7 @@ Smoke test: curl.exe -sS http://127.0.0.1:8787/api/recipes
 | `POST /api/refine` | `file`, `instruction`, `brief`, `allow_cloud_fallback` (default false) |
 | `POST /api/animate` | `file`, `motion`, `duration` (3\|5), `quality` (`"fast"`=Wan silent ~3min · `"cinema"`=LTX-2.3 with generated audio ~25min), `allow_cloud_fallback` |
 | `POST /api/to3d` | `file`, `allow_hosted_fallback` (default false — true lets the image LEAVE this machine to NVIDIA's hosted API) → `model.glb` (TRELLIS auto-starts, warmup ~5min) |
-| `POST /api/to_ue` | `file:"runs/<id>/model.glb"` → StaticMesh in the RouteRush UE project |
+| `POST /api/to_ue` | `file:"runs/<id>/model.glb"` → StaticMesh in the RouteRush UE 5.6 project (NOT the UE 5.8/BeastLab MCP instance — those are separate engines) |
 
 **Poll responses** — success and failure shapes:
 

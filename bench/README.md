@@ -3,13 +3,30 @@
 Turns quality claims into evidence. Results are versioned in `results/` and every
 number is reproducible: `python bench/run_bench.py --model <model>`.
 
-## What runs automatically
+## What runs automatically (protocol v0.2, 2026-07-26)
 - Every brief in `briefs.json` goes through the FULL production loop:
-  structured prompt → 2 candidates (base + one variation) → vision judge →
+  structured prompt → 4 controlled candidates (base unchanged + the brief's
+  variation + 2 fixed control variations shared by all briefs) → vision judge →
   auto-improvement pass when winner < 8 → validated upscale → grade.
+- The runner validates the candidate count on every result; a run that comes
+  back with the wrong number of primary candidates is marked invalid and
+  excluded from score aggregates.
 - Recorded per brief: terminal phase, winner score, per-candidate scores/kills,
-  whether auto-improvement fired, wall-clock latency, upscale validity.
-- Summary: mean/median score, completion rate, improvement usage, mean latency.
+  candidate-count validity, whether auto-improvement fired, wall-clock latency,
+  upscale validity.
+- Summary: mean/median score, completion rate, improvement usage, mean latency,
+  plus the protocol block (version, candidates per brief, control variations).
+
+## Correction — prior runs were single-candidate (protocol v0.1)
+All results dated before 2026-07-26 (`20260725_*` and `20260726_060905_*`) were
+produced by a runner that sent `variations=[<one variation>]`. The server
+generates one candidate per variation entry, so each brief ran exactly ONE
+candidate whose prompt was "base; variation" — the base prompt alone never ran,
+and no candidate competition happened. **Those results cannot substantiate any
+multi-candidate quality-loop claim.** They are preserved unmodified in
+`results/` for reference, but are not comparable to v0.2 results. Every v0.2
+result file carries a `protocol` block so the two generations cannot be
+confused.
 
 ## Current coverage vs ROADMAP target
 - 12 image briefs across product / character / environment / UI / game-asset /
@@ -33,9 +50,10 @@ prompts before generation (log: "Returning prompt filtered response in 0.3s" —
 work). Reproduced deterministically on `ui-02` ("3D clay chef hat") and `typo-02`
 ("OPEN LATE" neon). Rewording and cross-model retry (flux.1↔flux.2) do NOT help —
 the filter component is shared. Pipeline handles it honestly (dead-frame kill +
-explanation). Fix in progress: `comfy:flux.1-schnell` backend running raw Apache-2.0
-weights without the NIM wrapper. Until then, expected NIM completion ceiling ≈ 10/12
-on this suite.
+explanation). The local `comfy:flux.1-schnell` backend bypasses that wrapper and
+has been verified on those two previously blocked briefs. That is a targeted
+mitigation, not yet a full-suite quality claim: protocol v0.2 still needs a
+complete 12-brief run.
 
 ## Honesty rules
 - Never edit briefs.json and old results in the same commit (keeps runs comparable).

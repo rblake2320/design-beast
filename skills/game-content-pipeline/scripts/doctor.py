@@ -44,12 +44,36 @@ except OSError:
           f'cmd /c start "" "{BLENDER}"  — bridge starts with Blender (BlenderLab extension)')
 
 # --- Unreal Engine 5.8 ------------------------------------------------------
-UE_ROOT = r"C:\Program Files\Epic Games\UE_5.8"
-UE_CMD = os.path.join(UE_ROOT, r"Engine\Binaries\Win64\UnrealEditor-Cmd.exe")
-if os.path.exists(UE_CMD):
-    check("PASS", "Unreal Engine 5.8", UE_ROOT)
+# First candidate is the ACTUAL install on this machine (folder name got garbled
+# during install but the engine works — do not "fix" or move it), then the
+# conventional D: and C: locations for portability.
+UE_CANDIDATES = [
+    r"D:\DEpic GamesUE_5.8\UE_5.8",
+    r"D:\Epic Games\UE_5.8",
+    r"C:\Program Files\Epic Games\UE_5.8",
+]
+UE_ROOT = next((r for r in UE_CANDIDATES
+                if os.path.exists(os.path.join(r, r"Engine\Binaries\Win64\UnrealEditor-Cmd.exe"))),
+               None)
+if UE_ROOT:
+    # GPU-free verification: Build.version is a JSON manifest inside every UE
+    # install — confirms the version without launching the engine.
+    ver_file = os.path.join(UE_ROOT, r"Engine\Build\Build.version")
+    try:
+        v = json.load(open(ver_file, encoding="utf-8"))
+        ver = f"{v['MajorVersion']}.{v['MinorVersion']}.{v.get('PatchVersion', 0)}"
+    except Exception as e:
+        ver = None
+        check("WARN", "Unreal Engine 5.8", f"selected root {UE_ROOT} but Build.version "
+              f"unreadable ({type(e).__name__})", "verify the install in Epic Games Launcher")
+    if ver and ver.startswith("5.8"):
+        check("PASS", "Unreal Engine 5.8", f"{UE_ROOT} (Build.version {ver})")
+    elif ver:
+        check("WARN", "Unreal Engine 5.8", f"selected root {UE_ROOT} reports version {ver}, "
+              "not 5.8", "check UE_CANDIDATES order in this script")
 else:
-    check("MISS", "Unreal Engine 5.8", "not installed",
+    check("MISS", "Unreal Engine 5.8", "no candidate root has UnrealEditor-Cmd.exe "
+          f"(checked: {'; '.join(UE_CANDIDATES)})",
           "Epic Games Launcher > Unreal Engine > Library > + > 5.8.0 (~120GB; C: conservative, "
           "D: OK after SMART check). Launcher: https://store.epicgames.com/download")
 
@@ -127,9 +151,18 @@ for mod, pipname in [("PIL", "pillow"), ("rembg", '"rembg[gpu,cli]"')]:
 try:
     usage = shutil.disk_usage("C:\\")
     free_gb = usage.free / 1e9
-    status = "PASS" if free_gb > 200 else ("WARN" if free_gb > 130 else "MISS")
-    check(status, "C: free space", f"{free_gb:.0f} GB free (UE needs ~120GB)",
-          "" if status == "PASS" else "Free up space on C: before UE install")
+    if UE_ROOT:
+        # UE is already installed (on D: here) — C: capacity no longer gates the
+        # pipeline; only flag genuinely low system-drive space.
+        status = "PASS" if free_gb > 50 else ("WARN" if free_gb > 15 else "MISS")
+        check(status, "C: free space",
+              f"{free_gb:.0f} GB free (UE installed at {UE_ROOT} — no C: install pending)",
+              "" if status == "PASS" else "C: is low for general use — clean temp/caches")
+    else:
+        status = "PASS" if free_gb > 200 else ("WARN" if free_gb > 130 else "MISS")
+        check(status, "C: free space", f"{free_gb:.0f} GB free (UE needs ~120GB)",
+              "" if status == "PASS" else "Free up space on C: before UE install, "
+              "or install UE to D:")
 except Exception:
     pass
 check("WARN", "D: drive", "failed 2026-06 but chkdsk-repaired 2026-06-20, clean since; OK for builds once SMART check passes", "")

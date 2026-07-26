@@ -2,6 +2,18 @@ __pycache__/
 .claude/settings.local.json
 studio/runs/
 studio/uploads/
+studio/jobs.db
+studio/jobs.db-shm
+studio/jobs.db-wal
+studio/jobs.db-journal
+
+# SelfConnect coordination artifacts (local session state, not product source)
+briefings/
+tasks/
+locks/
+/results/
+events.jsonl
+.pytest-temp/
 *.pyc
 .env
 *.env
