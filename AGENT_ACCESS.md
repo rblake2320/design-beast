@@ -10,7 +10,8 @@ machine only). Four sections: paste block · API contract · safety rules · wor
 ```
 Beast Studio API at http://127.0.0.1:8787. Async endpoints (/api/run, /api/refine,
 /api/animate, /api/to3d, /api/to_ue) return {id} immediately — poll /api/run/{id}
-every 5-10s until phase is "done" or "failed" (failed carries .error). Sync endpoints
+every 5-10s until phase is "done", "failed", or "cancelled" (failed carries .error).
+Interactive clients may instead subscribe to /api/events/{id} (SSE). Sync endpoints
 (/api/upload, /api/expand, /api/judge, /api/tts) return results directly.
 Default model is local:flux.1-schnell (free). Cloud fallback NEVER happens unless you
 send allow_cloud_fallback:true (it spends the human's Higgsfield credits — don't,
@@ -41,6 +42,9 @@ Smoke test: curl.exe -sS http://127.0.0.1:8787/api/recipes
 | `POST /api/animate` | `file`, `motion`, `duration` (3\|5), `quality` (`"fast"`=Wan silent ~3min · `"cinema"`=LTX-2.3 with generated audio ~25min), `allow_cloud_fallback` |
 | `POST /api/to3d` | `file`, `allow_hosted_fallback` (default false — true lets the image LEAVE this machine to NVIDIA's hosted API) → `model.glb` (TRELLIS auto-starts, warmup ~5min) |
 | `POST /api/to_ue` | `file:"runs/<id>/model.glb"` → StaticMesh in the RouteRush UE 5.6 project (NOT the UE 5.8/BeastLab MCP instance — those are separate engines) |
+| `GET /api/events/{id}` | SSE status stream; reconnect or fall back to `GET /api/run/{id}` if it drops |
+| `POST /api/job/{id}/cancel` | Job-specific cancellation; ComfyUI prompts use its atomic per-prompt cancel API |
+| `POST /api/job/{id}/retry` | Retry a terminal `failed` or `cancelled` job |
 
 **Poll responses** — success and failure shapes:
 

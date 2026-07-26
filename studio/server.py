@@ -14,7 +14,7 @@ import sys
 import threading
 import time
 import urllib.request
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait as futures_wait
 from pathlib import Path
 
 from typing import Literal
@@ -220,6 +220,49 @@ def ensure_comfy(timeout_s: int = 120) -> bool:
     return False
 
 
+# ---- ComfyUI prompt ownership — makes cancellation job-specific ----
+_COMFY_LOCK = threading.Lock()
+_COMFY_PROMPTS: dict[str, set[str]] = {}  # run_id -> prompt_ids this server submitted
+
+
+def _comfy_track(run_id: str, pid: str):
+    with _COMFY_LOCK:
+        _COMFY_PROMPTS.setdefault(run_id, set()).add(pid)
+
+
+def _comfy_untrack(run_id: str, pid: str):
+    with _COMFY_LOCK:
+        s = _COMFY_PROMPTS.get(run_id)
+        if s:
+            s.discard(pid)
+            if not s:
+                _COMFY_PROMPTS.pop(run_id, None)
+
+
+def _comfy_cancel_run(run_id: str) -> str:
+    """Cancel this job's ComfyUI prompts via ComfyUI's atomic per-job endpoint
+    POST /api/jobs/{prompt_id}/cancel (0.28.0: PromptQueue.interrupt_if_running
+    under its mutex — handles pending AND running in one call). NEVER the global
+    /interrupt, with or without a prompt_id: that route decides outside the lock
+    and can land on an unrelated prompt (TOCTOU). An unknown or already-finished
+    id returns {"cancelled": false} — an idempotent no-op, never treated as an
+    error."""
+    with _COMFY_LOCK:
+        owned = sorted(_COMFY_PROMPTS.get(run_id, ()))
+    if not owned:
+        return "no ComfyUI prompts owned by this job"
+    C = f"http://localhost:{COMFY_PORT}"
+    notes = []
+    for pid in owned:
+        try:
+            r = requests.post(f"{C}/api/jobs/{pid}/cancel", timeout=3).json()
+            notes.append(f"{pid}: " + ("cancelled" if r.get("cancelled")
+                                       else "already terminal/unknown — no-op"))
+        except Exception as e:  # noqa: BLE001
+            notes.append(f"{pid}: cancel call failed ({type(e).__name__})")
+    return "; ".join(notes)
+
+
 def comfy_flux_image(prompt: str, out_file: Path, ar: str) -> dict:
     """FLUX schnell via ComfyUI raw weights — NO NIM prompt filter. Free, local."""
     if not ensure_comfy():
@@ -243,22 +286,34 @@ def comfy_flux_image(prompt: str, out_file: Path, ar: str) -> dict:
         "7": {"class_type": "SaveImage", "inputs": {"images": ["6", 0],
                                                     "filename_prefix": "beast/raw"}},
     }
+    run_id = out_file.parent.name
     try:
         pid = requests.post(f"{C}/prompt", json={"prompt": g, "client_id": "beast"},
                             timeout=30).json()["prompt_id"]
-        t0 = time.time()
-        while time.time() - t0 < 600:
-            time.sleep(4)
-            h_ = requests.get(f"{C}/history/{pid}", timeout=30).json()
-            if pid in h_ and h_[pid]["status"].get("completed"):
-                img = h_[pid]["outputs"]["7"]["images"][0]
-                produced = COMFY_DIR / "output" / img["subfolder"] / img["filename"]
-                from PIL import Image
-                Image.open(produced).convert("RGB").save(out_file, "PNG")
-                return {"file": out_file.name, "url": ""}
-            if pid in h_ and h_[pid]["status"].get("status_str") == "error":
-                return {"error": "ComfyUI flux job errored"}
-        return {"error": "ComfyUI flux job timed out"}
+        _comfy_track(run_id, pid)
+        try:
+            t0 = time.time()
+            while time.time() - t0 < 600:
+                time.sleep(4)
+                if jobs.cancelled(run_id):
+                    _comfy_cancel_run(run_id)
+                    return {"error": "cancelled by request", "cancelled": True}
+                h_ = requests.get(f"{C}/history/{pid}", timeout=30).json()
+                if pid in h_ and h_[pid]["status"].get("completed"):
+                    img = h_[pid]["outputs"]["7"]["images"][0]
+                    produced = COMFY_DIR / "output" / img["subfolder"] / img["filename"]
+                    from PIL import Image
+                    Image.open(produced).convert("RGB").save(out_file, "PNG")
+                    return {"file": out_file.name, "url": ""}
+                if pid in h_ and h_[pid]["status"].get("status_str") == "error":
+                    # interrupted prompts also land as status_str='error' — the
+                    # Beast cancel flag decides which one this really is
+                    if jobs.cancelled(run_id):
+                        return {"error": "cancelled by request", "cancelled": True}
+                    return {"error": "ComfyUI flux job errored"}
+            return {"error": "ComfyUI flux job timed out"}
+        finally:
+            _comfy_untrack(run_id, pid)
     except Exception as e:  # noqa: BLE001
         return {"error": f"comfy flux failed: {str(e)[:200]}"}
 
@@ -418,6 +473,9 @@ def _generate_one(run_dir: Path, i: int, prompt: str, req: RunReq) -> dict:
 
 
 def _generate_one_inner(cand: dict, run_dir: Path, i: int, prompt: str, req: RunReq) -> dict:
+    if jobs.cancelled(run_dir.name):
+        cand.update(state="cancelled")
+        return cand
     if req.model.startswith("comfy:"):
         r = comfy_flux_image(prompt, run_dir / f"cand{i}.png", req.aspect_ratio)
     elif req.model.startswith("local:"):
@@ -432,6 +490,9 @@ def _generate_one_inner(cand: dict, run_dir: Path, i: int, prompt: str, req: Run
         if req.reference:
             extra += ["--image", str(UPLOADS / req.reference)]
         r = hf_generate(req.model, prompt, run_dir / f"cand{i}.png", extra)
+    if r.get("cancelled") or jobs.cancelled(run_dir.name):
+        cand.update(state="cancelled")
+        return cand
     if "error" in r:
         cand.update(state="failed", error=r["error"])
         return cand
@@ -479,9 +540,24 @@ def _run_loop_inner(run_dir: Path, req: RunReq):
     n = max(len(req.variations), 1) if req.variations else 4
     prompts = [f"{base}; {v}" if v else base for v in (req.variations or [""] * n)]
     _status(run_dir, phase="generating", candidates=[])
-    with ThreadPoolExecutor(max_workers=4) as pool:
-        cands = list(pool.map(lambda t: _generate_one(run_dir, t[0], t[1], req),
-                              enumerate(prompts, 1)))
+    # short-timeout wait loop (NOT pool.map / as_completed): a cancel request is
+    # observed within ~1s even while every candidate is blocked inside a long
+    # NIM/HTTP call — no completion is required for cancellation to be seen.
+    pool = ThreadPoolExecutor(max_workers=4)
+    pending = {pool.submit(_generate_one, run_dir, i, p, req)
+               for i, p in enumerate(prompts, 1)}
+    done_futs, cancelled_early = set(), False
+    while pending:
+        done_now, pending = futures_wait(pending, timeout=1.0,
+                                         return_when=FIRST_COMPLETED)
+        done_futs |= done_now
+        if jobs.cancelled(run_dir.name):
+            cancelled_early = True
+            break
+    # on cancel: don't wait for in-flight candidates (they exit at their own
+    # cancellation checks); unstarted ones are dropped before they run
+    pool.shutdown(wait=not cancelled_early, cancel_futures=cancelled_early)
+    cands = sorted((f.result() for f in done_futs), key=lambda c: c["i"])
     jobs.checkpoint(run_dir.name)
     done = [c for c in cands if c["state"] == "done" and not c.get("kill")
             and c.get("score", 0) > 3]
@@ -725,18 +801,28 @@ def ltx_animate(src: Path, motion: str, out_mp4: Path, duration: int = 5) -> dic
         }
         pid = requests.post(f"{C}/prompt", json={"prompt": g, "client_id": "beast"},
                             timeout=60).json()["prompt_id"]
-        t0 = time.time()
-        while time.time() - t0 < 3000:
-            time.sleep(15)
-            h = requests.get(f"{C}/history/{pid}", timeout=30).json()
-            if pid in h and h[pid]["status"].get("completed"):
-                img = h[pid]["outputs"]["13"]["images"][0]
-                shutil.copy2(COMFY_DIR / "output" / img["subfolder"] / img["filename"],
-                             out_mp4)
-                return {"file": out_mp4.name}
-            if pid in h and h[pid]["status"].get("status_str") == "error":
-                return {"error": "LTX render errored — check ComfyUI"}
-        return {"error": "LTX render timed out (50 min)"}
+        run_id = out_mp4.parent.name
+        _comfy_track(run_id, pid)
+        try:
+            t0 = time.time()
+            while time.time() - t0 < 3000:
+                time.sleep(15)
+                if jobs.cancelled(run_id):
+                    _comfy_cancel_run(run_id)
+                    return {"error": "cancelled by request", "cancelled": True}
+                h = requests.get(f"{C}/history/{pid}", timeout=30).json()
+                if pid in h and h[pid]["status"].get("completed"):
+                    img = h[pid]["outputs"]["13"]["images"][0]
+                    shutil.copy2(COMFY_DIR / "output" / img["subfolder"] / img["filename"],
+                                 out_mp4)
+                    return {"file": out_mp4.name}
+                if pid in h and h[pid]["status"].get("status_str") == "error":
+                    if jobs.cancelled(run_id):
+                        return {"error": "cancelled by request", "cancelled": True}
+                    return {"error": "LTX render errored — check ComfyUI"}
+            return {"error": "LTX render timed out (50 min)"}
+        finally:
+            _comfy_untrack(run_id, pid)
     except Exception as e:  # noqa: BLE001
         return {"error": f"cinema video failed: {str(e)[:200]}"}
 
@@ -788,18 +874,28 @@ def wan_animate(src: Path, motion: str, out_mp4: Path, duration: int = 5) -> dic
         }
         pid = requests.post(f"{C}/prompt", json={"prompt": g, "client_id": "beast"},
                             timeout=30).json()["prompt_id"]
-        t0 = time.time()
-        while time.time() - t0 < 2400:
-            time.sleep(10)
-            h = requests.get(f"{C}/history/{pid}", timeout=30).json()
-            if pid in h and h[pid]["status"].get("completed"):
-                img = h[pid]["outputs"]["11"]["images"][0]
-                produced = (COMFY_DIR / "output" / img["subfolder"] / img["filename"])
-                shutil.copy2(produced, out_mp4)
-                return {"file": out_mp4.name}
-            if pid in h and h[pid]["status"].get("status_str") == "error":
-                return {"error": "ComfyUI job errored — check comfyui log"}
-        return {"error": "local video generation timed out (40 min)"}
+        run_id = out_mp4.parent.name
+        _comfy_track(run_id, pid)
+        try:
+            t0 = time.time()
+            while time.time() - t0 < 2400:
+                time.sleep(10)
+                if jobs.cancelled(run_id):
+                    _comfy_cancel_run(run_id)
+                    return {"error": "cancelled by request", "cancelled": True}
+                h = requests.get(f"{C}/history/{pid}", timeout=30).json()
+                if pid in h and h[pid]["status"].get("completed"):
+                    img = h[pid]["outputs"]["11"]["images"][0]
+                    produced = (COMFY_DIR / "output" / img["subfolder"] / img["filename"])
+                    shutil.copy2(produced, out_mp4)
+                    return {"file": out_mp4.name}
+                if pid in h and h[pid]["status"].get("status_str") == "error":
+                    if jobs.cancelled(run_id):
+                        return {"error": "cancelled by request", "cancelled": True}
+                    return {"error": "ComfyUI job errored — check comfyui log"}
+            return {"error": "local video generation timed out (40 min)"}
+        finally:
+            _comfy_untrack(run_id, pid)
     except Exception as e:  # noqa: BLE001 — ComfyUI down or API change
         return {"error": f"local video failed: {str(e)[:200]}"}
 
@@ -1080,13 +1176,13 @@ def cancel_job(run_id: str):
     if not jobs.get(run_id):
         return JSONResponse({"error": "not found"}, 404)
     ok = jobs.request_cancel(run_id)
-    # if a ComfyUI render is in flight, interrupt it too
-    try:
-        requests.post(f"http://localhost:{COMFY_PORT}/interrupt", timeout=3)
-    except Exception:  # noqa: BLE001
-        pass
-    return {"ok": ok, "note": "queued jobs cancel instantly; running jobs stop at "
-                              "their next stage checkpoint"}
+    # job-specific ComfyUI cancellation: one atomic POST /api/jobs/{pid}/cancel
+    # per owned prompt (pending or running, mutex-guarded ComfyUI-side); the
+    # racy global /interrupt is never used
+    comfy = _comfy_cancel_run(run_id)
+    return {"ok": ok, "comfy": comfy,
+            "note": "queued jobs cancel instantly; running jobs stop at "
+                    "their next cancellation check"}
 
 
 @app.post("/api/job/{run_id}/retry")

@@ -326,7 +326,7 @@
 
 <script>
 const $ = id => document.getElementById(id);
-let timer = null, upload = null;
+let timer = null, events = null, upload = null;
 
 // ---------- recipes ----------
 fetch('/api/recipes').then(r => r.json()).then(rs => {
@@ -490,11 +490,33 @@ function loadHistory() {
 loadHistory();
 
 // ---------- render ----------
-function watch(id) { clearInterval(timer); timer = setInterval(() => render(id), 4000); render(id); }
+function stopWatch() {
+  clearInterval(timer); timer = null;
+  if (events) { events.close(); events = null; }
+}
+function startPolling(id) {
+  if (timer) return;
+  timer = setInterval(() => render(id), 4000);
+}
+function watch(id) {
+  stopWatch();
+  render(id);
+  if (!window.EventSource) return startPolling(id);
+  events = new EventSource('/api/events/' + encodeURIComponent(id));
+  events.onmessage = e => {
+    try { render(id, JSON.parse(e.data)); }
+    catch (_) { /* malformed event: next event or fallback fetch will recover */ }
+  };
+  events.onerror = () => {
+    if (!events) return; // normal terminal-state close already stopped the watcher
+    events.close(); events = null;
+    startPolling(id);
+  };
+}
 
-async function render(id) {
-  const s = await (await fetch('/api/run/' + id)).json();
-  const busy = !['done','failed'].includes(s.phase);
+async function render(id, snapshot = null) {
+  const s = snapshot || await (await fetch('/api/run/' + id)).json();
+  const busy = !['done','failed','cancelled'].includes(s.phase);
   setPhase(`${s.id} · ${s.kind || 'create'} — ${s.phase}${busy ? '…' : ''}`, busy);
   if (s.phase === 'failed' && s.error) showErr(s.error);
 
@@ -539,7 +561,7 @@ async function render(id) {
       ${media}<div class="meta">${c.fix || c.error || c.state || ''}</div></div>`;
   }).join('');
 
-  if (!busy) { clearInterval(timer); $('go').disabled = false; loadHistory(); }
+  if (!busy) { stopWatch(); $('go').disabled = false; loadHistory(); }
 }
 async function toUE(file) {
   const j = await api('/api/to_ue', { file });

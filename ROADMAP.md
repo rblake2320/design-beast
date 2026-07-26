@@ -17,13 +17,14 @@ Nothing below may be promoted to `[x]` without naming the verification.
       scheduler; backend-specific serialization has not been verified. There is
       no central scheduler and no VRAM-aware admission control.
 - [~] Cancel / retry / timeout endpoints; idempotency keys — PARTIAL: cancel
-      (queued jobs instant; during candidate generation `pool.map()` completes all
-      candidates before cancellation is observed; ComfyUI `/interrupt` is global,
-      not job-specific), retry, and idempotency keys work. No server-side per-job
-      timeout enforcement.
+      (queued jobs instant; candidate generation observes cancellation at ≤1s
+      scheduler intervals; ComfyUI prompts use its atomic per-prompt cancel API),
+      retry, and idempotency keys work. Blocking non-Comfy backend calls may
+      continue in detached workers until their HTTP call returns. No server-side
+      per-job timeout enforcement.
 - [~] SSE or WebSocket progress (replace polling) — PARTIAL: `/api/events/{run_id}`
-      SSE endpoint exists, but nothing has adopted it: the Studio UI polls every 4s
-      and bench polls every 10s. "Replace polling" has not happened.
+      SSE endpoint exists and the Studio UI consumes it with polling fallback;
+      the benchmark harness still polls every 10s.
 - [x] Strict Pydantic enums/bounds; upload size+type validation; structured error
       codes (request models with enums/bounds, upload rejection, error codes in
       jobs.py; covered by test_p0.py)
