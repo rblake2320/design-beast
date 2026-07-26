@@ -230,15 +230,21 @@
       <div id="motionform" style="display:none">
         <label>motion prompt — movement + sounds (cinema tier generates audio)</label>
         <textarea id="motiontext" rows="2">slow cinematic dolly-in, subtle ambient movement</textarea>
-        <div class="row" style="margin-top:.5rem">
-          <select id="motiondur" style="width:88px">
-            <option value="3">3 s</option>
-            <option value="5" selected>5 s</option>
-          </select>
-          <select id="motiontier" style="flex:1">
-            <option value="fast">FAST · Wan 2.2 · 2-4 min · silent</option>
-            <option value="cinema">CINEMA · LTX-2.3 · 20-30 min · with audio</option>
-          </select>
+        <div class="row" style="margin-top:.5rem;align-items:end">
+          <div style="width:110px">
+            <label style="margin:.2rem 0 .3rem">clip length</label>
+            <select id="motiondur">
+              <option value="3">3 seconds</option>
+              <option value="5" selected>5 seconds</option>
+            </select>
+          </div>
+          <div style="flex:1">
+            <label style="margin:.2rem 0 .3rem">engine (= how long you wait)</label>
+            <select id="motiontier">
+              <option value="fast">FAST — Wan 2.2 · silent · ready in ~3 min</option>
+              <option value="cinema">CINEMA — LTX-2.3 · with audio · ready in ~25 min</option>
+            </select>
+          </div>
         </div>
         <button class="primary" style="margin-top:.5rem;padding:.55rem" id="motiongo">render motion</button>
       </div>
