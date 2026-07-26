@@ -1,0 +1,49 @@
+{
+ "timestamp": "2026-07-25 23:43:44",
+ "model": "local:flux.1-schnell",
+ "n": 2,
+ "completed": 0,
+ "failed": 2,
+ "mean_score": null,
+ "median_score": null,
+ "auto_improved_count": 0,
+ "mean_latency_s": 70.0,
+ "results": [
+  {
+   "id": "ui-02",
+   "category": "ui",
+   "job": "20260725_234124_1cf7",
+   "phase": "failed",
+   "error": "no candidate scored above 3/10 \u2014 rework the prompt",
+   "winner_score": null,
+   "auto_improved": false,
+   "candidates": [
+    {
+     "i": 1,
+     "score": 0,
+     "kill": true
+    }
+   ],
+   "latency_s": 130.1,
+   "upscaled": null
+  },
+  {
+   "id": "typo-02",
+   "category": "typography",
+   "job": "20260725_234334_5fe2",
+   "phase": "failed",
+   "error": "no candidate scored above 3/10 \u2014 rework the prompt",
+   "winner_score": null,
+   "auto_improved": false,
+   "candidates": [
+    {
+     "i": 1,
+     "score": 0,
+     "kill": true
+    }
+   ],
+   "latency_s": 10.0,
+   "upscaled": null
+  }
+ ]
+}

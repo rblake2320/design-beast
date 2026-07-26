@@ -27,6 +27,16 @@ number is reproducible: `python bench/run_bench.py --model <model>`.
   report correlation. If agreement is weak, calibrate the judge prompt before
   trusting benchmark deltas.
 
+## Known platform limitation (found by run 20260725_233956, diagnosed 2026-07-26)
+The FLUX NIM containers include a **prompt-text guardrail** that rejects some benign
+prompts before generation (log: "Returning prompt filtered response in 0.3s" — no GPU
+work). Reproduced deterministically on `ui-02` ("3D clay chef hat") and `typo-02`
+("OPEN LATE" neon). Rewording and cross-model retry (flux.1↔flux.2) do NOT help —
+the filter component is shared. Pipeline handles it honestly (dead-frame kill +
+explanation). Fix in progress: `comfy:flux.1-schnell` backend running raw Apache-2.0
+weights without the NIM wrapper. Until then, expected NIM completion ceiling ≈ 10/12
+on this suite.
+
 ## Honesty rules
 - Never edit briefs.json and old results in the same commit (keeps runs comparable).
 - A failed run counts against completion rate — no cherry-picking.

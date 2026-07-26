@@ -373,12 +373,18 @@ def _generate_one_inner(cand: dict, run_dir: Path, i: int, prompt: str, req: Run
         return cand
     cand.update(state="judging", **r)
     if dead_frame(run_dir / r["file"]):
-        # blank frames are often seed-dependent filter glitches — one fresh-seed retry
+        # blank frames: retry fresh seed; if the blank is deterministic (prompt trips
+        # this model's filter), cross-fall to the OTHER local FLUX — still free/local
         if req.model.startswith("local:"):
-            _, port = LOCAL_IMAGE_MODELS.get(req.model, ("nim-flux", 8018))
+            backend, port = LOCAL_IMAGE_MODELS.get(req.model, ("nim-flux", 8018))
             r2 = flux_local(prompt, run_dir / f"cand{i}.png", req.aspect_ratio, port)
-            if "error" not in r2 and not dead_frame(run_dir / r2["file"]):
-                r = r2
+            if "error" in r2 or dead_frame(run_dir / f"cand{i}.png"):
+                alt = ("nim-flux2", 8020) if backend == "nim-flux" else ("nim-flux", 8018)
+                if ensure_backend(alt[0]):
+                    r3 = flux_local(prompt, run_dir / f"cand{i}.png",
+                                    req.aspect_ratio, alt[1])
+                    if "error" not in r3 and not dead_frame(run_dir / f"cand{i}.png"):
+                        cand["engine_note"] = f"blank on {backend}, rescued by {alt[0]}"
         if dead_frame(run_dir / r["file"]):
             cand.update(state="done", score=0, kill=True, fix=DEAD_FRAME_MSG)
             return cand

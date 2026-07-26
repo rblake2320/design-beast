@@ -1,0 +1,244 @@
+{
+ "timestamp": "2026-07-25 23:39:56",
+ "model": "local:flux.1-schnell",
+ "n": 12,
+ "completed": 10,
+ "failed": 2,
+ "mean_score": 8.2,
+ "median_score": 8.0,
+ "auto_improved_count": 2,
+ "mean_latency_s": 40.0,
+ "results": [
+  {
+   "id": "prod-01",
+   "category": "product",
+   "job": "20260725_233155_5fa2",
+   "phase": "done",
+   "error": null,
+   "winner_score": 9,
+   "auto_improved": false,
+   "candidates": [
+    {
+     "i": 1,
+     "score": 9,
+     "kill": false
+    }
+   ],
+   "latency_s": 40.0,
+   "upscaled": true
+  },
+  {
+   "id": "prod-02",
+   "category": "product",
+   "job": "20260725_233235_c54a",
+   "phase": "done",
+   "error": null,
+   "winner_score": 9,
+   "auto_improved": false,
+   "candidates": [
+    {
+     "i": 1,
+     "score": 9,
+     "kill": false
+    }
+   ],
+   "latency_s": 40.1,
+   "upscaled": true
+  },
+  {
+   "id": "char-01",
+   "category": "character",
+   "job": "20260725_233315_221e",
+   "phase": "done",
+   "error": null,
+   "winner_score": 9,
+   "auto_improved": false,
+   "candidates": [
+    {
+     "i": 1,
+     "score": 9,
+     "kill": false
+    }
+   ],
+   "latency_s": 30.0,
+   "upscaled": true
+  },
+  {
+   "id": "char-02",
+   "category": "character",
+   "job": "20260725_233345_8255",
+   "phase": "done",
+   "error": null,
+   "winner_score": 8,
+   "auto_improved": false,
+   "candidates": [
+    {
+     "i": 1,
+     "score": 8,
+     "kill": false
+    }
+   ],
+   "latency_s": 40.0,
+   "upscaled": true
+  },
+  {
+   "id": "env-01",
+   "category": "environment",
+   "job": "20260725_233425_5478",
+   "phase": "done",
+   "error": null,
+   "winner_score": 8,
+   "auto_improved": true,
+   "candidates": [
+    {
+     "i": 1,
+     "score": 7,
+     "kill": false
+    },
+    {
+     "i": 91,
+     "score": 8,
+     "kill": false
+    }
+   ],
+   "latency_s": 90.1,
+   "upscaled": true
+  },
+  {
+   "id": "env-02",
+   "category": "environment",
+   "job": "20260725_233556_720a",
+   "phase": "done",
+   "error": null,
+   "winner_score": 8,
+   "auto_improved": false,
+   "candidates": [
+    {
+     "i": 1,
+     "score": 8,
+     "kill": false
+    }
+   ],
+   "latency_s": 30.0,
+   "upscaled": true
+  },
+  {
+   "id": "ui-01",
+   "category": "ui",
+   "job": "20260725_233626_2618",
+   "phase": "done",
+   "error": null,
+   "winner_score": 7,
+   "auto_improved": false,
+   "candidates": [
+    {
+     "i": 1,
+     "score": 7,
+     "kill": false
+    },
+    {
+     "i": 91,
+     "score": 7,
+     "kill": false
+    }
+   ],
+   "latency_s": 60.1,
+   "upscaled": true
+  },
+  {
+   "id": "ui-02",
+   "category": "ui",
+   "job": "20260725_233726_3f8f",
+   "phase": "failed",
+   "error": "no candidate scored above 3/10 \u2014 rework the prompt",
+   "winner_score": null,
+   "auto_improved": false,
+   "candidates": [
+    {
+     "i": 1,
+     "score": 0,
+     "kill": true
+    }
+   ],
+   "latency_s": 10.0,
+   "upscaled": null
+  },
+  {
+   "id": "game-01",
+   "category": "game_asset",
+   "job": "20260725_233736_f2e6",
+   "phase": "done",
+   "error": null,
+   "winner_score": 8,
+   "auto_improved": false,
+   "candidates": [
+    {
+     "i": 1,
+     "score": 8,
+     "kill": false
+    }
+   ],
+   "latency_s": 30.0,
+   "upscaled": true
+  },
+  {
+   "id": "game-02",
+   "category": "game_asset",
+   "job": "20260725_233806_2b17",
+   "phase": "done",
+   "error": null,
+   "winner_score": 8,
+   "auto_improved": true,
+   "candidates": [
+    {
+     "i": 1,
+     "score": 7,
+     "kill": false
+    },
+    {
+     "i": 91,
+     "score": 8,
+     "kill": false
+    }
+   ],
+   "latency_s": 70.1,
+   "upscaled": true
+  },
+  {
+   "id": "typo-01",
+   "category": "typography",
+   "job": "20260725_233916_7c24",
+   "phase": "done",
+   "error": null,
+   "winner_score": 8,
+   "auto_improved": false,
+   "candidates": [
+    {
+     "i": 1,
+     "score": 8,
+     "kill": false
+    }
+   ],
+   "latency_s": 30.0,
+   "upscaled": true
+  },
+  {
+   "id": "typo-02",
+   "category": "typography",
+   "job": "20260725_233946_30a7",
+   "phase": "failed",
+   "error": "no candidate scored above 3/10 \u2014 rework the prompt",
+   "winner_score": null,
+   "auto_improved": false,
+   "candidates": [
+    {
+     "i": 1,
+     "score": 0,
+     "kill": true
+    }
+   ],
+   "latency_s": 10.0,
+   "upscaled": null
+  }
+ ]
+}
