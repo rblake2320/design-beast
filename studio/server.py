@@ -130,9 +130,10 @@ def flux_local(prompt: str, out_file: Path, ar: str, port: int = 8018) -> dict:
     """FLUX on a local RTX NIM — free, unlimited, no cloud."""
     w, h = NIM_SIZES.get(ar, (1024, 1024))
     try:
+        import random
         out = _nim_invoke(f"http://localhost:{port}/v1/infer",
                           {"prompt": prompt, "width": w, "height": h,
-                           "steps": 4, "seed": int(time.time()) % 100000},
+                           "steps": 4, "seed": random.randrange(1, 2**31)},
                           {"Accept": "application/json"}, timeout=600)
     except Exception as e:  # noqa: BLE001 — container down or busy
         return {"error": f"Local NIM not answering on :{port} — start it from the "
@@ -372,8 +373,15 @@ def _generate_one_inner(cand: dict, run_dir: Path, i: int, prompt: str, req: Run
         return cand
     cand.update(state="judging", **r)
     if dead_frame(run_dir / r["file"]):
-        cand.update(state="done", score=0, kill=True, fix=DEAD_FRAME_MSG)
-        return cand
+        # blank frames are often seed-dependent filter glitches — one fresh-seed retry
+        if req.model.startswith("local:"):
+            _, port = LOCAL_IMAGE_MODELS.get(req.model, ("nim-flux", 8018))
+            r2 = flux_local(prompt, run_dir / f"cand{i}.png", req.aspect_ratio, port)
+            if "error" not in r2 and not dead_frame(run_dir / r2["file"]):
+                r = r2
+        if dead_frame(run_dir / r["file"]):
+            cand.update(state="done", score=0, kill=True, fix=DEAD_FRAME_MSG)
+            return cand
     v = safe_judge(run_dir / r["file"], json.loads((run_dir / "status.json").read_text())["brief"])
     cand.update(state="done", score=v.get("score", 0), kill=v.get("kill", False),
                 fix=v.get("fix", ""))
