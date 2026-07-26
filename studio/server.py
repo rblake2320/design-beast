@@ -131,9 +131,17 @@ def flux_local(prompt: str, out_file: Path, ar: str, port: int = 8018) -> dict:
         return {"error": f"Local NIM not answering on :{port} — start it from the "
                          f"Backends panel and wait for warmup. ({str(e)[:120]})"}
     arts = out.get("artifacts") or []
-    if not arts:
-        return {"error": f"local FLUX returned no image: {str(out)[:200]}"}
-    out_file.write_bytes(base64.b64decode(arts[0]["base64"]))
+    raw = base64.b64decode(arts[0].get("base64", "")) if arts else b""
+    if len(raw) < 1000:
+        return {"error": f"local NIM returned empty/invalid image: {str(out)[:150]}"}
+    out_file.write_bytes(raw)
+    try:  # some NIMs emit JPEG — normalize to real PNG so judge/upscale never choke
+        from PIL import Image
+        img = Image.open(out_file)
+        if img.format != "PNG":
+            img.convert("RGB").save(out_file, "PNG")
+    except Exception:  # noqa: BLE001
+        return {"error": "local NIM output was not a decodable image"}
     return {"file": out_file.name, "url": ""}
 
 
@@ -287,6 +295,14 @@ class RunReq(BaseModel):
 
 def _generate_one(run_dir: Path, i: int, prompt: str, req: RunReq) -> dict:
     cand = {"i": i, "prompt": prompt, "state": "generating"}
+    try:
+        return _generate_one_inner(cand, run_dir, i, prompt, req)
+    except Exception as e:  # noqa: BLE001 — one bad candidate must never kill the run
+        cand.update(state="failed", error=f"{type(e).__name__}: {str(e)[:200]}")
+        return cand
+
+
+def _generate_one_inner(cand: dict, run_dir: Path, i: int, prompt: str, req: RunReq) -> dict:
     if req.model.startswith("local:"):
         _, port = LOCAL_IMAGE_MODELS.get(req.model, ("nim-flux", 8018))
         r = flux_local(prompt, run_dir / f"cand{i}.png", req.aspect_ratio, port)
@@ -310,6 +326,13 @@ def _generate_one(run_dir: Path, i: int, prompt: str, req: RunReq) -> dict:
 
 
 def _run_loop(run_dir: Path, req: RunReq):
+    try:
+        _run_loop_inner(run_dir, req)
+    except Exception as e:  # noqa: BLE001 — a run must always reach a terminal phase
+        _status(run_dir, phase="failed", error=f"{type(e).__name__}: {str(e)[:250]}")
+
+
+def _run_loop_inner(run_dir: Path, req: RunReq):
     if req.model.startswith("local:"):
         backend, _ = LOCAL_IMAGE_MODELS.get(req.model, ("nim-flux", 8018))
         if not ensure_backend(backend, run_dir):
@@ -459,8 +482,8 @@ class AnimateReq(BaseModel):
     duration: int = 5
 
 
-def wan_animate(src: Path, motion: str, out_mp4: Path) -> dict:
-    """Image → video via Wan 2.2 5B on local ComfyUI. ~3 min for a 2s clip."""
+def wan_animate(src: Path, motion: str, out_mp4: Path, duration: int = 5) -> dict:
+    """Image → video via Wan 2.2 5B on local ComfyUI. Up to 5s (121 frames)."""
     C = f"http://localhost:{COMFY_PORT}"
     try:
         with open(src, "rb") as f:
@@ -480,7 +503,9 @@ def wan_animate(src: Path, motion: str, out_mp4: Path) -> dict:
                 "clip": ["2", 0]}},
             "6": {"class_type": "LoadImage", "inputs": {"image": up["name"]}},
             "7": {"class_type": "Wan22ImageToVideoLatent", "inputs": {
-                "vae": ["3", 0], "width": 768, "height": 768, "length": 49,
+                "vae": ["3", 0], "width": 768, "height": 768,
+                # duration seconds → frames @24fps, node step=4, Wan sweet spot ≤121 (5s)
+                "length": min(121, max(25, (int(duration) * 24 // 4) * 4 + 1)),
                 "batch_size": 1, "start_image": ["6", 0]}},
             "8": {"class_type": "KSampler", "inputs": {
                 "model": ["1", 0], "positive": ["4", 0], "negative": ["5", 0],
@@ -521,7 +546,7 @@ def animate(req: AnimateReq):
     def work():
         _status(run_dir, phase="generating", candidates=[])
         # local Wan 2.2 first (free, ~3 min); Seedance cloud fallback
-        r = wan_animate(src, req.motion, run_dir / "clip.mp4")
+        r = wan_animate(src, req.motion, run_dir / "clip.mp4", req.duration)
         if "error" in r:
             r = hf_generate("seedance_2_0", req.motion, run_dir / "clip.mp4",
                             ["--start-image", str(src), "--duration", str(req.duration)])
