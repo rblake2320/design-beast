@@ -16,6 +16,8 @@ locks/
 events.jsonl
 .pytest-temp/
 .pytest_cache/
+build/
+*.egg-info/
 *.pyc
 .env
 *.env
