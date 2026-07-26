@@ -52,6 +52,7 @@ _kokoro = None
 BLENDER = Path(r"C:\Program Files\Blender Foundation\Blender 5.1\blender.exe")
 UE_CMD = Path(r"D:\Epic Games\UE_5.6\Engine\Binaries\Win64\UnrealEditor-Cmd.exe")
 UE_PROJECT = Path(r"C:\Users\techai\route-rush-unreal\RouteRush.uproject")
+UE_CONTENT = Path(r"C:\Users\techai\route-rush-unreal\Content\BeastAssets")
 BRIDGE = ROOT / "bridge"
 NIM_SIZES = {"1:1": (1024, 1024), "16:9": (1344, 768), "9:16": (768, 1344),
              "4:3": (1152, 896), "3:4": (896, 1152)}
@@ -1024,11 +1025,16 @@ def to_ue(req: ToUEReq):
                             "-stdout", "-unattended", "-nopause", "-nosplash"],
                            capture_output=True, text=True, timeout=1800)
         m = re.search(r"BEAST_IMPORTED: \[(.*?)\]", u.stdout)
-        if not m or not m.group(1).strip():
+        asset = m.group(1).strip().strip("'\"") if m and m.group(1).strip() else ""
+        # UE can crash on shutdown AFTER writing the asset, garbling the stdout
+        # marker — trust the disk: the .uasset landing is the real success signal.
+        landed = (UE_CONTENT / f"{fbx.stem}.uasset")
+        if not asset and not landed.exists():
             _status(run_dir, phase="failed",
                     error=f"UE import produced no asset: {(u.stdout or u.stderr)[-250:]}")
             return
-        asset = m.group(1).strip().strip("'\"")
+        if not asset:
+            asset = f"/Game/BeastAssets/{fbx.stem}"
         _status(run_dir, phase="done", candidates=[
             {"i": 1, "state": "done", "fix": f"in RouteRush at {asset}"}],
             ue_asset=asset)
