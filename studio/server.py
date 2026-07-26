@@ -17,12 +17,18 @@ import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
+from typing import Literal
+
 import requests
 import uvicorn
-from fastapi import FastAPI
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi import FastAPI, Header
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+
+import jobs
+from jobs import (E_BACKEND_DOWN, E_CANCELLED, E_CENSORED, E_ENGINE,
+                  E_JUDGE_REJECTED, E_VALIDATION, JobCancelled)
 
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
@@ -60,6 +66,7 @@ app = FastAPI(title="Beast Studio")
 app.mount("/runs", StaticFiles(directory=RUNS), name="runs")
 app.mount("/uploads", StaticFiles(directory=UPLOADS), name="uploads")
 LOCK = threading.Lock()
+jobs.init()  # durable job store; recovers orphans from a previous process
 
 
 def friendly(err: str) -> str:
@@ -292,25 +299,49 @@ def _status(run_dir: Path, **updates):
         s = json.loads(f.read_text()) if f.exists() else {}
         s.update(updates)
         f.write_text(json.dumps(s, indent=1))
+    # mirror lifecycle into the durable job store
+    phase = updates.get("phase")
+    if phase:
+        jid = run_dir.name
+        if phase in ("generating", "grading"):
+            if jobs.get(jid) and jobs.get(jid)["phase"] == "queued":
+                jobs.set_phase(jid, "running")
+        elif phase == "done":
+            jobs.set_phase(jid, "done", result={k: v for k, v in s.items()
+                                                if k in ("final", "winner", "ue_asset",
+                                                         "video", "glb", "upscaled")})
+        elif phase == "failed":
+            code = s.get("error_code") or (
+                E_CENSORED if "blank frame" in (s.get("error") or "") else
+                E_JUDGE_REJECTED if "rejected by judge" in (s.get("error") or "") else
+                E_BACKEND_DOWN if "not answering" in (s.get("error") or "") else E_ENGINE)
+            jobs.set_phase(jid, "failed", s.get("error") or "unknown", code)
 
 
-def _new_run(brief: str, model: str, kind: str) -> Path:
-    import uuid
-    run_dir = RUNS / f"{time.strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:4]}"
-    run_dir.mkdir()
-    _status(run_dir, id=run_dir.name, brief=brief, model=model, kind=kind,
-            phase="queued")
-    return run_dir
+def _new_run(brief: str, model: str, kind: str, params: dict = None,
+             idem_key: str = None):
+    """Create a durable job + its artifact dir. Returns (run_dir, created)."""
+    jid, created = jobs.create(kind, model, brief, params or {}, idem_key)
+    run_dir = RUNS / jid
+    if created:
+        run_dir.mkdir(exist_ok=True)
+        _status(run_dir, id=jid, brief=brief, model=model, kind=kind, phase="queued")
+    return run_dir, created
 
 
 # ---------- create loop ----------
 
+MODEL_CHOICES = Literal["local:flux.1-schnell", "local:flux.2-klein",
+                        "nim:flux.1-schnell", "nim:flux.1-dev",
+                        "gpt_image_2", "nano_banana_2", "z_image"]
+
+
 class RunReq(BaseModel):
-    brief: str
-    prompt: str = ""            # expanded prompt; falls back to brief
-    variations: list[str] = []
-    model: str = "local:flux.1-schnell"  # default MUST be free/local
-    aspect_ratio: str = "1:1"
+    brief: str = Field(min_length=3, max_length=2000)
+    prompt: str = Field("", max_length=4000)  # expanded prompt; falls back to brief
+    variations: list[str] = Field(default=[], max_length=8)
+    model: MODEL_CHOICES = "local:flux.1-schnell"  # default MUST be free/local
+    aspect_ratio: Literal["1:1", "16:9", "9:16", "4:3", "3:4"] = "1:1"
     reference: str = ""         # filename in uploads/ — Higgsfield models only
 
 
@@ -352,6 +383,8 @@ def _generate_one_inner(cand: dict, run_dir: Path, i: int, prompt: str, req: Run
 def _run_loop(run_dir: Path, req: RunReq):
     try:
         _run_loop_inner(run_dir, req)
+    except JobCancelled:
+        _status(run_dir, phase="cancelled", error="cancelled by request")
     except Exception as e:  # noqa: BLE001 — a run must always reach a terminal phase
         _status(run_dir, phase="failed", error=f"{type(e).__name__}: {str(e)[:250]}")
 
@@ -363,6 +396,7 @@ def _run_loop_inner(run_dir: Path, req: RunReq):
             _status(run_dir, phase="failed",
                     error=f"{backend} would not start/warm — check Backends panel")
             return
+    jobs.checkpoint(run_dir.name)
     base = req.prompt.strip() or req.brief
     n = max(len(req.variations), 1) if req.variations else 4
     prompts = [f"{base}; {v}" if v else base for v in (req.variations or [""] * n)]
@@ -370,6 +404,7 @@ def _run_loop_inner(run_dir: Path, req: RunReq):
     with ThreadPoolExecutor(max_workers=4) as pool:
         cands = list(pool.map(lambda t: _generate_one(run_dir, t[0], t[1], req),
                               enumerate(prompts, 1)))
+    jobs.checkpoint(run_dir.name)
     done = [c for c in cands if c["state"] == "done" and not c.get("kill")
             and c.get("score", 0) > 3]
     if not done:
@@ -411,9 +446,19 @@ class UploadReq(BaseModel):
 @app.post("/api/upload")
 def upload(req: UploadReq):
     raw = base64.b64decode(req.data.split(",")[-1])
+    if len(raw) > 30 * 1024 * 1024:
+        return JSONResponse({"error": "upload exceeds 30MB limit",
+                             "code": E_VALIDATION}, 413)
     safe = re.sub(r"[^\w.\-]", "_", req.name) or "upload.png"
     fname = f"{time.strftime('%H%M%S')}_{safe}"
     (UPLOADS / fname).write_bytes(raw)
+    try:
+        from PIL import Image
+        Image.open(UPLOADS / fname).verify()
+    except Exception:  # noqa: BLE001
+        (UPLOADS / fname).unlink(missing_ok=True)
+        return JSONResponse({"error": "not a decodable image",
+                             "code": E_VALIDATION}, 422)
     return {"file": fname}
 
 
@@ -477,8 +522,11 @@ class RefineReq(BaseModel):
 def refine(req: RefineReq):
     src = _resolve(req.file)
     if not src or not src.exists():
-        return JSONResponse({"error": "file not found"}, 404)
-    run_dir = _new_run(req.instruction, "kontext-local", "refine")
+        return JSONResponse({"error": "file not found", "code": E_VALIDATION}, 404)
+    run_dir, created = _new_run(req.instruction, "kontext-local", "refine",
+                                req.model_dump())
+    if not created:
+        return {"id": run_dir.name, "idempotent_replay": True}
 
     def work():
         _status(run_dir, phase="generating", candidates=[])
@@ -586,9 +634,10 @@ def ltx_animate(src: Path, motion: str, out_mp4: Path, duration: int = 5) -> dic
 
 class AnimateReq(BaseModel):
     file: str
-    motion: str = "slow cinematic dolly-in, subtle ambient movement"
-    duration: int = 5
-    quality: str = "fast"  # fast = Wan 2.2 5B · cinema = LTX-2.3 22B with audio
+    motion: str = Field("slow cinematic dolly-in, subtle ambient movement",
+                        max_length=1000)
+    duration: Literal[3, 5] = 5
+    quality: Literal["fast", "cinema"] = "fast"
     allow_cloud_fallback: bool = False  # True = may spend Higgsfield credits
 
 
@@ -652,15 +701,19 @@ def animate(req: AnimateReq):
     if not src or not src.exists():
         return JSONResponse({"error": "file not found"}, 404)
     engine = "ltx-2.3-cinema" if req.quality == "cinema" else "wan2.2-local"
-    run_dir = _new_run(req.motion, engine, "animate")
+    run_dir, created = _new_run(req.motion, engine, "animate", req.model_dump())
+    if not created:
+        return {"id": run_dir.name, "idempotent_replay": True}
 
     def work():
         _status(run_dir, phase="generating", candidates=[
             {"i": 1, "state": f"{engine}: rendering (cinema ≈ 20-30 min, fast ≈ 2-4 min)"}])
-        if req.quality == "cinema":
-            r = ltx_animate(src, req.motion, run_dir / "clip.mp4", req.duration)
-        else:
-            r = wan_animate(src, req.motion, run_dir / "clip.mp4", req.duration)
+        with jobs.GPU_HEAVY:  # one heavy video/3D job at a time
+            jobs.checkpoint(run_dir.name)
+            if req.quality == "cinema":
+                r = ltx_animate(src, req.motion, run_dir / "clip.mp4", req.duration)
+            else:
+                r = wan_animate(src, req.motion, run_dir / "clip.mp4", req.duration)
         if "error" in r and req.allow_cloud_fallback:
             r = hf_generate("seedance_2_0", req.motion, run_dir / "clip.mp4",
                             ["--start-image", str(src), "--duration", str(req.duration)])
@@ -756,12 +809,17 @@ def to_3d(req: To3DReq):
     src = _resolve(req.file)
     if not src or not src.exists():
         return JSONResponse({"error": "file not found"}, 404)
-    run_dir = _new_run("image → 3D (TRELLIS)", "trellis", "3d")
+    run_dir, created = _new_run("image → 3D (TRELLIS)", "trellis", "3d",
+                                req.model_dump())
+    if not created:
+        return {"id": run_dir.name, "idempotent_replay": True}
 
     def work():
         _status(run_dir, phase="generating", candidates=[])
-        ensure_backend("nim-trellis", run_dir)
-        r = trellis_3d(src, run_dir / "model.glb", req.allow_hosted_fallback)
+        with jobs.GPU_HEAVY:
+            jobs.checkpoint(run_dir.name)
+            ensure_backend("nim-trellis", run_dir)
+            r = trellis_3d(src, run_dir / "model.glb", req.allow_hosted_fallback)
         if "error" in r:
             _status(run_dir, phase="failed", error=r["error"], candidates=[])
             return
@@ -811,7 +869,10 @@ def to_ue(req: ToUEReq):
         return JSONResponse({"error": "glb not found"}, 404)
     if not UE_CMD.exists():
         return JSONResponse({"error": "Unreal Engine not found at expected path"}, 500)
-    run_dir = _new_run(f"UE import: {src.name}", "ue-bridge", "unreal")
+    run_dir, created = _new_run(f"UE import: {src.name}", "ue-bridge", "unreal",
+                                req.model_dump())
+    if not created:
+        return {"id": run_dir.name, "idempotent_replay": True}
 
     def work():
         _status(run_dir, phase="generating", candidates=[
@@ -844,22 +905,101 @@ def to_ue(req: ToUEReq):
 
 
 @app.post("/api/run")
-def start_run(req: RunReq):
+def start_run(req: RunReq, idempotency_key: str = Header(None)):
     if req.reference and req.model.startswith(("local:", "nim:")):
         return JSONResponse({"error": "reference images are only supported by Higgsfield "
                              "models (nano_banana_2, gpt_image_2) — local FLUX would "
-                             "silently ignore it. Drop the reference or switch model."}, 400)
-    run_dir = _new_run(req.brief, req.model, "create")
-    threading.Thread(target=_run_loop, args=(run_dir, req), daemon=True).start()
-    return {"id": run_dir.name}
+                             "silently ignore it. Drop the reference or switch model.",
+                             "code": E_VALIDATION}, 400)
+    run_dir, created = _new_run(req.brief, req.model, "create",
+                                req.model_dump(), idempotency_key)
+    if created:
+        threading.Thread(target=_run_loop, args=(run_dir, req), daemon=True).start()
+    return {"id": run_dir.name, "idempotent_replay": not created}
 
 
 @app.get("/api/run/{run_id}")
 def run_status(run_id: str):
     f = RUNS / run_id / "status.json"
     if not f.exists():
+        j = jobs.get(run_id)
+        if j:
+            return {"id": run_id, "phase": j["phase"], "error": j["error"],
+                    "error_code": j["error_code"], "kind": j["kind"]}
         return JSONResponse({"error": "not found"}, status_code=404)
-    return json.loads(f.read_text())
+    s = json.loads(f.read_text())
+    j = jobs.get(run_id)
+    if j:
+        s["error_code"] = j["error_code"]
+        if j["phase"] == "cancelled":
+            s["phase"] = "cancelled"
+    return s
+
+
+@app.post("/api/job/{run_id}/cancel")
+def cancel_job(run_id: str):
+    if not jobs.get(run_id):
+        return JSONResponse({"error": "not found"}, 404)
+    ok = jobs.request_cancel(run_id)
+    # if a ComfyUI render is in flight, interrupt it too
+    try:
+        requests.post(f"http://localhost:{COMFY_PORT}/interrupt", timeout=3)
+    except Exception:  # noqa: BLE001
+        pass
+    return {"ok": ok, "note": "queued jobs cancel instantly; running jobs stop at "
+                              "their next stage checkpoint"}
+
+
+@app.post("/api/job/{run_id}/retry")
+def retry_job(run_id: str):
+    j = jobs.get(run_id)
+    if not j:
+        return JSONResponse({"error": "not found"}, 404)
+    if j["phase"] not in ("failed", "cancelled"):
+        return JSONResponse({"error": f"job is {j['phase']} — only failed/cancelled "
+                             "jobs can be retried", "code": E_VALIDATION}, 400)
+    dispatch = {"create": (start_run, RunReq), "refine": (refine, RefineReq),
+                "animate": (animate, AnimateReq), "3d": (to_3d, To3DReq),
+                "unreal": (to_ue, ToUEReq)}
+    if j["kind"] not in dispatch or not j["params"]:
+        return JSONResponse({"error": "job kind not retryable", "code": E_VALIDATION}, 400)
+    fn, model_cls = dispatch[j["kind"]]
+    try:
+        out = fn(model_cls(**j["params"])) if j["kind"] != "create" else fn(
+            model_cls(**j["params"]), None)
+    except Exception as e:  # noqa: BLE001
+        return JSONResponse({"error": f"retry failed: {str(e)[:200]}"}, 500)
+    return out
+
+
+@app.get("/api/health")
+def health():
+    db_ok = bool(jobs.recent(1) is not None)
+    import shutil as _sh
+    free_gb = _sh.disk_usage(str(RUNS)).free // 2**30
+    return {"ok": db_ok and free_gb > 5, "db": db_ok, "disk_free_gb": free_gb,
+            "active_jobs": [r["id"] for r in jobs.recent(50)
+                            if r["phase"] in ("queued", "running")]}
+
+
+@app.get("/api/events/{run_id}")
+def events(run_id: str):
+    """Server-sent events: one JSON event per phase change until terminal."""
+    def gen():
+        last = None
+        for _ in range(1800):  # cap at ~1 hour
+            f = RUNS / run_id / "status.json"
+            s = json.loads(f.read_text()) if f.exists() else {}
+            j = jobs.get(run_id) or {}
+            s["phase"] = "cancelled" if j.get("phase") == "cancelled" else s.get("phase")
+            snap = json.dumps(s)
+            if snap != last:
+                last = snap
+                yield f"data: {snap}\n\n"
+            if s.get("phase") in ("done", "failed", "cancelled"):
+                return
+            time.sleep(2)
+    return StreamingResponse(gen(), media_type="text/event-stream")
 
 
 @app.get("/api/runs")
