@@ -5,6 +5,8 @@ from pathlib import Path
 import pytest
 
 from provenance import artifact_record, write_manifest
+import jobs
+import server
 
 
 def test_manifest_records_checksum_and_replay_fields(tmp_path):
@@ -68,3 +70,48 @@ def test_atomic_rewrite_replaces_manifest_without_temp_files(tmp_path):
                    artifacts=["a.bin"], seed=2)
     assert json.loads((tmp_path / "manifest.json").read_text())["seed"] == 2
     assert not list(tmp_path.glob(".manifest.json.*.tmp"))
+
+
+def test_terminal_status_writes_artifact_manifest(tmp_path):
+    jid, _ = jobs.create("create", "local:flux.1-schnell", "a test",
+                         {"aspect_ratio": "1:1"})
+    run_dir = tmp_path / jid
+    run_dir.mkdir()
+    (run_dir / "final.png").write_bytes(b"final pixels")
+    # A fallback may truthfully update the live snapshot model while the
+    # immutable submission row retains the originally requested model.
+    server._status(run_dir, phase="generating", model="nano_banana_2")
+
+    server._status(
+        run_dir,
+        phase="done",
+        candidates=[{"i": 1, "state": "done", "file": "final.png",
+                     "seed": 42, "source": "local-nim:8018"}],
+        winner=1,
+        final="final.png",
+    )
+
+    manifest = json.loads((run_dir / "manifest.json").read_text(encoding="utf-8"))
+    assert manifest["run_id"] == jid
+    assert manifest["model"] == "nano_banana_2"
+    assert manifest["params"]["aspect_ratio"] == "1:1"
+    assert manifest["seed"] == {"1": 42}
+    assert manifest["outcome"] == {"phase": "done", "error": None, "trusted": True}
+    assert manifest["engine"]["candidates"][0]["source"] == "local-nim:8018"
+    assert manifest["artifacts"][0]["file"] == "final.png"
+    jobs._db().execute("DELETE FROM jobs WHERE id=?", (jid,))
+    jobs._db().commit()
+
+
+def test_manifest_export_failure_cannot_change_terminal_state(tmp_path, monkeypatch):
+    jid, _ = jobs.create("create", "local:flux.1-schnell", "a test", {})
+    run_dir = tmp_path / jid
+    run_dir.mkdir()
+    monkeypatch.setattr(server, "write_manifest",
+                        lambda *args, **kwargs: (_ for _ in ()).throw(OSError("disk")))
+
+    server._status(run_dir, phase="done", final="final.png")
+
+    assert jobs.get_status(jid)["phase"] == "done"
+    jobs._db().execute("DELETE FROM jobs WHERE id=?", (jid,))
+    jobs._db().commit()

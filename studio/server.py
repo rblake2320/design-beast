@@ -27,8 +27,10 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 import jobs
+from file_access import resolve_media
 from jobs import (E_BACKEND_DOWN, E_CANCELLED, E_CENSORED, E_ENGINE,
                   E_JUDGE_REJECTED, E_VALIDATION, JobCancelled, JobTimeout)
+from provenance import write_manifest
 
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
@@ -107,8 +109,9 @@ def _nim_invoke(url: str, payload: dict, headers: dict, timeout: int = 600) -> d
 def nim_flux(slug: str, prompt: str, out_file: Path, ar: str) -> dict:
     """Generate via hosted NVIDIA NIM (free with API key). slug: flux.1-schnell|flux.1-dev"""
     w, h = NIM_SIZES.get(ar, (1024, 1024))
+    seed = int(time.time()) % 100000
     payload = {"prompt": prompt, "width": w, "height": h,
-               "steps": 4 if "schnell" in slug else 40, "seed": int(time.time()) % 100000}
+               "steps": 4 if "schnell" in slug else 40, "seed": seed}
     if "dev" in slug:
         payload["cfg_scale"] = 3.5
     try:
@@ -119,7 +122,8 @@ def nim_flux(slug: str, prompt: str, out_file: Path, ar: str) -> dict:
         if not arts:
             return {"error": f"NIM returned no image: {str(out)[:200]}"}
         out_file.write_bytes(base64.b64decode(arts[0]["base64"]))
-        return {"file": out_file.name, "url": ""}
+        return {"file": out_file.name, "url": "", "seed": seed,
+                "source": f"nvidia-hosted:{slug}"}
     except requests.Timeout:
         return {"error": "NVIDIA hosted NIM timed out (trial queue is busy) — "
                          "try again, or use the local RTX NIM when it's running."}
@@ -132,9 +136,10 @@ def flux_local(prompt: str, out_file: Path, ar: str, port: int = 8018) -> dict:
     w, h = NIM_SIZES.get(ar, (1024, 1024))
     try:
         import random
+        seed = random.randrange(1, 2**31)
         out = _nim_invoke(f"http://localhost:{port}/v1/infer",
                           {"prompt": prompt, "width": w, "height": h,
-                           "steps": 4, "seed": random.randrange(1, 2**31)},
+                           "steps": 4, "seed": seed},
                           {"Accept": "application/json"}, timeout=600)
     except Exception as e:  # noqa: BLE001 — container down or busy
         return {"error": f"Local NIM not answering on :{port} — start it from the "
@@ -151,17 +156,19 @@ def flux_local(prompt: str, out_file: Path, ar: str, port: int = 8018) -> dict:
             img.convert("RGB").save(out_file, "PNG")
     except Exception:  # noqa: BLE001
         return {"error": "local NIM output was not a decodable image"}
-    return {"file": out_file.name, "url": ""}
+    return {"file": out_file.name, "url": "", "seed": seed,
+            "source": f"local-nim:{port}"}
 
 
 def kontext_local(image_path: Path, instruction: str, out_file: Path) -> dict:
     """Prompt-based image EDIT via local FLUX.1 Kontext NIM."""
     img_b64 = base64.b64encode(image_path.read_bytes()).decode()
     try:
+        seed = int(time.time()) % 100000
         out = _nim_invoke(KONTEXT_LOCAL,
                           {"prompt": instruction,
                            "image": f"data:image/png;base64,{img_b64}",
-                           "seed": int(time.time()) % 100000},
+                           "seed": seed},
                           {"Accept": "application/json"}, timeout=600)
     except Exception as e:  # noqa: BLE001 — container down
         return {"error": f"local Kontext not answering on :8019 ({str(e)[:120]})"}
@@ -169,7 +176,7 @@ def kontext_local(image_path: Path, instruction: str, out_file: Path) -> dict:
     if not arts:
         return {"error": f"Kontext returned no image: {str(out)[:200]}"}
     out_file.write_bytes(base64.b64decode(arts[0]["base64"]))
-    return {"file": out_file.name}
+    return {"file": out_file.name, "seed": seed, "source": "local-nim:kontext"}
 
 
 def _upscale_valid(src: Path, dst: Path) -> bool:
@@ -270,6 +277,7 @@ def comfy_flux_image(prompt: str, out_file: Path, ar: str) -> dict:
     C = f"http://localhost:{COMFY_PORT}"
     w, h = NIM_SIZES.get(ar, (1024, 1024))
     import random
+    seed = random.randrange(1, 2**31)
     g = {
         "1": {"class_type": "CheckpointLoaderSimple",
               "inputs": {"ckpt_name": "flux1-schnell-fp8.safetensors"}},
@@ -279,7 +287,7 @@ def comfy_flux_image(prompt: str, out_file: Path, ar: str) -> dict:
               "inputs": {"width": w, "height": h, "batch_size": 1}},
         "5": {"class_type": "KSampler", "inputs": {
             "model": ["1", 0], "positive": ["2", 0], "negative": ["3", 0],
-            "latent_image": ["4", 0], "seed": random.randrange(1, 2**31),
+            "latent_image": ["4", 0], "seed": seed,
             "steps": 4, "cfg": 1.0, "sampler_name": "euler",
             "scheduler": "simple", "denoise": 1.0}},
         "6": {"class_type": "VAEDecode", "inputs": {"samples": ["5", 0], "vae": ["1", 2]}},
@@ -304,7 +312,8 @@ def comfy_flux_image(prompt: str, out_file: Path, ar: str) -> dict:
                     produced = COMFY_DIR / "output" / img["subfolder"] / img["filename"]
                     from PIL import Image
                     Image.open(produced).convert("RGB").save(out_file, "PNG")
-                    return {"file": out_file.name, "url": ""}
+                    return {"file": out_file.name, "url": "", "seed": seed,
+                            "source": "comfyui:flux1-schnell-fp8"}
                 if pid in h_ and h_[pid]["status"].get("status_str") == "error":
                     # interrupted prompts also land as status_str='error' — the
                     # Beast cancel flag decides which one this really is
@@ -346,7 +355,7 @@ def trellis_3d(image_path: Path, out_glb: Path, allow_hosted: bool = False) -> d
     if not arts:
         return {"error": f"TRELLIS returned no mesh: {str(out)[:200]}"}
     out_glb.write_bytes(base64.b64decode(arts[0]["base64"]))
-    return {"file": out_glb.name, "source": src}
+    return {"file": out_glb.name, "source": src, "seed": payload["seed"]}
 
 
 def dead_frame(p: Path) -> bool:
@@ -422,6 +431,38 @@ def _status(run_dir: Path, **updates):
             (run_dir / "status.json").write_text(json.dumps(snap, indent=1))
     except OSError:
         pass  # export is best-effort; the DB already holds the truth
+    if updates.get("phase") in jobs.TERMINAL \
+            and snap.get("phase") == updates.get("phase"):
+        # Every artifact receives a local checksum-backed provenance record.
+        # Manifest failure never changes the already-committed job outcome.
+        try:
+            job = jobs.get(run_dir.name) or {}
+            artifacts = [
+                path.name for path in sorted(run_dir.iterdir())
+                if path.is_file() and path.name not in ("status.json", "manifest.json")
+                and path.suffix.lower() in (".png", ".jpg", ".jpeg", ".webp",
+                                            ".mp4", ".wav", ".glb", ".fbx")
+            ]
+            candidate_meta = [
+                {key: cand[key] for key in
+                 ("i", "seed", "source", "engine_note", "auto_improved")
+                 if key in cand}
+                for cand in snap.get("candidates", [])
+            ]
+            write_manifest(
+                run_dir, run_id=run_dir.name, kind=snap.get("kind") or
+                job.get("kind", "unknown"), model=snap.get("model") or
+                job.get("model", "unknown"), params=job.get("params") or {},
+                artifacts=artifacts,
+                engine={"server": "beast-studio", "candidates": candidate_meta},
+                seed={str(row["i"]): row["seed"] for row in candidate_meta
+                      if "i" in row and "seed" in row},
+                workflow=f"{job.get('kind') or snap.get('kind', 'unknown')}:v1",
+                outcome={"phase": snap.get("phase"), "error": snap.get("error"),
+                         "trusted": snap.get("phase") == "done"},
+            )
+        except Exception:  # noqa: BLE001 — provenance is best-effort after outcome
+            pass
 
 
 def _new_run(brief: str, model: str, kind: str, params: dict = None,
@@ -501,12 +542,17 @@ def _generate_one_inner(cand: dict, run_dir: Path, i: int, prompt: str, req: Run
         if req.model.startswith("local:"):
             backend, port = LOCAL_IMAGE_MODELS.get(req.model, ("nim-flux", 8018))
             r2 = flux_local(prompt, run_dir / f"cand{i}.png", req.aspect_ratio, port)
-            if "error" in r2 or dead_frame(run_dir / f"cand{i}.png"):
+            if "error" not in r2 and not dead_frame(run_dir / f"cand{i}.png"):
+                cand.update({key: r2[key] for key in ("seed", "source")
+                             if key in r2})
+            else:
                 alt = ("nim-flux2", 8020) if backend == "nim-flux" else ("nim-flux", 8018)
                 if ensure_backend(alt[0]):
                     r3 = flux_local(prompt, run_dir / f"cand{i}.png",
                                     req.aspect_ratio, alt[1])
                     if "error" not in r3 and not dead_frame(run_dir / f"cand{i}.png"):
+                        cand.update({key: r3[key] for key in ("seed", "source")
+                                     if key in r3})
                         cand["engine_note"] = f"blank on {backend}, rescued by {alt[0]}"
         if dead_frame(run_dir / r["file"]):
             cand.update(state="done", score=0, kill=True, fix=DEAD_FRAME_MSG)
@@ -601,7 +647,8 @@ def _run_loop_inner(run_dir: Path, req: RunReq):
                 v = safe_judge(improved, brief)
                 new = {"i": 90 + it, "state": "done", "file": improved.name,
                        "score": v.get("score", 0), "kill": v.get("kill", False),
-                       "fix": v.get("fix", ""), "auto_improved": True}
+                       "fix": v.get("fix", ""), "auto_improved": True,
+                       **{key: r[key] for key in ("seed", "source") if key in r}}
                 cands.append(new)
                 if not new["kill"] and new["score"] > winner["score"]:
                     winner = new
@@ -698,8 +745,7 @@ class JudgeReq(BaseModel):
 
 
 def _resolve(f: str) -> Path:
-    p = (ROOT / f) if "/" in f else (UPLOADS / f)
-    return p if p.resolve().is_relative_to(ROOT) else None
+    return resolve_media(f, UPLOADS, RUNS)
 
 
 @app.post("/api/judge")
@@ -759,7 +805,8 @@ def refine(req: RefineReq):
         v = safe_judge(run_dir / "cand1.png", req.brief or req.instruction)
         cand = {"i": 1, "state": "done", "file": "cand1.png",
                 "score": v.get("score", 0), "kill": v.get("kill", False),
-                "fix": v.get("fix", "")}
+                "fix": v.get("fix", ""),
+                **{key: r[key] for key in ("seed", "source") if key in r}}
         if v.get("kill") or v.get("score", 0) <= 3:
             _status(run_dir, phase="failed", candidates=[cand],
                     error=f"refine output rejected by judge ({v.get('score')}/10): "
@@ -784,6 +831,7 @@ def ltx_animate(src: Path, motion: str, out_mp4: Path, duration: int = 5) -> dic
                                files={"image": (src.name, f, "image/png")},
                                timeout=60).json()
         ck = "ltx-2.3-22b-dev-nvfp4.safetensors"
+        seed = int(time.time()) % 100000
         g = {
             "1": {"class_type": "CheckpointLoaderSimple", "inputs": {"ckpt_name": ck}},
             "2": {"class_type": "LTXAVTextEncoderLoader", "inputs": {
@@ -812,7 +860,7 @@ def ltx_animate(src: Path, motion: str, out_mp4: Path, duration: int = 5) -> dic
                 "video_latent": ["7", 2], "audio_latent": ["15", 0]}},
             "10": {"class_type": "SamplerCustom", "inputs": {
                 "model": ["1", 0], "add_noise": True,
-                "noise_seed": int(time.time()) % 100000, "cfg": 3.5,
+                "noise_seed": seed, "cfg": 3.5,
                 "positive": ["7", 0], "negative": ["7", 1], "sampler": ["8", 0],
                 "sigmas": ["9", 0], "latent_image": ["16", 0]}},
             "17": {"class_type": "LTXVSeparateAVLatent", "inputs": {"av_latent": ["10", 0]}},
@@ -841,7 +889,8 @@ def ltx_animate(src: Path, motion: str, out_mp4: Path, duration: int = 5) -> dic
                     img = h[pid]["outputs"]["13"]["images"][0]
                     shutil.copy2(COMFY_DIR / "output" / img["subfolder"] / img["filename"],
                                  out_mp4)
-                    return {"file": out_mp4.name}
+                    return {"file": out_mp4.name, "seed": seed,
+                            "source": "comfyui:ltx-2.3"}
                 if pid in h and h[pid]["status"].get("status_str") == "error":
                     if jobs.cancelled(run_id):
                         return {"error": "cancelled by request", "cancelled": True}
@@ -870,6 +919,7 @@ def wan_animate(src: Path, motion: str, out_mp4: Path, duration: int = 5) -> dic
             up = requests.post(f"{C}/upload/image",
                                files={"image": (src.name, f, "image/png")},
                                timeout=60).json()
+        seed = int(time.time()) % 100000
         g = {
             "1": {"class_type": "UNETLoader", "inputs": {
                 "unet_name": "wan2.2_ti2v_5B_fp16.safetensors", "weight_dtype": "default"}},
@@ -889,7 +939,7 @@ def wan_animate(src: Path, motion: str, out_mp4: Path, duration: int = 5) -> dic
                 "batch_size": 1, "start_image": ["6", 0]}},
             "8": {"class_type": "KSampler", "inputs": {
                 "model": ["1", 0], "positive": ["4", 0], "negative": ["5", 0],
-                "latent_image": ["7", 0], "seed": int(time.time()) % 100000,
+                "latent_image": ["7", 0], "seed": seed,
                 "steps": 20, "cfg": 5.0, "sampler_name": "uni_pc",
                 "scheduler": "simple", "denoise": 1.0}},
             "9": {"class_type": "VAEDecode", "inputs": {"samples": ["8", 0], "vae": ["3", 0]}},
@@ -914,7 +964,8 @@ def wan_animate(src: Path, motion: str, out_mp4: Path, duration: int = 5) -> dic
                     img = h[pid]["outputs"]["11"]["images"][0]
                     produced = (COMFY_DIR / "output" / img["subfolder"] / img["filename"])
                     shutil.copy2(produced, out_mp4)
-                    return {"file": out_mp4.name}
+                    return {"file": out_mp4.name, "seed": seed,
+                            "source": "comfyui:wan2.2"}
                 if pid in h and h[pid]["status"].get("status_str") == "error":
                     if jobs.cancelled(run_id):
                         return {"error": "cancelled by request", "cancelled": True}
@@ -971,7 +1022,8 @@ def animate(req: AnimateReq):
             _status(run_dir, phase="failed", error=r["error"], candidates=[])
             return
         _status(run_dir, phase="done", candidates=[
-            {"i": 1, "state": "done", "file": "clip.mp4", "video": True}],
+            {"i": 1, "state": "done", "file": "clip.mp4", "video": True,
+             **{key: r[key] for key in ("seed", "source") if key in r}}],
             final="clip.mp4", video=True)
 
     threading.Thread(target=work, daemon=True).start()

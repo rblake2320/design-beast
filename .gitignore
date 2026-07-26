@@ -15,6 +15,7 @@ locks/
 /results/
 events.jsonl
 .pytest-temp/
+.pytest_cache/
 *.pyc
 .env
 *.env

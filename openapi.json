@@ -1,0 +1,926 @@
+{
+  "components": {
+    "schemas": {
+      "AnimateReq": {
+        "properties": {
+          "allow_cloud_fallback": {
+            "default": false,
+            "title": "Allow Cloud Fallback",
+            "type": "boolean"
+          },
+          "duration": {
+            "default": 5,
+            "enum": [
+              3,
+              5
+            ],
+            "title": "Duration",
+            "type": "integer"
+          },
+          "file": {
+            "title": "File",
+            "type": "string"
+          },
+          "motion": {
+            "default": "slow cinematic dolly-in, subtle ambient movement",
+            "maxLength": 1000,
+            "title": "Motion",
+            "type": "string"
+          },
+          "quality": {
+            "default": "fast",
+            "enum": [
+              "fast",
+              "cinema"
+            ],
+            "title": "Quality",
+            "type": "string"
+          }
+        },
+        "required": [
+          "file"
+        ],
+        "title": "AnimateReq",
+        "type": "object"
+      },
+      "BackendReq": {
+        "properties": {
+          "action": {
+            "title": "Action",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "action"
+        ],
+        "title": "BackendReq",
+        "type": "object"
+      },
+      "ExpandReq": {
+        "properties": {
+          "brief": {
+            "title": "Brief",
+            "type": "string"
+          },
+          "recipe": {
+            "default": "cinematic-scene",
+            "title": "Recipe",
+            "type": "string"
+          }
+        },
+        "required": [
+          "brief"
+        ],
+        "title": "ExpandReq",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "JudgeReq": {
+        "properties": {
+          "brief": {
+            "title": "Brief",
+            "type": "string"
+          },
+          "file": {
+            "title": "File",
+            "type": "string"
+          }
+        },
+        "required": [
+          "file",
+          "brief"
+        ],
+        "title": "JudgeReq",
+        "type": "object"
+      },
+      "RefineReq": {
+        "properties": {
+          "allow_cloud_fallback": {
+            "default": false,
+            "title": "Allow Cloud Fallback",
+            "type": "boolean"
+          },
+          "brief": {
+            "default": "",
+            "title": "Brief",
+            "type": "string"
+          },
+          "file": {
+            "title": "File",
+            "type": "string"
+          },
+          "instruction": {
+            "title": "Instruction",
+            "type": "string"
+          }
+        },
+        "required": [
+          "file",
+          "instruction"
+        ],
+        "title": "RefineReq",
+        "type": "object"
+      },
+      "RunReq": {
+        "properties": {
+          "aspect_ratio": {
+            "default": "1:1",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "title": "Aspect Ratio",
+            "type": "string"
+          },
+          "brief": {
+            "maxLength": 2000,
+            "minLength": 3,
+            "title": "Brief",
+            "type": "string"
+          },
+          "model": {
+            "default": "local:flux.1-schnell",
+            "enum": [
+              "local:flux.1-schnell",
+              "local:flux.2-klein",
+              "comfy:flux.1-schnell",
+              "nim:flux.1-schnell",
+              "nim:flux.1-dev",
+              "gpt_image_2",
+              "nano_banana_2",
+              "z_image"
+            ],
+            "title": "Model",
+            "type": "string"
+          },
+          "prompt": {
+            "default": "",
+            "maxLength": 4000,
+            "title": "Prompt",
+            "type": "string"
+          },
+          "reference": {
+            "default": "",
+            "title": "Reference",
+            "type": "string"
+          },
+          "variations": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 8,
+            "title": "Variations",
+            "type": "array"
+          }
+        },
+        "required": [
+          "brief"
+        ],
+        "title": "RunReq",
+        "type": "object"
+      },
+      "To3DReq": {
+        "properties": {
+          "allow_hosted_fallback": {
+            "default": false,
+            "title": "Allow Hosted Fallback",
+            "type": "boolean"
+          },
+          "file": {
+            "title": "File",
+            "type": "string"
+          }
+        },
+        "required": [
+          "file"
+        ],
+        "title": "To3DReq",
+        "type": "object"
+      },
+      "ToUEReq": {
+        "properties": {
+          "file": {
+            "title": "File",
+            "type": "string"
+          }
+        },
+        "required": [
+          "file"
+        ],
+        "title": "ToUEReq",
+        "type": "object"
+      },
+      "TtsReq": {
+        "properties": {
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "voice": {
+            "default": "af_heart",
+            "title": "Voice",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "title": "TtsReq",
+        "type": "object"
+      },
+      "UploadReq": {
+        "properties": {
+          "data": {
+            "title": "Data",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "data"
+        ],
+        "title": "UploadReq",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Local AI production API for Beast Studio (127.0.0.1:8787, this machine only). Contract generated from the live FastAPI app \u2014 see AGENT_ACCESS.md for operational rules (credit/privacy defaults, backend-sharing etiquette) that this schema does not itself encode. Sync endpoints return results directly; async endpoints return {id} and are polled via GET /api/run/{run_id} or streamed via GET /api/events/{run_id} (SSE).",
+    "title": "Beast Studio API",
+    "version": "1.0.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "index__get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Index"
+      }
+    },
+    "/api/animate": {
+      "post": {
+        "operationId": "animate_api_animate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnimateReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Animate"
+      }
+    },
+    "/api/backend": {
+      "post": {
+        "operationId": "backend_api_backend_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BackendReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Backend"
+      }
+    },
+    "/api/backends": {
+      "get": {
+        "operationId": "backends_api_backends_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Backends"
+      }
+    },
+    "/api/events/{run_id}": {
+      "get": {
+        "description": "Server-sent events: one JSON event per phase change until terminal.",
+        "operationId": "events_api_events__run_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Events"
+      }
+    },
+    "/api/expand": {
+      "post": {
+        "operationId": "expand_api_expand_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExpandReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Expand"
+      }
+    },
+    "/api/health": {
+      "get": {
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health"
+      }
+    },
+    "/api/job/{run_id}/cancel": {
+      "post": {
+        "operationId": "cancel_job_api_job__run_id__cancel_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Cancel Job"
+      }
+    },
+    "/api/job/{run_id}/retry": {
+      "post": {
+        "operationId": "retry_job_api_job__run_id__retry_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Retry Job"
+      }
+    },
+    "/api/judge": {
+      "post": {
+        "operationId": "judge_only_api_judge_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JudgeReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Judge Only"
+      }
+    },
+    "/api/recipes": {
+      "get": {
+        "operationId": "recipes_api_recipes_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Recipes"
+      }
+    },
+    "/api/refine": {
+      "post": {
+        "operationId": "refine_api_refine_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefineReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Refine"
+      }
+    },
+    "/api/run": {
+      "post": {
+        "operationId": "start_run_api_run_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": false,
+            "schema": {
+              "title": "Idempotency-Key",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Start Run"
+      }
+    },
+    "/api/run/{run_id}": {
+      "get": {
+        "operationId": "run_status_api_run__run_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Run Status"
+      }
+    },
+    "/api/runs": {
+      "get": {
+        "operationId": "list_runs_api_runs_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Runs"
+      }
+    },
+    "/api/to3d": {
+      "post": {
+        "operationId": "to_3d_api_to3d_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/To3DReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "To 3D"
+      }
+    },
+    "/api/to_ue": {
+      "post": {
+        "operationId": "to_ue_api_to_ue_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ToUEReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "To Ue"
+      }
+    },
+    "/api/tts": {
+      "post": {
+        "operationId": "tts_api_tts_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TtsReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Tts"
+      }
+    },
+    "/api/upload": {
+      "post": {
+        "operationId": "upload_api_upload_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Upload"
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "local Beast Studio server",
+      "url": "http://127.0.0.1:8787"
+    }
+  ]
+}

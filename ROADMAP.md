@@ -41,9 +41,12 @@ Nothing below may be promoted to `[x]` without naming the verification.
 - [~] Automated API + pipeline tests; health/readiness endpoint — PARTIAL:
       health endpoint + API tests (validation/idempotency/cancel/retry) exist and
       require a live server; there are no pipeline/generation tests and no CI.
-- [ ] Full provenance per artifact: model, version, seed, params, workflow — NOT
-      built. Model name is recorded; seeds are generated per-call and thrown away;
-      no version/params/workflow manifest accompanies any artifact.
+- [~] Full provenance per artifact: model, version, seed, params, workflow —
+      PARTIAL: every terminal run writes an atomic `manifest.json` with artifact
+      SHA-256/size/type, request params, workflow identifier, model/source and
+      retained local seeds (covered by `studio/tests/test_provenance.py`).
+      Immutable backend container/model digests and exact ComfyUI graph hashes
+      are not yet captured, so exact replay is not claimed.
 - [x] `execution policy`: cloud/hosted fallback opt-in only (done 2026-07-25 —
       `allow_cloud_fallback`, `allow_hosted_fallback`, truthful refine provenance)
 
@@ -76,10 +79,18 @@ Nothing below may be promoted to `[x]` without naming the verification.
 - [ ] UE import validation: naming, collision, LODs, materials
 
 ## P4 — Agent-native leadership
-- [ ] OpenAPI contract in repo; generated Python/TS SDKs
+- [~] Versioned OpenAPI contract in repo plus Python and TypeScript SDKs
+      covering all 19 API paths, including SSE/polling wait helpers and safe
+      false defaults for credit/privacy fallbacks; endpoint/request drift and
+      coverage are enforced by `scripts/generate_openapi.py --check`, 25 Python
+      SDK tests, and 20 TypeScript SDK tests. PARTIAL: server response models
+      are not declared, so OpenAPI response schemas are empty and SDK response
+      types remain hand-maintained rather than generated.
 - [ ] Native MCP server; capability-discovery endpoint
 - [ ] Per-request budget + privacy policy; agent leases for shared backends
-- [ ] Event subscriptions; multi-stage pipeline endpoint; artifact manifests w/ checksums
+- [~] Event subscriptions; multi-stage pipeline endpoint; artifact manifests
+      with checksums — PARTIAL: SSE subscriptions and checksum-backed manifests
+      exist; no declarative multi-stage pipeline endpoint yet.
 
 ## Known gaps vs competitors (reference)
 ComfyUI: composable graphs, queue/interrupt/history, ecosystem. InvokeAI: canvas

@@ -63,8 +63,9 @@ def write_manifest(
     params: dict[str, Any] | None = None,
     artifacts: list[str | Path] | None = None,
     engine: dict[str, Any] | None = None,
-    seed: int | None = None,
+    seed: Any | None = None,
     workflow: str | None = None,
+    outcome: dict[str, Any] | None = None,
 ) -> Path:
     """Atomically write a redacted, checksum-backed provenance manifest."""
     run_dir.mkdir(parents=True, exist_ok=True)
@@ -78,6 +79,7 @@ def write_manifest(
         "engine": _redact(engine or {}),
         "seed": seed,
         "workflow": workflow,
+        "outcome": _redact(outcome or {}),
         "params": _redact(params or {}),
         "artifacts": records,
     }
