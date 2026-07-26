@@ -205,9 +205,14 @@ def upscale(src: Path, dst: Path) -> bool:
         except Exception:  # noqa: BLE001 — timeout/VRAM contention → Lanczos fallback
             pass
         dst.unlink(missing_ok=True)
-    subprocess.run([shutil.which("magick") or "magick", str(src),
-                    "-filter", "Lanczos", "-resize", "200%", str(dst)],
-                   capture_output=True, timeout=120)
+    magick = shutil.which("magick") or shutil.which("convert")
+    if not magick:
+        return False  # no upscaler on this node — winner ships at native res
+    try:
+        subprocess.run([magick, str(src), "-filter", "Lanczos", "-resize", "200%",
+                        str(dst)], capture_output=True, timeout=120)
+    except Exception:  # noqa: BLE001
+        return False
     return dst.exists()
 
 
@@ -386,9 +391,19 @@ def safe_judge(img: Path, brief: str) -> dict:
 
 
 def grade(src: Path, dst: Path):
-    subprocess.run([shutil.which("magick") or "magick", str(src),
-                    "-modulate", "100,93", "-level", "1%,99.5%", str(dst)],
-                   capture_output=True, timeout=120)
+    """Final color grade. Degrades to a plain copy on nodes without
+    ImageMagick — a missing polish step must never fail a successful run."""
+    magick = shutil.which("magick") or shutil.which("convert")
+    if magick:
+        try:
+            subprocess.run([magick, str(src), "-modulate", "100,93",
+                            "-level", "1%,99.5%", str(dst)],
+                           capture_output=True, timeout=120)
+            if dst.exists():
+                return
+        except Exception:  # noqa: BLE001 — fall through to copy
+            pass
+    shutil.copy2(src, dst)
 
 
 def ollama_json(model: str, prompt: str, timeout: int = 240) -> dict:
