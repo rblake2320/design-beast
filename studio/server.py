@@ -41,20 +41,22 @@ UPLOADS.mkdir(exist_ok=True)
 sys.path.insert(0, str(REPO / "scripts"))
 from judge_image import judge  # noqa: E402
 
-OLLAMA = "http://localhost:11434/api/generate"
+import config as _cfg_early  # noqa: E402 — needed before constant block below
+OLLAMA = _cfg_early.get("ollama_url")
 TRELLIS_LOCAL = "http://localhost:8017/v1/infer"   # docker -p 8017:8000
 FLUX_LOCAL = "http://localhost:8018/v1/infer"      # docker -p 8018:8000
 BACKENDS = {"nim-trellis": 8017, "nim-flux": 8018, "nim-kontext": 8019, "nim-flux2": 8020}
 LOCAL_IMAGE_MODELS = {"local:flux.1-schnell": ("nim-flux", 8018),
                       "local:flux.2-klein": ("nim-flux2", 8020)}
 KONTEXT_LOCAL = "http://localhost:8019/v1/infer"
-ESRGAN = Path(r"D:\ai\tools\realesrgan\realesrgan-ncnn-vulkan.exe")
-KOKORO_DIR = Path(r"D:\ai\tools\kokoro")
+import config
+ESRGAN = config.path("esrgan")
+KOKORO_DIR = config.path("kokoro_dir")
 _kokoro = None
-BLENDER = Path(r"C:\Program Files\Blender Foundation\Blender 5.1\blender.exe")
-UE_CMD = Path(r"D:\Epic Games\UE_5.6\Engine\Binaries\Win64\UnrealEditor-Cmd.exe")
-UE_PROJECT = Path(r"C:\Users\techai\route-rush-unreal\RouteRush.uproject")
-UE_CONTENT = Path(r"C:\Users\techai\route-rush-unreal\Content\BeastAssets")
+BLENDER = config.path("blender")
+UE_CMD = config.path("ue_cmd")
+UE_PROJECT = config.path("ue_project")
+UE_CONTENT = config.path("ue_content")
 BRIDGE = ROOT / "bridge"
 NIM_SIZES = {"1:1": (1024, 1024), "16:9": (1344, 768), "9:16": (768, 1344),
              "4:3": (1152, 896), "3:4": (896, 1152)}
@@ -212,10 +214,13 @@ def upscale(src: Path, dst: Path) -> bool:
 def ensure_comfy(timeout_s: int = 120) -> bool:
     if _port_pid(COMFY_PORT):
         return True
-    subprocess.Popen([str(COMFY_DIR / "venv/Scripts/python.exe"), "main.py",
+    if not COMFY_DIR.exists():
+        return False  # ComfyUI not installed on this node
+    flags = 0x00000008 if sys.platform == "win32" else 0  # DETACHED_PROCESS
+    subprocess.Popen([str(COMFY_DIR / config.get("comfy_python")), "main.py",
                       "--port", str(COMFY_PORT)], cwd=COMFY_DIR,
                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-                     creationflags=0x00000008)
+                     creationflags=flags)
     t0 = time.time()
     while time.time() - t0 < timeout_s:
         try:
@@ -375,9 +380,9 @@ DEAD_FRAME_MSG = ("output was a blank frame — this is usually NVIDIA's built-i
 
 def safe_judge(img: Path, brief: str) -> dict:
     try:
-        return judge(str(img), brief, "qwen3-vl:8b")
+        return judge(str(img), brief, config.get("judge_model"))
     except Exception:  # noqa: BLE001 — one retry covers vision-model cold load
-        return judge(str(img), brief, "qwen3-vl:8b")
+        return judge(str(img), brief, config.get("judge_model"))
 
 
 def grade(src: Path, dst: Path):
@@ -728,7 +733,7 @@ Reply ONLY JSON: {{"prompt": "<one structured prompt: subject with 2-3 concrete 
 composition/lens, lighting with direction, mood/grade palette, style anchor, negatives —
 under 90 words>", "axis": "<the ONE axis the variations change>",
 "variations": ["<v1>","<v2>","<v3>","<v4>"]}}"""
-    for model in ("qwen3.6:27b", "gemma3:latest"):
+    for model in config.get("expand_models").split(","):
         try:
             out = ollama_json(model, p)
             if out.get("prompt"):
@@ -1030,14 +1035,19 @@ def animate(req: AnimateReq):
     return {"id": run_dir.name}
 
 
-COMFY_DIR = Path(r"D:\ai\comfyui")
+COMFY_DIR = config.path("comfy_dir")
 COMFY_PORT = 8188
-UE58_EXE = Path(r"D:\DEpic GamesUE_5.8\UE_5.8\Engine\Binaries\Win64\UnrealEditor.exe")
-BEASTLAB = r"D:\Epic Games\Projects\BeastLab\BeastLab.uproject"
+UE58_EXE = config.path("ue58_exe")
+BEASTLAB = config.get("beastlab")
 UE_MCP_PORT = 8000
 
 
 def _port_pid(port: int):
+    if sys.platform != "win32":
+        r = subprocess.run(["lsof", "-t", f"-iTCP:{port}", "-sTCP:LISTEN"],
+                           capture_output=True, text=True, timeout=30)
+        pids = r.stdout.split()
+        return int(pids[0]) if pids else None
     out = subprocess.run(["netstat", "-ano"], capture_output=True, text=True,
                          timeout=30).stdout
     for line in out.splitlines():
@@ -1102,8 +1112,9 @@ def backend(req: BackendReq):
                              stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
                              creationflags=0x00000008)
         elif req.action == "stop" and pid:
-            subprocess.run(["taskkill", "/F", "/PID", str(pid)], capture_output=True,
-                           timeout=30)
+            subprocess.run((["taskkill", "/F", "/PID", str(pid)]
+                            if sys.platform == "win32" else ["kill", "-9", str(pid)]),
+                           capture_output=True, timeout=30)
         return {"ok": True,
                 "note": "engine boots ~1-2 min" if req.action == "start" else ""}
     if req.name == "comfyui":
@@ -1114,8 +1125,9 @@ def backend(req: BackendReq):
                              stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
                              creationflags=0x00000008)  # DETACHED_PROCESS
         elif req.action == "stop" and pid:
-            subprocess.run(["taskkill", "/F", "/PID", str(pid)], capture_output=True,
-                           timeout=30)
+            subprocess.run((["taskkill", "/F", "/PID", str(pid)]
+                            if sys.platform == "win32" else ["kill", "-9", str(pid)]),
+                           capture_output=True, timeout=30)
         return {"ok": True, "note": "loads models on demand" if req.action == "start" else ""}
     if req.name not in BACKENDS:
         return JSONResponse({"error": "unknown backend"}, 400)
