@@ -220,6 +220,21 @@ def trellis_3d(image_path: Path, out_glb: Path) -> dict:
     return {"file": out_glb.name, "source": src}
 
 
+def dead_frame(p: Path) -> bool:
+    """Near-uniform frame (black/white) — dead output, usually the NIM safety
+    filter censoring a result by blanking it."""
+    from PIL import Image, ImageStat
+    try:
+        return ImageStat.Stat(Image.open(p).convert("L")).stddev[0] < 3.0
+    except Exception:  # noqa: BLE001
+        return True
+
+
+DEAD_FRAME_MSG = ("output was a blank frame — this is usually NVIDIA's built-in "
+                  "content-safety filter censoring the result (dark/occult/violent "
+                  "imagery trips it). Try a tamer source image or rephrase.")
+
+
 def safe_judge(img: Path, brief: str) -> dict:
     try:
         return judge(str(img), brief, "qwen3-vl:8b")
@@ -319,6 +334,9 @@ def _generate_one_inner(cand: dict, run_dir: Path, i: int, prompt: str, req: Run
         cand.update(state="failed", error=r["error"])
         return cand
     cand.update(state="judging", **r)
+    if dead_frame(run_dir / r["file"]):
+        cand.update(state="done", score=0, kill=True, fix=DEAD_FRAME_MSG)
+        return cand
     v = safe_judge(run_dir / r["file"], json.loads((run_dir / "status.json").read_text())["brief"])
     cand.update(state="done", score=v.get("score", 0), kill=v.get("kill", False),
                 fix=v.get("fix", ""))
@@ -464,9 +482,19 @@ def refine(req: RefineReq):
         if "error" in r:
             _status(run_dir, phase="failed", error=r["error"], candidates=[])
             return
+        if dead_frame(run_dir / "cand1.png"):
+            _status(run_dir, phase="failed", error=f"refine {DEAD_FRAME_MSG}",
+                    candidates=[])
+            return
         v = safe_judge(run_dir / "cand1.png", req.brief or req.instruction)
         cand = {"i": 1, "state": "done", "file": "cand1.png",
-                "score": v.get("score", 0), "fix": v.get("fix", "")}
+                "score": v.get("score", 0), "kill": v.get("kill", False),
+                "fix": v.get("fix", "")}
+        if v.get("kill") or v.get("score", 0) <= 3:
+            _status(run_dir, phase="failed", candidates=[cand],
+                    error=f"refine output rejected by judge ({v.get('score')}/10): "
+                          f"{v.get('fix','')}")
+            return
         final = run_dir / "final.png"
         grade(run_dir / "cand1.png", final)
         _status(run_dir, phase="done", candidates=[cand], winner=1,
