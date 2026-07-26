@@ -62,6 +62,7 @@ mkdir -p "$HOME/beast/nim-cache"
 chmod 700 "$HOME/beast"
 chmod 600 "$CREDS_FILE" 2>/dev/null || true
 echo "$NGC_API_KEY" | docker login nvcr.io --username '$oauthtoken' --password-stdin
+trap 'docker logout nvcr.io >/dev/null 2>&1 || true' EXIT
 for pair in "nim-flux:8018:nvcr.io/nim/black-forest-labs/flux.1-schnell@sha256:6edcdd428fd524dde76090f3a0797ae76e0b593d5445702e2eaf9bc20c375042" \
             "nim-kontext:8019:nvcr.io/nim/black-forest-labs/flux.1-kontext-dev:latest"; do
   name="${pair%%:*}"; rest="${pair#*:}"; port="${rest%%:*}"; img="${rest#*:}"
@@ -69,9 +70,11 @@ for pair in "nim-flux:8018:nvcr.io/nim/black-forest-labs/flux.1-schnell@sha256:6
   docker container inspect "$name" >/dev/null 2>&1 || docker create --name "$name" \
     --restart unless-stopped --gpus all --ipc=host --shm-size=8g \
     -e NGC_API_KEY="$NGC_API_KEY" -e HF_TOKEN="$HF_TOKEN" \
-    -p "$port":8000 -v ~/beast/nim-cache:/opt/nim/.cache/ "$img"
+    -p "127.0.0.1:$port":8000 -v ~/beast/nim-cache:/opt/nim/.cache/ "$img"
   docker update --restart unless-stopped "$name" >/dev/null
 done
+docker logout nvcr.io >/dev/null
+trap - EXIT
 echo "created (not started) — start from the Studio Backends panel or: docker start nim-flux"
 
 echo "== [7/7] durable user service =="
