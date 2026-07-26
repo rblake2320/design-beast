@@ -398,9 +398,12 @@ $('brefine').onclick = async () => {
 };
 $('banimate').onclick = async () => {
   if (needImage()) return;
-  const motion = prompt('Motion prompt:', 'slow cinematic dolly-in, subtle ambient movement');
+  const motion = prompt('Motion prompt (describe movement + sounds for cinema):',
+                        'slow cinematic dolly-in, subtle ambient movement');
   if (!motion) return;
-  const j = await api('/api/animate', { file: upload, motion, duration: 5 });
+  const cinema = confirm('CINEMA tier? OK = LTX-2.3 22B with generated AUDIO (~20-30 min). Cancel = fast Wan (~2-4 min, silent).');
+  const j = await api('/api/animate', { file: upload, motion, duration: 5,
+                                        quality: cinema ? 'cinema' : 'fast' });
   if (j) watch(j.id);
 };
 $('b3d').onclick = async () => {

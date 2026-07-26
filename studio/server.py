@@ -476,10 +476,80 @@ def refine(req: RefineReq):
     return {"id": run_dir.name}
 
 
+def ltx_animate(src: Path, motion: str, out_mp4: Path, duration: int = 5) -> dict:
+    """Image → cinema video WITH generated audio via LTX-2.3 22B nvfp4 (local ComfyUI)."""
+    C = f"http://localhost:{COMFY_PORT}"
+    frames = min(241, max(25, (int(duration) * 24 // 8) * 8 + 1))
+    try:
+        with open(src, "rb") as f:
+            up = requests.post(f"{C}/upload/image",
+                               files={"image": (src.name, f, "image/png")},
+                               timeout=60).json()
+        ck = "ltx-2.3-22b-dev-nvfp4.safetensors"
+        g = {
+            "1": {"class_type": "CheckpointLoaderSimple", "inputs": {"ckpt_name": ck}},
+            "2": {"class_type": "LTXAVTextEncoderLoader", "inputs": {
+                "text_encoder": "gemma_3_12B_it_fp4_mixed.safetensors",
+                "ckpt_name": ck, "device": "default"}},
+            "3": {"class_type": "CLIPTextEncode", "inputs": {"text": motion, "clip": ["2", 0]}},
+            "4": {"class_type": "CLIPTextEncode", "inputs": {
+                "text": "static, frozen, blurry, distorted, text, watermark, morphing",
+                "clip": ["2", 0]}},
+            "5": {"class_type": "LTXVConditioning", "inputs": {
+                "positive": ["3", 0], "negative": ["4", 0], "frame_rate": 24.0}},
+            "6": {"class_type": "LoadImage", "inputs": {"image": up["name"]}},
+            "7": {"class_type": "LTXVImgToVideo", "inputs": {
+                "positive": ["5", 0], "negative": ["5", 1], "vae": ["1", 2],
+                "image": ["6", 0], "width": 768, "height": 768, "length": frames,
+                "batch_size": 1, "strength": 1.0}},
+            "8": {"class_type": "KSamplerSelect", "inputs": {"sampler_name": "euler"}},
+            "9": {"class_type": "LTXVScheduler", "inputs": {
+                "steps": 24, "max_shift": 2.05, "base_shift": 0.95,
+                "stretch": True, "terminal": 0.1}},
+            "14": {"class_type": "LTXVAudioVAELoader", "inputs": {"ckpt_name": ck}},
+            "15": {"class_type": "LTXVEmptyLatentAudio", "inputs": {
+                "frames_number": frames, "frame_rate": 24, "batch_size": 1,
+                "audio_vae": ["14", 0]}},
+            "16": {"class_type": "LTXVConcatAVLatent", "inputs": {
+                "video_latent": ["7", 2], "audio_latent": ["15", 0]}},
+            "10": {"class_type": "SamplerCustom", "inputs": {
+                "model": ["1", 0], "add_noise": True,
+                "noise_seed": int(time.time()) % 100000, "cfg": 3.5,
+                "positive": ["7", 0], "negative": ["7", 1], "sampler": ["8", 0],
+                "sigmas": ["9", 0], "latent_image": ["16", 0]}},
+            "17": {"class_type": "LTXVSeparateAVLatent", "inputs": {"av_latent": ["10", 0]}},
+            "11": {"class_type": "VAEDecode", "inputs": {"samples": ["17", 0], "vae": ["1", 2]}},
+            "18": {"class_type": "LTXVAudioVAEDecode", "inputs": {
+                "samples": ["17", 1], "audio_vae": ["14", 0]}},
+            "12": {"class_type": "CreateVideo", "inputs": {
+                "images": ["11", 0], "fps": 24.0, "audio": ["18", 0]}},
+            "13": {"class_type": "SaveVideo", "inputs": {
+                "video": ["12", 0], "filename_prefix": "beast/cinema",
+                "format": "mp4", "codec": "h264"}},
+        }
+        pid = requests.post(f"{C}/prompt", json={"prompt": g, "client_id": "beast"},
+                            timeout=60).json()["prompt_id"]
+        t0 = time.time()
+        while time.time() - t0 < 3000:
+            time.sleep(15)
+            h = requests.get(f"{C}/history/{pid}", timeout=30).json()
+            if pid in h and h[pid]["status"].get("completed"):
+                img = h[pid]["outputs"]["13"]["images"][0]
+                shutil.copy2(COMFY_DIR / "output" / img["subfolder"] / img["filename"],
+                             out_mp4)
+                return {"file": out_mp4.name}
+            if pid in h and h[pid]["status"].get("status_str") == "error":
+                return {"error": "LTX render errored — check ComfyUI"}
+        return {"error": "LTX render timed out (50 min)"}
+    except Exception as e:  # noqa: BLE001
+        return {"error": f"cinema video failed: {str(e)[:200]}"}
+
+
 class AnimateReq(BaseModel):
     file: str
     motion: str = "slow cinematic dolly-in, subtle ambient movement"
     duration: int = 5
+    quality: str = "fast"  # fast = Wan 2.2 5B · cinema = LTX-2.3 22B with audio
 
 
 def wan_animate(src: Path, motion: str, out_mp4: Path, duration: int = 5) -> dict:
@@ -541,12 +611,17 @@ def animate(req: AnimateReq):
     src = _resolve(req.file)
     if not src or not src.exists():
         return JSONResponse({"error": "file not found"}, 404)
-    run_dir = _new_run(req.motion, "wan2.2-local", "animate")
+    engine = "ltx-2.3-cinema" if req.quality == "cinema" else "wan2.2-local"
+    run_dir = _new_run(req.motion, engine, "animate")
 
     def work():
-        _status(run_dir, phase="generating", candidates=[])
-        # local Wan 2.2 first (free, ~3 min); Seedance cloud fallback
-        r = wan_animate(src, req.motion, run_dir / "clip.mp4", req.duration)
+        _status(run_dir, phase="generating", candidates=[
+            {"i": 1, "state": f"{engine}: rendering (cinema ≈ 20-30 min, fast ≈ 2-4 min)"}])
+        if req.quality == "cinema":
+            r = ltx_animate(src, req.motion, run_dir / "clip.mp4", req.duration)
+        else:
+            # local Wan 2.2 first (free, fast); Seedance cloud fallback
+            r = wan_animate(src, req.motion, run_dir / "clip.mp4", req.duration)
         if "error" in r:
             r = hf_generate("seedance_2_0", req.motion, run_dir / "clip.mp4",
                             ["--start-image", str(src), "--duration", str(req.duration)])
