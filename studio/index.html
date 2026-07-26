@@ -101,7 +101,9 @@
       </div>
       <div class="row" style="margin-top:.5rem">
         <button class="ghost" id="expand" style="flex:1">✨ Expand brief → pro prompt</button>
+        <button class="ghost" id="btts" title="speak the brief aloud (Kokoro local TTS)">🔊</button>
       </div>
+      <audio id="ttsplayer" controls style="width:100%;margin-top:.4rem;display:none"></audio>
 
       <label>Structured prompt (what actually gets sent — edit freely)</label>
       <textarea id="prompt" rows="4" placeholder="click ✨ Expand, or write your own"></textarea>
@@ -216,6 +218,13 @@ $('expand').onclick = async () => {
   const j = await api('/api/expand', { brief, recipe: $('recipe').value });
   if (j) { $('prompt').value = j.prompt; $('vars').value = (j.variations||[]).join('\n'); }
   $('expand').disabled = false; $('expand').textContent = '✨ Expand brief → pro prompt';
+};
+
+$('btts').onclick = async () => {
+  const text = $('brief').value.trim();
+  if (!text) return showErr('Type something to speak.');
+  const j = await api('/api/tts', { text });
+  if (j) { const p = $('ttsplayer'); p.src = j.url; p.style.display = 'block'; p.play(); }
 };
 
 // ---------- judge / refine / animate ----------

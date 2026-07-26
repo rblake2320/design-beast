@@ -36,7 +36,11 @@ from judge_image import judge  # noqa: E402
 OLLAMA = "http://localhost:11434/api/generate"
 TRELLIS_LOCAL = "http://localhost:8017/v1/infer"   # docker -p 8017:8000
 FLUX_LOCAL = "http://localhost:8018/v1/infer"      # docker -p 8018:8000
-BACKENDS = {"nim-trellis": 8017, "nim-flux": 8018}  # container name → host port
+BACKENDS = {"nim-trellis": 8017, "nim-flux": 8018, "nim-kontext": 8019}
+KONTEXT_LOCAL = "http://localhost:8019/v1/infer"
+ESRGAN = Path(r"D:\ai\tools\realesrgan\realesrgan-ncnn-vulkan.exe")
+KOKORO_DIR = Path(r"D:\ai\tools\kokoro")
+_kokoro = None
 NIM_SIZES = {"1:1": (1024, 1024), "16:9": (1344, 768), "9:16": (768, 1344),
              "4:3": (1152, 896), "3:4": (896, 1152)}
 
@@ -124,6 +128,34 @@ def flux_local(prompt: str, out_file: Path, ar: str) -> dict:
         return {"error": f"local FLUX returned no image: {str(out)[:200]}"}
     out_file.write_bytes(base64.b64decode(arts[0]["base64"]))
     return {"file": out_file.name, "url": ""}
+
+
+def kontext_local(image_path: Path, instruction: str, out_file: Path) -> dict:
+    """Prompt-based image EDIT via local FLUX.1 Kontext NIM."""
+    img_b64 = base64.b64encode(image_path.read_bytes()).decode()
+    try:
+        out = _nim_invoke(KONTEXT_LOCAL,
+                          {"prompt": instruction,
+                           "image": f"data:image/png;base64,{img_b64}",
+                           "seed": int(time.time()) % 100000},
+                          {"Accept": "application/json"}, timeout=600)
+    except Exception as e:  # noqa: BLE001 — container down
+        return {"error": f"local Kontext not answering on :8019 ({str(e)[:120]})"}
+    arts = out.get("artifacts") or []
+    if not arts:
+        return {"error": f"Kontext returned no image: {str(out)[:200]}"}
+    out_file.write_bytes(base64.b64decode(arts[0]["base64"]))
+    return {"file": out_file.name}
+
+
+def upscale(src: Path, dst: Path) -> bool:
+    """2x Real-ESRGAN if installed; returns False (skipped) when absent."""
+    if not ESRGAN.exists():
+        return False
+    r = subprocess.run([str(ESRGAN), "-i", str(src), "-o", str(dst),
+                        "-s", "2", "-n", "realesrgan-x4plus"],
+                       capture_output=True, timeout=300)
+    return r.returncode == 0 and dst.exists()
 
 
 def trellis_3d(image_path: Path, out_glb: Path) -> dict:
@@ -239,9 +271,14 @@ def _run_loop(run_dir: Path, req: RunReq):
         return
     winner = max(done, key=lambda c: c["score"])
     _status(run_dir, phase="grading", candidates=cands, winner=winner["i"])
+    src = run_dir / winner["file"]
+    up = run_dir / "upscaled.png"
+    if upscale(src, up):
+        src = up
     final = run_dir / "final.png"
-    grade(run_dir / winner["file"], final)
-    _status(run_dir, phase="done", final=final.name if final.exists() else winner["file"])
+    grade(src, final)
+    _status(run_dir, phase="done", upscaled=up.exists(),
+            final=final.name if final.exists() else winner["file"])
 
 
 # ---------- endpoints ----------
@@ -336,8 +373,11 @@ def refine(req: RefineReq):
 
     def work():
         _status(run_dir, phase="generating", candidates=[])
-        r = hf_generate("nano_banana_2", req.instruction, run_dir / "cand1.png",
-                        ["--image", str(src)])
+        # local Kontext first (free); Higgsfield nano banana as fallback
+        r = kontext_local(src, req.instruction, run_dir / "cand1.png")
+        if "error" in r:
+            r = hf_generate("nano_banana_2", req.instruction, run_dir / "cand1.png",
+                            ["--image", str(src)])
         if "error" in r:
             _status(run_dir, phase="failed", error=r["error"], candidates=[])
             return
@@ -440,6 +480,32 @@ def to_3d(req: To3DReq):
 
     threading.Thread(target=work, daemon=True).start()
     return {"id": run_dir.name}
+
+
+class TtsReq(BaseModel):
+    text: str
+    voice: str = "af_heart"
+
+
+@app.post("/api/tts")
+def tts(req: TtsReq):
+    global _kokoro
+    model = KOKORO_DIR / "kokoro-v1.0.onnx"
+    voices = KOKORO_DIR / "voices-v1.0.bin"
+    if not model.exists() or not voices.exists():
+        return JSONResponse({"error": "Kokoro model files still downloading — retry shortly"}, 503)
+    try:
+        if _kokoro is None:
+            from kokoro_onnx import Kokoro
+            _kokoro = Kokoro(str(model), str(voices))
+        import soundfile as sf
+        samples, sr = _kokoro.create(req.text, voice=req.voice, speed=1.0)
+        fname = f"tts_{time.strftime('%H%M%S')}.wav"
+        (UPLOADS / fname).parent.mkdir(exist_ok=True)
+        sf.write(str(UPLOADS / fname), samples, sr)
+        return {"file": fname, "url": f"/uploads/{fname}"}
+    except Exception as e:  # noqa: BLE001 — surface TTS failure in UI
+        return JSONResponse({"error": f"TTS failed: {str(e)[:200]}"}, 500)
 
 
 @app.post("/api/run")
