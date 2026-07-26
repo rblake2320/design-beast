@@ -29,8 +29,9 @@ result file carries a `protocol` block so the two generations cannot be
 confused.
 
 ## Current coverage vs ROADMAP target
-- 12 image briefs across product / character / environment / UI / game-asset /
-  typography (target: 50)
+- 50 fixed image briefs across product / character / environment / UI /
+  game-asset / typography. The suite definition is complete; a full protocol
+  v0.2 GPU run is still pending.
 - TODO: 20 edit tasks (instruction-following + identity preservation via judge
   on before/after pairs), 15 image→video (temporal stability), 15 image→3D
   (geometry/texture + UE import success via /api/to_ue)

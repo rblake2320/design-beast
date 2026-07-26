@@ -42,10 +42,10 @@ Nothing below may be promoted to `[x]` without naming the verification.
 ## P1 — Prove output quality (benchmark before boasting)
 - [~] Fixed benchmark suite: 50 image briefs · 20 edits (instruction-following +
       identity) · 15 i2v (temporal stability) · 15 i23D (geometry/texture/UE import)
-      — PARTIAL: 12 image briefs only. All results before 2026-07-26 were
-      SINGLE-candidate (runner bug, see bench/README correction) and cannot
-      substantiate multi-candidate claims; the fixed 4-candidate protocol (v0.2)
-      has no completed runs yet.
+      — PARTIAL: the 50-image brief definition is complete; edit/i2v/i23D suites
+      remain. All results before 2026-07-26 were SINGLE-candidate (runner bug,
+      see bench/README correction) and cannot substantiate multi-candidate
+      claims; the fixed 4-candidate protocol (v0.2) has no completed full run yet.
 - [ ] Blind pairwise vs Krea / Runway / Firefly; multiple human raters
 - [ ] Judge-vs-human agreement tracking; cost/latency/failure/VRAM logged
       (latency/failure are logged per run; cost/VRAM are not)

@@ -36,9 +36,17 @@ def test_protocol_is_four_controlled_candidates():
 
 
 def test_every_brief_in_suite_yields_four_variations():
-    briefs = json.loads((BENCH / "briefs.json").read_text(encoding="utf-8"))["image_briefs"]
-    assert briefs, "briefs.json is empty"
+    suite = json.loads((BENCH / "briefs.json").read_text(encoding="utf-8"))
+    briefs = suite["image_briefs"]
+    assert suite["version"] == "0.2"
+    assert len(briefs) == 50
+    assert len({b["id"] for b in briefs}) == 50
+    assert set(b["category"] for b in briefs) == {
+        "product", "character", "environment", "ui", "game_asset", "typography",
+    }
     for b in briefs:
+        assert all(b.get(k, "").strip() for k in
+                   ("id", "category", "brief", "prompt", "variation"))
         assert len(rb.build_variations(b)) == 4
 
 
