@@ -194,8 +194,9 @@ def upscale(src: Path, dst: Path) -> bool:
     return dst.exists()
 
 
-def trellis_3d(image_path: Path, out_glb: Path) -> dict:
-    """Image → 3D GLB. Local RTX NIM first (:8017), hosted NIM fallback."""
+def trellis_3d(image_path: Path, out_glb: Path, allow_hosted: bool = False) -> dict:
+    """Image → 3D GLB. Local RTX NIM (:8017). Hosted NIM only when explicitly
+    allowed — it sends the image off-machine (privacy, not just cost)."""
     img_b64 = base64.b64encode(image_path.read_bytes()).decode()
     payload = {"image": f"data:image/png;base64,{img_b64}", "slat_cfg_scale": 3,
                "ss_cfg_scale": 7.5, "slat_sampling_steps": 25,
@@ -204,14 +205,18 @@ def trellis_3d(image_path: Path, out_glb: Path) -> dict:
         out = _nim_invoke(TRELLIS_LOCAL, payload, {"Accept": "application/json"},
                           timeout=900)
         src = "local RTX NIM"
-    except Exception:  # noqa: BLE001 — local NIM not running, try hosted
+    except Exception as local_err:  # noqa: BLE001 — local NIM failed
+        if not allow_hosted:
+            return {"error": "local TRELLIS failed and hosted fallback is disabled by "
+                             "default (it would send your image off-machine). Pass "
+                             f"allow_hosted_fallback:true to permit it. ({str(local_err)[:100]})"}
         try:
             out = _nim_invoke("https://ai.api.nvidia.com/v1/genai/microsoft/trellis",
                               payload, {"Authorization": f"Bearer {_nim_key()}",
                                         "Accept": "application/json"})
             src = "hosted NIM"
         except Exception as e:  # noqa: BLE001
-            return {"error": "TRELLIS unavailable: local NIM not running on :8017 and "
+            return {"error": "TRELLIS unavailable: local NIM failed and "
                              f"hosted NIM failed ({str(e)[:150]})"}
     arts = out.get("artifacts") or []
     if not arts:
@@ -473,16 +478,18 @@ def refine(req: RefineReq):
     src = _resolve(req.file)
     if not src or not src.exists():
         return JSONResponse({"error": "file not found"}, 404)
-    run_dir = _new_run(req.instruction, "nano_banana_2", "refine")
+    run_dir = _new_run(req.instruction, "kontext-local", "refine")
 
     def work():
         _status(run_dir, phase="generating", candidates=[])
-        # local Kontext first (free); Higgsfield nano banana as fallback
+        # local Kontext first (free); Higgsfield nano banana only if explicitly allowed
         ensure_backend("nim-kontext", run_dir)
         r = kontext_local(src, req.instruction, run_dir / "cand1.png")
         if "error" in r and req.allow_cloud_fallback:
             r = hf_generate("nano_banana_2", req.instruction, run_dir / "cand1.png",
                             ["--image", str(src)])
+            if "error" not in r:
+                _status(run_dir, model="nano_banana_2")  # truthful provenance
         if "error" in r:
             _status(run_dir, phase="failed", error=r["error"], candidates=[])
             return
@@ -741,6 +748,7 @@ def backend(req: BackendReq):
 
 class To3DReq(BaseModel):
     file: str
+    allow_hosted_fallback: bool = False  # True = image may leave this machine
 
 
 @app.post("/api/to3d")
@@ -752,8 +760,8 @@ def to_3d(req: To3DReq):
 
     def work():
         _status(run_dir, phase="generating", candidates=[])
-        ensure_backend("nim-trellis", run_dir)  # auto-start; hosted fallback if it fails
-        r = trellis_3d(src, run_dir / "model.glb")
+        ensure_backend("nim-trellis", run_dir)
+        r = trellis_3d(src, run_dir / "model.glb", req.allow_hosted_fallback)
         if "error" in r:
             _status(run_dir, phase="failed", error=r["error"], candidates=[])
             return
