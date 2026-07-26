@@ -62,7 +62,7 @@ mkdir -p "$HOME/beast/nim-cache"
 chmod 700 "$HOME/beast"
 chmod 600 "$CREDS_FILE" 2>/dev/null || true
 echo "$NGC_API_KEY" | docker login nvcr.io --username '$oauthtoken' --password-stdin
-for pair in "nim-flux:8018:nvcr.io/nim/black-forest-labs/flux.1-schnell:latest" \
+for pair in "nim-flux:8018:nvcr.io/nim/black-forest-labs/flux.1-schnell@sha256:6edcdd428fd524dde76090f3a0797ae76e0b593d5445702e2eaf9bc20c375042" \
             "nim-kontext:8019:nvcr.io/nim/black-forest-labs/flux.1-kontext-dev:latest"; do
   name="${pair%%:*}"; rest="${pair#*:}"; port="${rest%%:*}"; img="${rest#*:}"
   docker image inspect "$img" >/dev/null 2>&1 || docker pull "$img"
