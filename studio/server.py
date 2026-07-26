@@ -35,6 +35,8 @@ from judge_image import judge  # noqa: E402
 
 OLLAMA = "http://localhost:11434/api/generate"
 TRELLIS_LOCAL = "http://localhost:8017/v1/infer"   # docker -p 8017:8000
+FLUX_LOCAL = "http://localhost:8018/v1/infer"      # docker -p 8018:8000
+BACKENDS = {"nim-trellis": 8017, "nim-flux": 8018}  # container name → host port
 NIM_SIZES = {"1:1": (1024, 1024), "16:9": (1344, 768), "9:16": (768, 1344),
              "4:3": (1152, 896), "3:4": (896, 1152)}
 
@@ -105,6 +107,23 @@ def nim_flux(slug: str, prompt: str, out_file: Path, ar: str) -> dict:
                          "try again, or use the local RTX NIM when it's running."}
     except Exception as e:  # noqa: BLE001 — surface API failure in UI
         return {"error": f"NIM error: {str(e)[:250]}"}
+
+
+def flux_local(prompt: str, out_file: Path, ar: str) -> dict:
+    """FLUX schnell on the local RTX NIM — free, unlimited, no cloud."""
+    w, h = NIM_SIZES.get(ar, (1024, 1024))
+    try:
+        out = _nim_invoke(FLUX_LOCAL, {"prompt": prompt, "width": w, "height": h,
+                                       "steps": 4, "seed": int(time.time()) % 100000},
+                          {"Accept": "application/json"}, timeout=600)
+    except Exception as e:  # noqa: BLE001 — container down or busy
+        return {"error": "Local FLUX NIM not answering on :8018 — start it from the "
+                         f"Backends panel and wait for warmup. ({str(e)[:120]})"}
+    arts = out.get("artifacts") or []
+    if not arts:
+        return {"error": f"local FLUX returned no image: {str(out)[:200]}"}
+    out_file.write_bytes(base64.b64decode(arts[0]["base64"]))
+    return {"file": out_file.name, "url": ""}
 
 
 def trellis_3d(image_path: Path, out_glb: Path) -> dict:
@@ -184,7 +203,9 @@ class RunReq(BaseModel):
 
 def _generate_one(run_dir: Path, i: int, prompt: str, req: RunReq) -> dict:
     cand = {"i": i, "prompt": prompt, "state": "generating"}
-    if req.model.startswith("nim:"):
+    if req.model.startswith("local:"):
+        r = flux_local(prompt, run_dir / f"cand{i}.png", req.aspect_ratio)
+    elif req.model.startswith("nim:"):
         r = nim_flux(req.model[4:], prompt, run_dir / f"cand{i}.png", req.aspect_ratio)
     else:
         extra = ["--aspect_ratio", req.aspect_ratio]
@@ -358,6 +379,41 @@ def animate(req: AnimateReq):
 
     threading.Thread(target=work, daemon=True).start()
     return {"id": run_dir.name}
+
+
+@app.get("/api/backends")
+def backends():
+    ps = subprocess.run(["docker", "ps", "-a", "--format", "{{.Names}}\t{{.State}}"],
+                        capture_output=True, text=True, timeout=30).stdout
+    states = dict(line.split("\t") for line in ps.splitlines() if "\t" in line)
+    out = []
+    for name, port in BACKENDS.items():
+        state = states.get(name, "not created")
+        ready = False
+        if state == "running":
+            try:
+                ready = requests.get(f"http://localhost:{port}/v1/health/ready",
+                                     timeout=2).ok
+            except Exception:  # noqa: BLE001 — warming up
+                ready = False
+        out.append({"name": name, "state": state, "ready": ready, "port": port})
+    return out
+
+
+class BackendReq(BaseModel):
+    name: str
+    action: str  # start | stop
+
+
+@app.post("/api/backend")
+def backend(req: BackendReq):
+    if req.name not in BACKENDS or req.action not in ("start", "stop"):
+        return JSONResponse({"error": "unknown backend or action"}, 400)
+    r = subprocess.run(["docker", req.action, req.name],
+                       capture_output=True, text=True, timeout=120)
+    if r.returncode != 0:
+        return JSONResponse({"error": r.stderr[-200:] or "docker failed"}, 500)
+    return {"ok": True, "note": "warmup takes ~5 min after start" if req.action == "start" else ""}
 
 
 class To3DReq(BaseModel):

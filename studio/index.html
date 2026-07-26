@@ -113,6 +113,9 @@
       <select id="recipe"></select>
       <div class="row" style="margin-top:.5rem">
         <select id="model">
+          <optgroup label="Local RTX 5090 — free, unlimited">
+            <option value="local:flux.1-schnell">FLUX schnell (LOCAL)</option>
+          </optgroup>
           <optgroup label="NVIDIA NIM — free with your key">
             <option value="nim:flux.1-schnell">FLUX schnell (fast, free)</option>
             <option value="nim:flux.1-dev">FLUX dev (quality, free)</option>
@@ -130,6 +133,10 @@
       </div>
       <button class="primary" id="go">Run the loop</button>
       <div class="hint">Judge & expand are local + free. NIM models are free with your NVIDIA key. Higgsfield spends credits.</div>
+    </div>
+    <div class="panel">
+      <label style="margin-top:0">Backends — local GPU containers (start = uses VRAM)</label>
+      <div id="backends" style="font-size:.82rem"></div>
     </div>
     <div class="panel" id="history"><label style="margin-top:0">Past runs</label></div>
   </div>
@@ -255,6 +262,25 @@ $('go').onclick = async () => {
 };
 
 // ---------- polling & render ----------
+async function loadBackends() {
+  const bs = await (await fetch('/api/backends')).json();
+  $('backends').innerHTML = bs.map(b => {
+    const dot = b.ready ? '🟢' : b.state === 'running' ? '🟡 warming' : '⚫';
+    const act = b.state === 'running' ? 'stop' : 'start';
+    const dis = b.state === 'not created' ? 'disabled title="container not created yet"' : '';
+    return `<div class="row" style="justify-content:space-between;padding:.2rem 0">
+      <span>${dot} ${b.name} <span style="color:var(--dim)">:${b.port}</span></span>
+      <button class="ghost" ${dis} onclick="toggleBackend('${b.name}','${act}')">${act}</button>
+    </div>`;
+  }).join('');
+}
+async function toggleBackend(name, action) {
+  const j = await api('/api/backend', { name, action });
+  if (j && j.note) $('phase').textContent = `${name}: ${action}ed — ${j.note}`;
+  setTimeout(loadBackends, 1200);
+}
+loadBackends(); setInterval(loadBackends, 20000);
+
 function loadHistory() {
   fetch('/api/runs').then(r => r.json()).then(rs => {
     $('history').innerHTML = '<label style="margin-top:0">Past runs</label>' +
