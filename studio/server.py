@@ -399,17 +399,72 @@ class AnimateReq(BaseModel):
     duration: int = 5
 
 
+def wan_animate(src: Path, motion: str, out_mp4: Path) -> dict:
+    """Image → video via Wan 2.2 5B on local ComfyUI. ~3 min for a 2s clip."""
+    C = f"http://localhost:{COMFY_PORT}"
+    try:
+        with open(src, "rb") as f:
+            up = requests.post(f"{C}/upload/image",
+                               files={"image": (src.name, f, "image/png")},
+                               timeout=60).json()
+        g = {
+            "1": {"class_type": "UNETLoader", "inputs": {
+                "unet_name": "wan2.2_ti2v_5B_fp16.safetensors", "weight_dtype": "default"}},
+            "2": {"class_type": "CLIPLoader", "inputs": {
+                "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors", "type": "wan",
+                "device": "default"}},
+            "3": {"class_type": "VAELoader", "inputs": {"vae_name": "wan2.2_vae.safetensors"}},
+            "4": {"class_type": "CLIPTextEncode", "inputs": {"text": motion, "clip": ["2", 0]}},
+            "5": {"class_type": "CLIPTextEncode", "inputs": {
+                "text": "static image, frozen, blurry, distorted, text, watermark",
+                "clip": ["2", 0]}},
+            "6": {"class_type": "LoadImage", "inputs": {"image": up["name"]}},
+            "7": {"class_type": "Wan22ImageToVideoLatent", "inputs": {
+                "vae": ["3", 0], "width": 768, "height": 768, "length": 49,
+                "batch_size": 1, "start_image": ["6", 0]}},
+            "8": {"class_type": "KSampler", "inputs": {
+                "model": ["1", 0], "positive": ["4", 0], "negative": ["5", 0],
+                "latent_image": ["7", 0], "seed": int(time.time()) % 100000,
+                "steps": 20, "cfg": 5.0, "sampler_name": "uni_pc",
+                "scheduler": "simple", "denoise": 1.0}},
+            "9": {"class_type": "VAEDecode", "inputs": {"samples": ["8", 0], "vae": ["3", 0]}},
+            "10": {"class_type": "CreateVideo", "inputs": {"images": ["9", 0], "fps": 24.0}},
+            "11": {"class_type": "SaveVideo", "inputs": {
+                "video": ["10", 0], "filename_prefix": "beast/clip",
+                "format": "mp4", "codec": "h264"}},
+        }
+        pid = requests.post(f"{C}/prompt", json={"prompt": g, "client_id": "beast"},
+                            timeout=30).json()["prompt_id"]
+        t0 = time.time()
+        while time.time() - t0 < 2400:
+            time.sleep(10)
+            h = requests.get(f"{C}/history/{pid}", timeout=30).json()
+            if pid in h and h[pid]["status"].get("completed"):
+                img = h[pid]["outputs"]["11"]["images"][0]
+                produced = (COMFY_DIR / "output" / img["subfolder"] / img["filename"])
+                shutil.copy2(produced, out_mp4)
+                return {"file": out_mp4.name}
+            if pid in h and h[pid]["status"].get("status_str") == "error":
+                return {"error": "ComfyUI job errored — check comfyui log"}
+        return {"error": "local video generation timed out (40 min)"}
+    except Exception as e:  # noqa: BLE001 — ComfyUI down or API change
+        return {"error": f"local video failed: {str(e)[:200]}"}
+
+
 @app.post("/api/animate")
 def animate(req: AnimateReq):
     src = _resolve(req.file)
     if not src or not src.exists():
         return JSONResponse({"error": "file not found"}, 404)
-    run_dir = _new_run(req.motion, "seedance_2_0", "animate")
+    run_dir = _new_run(req.motion, "wan2.2-local", "animate")
 
     def work():
         _status(run_dir, phase="generating", candidates=[])
-        r = hf_generate("seedance_2_0", req.motion, run_dir / "clip.mp4",
-                        ["--start-image", str(src), "--duration", str(req.duration)])
+        # local Wan 2.2 first (free, ~3 min); Seedance cloud fallback
+        r = wan_animate(src, req.motion, run_dir / "clip.mp4")
+        if "error" in r:
+            r = hf_generate("seedance_2_0", req.motion, run_dir / "clip.mp4",
+                            ["--start-image", str(src), "--duration", str(req.duration)])
         if "error" in r:
             _status(run_dir, phase="failed", error=r["error"], candidates=[])
             return
