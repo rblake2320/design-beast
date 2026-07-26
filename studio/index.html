@@ -220,6 +220,28 @@
         <button id="b3d" title="TRELLIS image-to-3D">🧊 mesh</button>
       </div>
       <div id="judgeout"></div>
+
+      <div id="refineform" style="display:none">
+        <label>refine instruction — what changes, everything else stays</label>
+        <textarea id="refinetext" rows="2">fix the weakest region, keep identity and composition</textarea>
+        <button class="primary" style="margin-top:.5rem;padding:.55rem" id="refinego">apply refine (Kontext · local)</button>
+      </div>
+
+      <div id="motionform" style="display:none">
+        <label>motion prompt — movement + sounds (cinema tier generates audio)</label>
+        <textarea id="motiontext" rows="2">slow cinematic dolly-in, subtle ambient movement</textarea>
+        <div class="row" style="margin-top:.5rem">
+          <select id="motiondur" style="width:88px">
+            <option value="3">3 s</option>
+            <option value="5" selected>5 s</option>
+          </select>
+          <select id="motiontier" style="flex:1">
+            <option value="fast">FAST · Wan 2.2 · 2-4 min · silent</option>
+            <option value="cinema">CINEMA · LTX-2.3 · 20-30 min · with audio</option>
+          </select>
+        </div>
+        <button class="primary" style="margin-top:.5rem;padding:.55rem" id="motiongo">render motion</button>
+      </div>
     </div>
 
     <div class="panel"><span class="tick"></span>
@@ -388,23 +410,28 @@ $('bjudge').onclick = async () => {
   if (j) $('judgeout').innerHTML =
     `<b>${j.score}/10</b>${j.kill ? ' <span style="color:var(--red);font-weight:700">KILL</span>' : ''}<br>${j.fix || ''}`;
 };
-$('brefine').onclick = async () => {
+function toggleForm(id) {
+  ['refineform','motionform'].forEach(f =>
+    $(f).style.display = (f === id && $(f).style.display === 'none') ? 'block' : 'none');
+}
+$('brefine').onclick = () => { if (!needImage()) toggleForm('refineform'); };
+$('banimate').onclick = () => { if (!needImage()) toggleForm('motionform'); };
+
+$('refinego').onclick = async () => {
   if (needImage()) return;
-  const instruction = prompt('Refine instruction (what to change; everything else stays):',
-                             'fix the weakest region, keep identity and composition');
-  if (!instruction) return;
+  const instruction = $('refinetext').value.trim();
+  if (!instruction) return showErr('Write what to change first.');
   const j = await api('/api/refine', { file: upload, instruction, brief: $('brief').value });
-  if (j) watch(j.id);
+  if (j) { toggleForm(null); watch(j.id); }
 };
-$('banimate').onclick = async () => {
+$('motiongo').onclick = async () => {
   if (needImage()) return;
-  const motion = prompt('Motion prompt (describe movement + sounds for cinema):',
-                        'slow cinematic dolly-in, subtle ambient movement');
-  if (!motion) return;
-  const cinema = confirm('CINEMA tier? OK = LTX-2.3 22B with generated AUDIO (~20-30 min). Cancel = fast Wan (~2-4 min, silent).');
-  const j = await api('/api/animate', { file: upload, motion, duration: 5,
-                                        quality: cinema ? 'cinema' : 'fast' });
-  if (j) watch(j.id);
+  const motion = $('motiontext').value.trim();
+  if (!motion) return showErr('Describe the motion first.');
+  const j = await api('/api/animate', { file: upload, motion,
+    duration: parseInt($('motiondur').value),
+    quality: $('motiontier').value });
+  if (j) { toggleForm(null); watch(j.id); }
 };
 $('b3d').onclick = async () => {
   if (needImage()) return;
