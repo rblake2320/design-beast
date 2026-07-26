@@ -29,11 +29,25 @@ CONTRACT_VERSION = "1.0.0"
 def generate() -> dict:
     sys.path.insert(0, str(STUDIO))
     import jobs as jobs_mod
-    jobs_mod.DB_PATH = Path(tempfile.mkdtemp(prefix="beast-openapi-gen-")) / "jobs.db"
+    original_db = jobs_mod.DB_PATH
+    with tempfile.TemporaryDirectory(prefix="beast-openapi-gen-") as tmp:
+        # jobs uses a thread-local connection, so changing DB_PATH alone is
+        # insufficient when generate() is called inside a larger pytest run.
+        # Close both sides of the swap and restore the caller's DB afterward.
+        if hasattr(jobs_mod._LOCAL, "conn"):
+            jobs_mod._LOCAL.conn.close()
+            del jobs_mod._LOCAL.conn
+        jobs_mod.DB_PATH = Path(tmp) / "jobs.db"
+        try:
+            import server  # noqa: E402 — first import initializes the temp DB
+            jobs_mod.init()  # required when server was already imported
+            schema = server.app.openapi()
+        finally:
+            if hasattr(jobs_mod._LOCAL, "conn"):
+                jobs_mod._LOCAL.conn.close()
+                del jobs_mod._LOCAL.conn
+            jobs_mod.DB_PATH = original_db
 
-    import server  # noqa: E402 — init() runs against the throwaway DB above
-
-    schema = server.app.openapi()
     schema["info"]["version"] = CONTRACT_VERSION
     schema["info"]["title"] = "Beast Studio API"
     schema["info"]["description"] = (

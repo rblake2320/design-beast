@@ -115,3 +115,38 @@ def test_manifest_export_failure_cannot_change_terminal_state(tmp_path, monkeypa
     assert jobs.get_status(jid)["phase"] == "done"
     jobs._db().execute("DELETE FROM jobs WHERE id=?", (jid,))
     jobs._db().commit()
+
+
+def test_to3d_preserves_backend_seed_and_source(tmp_path, monkeypatch):
+    src = tmp_path / "source.png"
+    src.write_bytes(b"png")
+    monkeypatch.setattr(server, "RUNS", tmp_path)
+    monkeypatch.setattr(server, "_resolve", lambda _: src)
+    monkeypatch.setattr(server, "ensure_backend", lambda *args, **kwargs: True)
+
+    def fake_trellis(_src, out, _allow_hosted):
+        out.write_bytes(b"glTF" + b"\0" * 20)
+        return {"file": out.name, "seed": 1234, "source": "local RTX NIM"}
+
+    class ImmediateThread:
+        def __init__(self, target, daemon=True):
+            self.target = target
+
+        def start(self):
+            self.target()
+
+    class ThreadingStub:
+        Thread = ImmediateThread
+
+    monkeypatch.setattr(server, "trellis_3d", fake_trellis)
+    monkeypatch.setattr(server, "threading", ThreadingStub)
+    jid = server.to_3d(server.To3DReq(file="source.png"))["id"]
+    status = jobs.get_status(jid)
+    manifest = json.loads((tmp_path / jid / "manifest.json").read_text())
+
+    assert status["phase"] == "done"
+    assert status["candidates"][0]["seed"] == 1234
+    assert status["candidates"][0]["source"] == "local RTX NIM"
+    assert manifest["seed"] == {"1": 1234}
+    jobs._db().execute("DELETE FROM jobs WHERE id=?", (jid,))
+    jobs._db().commit()

@@ -59,6 +59,18 @@ def test_openapi_json_matches_fresh_generation():
         "and check in the result")
 
 
+def test_openapi_generation_restores_caller_database():
+    """Schema generation must not poison tests or servers sharing jobs.py."""
+    import jobs
+
+    original = jobs.DB_PATH
+    generate_openapi.generate()
+    assert jobs.DB_PATH == original
+    assert jobs._db().execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='jobs'"
+    ).fetchone()
+
+
 def test_every_documented_endpoint_has_sdk_coverage():
     schema = json.loads(OPENAPI_JSON.read_text(encoding="utf-8"))
     documented = {

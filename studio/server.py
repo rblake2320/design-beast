@@ -1160,7 +1160,8 @@ def to_3d(req: To3DReq):
             return
         _status(run_dir, phase="done", candidates=[
             {"i": 1, "state": "done", "file": "model.glb", "glb": True,
-             "fix": f"via {r['source']} — import with Blender pipeline skill"}],
+             "fix": f"via {r['source']} — import with Blender pipeline skill",
+             **{key: r[key] for key in ("seed", "source") if key in r}}],
             final="model.glb", glb=True)
 
     threading.Thread(target=work, daemon=True).start()
