@@ -33,8 +33,10 @@ confused.
   game-asset / typography. The suite definition is complete; a full protocol
   v0.2 GPU run is still pending.
 - `multimodal_tasks.json` fixes 20 edit, 15 image→video, and 15 image→3D
-  tasks to exact source-brief IDs and acceptance criteria. Their automated
-  runners, source-result map, and completed measurements are still pending.
+  tasks to exact source-brief IDs and acceptance criteria.
+- `run_multimodal.py` runs any one suite from an explicit source-result map and
+  keeps every fallback local-only. A completed protocol-v0.2 image run is
+  required to create that source map; measurements are therefore still pending.
 
 ## What requires humans (cannot be automated honestly)
 - **Blind pairwise vs competitors** (Krea, Runway, Firefly): the harness can

@@ -51,10 +51,10 @@ Nothing below may be promoted to `[x]` without naming the verification.
 - [~] Fixed benchmark suite: 50 image briefs · 20 edits (instruction-following +
       identity) · 15 i2v (temporal stability) · 15 i23D (geometry/texture/UE import)
       — PARTIAL: all 100 fixed task definitions and acceptance criteria now
-      exist; multimodal runners and completed measurements remain. All results
-      before 2026-07-26 were SINGLE-candidate (runner bug, see bench/README
-      correction) and cannot substantiate multi-candidate claims; the fixed
-      4-candidate protocol (v0.2) has no completed full run yet.
+      exist and the multimodal runner is implemented; completed measurements
+      remain. All results before 2026-07-26 were SINGLE-candidate (runner bug,
+      see bench/README correction) and cannot substantiate multi-candidate
+      claims; the fixed 4-candidate protocol (v0.2) has no completed full run yet.
 - [ ] Blind pairwise vs Krea / Runway / Firefly; multiple human raters
 - [ ] Judge-vs-human agreement tracking; cost/latency/failure/VRAM logged
       (latency/failure are logged per run; cost/VRAM are not)
