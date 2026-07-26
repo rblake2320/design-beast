@@ -14,16 +14,24 @@ Nothing below may be promoted to `[x]` without naming the verification.
       boot orphan-recovery, terminal-state monotonicity, structured error codes;
       status.json is a best-effort compatibility export only; exercised by
       studio/tests/test_state_authority.py and test_p0.py)
-- [~] Central GPU scheduler + VRAM lock — PARTIAL: a single `GPU_HEAVY` semaphore
-      serializes heavy video/3D jobs. Image-generation jobs are outside that
-      scheduler; backend-specific serialization has not been verified. There is
-      no central scheduler and no VRAM-aware admission control.
-- [~] Cancel / retry / timeout endpoints; idempotency keys — PARTIAL: cancel
-      (queued jobs instant; candidate generation observes cancellation at ≤1s
-      scheduler intervals; ComfyUI prompts use its atomic per-prompt cancel API),
-      retry, and idempotency keys work. Blocking non-Comfy backend calls may
-      continue in detached workers until their HTTP call returns. No server-side
-      per-job timeout enforcement.
+- [x] Central GPU scheduler + VRAM lock (done 2026-07-26: durable SQLite
+      `gpu_leases` with heavy/light resource classes — video/3D exclusive;
+      image gen, refine and the improve pass bounded at LIGHT_CONCURRENCY=2
+      and fully excluded while a heavy lease is held; lease waits are
+      cancellation- and deadline-aware; crashed holders reclaimed via
+      heartbeat staleness (30s) and boot recovery; verified by
+      studio/tests/test_gpu_lease.py. Note: admission is fixed-concurrency by
+      design, not VRAM-probed — revisit only if OOMs are observed.)
+- [x] Cancel / retry / timeout endpoints; idempotency keys (done 2026-07-26:
+      cancel is job-specific down to ComfyUI's atomic per-prompt endpoint and
+      observed at ≤1s intervals mid-generation; retry + idempotency keys work;
+      per-job deadlines (per kind, from creation, queue wait included) are
+      enforced server-side at checkpoints and lease waits → failed/E_TIMEOUT,
+      never a cloud-credit retry; verified by studio/tests/test_cancel.py +
+      test_gpu_lease.py. Known limits: blocking non-Comfy HTTP calls finish in
+      detached workers after cancel; `to_ue` Blender/UE subprocesses are not
+      preemptible mid-call — the job is marked cancelled but the subprocess
+      runs to completion.)
 - [~] SSE or WebSocket progress (replace polling) — PARTIAL: `/api/events/{run_id}`
       SSE endpoint exists and the Studio UI consumes it with polling fallback;
       the benchmark harness still polls every 10s.
@@ -42,10 +50,11 @@ Nothing below may be promoted to `[x]` without naming the verification.
 ## P1 — Prove output quality (benchmark before boasting)
 - [~] Fixed benchmark suite: 50 image briefs · 20 edits (instruction-following +
       identity) · 15 i2v (temporal stability) · 15 i23D (geometry/texture/UE import)
-      — PARTIAL: the 50-image brief definition is complete; edit/i2v/i23D suites
-      remain. All results before 2026-07-26 were SINGLE-candidate (runner bug,
-      see bench/README correction) and cannot substantiate multi-candidate
-      claims; the fixed 4-candidate protocol (v0.2) has no completed full run yet.
+      — PARTIAL: all 100 fixed task definitions and acceptance criteria now
+      exist; multimodal runners and completed measurements remain. All results
+      before 2026-07-26 were SINGLE-candidate (runner bug, see bench/README
+      correction) and cannot substantiate multi-candidate claims; the fixed
+      4-candidate protocol (v0.2) has no completed full run yet.
 - [ ] Blind pairwise vs Krea / Runway / Firefly; multiple human raters
 - [ ] Judge-vs-human agreement tracking; cost/latency/failure/VRAM logged
       (latency/failure are logged per run; cost/VRAM are not)

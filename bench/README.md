@@ -32,9 +32,9 @@ confused.
 - 50 fixed image briefs across product / character / environment / UI /
   game-asset / typography. The suite definition is complete; a full protocol
   v0.2 GPU run is still pending.
-- TODO: 20 edit tasks (instruction-following + identity preservation via judge
-  on before/after pairs), 15 image→video (temporal stability), 15 image→3D
-  (geometry/texture + UE import success via /api/to_ue)
+- `multimodal_tasks.json` fixes 20 edit, 15 image→video, and 15 image→3D
+  tasks to exact source-brief IDs and acceptance criteria. Their automated
+  runners, source-result map, and completed measurements are still pending.
 
 ## What requires humans (cannot be automated honestly)
 - **Blind pairwise vs competitors** (Krea, Runway, Firefly): the harness can
