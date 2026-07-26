@@ -9,12 +9,21 @@
 # Phase B (optional, later): ComfyUI + Wan/LTX video, TRELLIS 3D.
 set -euo pipefail
 cd "$(dirname "$0")/.."
+ROOT="$(pwd)"
+VENV_DIR="${BEAST_VENV:-$ROOT/.venv}"
+CREDS_FILE="${BEAST_CREDS_FILE:-$HOME/beast/creds.env}"
 
 echo "== [1/7] python deps =="
-python3 -m pip install --quiet -r requirements.txt kokoro-onnx soundfile
+python3 -m venv "$VENV_DIR"
+"$VENV_DIR/bin/python" -m pip install --quiet --upgrade pip
+"$VENV_DIR/bin/python" -m pip install --quiet -r requirements.txt
 
 echo "== [2/7] imagemagick (grade step) =="
-command -v magick >/dev/null || command -v convert >/dev/null || sudo apt-get install -y imagemagick
+if command -v magick >/dev/null || command -v convert >/dev/null; then
+  echo "ImageMagick present"
+else
+  echo "ImageMagick absent — Pillow fallback remains fully functional"
+fi
 
 echo "== [3/7] node config =="
 if [ ! -f beast.config.json ]; then
@@ -43,18 +52,51 @@ cd ~/beast/models/kokoro
 cd - >/dev/null
 
 echo "== [6/7] NIM containers (arm64 — verified multi-arch) =="
-: "${NGC_API_KEY:?set NGC_API_KEY}"; : "${HF_TOKEN:?set HF_TOKEN}"
+if [ -f "$CREDS_FILE" ]; then
+  # shellcheck disable=SC1090
+  source "$CREDS_FILE"
+fi
+: "${NGC_API_KEY:?set NGC_API_KEY or provide $CREDS_FILE}"
+: "${HF_TOKEN:?set HF_TOKEN or provide $CREDS_FILE}"
+mkdir -p "$HOME/beast/nim-cache"
+chmod 700 "$HOME/beast"
+chmod 600 "$CREDS_FILE" 2>/dev/null || true
 echo "$NGC_API_KEY" | docker login nvcr.io --username '$oauthtoken' --password-stdin
 for pair in "nim-flux:8018:nvcr.io/nim/black-forest-labs/flux.1-schnell:latest" \
             "nim-kontext:8019:nvcr.io/nim/black-forest-labs/flux.1-kontext-dev:latest"; do
   name="${pair%%:*}"; rest="${pair#*:}"; port="${rest%%:*}"; img="${rest#*:}"
   docker image inspect "$img" >/dev/null 2>&1 || docker pull "$img"
   docker container inspect "$name" >/dev/null 2>&1 || docker create --name "$name" \
-    --gpus all --ipc=host --shm-size=8g -e NGC_API_KEY="$NGC_API_KEY" -e HF_TOKEN="$HF_TOKEN" \
+    --restart unless-stopped --gpus all --ipc=host --shm-size=8g \
+    -e NGC_API_KEY="$NGC_API_KEY" -e HF_TOKEN="$HF_TOKEN" \
     -p "$port":8000 -v ~/beast/nim-cache:/opt/nim/.cache/ "$img"
+  docker update --restart unless-stopped "$name" >/dev/null
 done
 echo "created (not started) — start from the Studio Backends panel or: docker start nim-flux"
 
-echo "== [7/7] launch =="
-echo "run:  cd $(pwd) && python3 studio/server.py"
-echo "then: curl -s localhost:8787/api/health"
+echo "== [7/7] durable user service =="
+mkdir -p "$HOME/.config/systemd/user"
+cat > "$HOME/.config/systemd/user/beast-studio.service" <<EOF
+[Unit]
+Description=Beast Studio local AI production API
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=$ROOT
+EnvironmentFile=-$CREDS_FILE
+ExecStart=$VENV_DIR/bin/python studio/server.py
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+
+[Install]
+WantedBy=default.target
+EOF
+systemctl --user daemon-reload
+systemctl --user enable --now beast-studio.service
+if command -v loginctl >/dev/null && [ "$(loginctl show-user "$USER" -p Linger --value)" != "yes" ]; then
+  sudo loginctl enable-linger "$USER"
+fi
+echo "service enabled; health: curl -s localhost:8787/api/health"
