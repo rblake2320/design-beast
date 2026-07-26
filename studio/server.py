@@ -36,7 +36,9 @@ from judge_image import judge  # noqa: E402
 OLLAMA = "http://localhost:11434/api/generate"
 TRELLIS_LOCAL = "http://localhost:8017/v1/infer"   # docker -p 8017:8000
 FLUX_LOCAL = "http://localhost:8018/v1/infer"      # docker -p 8018:8000
-BACKENDS = {"nim-trellis": 8017, "nim-flux": 8018, "nim-kontext": 8019}
+BACKENDS = {"nim-trellis": 8017, "nim-flux": 8018, "nim-kontext": 8019, "nim-flux2": 8020}
+LOCAL_IMAGE_MODELS = {"local:flux.1-schnell": ("nim-flux", 8018),
+                      "local:flux.2-klein": ("nim-flux2", 8020)}
 KONTEXT_LOCAL = "http://localhost:8019/v1/infer"
 ESRGAN = Path(r"D:\ai\tools\realesrgan\realesrgan-ncnn-vulkan.exe")
 KOKORO_DIR = Path(r"D:\ai\tools\kokoro")
@@ -117,15 +119,16 @@ def nim_flux(slug: str, prompt: str, out_file: Path, ar: str) -> dict:
         return {"error": f"NIM error: {str(e)[:250]}"}
 
 
-def flux_local(prompt: str, out_file: Path, ar: str) -> dict:
-    """FLUX schnell on the local RTX NIM — free, unlimited, no cloud."""
+def flux_local(prompt: str, out_file: Path, ar: str, port: int = 8018) -> dict:
+    """FLUX on a local RTX NIM — free, unlimited, no cloud."""
     w, h = NIM_SIZES.get(ar, (1024, 1024))
     try:
-        out = _nim_invoke(FLUX_LOCAL, {"prompt": prompt, "width": w, "height": h,
-                                       "steps": 4, "seed": int(time.time()) % 100000},
+        out = _nim_invoke(f"http://localhost:{port}/v1/infer",
+                          {"prompt": prompt, "width": w, "height": h,
+                           "steps": 4, "seed": int(time.time()) % 100000},
                           {"Accept": "application/json"}, timeout=600)
     except Exception as e:  # noqa: BLE001 — container down or busy
-        return {"error": "Local FLUX NIM not answering on :8018 — start it from the "
+        return {"error": f"Local NIM not answering on :{port} — start it from the "
                          f"Backends panel and wait for warmup. ({str(e)[:120]})"}
     arts = out.get("artifacts") or []
     if not arts:
@@ -152,14 +155,35 @@ def kontext_local(image_path: Path, instruction: str, out_file: Path) -> dict:
     return {"file": out_file.name}
 
 
+def _upscale_valid(src: Path, dst: Path) -> bool:
+    """Detect tile-scramble corruption: downscaled result must resemble the source."""
+    from PIL import Image, ImageChops, ImageStat
+    a = Image.open(src).convert("RGB")
+    b = Image.open(dst).convert("RGB").resize(a.size)
+    rms = ImageStat.Stat(ImageChops.difference(a, b)).rms
+    return sum(rms) / 3 < 20  # clean upscale ≈ 5-10; scrambled tiles ≈ 40+
+
+
 def upscale(src: Path, dst: Path) -> bool:
-    """2x Real-ESRGAN if installed; returns False (skipped) when absent."""
-    if not ESRGAN.exists():
-        return False
-    r = subprocess.run([str(ESRGAN), "-i", str(src), "-o", str(dst),
-                        "-s", "2", "-n", "realesrgan-x4plus"],
+    """2x upscale. Real-ESRGAN (serialized tiling) validated against source;
+    falls back to Lanczos so a corrupt AI upscale can never ship as final."""
+    if ESRGAN.exists():
+        # -j 1:1:1 serializes load/proc/save threads — fixes tile-stitching races
+        subprocess.run([str(ESRGAN), "-i", str(src), "-o", str(dst),
+                        "-s", "2", "-n", "realesrgan-x4plus",
+                        "-t", "1024", "-j", "1:1:1"],
                        capture_output=True, timeout=300)
-    return r.returncode == 0 and dst.exists()
+        if dst.exists():
+            try:
+                if _upscale_valid(src, dst):
+                    return True
+            except Exception:  # noqa: BLE001 — treat unreadable output as invalid
+                pass
+            dst.unlink(missing_ok=True)
+    subprocess.run([shutil.which("magick") or "magick", str(src),
+                    "-filter", "Lanczos", "-resize", "200%", str(dst)],
+                   capture_output=True, timeout=120)
+    return dst.exists()
 
 
 def trellis_3d(image_path: Path, out_glb: Path) -> dict:
@@ -210,6 +234,30 @@ def ollama_json(model: str, prompt: str, timeout: int = 240) -> dict:
     return json.loads(out["response"] or out.get("thinking", ""))
 
 
+def ensure_backend(name: str, run_dir: Path = None, wait_s: int = 480) -> bool:
+    """Start a NIM container if needed and wait until ready. Surfaces progress."""
+    port = BACKENDS.get(name)
+    if not port:
+        return False
+    def ready():
+        try:
+            return requests.get(f"http://localhost:{port}/v1/health/ready", timeout=2).ok
+        except Exception:  # noqa: BLE001
+            return False
+    if ready():
+        return True
+    subprocess.run(["docker", "start", name], capture_output=True, timeout=60)
+    t0 = time.time()
+    while time.time() - t0 < wait_s:
+        if run_dir:
+            _status(run_dir, phase="generating", candidates=[
+                {"i": 1, "state": f"starting {name} — warmup ~{max(0, int((240 - (time.time()-t0))/60))+1} min"}])
+        if ready():
+            return True
+        time.sleep(8)
+    return False
+
+
 def _status(run_dir: Path, **updates):
     with LOCK:
         f = run_dir / "status.json"
@@ -240,7 +288,8 @@ class RunReq(BaseModel):
 def _generate_one(run_dir: Path, i: int, prompt: str, req: RunReq) -> dict:
     cand = {"i": i, "prompt": prompt, "state": "generating"}
     if req.model.startswith("local:"):
-        r = flux_local(prompt, run_dir / f"cand{i}.png", req.aspect_ratio)
+        _, port = LOCAL_IMAGE_MODELS.get(req.model, ("nim-flux", 8018))
+        r = flux_local(prompt, run_dir / f"cand{i}.png", req.aspect_ratio, port)
     elif req.model.startswith("nim:"):
         r = nim_flux(req.model[4:], prompt, run_dir / f"cand{i}.png", req.aspect_ratio)
     else:
@@ -261,6 +310,12 @@ def _generate_one(run_dir: Path, i: int, prompt: str, req: RunReq) -> dict:
 
 
 def _run_loop(run_dir: Path, req: RunReq):
+    if req.model.startswith("local:"):
+        backend, _ = LOCAL_IMAGE_MODELS.get(req.model, ("nim-flux", 8018))
+        if not ensure_backend(backend, run_dir):
+            _status(run_dir, phase="failed",
+                    error=f"{backend} would not start/warm — check Backends panel")
+            return
     base = req.prompt.strip() or req.brief
     n = max(len(req.variations), 1) if req.variations else 4
     prompts = [f"{base}; {v}" if v else base for v in (req.variations or [""] * n)]
@@ -378,6 +433,7 @@ def refine(req: RefineReq):
     def work():
         _status(run_dir, phase="generating", candidates=[])
         # local Kontext first (free); Higgsfield nano banana as fallback
+        ensure_backend("nim-kontext", run_dir)
         r = kontext_local(src, req.instruction, run_dir / "cand1.png")
         if "error" in r:
             r = hf_generate("nano_banana_2", req.instruction, run_dir / "cand1.png",
@@ -564,6 +620,7 @@ def to_3d(req: To3DReq):
 
     def work():
         _status(run_dir, phase="generating", candidates=[])
+        ensure_backend("nim-trellis", run_dir)  # auto-start; hosted fallback if it fails
         r = trellis_3d(src, run_dir / "model.glb")
         if "error" in r:
             _status(run_dir, phase="failed", error=r["error"], candidates=[])

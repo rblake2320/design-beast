@@ -247,6 +247,7 @@
         <select id="model">
           <optgroup label="LOCAL RTX 5090 — free · unlimited">
             <option value="local:flux.1-schnell">FLUX schnell · local</option>
+            <option value="local:flux.2-klein">FLUX.2 klein · local · newest</option>
           </optgroup>
           <optgroup label="NVIDIA hosted — free w/ key, can queue">
             <option value="nim:flux.1-schnell">FLUX schnell · hosted</option>
@@ -364,7 +365,8 @@ function setPhase(txt, live) {
 $('expand').onclick = async () => {
   const brief = $('brief').value.trim();
   if (!brief) return showErr('Type or speak a brief first.');
-  $('expand').disabled = true; $('expand').textContent = '✨ expanding…';
+  $('expand').disabled = true;
+  $('expand').textContent = '✨ expanding — local LLM (first call loads model, ~1 min)…';
   const j = await api('/api/expand', { brief, recipe: $('recipe').value });
   if (j) { $('prompt').value = j.prompt; $('vars').value = (j.variations||[]).join('\n'); }
   $('expand').disabled = false; $('expand').textContent = '✨ expand → pro prompt';
