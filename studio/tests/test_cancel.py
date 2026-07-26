@@ -2,24 +2,19 @@
 
     cd design-beast && python -m pytest studio/tests/test_cancel.py -q
 
-SAFETY: jobs.DB_PATH is redirected to a throwaway SQLite file BEFORE server.py
-is imported, so its module-level jobs.init()/recover_orphans() cannot touch the
-live studio/jobs.db (which may hold another agent's running jobs).
+SAFETY: conftest.py redirects jobs.DB_PATH to a throwaway SQLite file BEFORE
+server.py is imported, so its module-level jobs.init()/recover_orphans() cannot
+touch the live studio/jobs.db (which may hold another agent's running jobs).
 """
-import sys
-import tempfile
 import time
 from pathlib import Path
-from types import SimpleNamespace
 
-STUDIO = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(STUDIO))
+import jobs as jobs_mod  # noqa: E402  (path + DB redirect done in conftest.py)
 
-import jobs as jobs_mod  # noqa: E402
+assert "beast-test" in str(jobs_mod.DB_PATH), \
+    "conftest.py must redirect jobs.DB_PATH before server is imported"
 
-jobs_mod.DB_PATH = Path(tempfile.mkdtemp(prefix="beast-test-jobs-")) / "jobs.db"
-
-import server  # noqa: E402  (init() now runs against the temp DB)
+import server  # noqa: E402  (init() runs against the conftest temp DB)
 
 
 class FakeResp:
@@ -205,6 +200,36 @@ def test_run_loop_observes_cancel_before_all_candidates_finish(monkeypatch, tmp_
     assert _json.loads((run_dir / "status.json").read_text())["phase"] == "cancelled"
     assert elapsed < 1.5, f"run loop waited {elapsed:.1f}s — it blocked on slow candidates"
     assert len(finished) < 4, "all four candidates ran to completion before cancel took effect"
+
+
+def test_animate_reports_cancelled_not_failed(monkeypatch, tmp_path):
+    """A cancelled wan/ltx render returns {'error': ..., 'cancelled': True} —
+    the animate() closure must mark the job cancelled/E_CANCELLED, not
+    failed/E_ENGINE, and must never fall back to the credit-spending cloud
+    path for a cancelled render."""
+    src = tmp_path / "src.png"
+    src.write_bytes(b"png-bytes")
+    monkeypatch.setattr(server, "RUNS", tmp_path)
+    monkeypatch.setattr(server, "_resolve", lambda f: src)
+    monkeypatch.setattr(server, "wan_animate",
+                        lambda *a, **kw: {"error": "cancelled by request",
+                                          "cancelled": True})
+
+    def no_cloud(*a, **kw):
+        raise AssertionError("cloud fallback must not fire for a cancelled render")
+    monkeypatch.setattr(server, "hf_generate", no_cloud)
+
+    req = server.AnimateReq(file="src.png", quality="fast",
+                            allow_cloud_fallback=True)
+    jid = server.animate(req)["id"]
+    for _ in range(50):  # worker thread: wait for a terminal phase
+        j = jobs_mod.get(jid)
+        if j["phase"] in jobs_mod.TERMINAL:
+            break
+        time.sleep(0.1)
+    assert j["phase"] == "cancelled", f"expected cancelled, got {j['phase']} ({j['error']})"
+    assert j["error_code"] == jobs_mod.E_CANCELLED
+    assert jobs_mod.get_status(jid)["phase"] == "cancelled"
 
 
 def test_run_loop_observes_cancel_with_zero_completions(monkeypatch, tmp_path):

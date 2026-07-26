@@ -10,8 +10,10 @@ Nothing below may be promoted to `[x]` without naming the verification.
 
 ## P0 — Dependability (reliability 5 → 8)
 - [x] SQLite job database; states: queued / running / cancelled / done / failed
-      (studio/jobs.py: WAL, boot orphan-recovery, structured error codes;
-      exercised by studio/tests/test_p0.py)
+      (authoritative progress/lifecycle state, WAL, idempotent schema migration,
+      boot orphan-recovery, terminal-state monotonicity, structured error codes;
+      status.json is a best-effort compatibility export only; exercised by
+      studio/tests/test_state_authority.py and test_p0.py)
 - [~] Central GPU scheduler + VRAM lock — PARTIAL: a single `GPU_HEAVY` semaphore
       serializes heavy video/3D jobs. Image-generation jobs are outside that
       scheduler; backend-specific serialization has not been verified. There is

@@ -411,28 +411,17 @@ def ensure_backend(name: str, run_dir: Path = None, wait_s: int = 480) -> bool:
 
 
 def _status(run_dir: Path, **updates):
-    with LOCK:
-        f = run_dir / "status.json"
-        s = json.loads(f.read_text()) if f.exists() else {}
-        s.update(updates)
-        f.write_text(json.dumps(s, indent=1))
-    # mirror lifecycle into the durable job store
-    phase = updates.get("phase")
-    if phase:
-        jid = run_dir.name
-        if phase in ("generating", "grading"):
-            if jobs.get(jid) and jobs.get(jid)["phase"] == "queued":
-                jobs.set_phase(jid, "running")
-        elif phase == "done":
-            jobs.set_phase(jid, "done", result={k: v for k, v in s.items()
-                                                if k in ("final", "winner", "ue_asset",
-                                                         "video", "glb", "upscaled")})
-        elif phase == "failed":
-            code = s.get("error_code") or (
-                E_CENSORED if "blank frame" in (s.get("error") or "") else
-                E_JUDGE_REJECTED if "rejected by judge" in (s.get("error") or "") else
-                E_BACKEND_DOWN if "not answering" in (s.get("error") or "") else E_ENGINE)
-            jobs.set_phase(jid, "failed", s.get("error") or "unknown", code)
+    """SQLite is the single authoritative store of mutable job state — the
+    merge + lifecycle mirror happens in jobs.update_progress() in one locked
+    transaction. status.json is re-exported afterwards as a DERIVED, read-only
+    compatibility snapshot (humans running `ls runs/<id>/`, legacy tooling);
+    the server never reads it back for DB-known jobs."""
+    snap = jobs.update_progress(run_dir.name, **updates)
+    try:
+        with LOCK:
+            (run_dir / "status.json").write_text(json.dumps(snap, indent=1))
+    except OSError:
+        pass  # export is best-effort; the DB already holds the truth
 
 
 def _new_run(brief: str, model: str, kind: str, params: dict = None,
@@ -513,7 +502,8 @@ def _generate_one_inner(cand: dict, run_dir: Path, i: int, prompt: str, req: Run
         if dead_frame(run_dir / r["file"]):
             cand.update(state="done", score=0, kill=True, fix=DEAD_FRAME_MSG)
             return cand
-    v = safe_judge(run_dir / r["file"], json.loads((run_dir / "status.json").read_text())["brief"])
+    brief = (jobs.get_status(run_dir.name) or {}).get("brief", "")
+    v = safe_judge(run_dir / r["file"], brief)
     cand.update(state="done", score=v.get("score", 0), kill=v.get("kill", False),
                 fix=v.get("fix", ""))
     return cand
@@ -919,6 +909,13 @@ def animate(req: AnimateReq):
                 r = ltx_animate(src, req.motion, run_dir / "clip.mp4", req.duration)
             else:
                 r = wan_animate(src, req.motion, run_dir / "clip.mp4", req.duration)
+        if r.get("cancelled"):
+            # ltx/wan observed the Beast cancel flag mid-render: this is a
+            # cancellation, not an engine failure — and never a reason to
+            # spend cloud credits on a fallback
+            _status(run_dir, phase="cancelled", error="cancelled by request",
+                    candidates=[])
+            return
         if "error" in r and req.allow_cloud_fallback:
             r = hf_generate("seedance_2_0", req.motion, run_dir / "clip.mp4",
                             ["--start-image", str(src), "--duration", str(req.duration)])
@@ -1155,20 +1152,15 @@ def start_run(req: RunReq, idempotency_key: str = Header(None)):
 
 @app.get("/api/run/{run_id}")
 def run_status(run_id: str):
+    s = jobs.get_status(run_id)
+    if s is not None:
+        return s
+    # legacy runs that predate the SQLite-authoritative store (no DB row):
+    # serve their status.json read-only so old artifacts stay visible
     f = RUNS / run_id / "status.json"
-    if not f.exists():
-        j = jobs.get(run_id)
-        if j:
-            return {"id": run_id, "phase": j["phase"], "error": j["error"],
-                    "error_code": j["error_code"], "kind": j["kind"]}
-        return JSONResponse({"error": "not found"}, status_code=404)
-    s = json.loads(f.read_text())
-    j = jobs.get(run_id)
-    if j:
-        s["error_code"] = j["error_code"]
-        if j["phase"] == "cancelled":
-            s["phase"] = "cancelled"
-    return s
+    if f.exists():
+        return json.loads(f.read_text())
+    return JSONResponse({"error": "not found"}, status_code=404)
 
 
 @app.post("/api/job/{run_id}/cancel")
@@ -1223,10 +1215,10 @@ def events(run_id: str):
     def gen():
         last = None
         for _ in range(1800):  # cap at ~1 hour
-            f = RUNS / run_id / "status.json"
-            s = json.loads(f.read_text()) if f.exists() else {}
-            j = jobs.get(run_id) or {}
-            s["phase"] = "cancelled" if j.get("phase") == "cancelled" else s.get("phase")
+            s = jobs.get_status(run_id)  # single authoritative read
+            if s is None:  # legacy run with no DB row
+                f = RUNS / run_id / "status.json"
+                s = json.loads(f.read_text()) if f.exists() else {}
             snap = json.dumps(s)
             if snap != last:
                 last = snap
@@ -1239,13 +1231,21 @@ def events(run_id: str):
 
 @app.get("/api/runs")
 def list_runs():
-    out = []
-    for d in sorted(RUNS.iterdir(), reverse=True):
+    out, seen = [], set()
+    for r in jobs.recent(30):  # authoritative: DB-known jobs
+        s = jobs.get_status(r["id"]) or {}
+        seen.add(r["id"])
+        out.append({"id": r["id"], "brief": (s.get("brief") or r["brief"] or "")[:70],
+                    "phase": s.get("phase") or r["phase"],
+                    "kind": r["kind"] or "create"})
+    for d in sorted(RUNS.iterdir(), reverse=True):  # legacy pre-DB runs
         f = d / "status.json"
-        if f.exists():
-            s = json.loads(f.read_text())
-            out.append({"id": s.get("id", d.name), "brief": s.get("brief", "")[:70],
-                        "phase": s.get("phase"), "kind": s.get("kind", "create")})
+        if d.name in seen or not f.exists():
+            continue
+        s = json.loads(f.read_text())
+        out.append({"id": s.get("id", d.name), "brief": s.get("brief", "")[:70],
+                    "phase": s.get("phase"), "kind": s.get("kind", "create")})
+    out.sort(key=lambda r: r["id"], reverse=True)  # ids are timestamped
     return out[:30]
 
 

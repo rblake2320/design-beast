@@ -55,12 +55,22 @@ def init():
             idempotency_key TEXT UNIQUE,
             params TEXT,
             result TEXT,
+            progress TEXT,
             created REAL, started REAL, finished REAL
         );
         CREATE INDEX IF NOT EXISTS idx_jobs_phase ON jobs(phase);
         """)
+        _migrate()
         _db().commit()
     recover_orphans()
+
+
+def _migrate():
+    """Idempotent schema migration for DBs created before a column existed.
+    Caller holds _WRITE_LOCK."""
+    cols = {r["name"] for r in _db().execute("PRAGMA table_info(jobs)")}
+    if "progress" not in cols:
+        _db().execute("ALTER TABLE jobs ADD COLUMN progress TEXT")
 
 
 def recover_orphans():
@@ -115,9 +125,97 @@ def get(jid: str) -> dict | None:
     if not row:
         return None
     d = dict(row)
-    for k in ("params", "result"):
+    for k in ("params", "result", "progress"):
         d[k] = json.loads(d[k]) if d[k] else None
     return d
+
+
+def update_progress(jid: str, **updates) -> dict:
+    """THE single authoritative writer of mutable job state. Merges `updates`
+    into the row's progress JSON and mirrors coarse lifecycle (running/done/
+    failed/cancelled + timestamps, error codes, result) into the row columns —
+    one lock, one transaction, no second store. Returns the merged snapshot.
+    status.json on disk is a derived export written by the server AFTER this,
+    never read back."""
+    with _WRITE_LOCK:
+        row = _db().execute(
+            "SELECT progress, phase, cancel_requested FROM jobs WHERE id=?",
+            (jid,)).fetchone()
+        snap = json.loads(row["progress"]) if row and row["progress"] else {}
+        snap.update(updates)
+        if row is None:  # no such job — nothing durable to write to
+            return snap
+        # TERMINAL MONOTONICITY: once the row is done/failed/cancelled, later
+        # worker writes may add diagnostics to progress but can never change
+        # the outcome — the terminal phase is immutable.
+        if row["phase"] in TERMINAL:
+            snap["phase"] = row["phase"]
+            _db().execute("UPDATE jobs SET progress=? WHERE id=?",
+                          (json.dumps(snap), jid))
+            _db().commit()
+            return snap
+        phase = updates.get("phase")
+        # a racing 'done' loses to a cancel request that already landed.
+        # POLICY: 'failed' is deliberately NOT converted — a genuine failure
+        # that raced a cancel keeps its failure identity and error detail
+        # (more informative than 'cancelled'; interrupt-caused errors are
+        # already classified as cancelled by the backends' own cancel checks).
+        if phase == "done" and row["cancel_requested"]:
+            phase = "cancelled"
+            snap["phase"] = "cancelled"
+            snap.setdefault("error", "cancelled by request")
+        cols, vals = ["progress=?"], [json.dumps(snap)]
+        if phase in ("generating", "judging", "improving", "grading") \
+                and row["phase"] == "queued":
+            cols += ["phase=?", "started=?"]
+            vals += ["running", time.time()]
+        elif phase == "done":
+            result = {k: v for k, v in snap.items()
+                      if k in ("final", "winner", "ue_asset", "video", "glb",
+                               "upscaled")}
+            cols += ["phase=?", "finished=?", "result=?"]
+            vals += ["done", time.time(), json.dumps(result)]
+        elif phase == "failed":
+            err = snap.get("error") or "unknown"
+            code = snap.get("error_code") or (
+                E_CENSORED if "blank frame" in err else
+                E_JUDGE_REJECTED if "rejected by judge" in err else
+                E_BACKEND_DOWN if "not answering" in err else E_ENGINE)
+            cols += ["phase=?", "finished=?", "error=?", "error_code=?"]
+            vals += ["failed", time.time(), err[:500], code]
+        elif phase == "cancelled":
+            cols += ["phase=?", "finished=?", "error=?", "error_code=?"]
+            vals += ["cancelled", time.time(),
+                     (snap.get("error") or "cancelled by request")[:500],
+                     E_CANCELLED]
+        vals.append(jid)
+        _db().execute(f"UPDATE jobs SET {', '.join(cols)} WHERE id=?", vals)
+        _db().commit()
+    return snap
+
+
+def get_status(jid: str) -> dict | None:
+    """Authoritative merged status view: the progress snapshot overlaid with
+    the row's coarse truth. A terminal row phase (done/failed/cancelled) always
+    wins over a stale sub-phase — this is what makes restart recovery visible
+    to clients without any status.json involvement."""
+    j = get(jid)
+    if not j:
+        return None
+    s = dict(j["progress"] or {})
+    s.setdefault("id", jid)
+    s.setdefault("kind", j["kind"])
+    if j["brief"]:
+        s.setdefault("brief", j["brief"])
+    s["error_code"] = j["error_code"]
+    if j["phase"] in TERMINAL:
+        # the row's terminal phase AND error win UNCONDITIONALLY — even over a
+        # different terminal phase or a later straggler error written into
+        # mutable progress (a terminal outcome is immutable, error included)
+        s["phase"] = j["phase"]
+        if j["error"]:
+            s["error"] = j["error"]
+    return s
 
 
 def request_cancel(jid: str) -> bool:
