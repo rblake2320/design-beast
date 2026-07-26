@@ -206,14 +206,21 @@ def upscale(src: Path, dst: Path) -> bool:
             pass
         dst.unlink(missing_ok=True)
     magick = shutil.which("magick") or shutil.which("convert")
-    if not magick:
-        return False  # no upscaler on this node — winner ships at native res
-    try:
-        subprocess.run([magick, str(src), "-filter", "Lanczos", "-resize", "200%",
-                        str(dst)], capture_output=True, timeout=120)
+    if magick:
+        try:
+            subprocess.run([magick, str(src), "-filter", "Lanczos", "-resize",
+                            "200%", str(dst)], capture_output=True, timeout=120)
+            if dst.exists():
+                return True
+        except Exception:  # noqa: BLE001 — fall through to PIL
+            pass
+    try:  # portable 2x Lanczos via Pillow — no external binaries needed
+        from PIL import Image
+        img = Image.open(src)
+        img.resize((img.width * 2, img.height * 2), Image.LANCZOS).save(dst, "PNG")
+        return dst.exists()
     except Exception:  # noqa: BLE001
         return False
-    return dst.exists()
 
 
 def ensure_comfy(timeout_s: int = 120) -> bool:
@@ -401,9 +408,18 @@ def grade(src: Path, dst: Path):
                            capture_output=True, timeout=120)
             if dst.exists():
                 return
-        except Exception:  # noqa: BLE001 — fall through to copy
+        except Exception:  # noqa: BLE001 — fall through to PIL
             pass
-    shutil.copy2(src, dst)
+    try:  # portable grade: slight desaturation + gentle level stretch via Pillow
+        from PIL import Image, ImageEnhance
+        img = Image.open(src).convert("RGB")
+        img = ImageEnhance.Color(img).enhance(0.93)
+        lo, hi = round(255 * 0.01), round(255 * 0.995)
+        img = img.point(lambda v: max(0, min(255, round((v - lo) * 255 / (hi - lo)))))
+        img.save(dst, "PNG")
+        return
+    except Exception:  # noqa: BLE001 — last resort: ship ungraded
+        shutil.copy2(src, dst)
 
 
 def ollama_json(model: str, prompt: str, timeout: int = 240) -> dict:
