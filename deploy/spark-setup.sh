@@ -35,7 +35,7 @@ if [ ! -f beast.config.json ]; then
   "esrgan": "",
   "blender": "/usr/bin/blender",
   "judge_model": "qwen3-vl:8b",
-  "expand_models": "gemma3:latest"
+  "expand_models": "qwen3.6:27b,gemma3:latest"
 }
 JSON
   echo "wrote beast.config.json (Linux defaults; UE features auto-disabled)"
@@ -44,7 +44,8 @@ fi
 echo "== [4/7] ollama judge + expander models =="
 command -v ollama >/dev/null || { echo "ollama missing — install it first"; exit 1; }
 ollama pull qwen3-vl:8b
-ollama list | grep -q "qwen3.6:27b\|gemma3" || ollama pull gemma3:latest
+ollama pull qwen3.6:27b
+ollama pull gemma3:latest
 
 echo "== [5/7] kokoro voice models =="
 cd ~/beast/models/kokoro
