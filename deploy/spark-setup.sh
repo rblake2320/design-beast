@@ -34,7 +34,8 @@ if [ ! -f beast.config.json ]; then
   "kokoro_dir": "~/beast/models/kokoro",
   "esrgan": "",
   "blender": "/usr/bin/blender",
-  "judge_model": "qwen3-vl:8b"
+  "judge_model": "qwen3-vl:8b",
+  "expand_models": "gemma3:latest"
 }
 JSON
   echo "wrote beast.config.json (Linux defaults; UE features auto-disabled)"
@@ -74,7 +75,7 @@ chmod 600 "$CREDS_FILE" 2>/dev/null || true
 echo "$NGC_API_KEY" | docker login nvcr.io --username '$oauthtoken' --password-stdin
 trap 'docker logout nvcr.io >/dev/null 2>&1 || true' EXIT
 for pair in "nim-flux:8018:nvcr.io/nim/black-forest-labs/flux.1-schnell@sha256:6edcdd428fd524dde76090f3a0797ae76e0b593d5445702e2eaf9bc20c375042" \
-            "nim-kontext:8019:nvcr.io/nim/black-forest-labs/flux.1-kontext-dev:latest"; do
+            "nim-kontext:8019:nvcr.io/nim/black-forest-labs/flux.1-kontext-dev@sha256:5cf4854fde49b0646a6807fcc616b8b54afc38f9936db442a98e6cba3c72f6e8"; do
   name="${pair%%:*}"; rest="${pair#*:}"; port="${rest%%:*}"; img="${rest#*:}"
   docker image inspect "$img" >/dev/null 2>&1 || docker pull "$img"
   docker container inspect "$name" >/dev/null 2>&1 || docker create --name "$name" \
