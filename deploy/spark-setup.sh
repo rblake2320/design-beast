@@ -47,8 +47,18 @@ ollama list | grep -q "qwen3.6:27b\|gemma3" || ollama pull gemma3:latest
 
 echo "== [5/7] kokoro voice models =="
 cd ~/beast/models/kokoro
-[ -f kokoro-v1.0.onnx ] || curl -L -O https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx
-[ -f voices-v1.0.bin ] || curl -L -O https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin
+if [ ! -f kokoro-v1.0.onnx ] || [ "$(stat -c %s kokoro-v1.0.onnx)" -lt 300000000 ]; then
+  curl -fL --retry 5 --retry-all-errors -o kokoro-v1.0.onnx.part \
+    https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx
+  [ "$(stat -c %s kokoro-v1.0.onnx.part)" -ge 300000000 ]
+  mv -f kokoro-v1.0.onnx.part kokoro-v1.0.onnx
+fi
+if ! "$VENV_DIR/bin/python" -c 'import sys,zipfile; sys.exit(0 if zipfile.is_zipfile("voices-v1.0.bin") else 1)'; then
+  curl -fL --retry 5 --retry-all-errors -o voices-v1.0.bin.part \
+    https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin
+  "$VENV_DIR/bin/python" -c 'import zipfile; p="voices-v1.0.bin.part"; assert zipfile.is_zipfile(p); z=zipfile.ZipFile(p); assert z.testzip() is None'
+  mv -f voices-v1.0.bin.part voices-v1.0.bin
+fi
 cd - >/dev/null
 
 echo "== [6/7] NIM containers (arm64 — verified multi-arch) =="
