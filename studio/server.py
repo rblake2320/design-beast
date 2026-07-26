@@ -838,6 +838,9 @@ def animate(req: AnimateReq):
 
 COMFY_DIR = Path(r"D:\ai\comfyui")
 COMFY_PORT = 8188
+UE58_EXE = Path(r"D:\DEpic GamesUE_5.8\UE_5.8\Engine\Binaries\Win64\UnrealEditor.exe")
+BEASTLAB = r"D:\Epic Games\Projects\BeastLab\BeastLab.uproject"
+UE_MCP_PORT = 8000
 
 
 def _port_pid(port: int):
@@ -875,6 +878,16 @@ def backends():
             ready = False
     out.append({"name": "comfyui", "state": "running" if pid else "exited",
                 "ready": ready, "port": COMFY_PORT})
+    upid = _port_pid(UE_MCP_PORT)
+    uready = False
+    if upid:
+        try:  # MCP endpoint answers POST; 405/406 on GET still proves liveness
+            uready = requests.get(f"http://localhost:{UE_MCP_PORT}/mcp",
+                                  timeout=2).status_code in (200, 405, 406)
+        except Exception:  # noqa: BLE001
+            uready = False
+    out.append({"name": "unreal-mcp", "state": "running" if upid else "exited",
+                "ready": uready, "port": UE_MCP_PORT})
     return out
 
 
@@ -887,6 +900,18 @@ class BackendReq(BaseModel):
 def backend(req: BackendReq):
     if req.action not in ("start", "stop"):
         return JSONResponse({"error": "unknown action"}, 400)
+    if req.name == "unreal-mcp":
+        pid = _port_pid(UE_MCP_PORT)
+        if req.action == "start" and not pid:
+            subprocess.Popen([str(UE58_EXE), BEASTLAB, "-nullrhi", "-nosplash",
+                              "-unattended", "-ExecCmds=ModelContextProtocol.StartServer"],
+                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                             creationflags=0x00000008)
+        elif req.action == "stop" and pid:
+            subprocess.run(["taskkill", "/F", "/PID", str(pid)], capture_output=True,
+                           timeout=30)
+        return {"ok": True,
+                "note": "engine boots ~1-2 min" if req.action == "start" else ""}
     if req.name == "comfyui":
         pid = _port_pid(COMFY_PORT)
         if req.action == "start" and not pid:
