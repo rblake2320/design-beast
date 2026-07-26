@@ -59,6 +59,14 @@ def _new_job(brief="cancel test") -> str:
     return jid
 
 
+def _delete_job(jid: str):
+    db = jobs_mod._db()
+    db.execute("DELETE FROM gpu_leases WHERE holder = ? OR holder LIKE ?",
+               (jid, f"{jid}:%"))
+    db.execute("DELETE FROM jobs WHERE id = ?", (jid,))
+    db.commit()
+
+
 def _owned(run_id, *pids):
     server._COMFY_PROMPTS[run_id] = set(pids)
 
@@ -257,3 +265,51 @@ def test_run_loop_observes_cancel_with_zero_completions(monkeypatch, tmp_path):
     assert jobs_mod.get(jid)["phase"] == "cancelled"
     assert elapsed < 2.5, (f"run loop took {elapsed:.1f}s — cancel was not observed "
                            "until a candidate completed")
+
+
+def test_backend_warmup_observes_cancel_within_one_poll(monkeypatch, tmp_path):
+    """A job cancelled while a real container is warming must not remain stuck
+    in generating until the full backend timeout expires."""
+    from types import SimpleNamespace
+    import threading
+
+    jid = _new_job("cancel backend warmup")
+    run_dir = tmp_path / jid
+    run_dir.mkdir()
+    monkeypatch.setattr(server.requests, "get",
+                        lambda *a, **kw: SimpleNamespace(ok=False))
+    monkeypatch.setattr(server.subprocess, "run",
+                        lambda *a, **kw: SimpleNamespace(returncode=0))
+    threading.Timer(0.1, jobs_mod.request_cancel, args=(jid,)).start()
+
+    try:
+        t0 = time.time()
+        try:
+            server.ensure_backend("nim-kontext", run_dir, wait_s=30)
+            assert False, "cancelled warmup returned normally"
+        except jobs_mod.JobCancelled:
+            pass
+        assert time.time() - t0 < 2.0
+    finally:
+        _delete_job(jid)
+
+
+def test_missing_backend_container_fails_immediately(monkeypatch, tmp_path):
+    """A container that was never provisioned is not a warmup; fail fast
+    instead of presenting eight minutes of misleading progress."""
+    from types import SimpleNamespace
+
+    jid = _new_job("missing backend")
+    run_dir = tmp_path / jid
+    run_dir.mkdir()
+    monkeypatch.setattr(server.requests, "get",
+                        lambda *a, **kw: SimpleNamespace(ok=False))
+    monkeypatch.setattr(server.subprocess, "run",
+                        lambda *a, **kw: SimpleNamespace(returncode=1))
+
+    try:
+        t0 = time.time()
+        assert server.ensure_backend("nim-kontext", run_dir, wait_s=30) is False
+        assert time.time() - t0 < 1.0
+    finally:
+        _delete_job(jid)

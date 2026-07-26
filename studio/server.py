@@ -436,22 +436,37 @@ def ensure_backend(name: str, run_dir: Path = None, wait_s: int = 480) -> bool:
     port = BACKENDS.get(name)
     if not port:
         return False
+    jid = run_dir.name if run_dir else None
+
+    def checkpoint():
+        if jid:
+            jobs.checkpoint(jid)
+
     def ready():
         try:
             return requests.get(f"http://localhost:{port}/v1/health/ready", timeout=2).ok
         except Exception:  # noqa: BLE001
             return False
+
+    checkpoint()
     if ready():
         return True
-    subprocess.run(["docker", "start", name], capture_output=True, timeout=60)
+    started = subprocess.run(["docker", "start", name], capture_output=True, timeout=60)
+    if started.returncode != 0:
+        return False
     t0 = time.time()
     while time.time() - t0 < wait_s:
+        checkpoint()
         if run_dir:
             _status(run_dir, phase="generating", candidates=[
                 {"i": 1, "state": f"starting {name} — warmup ~{max(0, int((240 - (time.time()-t0))/60))+1} min"}])
         if ready():
             return True
-        time.sleep(8)
+        # Poll cancellation/deadline every second even though backend readiness
+        # only needs an eight-second cadence.
+        for _ in range(8):
+            checkpoint()
+            time.sleep(1)
     return False
 
 
