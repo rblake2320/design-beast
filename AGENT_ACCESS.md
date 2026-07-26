@@ -39,7 +39,7 @@ Smoke test: curl.exe -sS http://127.0.0.1:8787/api/recipes
 | `POST /api/run` | `brief` (required), `prompt`, `variations[]`, `model` (default `local:flux.1-schnell`), `aspect_ratio` (`1:1\|16:9\|9:16\|4:3\|3:4`), `reference` (Higgsfield models ONLY — 400 error with local/nim models) |
 | `POST /api/refine` | `file`, `instruction`, `brief`, `allow_cloud_fallback` (default false) |
 | `POST /api/animate` | `file`, `motion`, `duration` (3\|5), `quality` (`"fast"`=Wan silent ~3min · `"cinema"`=LTX-2.3 with generated audio ~25min), `allow_cloud_fallback` |
-| `POST /api/to3d` | `file` → `model.glb` (TRELLIS auto-starts, warmup ~5min) |
+| `POST /api/to3d` | `file`, `allow_hosted_fallback` (default false — true lets the image LEAVE this machine to NVIDIA's hosted API) → `model.glb` (TRELLIS auto-starts, warmup ~5min) |
 | `POST /api/to_ue` | `file:"runs/<id>/model.glb"` → StaticMesh in the RouteRush UE project |
 
 **Poll responses** — success and failure shapes:
@@ -61,9 +61,10 @@ Models for `/api/run`: `local:flux.1-schnell` (default, ~7s/img), `local:flux.2-
 
 ## 3 · Credit-safety & operational rules
 
-1. **Money:** anything Higgsfield spends the human's credits. The default path is
-   100% local and free. Never send `allow_cloud_fallback:true` or pick a Higgsfield
-   model unless the human explicitly asked for it.
+1. **Money & privacy:** the default path is 100% local and free — nothing leaves the
+   machine and nothing spends credits unless YOU opt in. `allow_cloud_fallback:true`
+   spends the human's Higgsfield credits; `allow_hosted_fallback:true` (to3d) sends
+   the image to NVIDIA's hosted API. Send neither unless the human explicitly asked.
 2. **Judge verdicts, operationally:**
    - `kill:true` → discard that candidate; never deliver it.
    - `score ≤ 3` → not deliverable; the run loop already refuses such winners.
