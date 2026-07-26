@@ -28,7 +28,7 @@ from pydantic import BaseModel, Field
 
 import jobs
 from jobs import (E_BACKEND_DOWN, E_CANCELLED, E_CENSORED, E_ENGINE,
-                  E_JUDGE_REJECTED, E_VALIDATION, JobCancelled)
+                  E_JUDGE_REJECTED, E_VALIDATION, JobCancelled, JobTimeout)
 
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
@@ -455,7 +455,16 @@ class RunReq(BaseModel):
 def _generate_one(run_dir: Path, i: int, prompt: str, req: RunReq) -> dict:
     cand = {"i": i, "prompt": prompt, "state": "generating"}
     try:
-        return _generate_one_inner(cand, run_dir, i, prompt, req)
+        # 'light' GPU class: bounded concurrency, fully excluded while a heavy
+        # (video/3D) lease is held — one lease per candidate slot
+        with jobs.gpu_lease(run_dir.name, "light", slot=f"c{i}"):
+            return _generate_one_inner(cand, run_dir, i, prompt, req)
+    except JobCancelled:
+        cand.update(state="cancelled")
+        return cand
+    except JobTimeout:
+        cand.update(state="failed", error="job deadline exceeded")
+        return cand
     except Exception as e:  # noqa: BLE001 — one bad candidate must never kill the run
         cand.update(state="failed", error=f"{type(e).__name__}: {str(e)[:200]}")
         return cand
@@ -514,14 +523,26 @@ def _run_loop(run_dir: Path, req: RunReq):
         _run_loop_inner(run_dir, req)
     except JobCancelled:
         _status(run_dir, phase="cancelled", error="cancelled by request")
+    except JobTimeout:
+        _status(run_dir, phase="failed",
+                error="exceeded the server-enforced deadline for this job kind")
     except Exception as e:  # noqa: BLE001 — a run must always reach a terminal phase
         _status(run_dir, phase="failed", error=f"{type(e).__name__}: {str(e)[:250]}")
 
 
 def _run_loop_inner(run_dir: Path, req: RunReq):
-    if req.model.startswith("local:"):
-        backend, _ = LOCAL_IMAGE_MODELS.get(req.model, ("nim-flux", 8018))
-        if not ensure_backend(backend, run_dir):
+    if req.model.startswith(("local:", "comfy:")):
+        # container start/warmup consumes VRAM — it must hold a light lease so
+        # it can never overlap a heavy render (dedicated warmup slot; the
+        # candidates then acquire their own slots normally)
+        with jobs.gpu_lease(run_dir.name, "light", slot="warmup"):
+            if req.model.startswith("local:"):
+                backend, _ = LOCAL_IMAGE_MODELS.get(req.model, ("nim-flux", 8018))
+                warmed = ensure_backend(backend, run_dir)
+            else:
+                backend = "ComfyUI"
+                warmed = ensure_comfy()
+        if not warmed:
             _status(run_dir, phase="failed",
                     error=f"{backend} would not start/warm — check Backends panel")
             return
@@ -541,8 +562,8 @@ def _run_loop_inner(run_dir: Path, req: RunReq):
         done_now, pending = futures_wait(pending, timeout=1.0,
                                          return_when=FIRST_COMPLETED)
         done_futs |= done_now
-        if jobs.cancelled(run_dir.name):
-            cancelled_early = True
+        if jobs.cancelled(run_dir.name) or jobs.deadline_exceeded(run_dir.name):
+            cancelled_early = True  # checkpoint below raises the precise reason
             break
     # on cancel: don't wait for in-flight candidates (they exit at their own
     # cancellation checks); unstarted ones are dropped before they run
@@ -564,14 +585,17 @@ def _run_loop_inner(run_dir: Path, req: RunReq):
     # stop on no improvement or score >= 8. Zero cost, fully local.
     if winner.get("score", 0) < 8 and winner.get("fix"):
         _status(run_dir, phase="improving", candidates=cands, winner=winner["i"])
-        if ensure_backend("nim-kontext", run_dir):
+        with jobs.gpu_lease(run_dir.name, "light", slot="improve-warm"):
+            kontext_ready = ensure_backend("nim-kontext", run_dir)
+        if kontext_ready:
             brief = req.brief
             for it in (1, 2):
                 jobs.checkpoint(run_dir.name)
                 improved = run_dir / f"improved{it}.png"
                 instruction = (f"{winner['fix']} Keep the same subject, framing, "
                                f"composition and style — change nothing else.")
-                r = kontext_local(run_dir / winner["file"], instruction, improved)
+                with jobs.gpu_lease(run_dir.name, "light", slot=f"improve{it}"):
+                    r = kontext_local(run_dir / winner["file"], instruction, improved)
                 if "error" in r or dead_frame(improved):
                     break
                 v = safe_judge(improved, brief)
@@ -706,9 +730,21 @@ def refine(req: RefineReq):
     def work():
         _status(run_dir, phase="generating", candidates=[])
         # local Kontext first (free); Higgsfield nano banana only if explicitly allowed
-        ensure_backend("nim-kontext", run_dir)
-        r = kontext_local(src, req.instruction, run_dir / "cand1.png")
-        if "error" in r and req.allow_cloud_fallback:
+        try:
+            with jobs.gpu_lease(run_dir.name, "light"):
+                ensure_backend("nim-kontext", run_dir)
+                r = kontext_local(src, req.instruction, run_dir / "cand1.png")
+        except JobCancelled:
+            _status(run_dir, phase="cancelled", error="cancelled by request",
+                    candidates=[])
+            return
+        except JobTimeout:
+            _status(run_dir, phase="failed",
+                    error="exceeded the server-enforced deadline", candidates=[])
+            return
+        # cloud fallback: never for a timed-out job (no cloud-credit retries)
+        if "error" in r and req.allow_cloud_fallback \
+                and not jobs.deadline_exceeded(run_dir.name):
             r = hf_generate("nano_banana_2", req.instruction, run_dir / "cand1.png",
                             ["--image", str(src)])
             if "error" not in r:
@@ -903,12 +939,22 @@ def animate(req: AnimateReq):
     def work():
         _status(run_dir, phase="generating", candidates=[
             {"i": 1, "state": f"{engine}: rendering (cinema ≈ 20-30 min, fast ≈ 2-4 min)"}])
-        with jobs.GPU_HEAVY:  # one heavy video/3D job at a time
-            jobs.checkpoint(run_dir.name)
-            if req.quality == "cinema":
-                r = ltx_animate(src, req.motion, run_dir / "clip.mp4", req.duration)
-            else:
-                r = wan_animate(src, req.motion, run_dir / "clip.mp4", req.duration)
+        try:
+            # 'heavy' GPU class: exclusive — waits out light image leases too;
+            # the wait itself is cancellation- and deadline-aware
+            with jobs.gpu_lease(run_dir.name, "heavy"):
+                if req.quality == "cinema":
+                    r = ltx_animate(src, req.motion, run_dir / "clip.mp4", req.duration)
+                else:
+                    r = wan_animate(src, req.motion, run_dir / "clip.mp4", req.duration)
+        except JobCancelled:
+            _status(run_dir, phase="cancelled", error="cancelled by request",
+                    candidates=[])
+            return
+        except JobTimeout:
+            _status(run_dir, phase="failed",
+                    error="exceeded the server-enforced deadline", candidates=[])
+            return
         if r.get("cancelled"):
             # ltx/wan observed the Beast cancel flag mid-render: this is a
             # cancellation, not an engine failure — and never a reason to
@@ -916,7 +962,9 @@ def animate(req: AnimateReq):
             _status(run_dir, phase="cancelled", error="cancelled by request",
                     candidates=[])
             return
-        if "error" in r and req.allow_cloud_fallback:
+        # cloud fallback: never for a timed-out job (no cloud-credit retries)
+        if "error" in r and req.allow_cloud_fallback \
+                and not jobs.deadline_exceeded(run_dir.name):
             r = hf_generate("seedance_2_0", req.motion, run_dir / "clip.mp4",
                             ["--start-image", str(src), "--duration", str(req.duration)])
         if "error" in r:
@@ -1043,10 +1091,18 @@ def to_3d(req: To3DReq):
 
     def work():
         _status(run_dir, phase="generating", candidates=[])
-        with jobs.GPU_HEAVY:
-            jobs.checkpoint(run_dir.name)
-            ensure_backend("nim-trellis", run_dir)
-            r = trellis_3d(src, run_dir / "model.glb", req.allow_hosted_fallback)
+        try:
+            with jobs.gpu_lease(run_dir.name, "heavy"):
+                ensure_backend("nim-trellis", run_dir)
+                r = trellis_3d(src, run_dir / "model.glb", req.allow_hosted_fallback)
+        except JobCancelled:
+            _status(run_dir, phase="cancelled", error="cancelled by request",
+                    candidates=[])
+            return
+        except JobTimeout:
+            _status(run_dir, phase="failed",
+                    error="exceeded the server-enforced deadline", candidates=[])
+            return
         if "error" in r:
             _status(run_dir, phase="failed", error=r["error"], candidates=[])
             return
