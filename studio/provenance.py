@@ -86,4 +86,3 @@ def write_manifest(
     temp.write_text(json.dumps(manifest, indent=2, sort_keys=True), encoding="utf-8")
     os.replace(temp, target)
     return target
-
