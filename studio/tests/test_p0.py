@@ -1,17 +1,34 @@
 """P0 integration tests — run against a live Studio server (localhost:8787).
 
-    cd design-beast && python -m pytest studio/tests/test_p0.py -q
+MARKED live_gpu: the idempotency/cancel/retry tests submit REAL /api/run jobs
+that consume GPU time. Excluded from the default suite (pytest.ini) — run
+intentionally with:
 
-GPU-free: covers validation, idempotency, lifecycle metadata, cancel/retry rules,
-and health. Restart-recovery is exercised by scripts (kills the server) — see
-ROADMAP P0 notes; it is verified manually: orphaned running jobs must become
-failed/INTERNAL with 'server restarted mid-job'.
+    cd design-beast && python -m pytest -m live_gpu -q
+
+Never run alongside benchmarks or demos: the spawned jobs contend for the GPU
+and contaminate timings (this bit us on 2026-07-26). Every spawned job is
+cancelled in cleanup so nothing is left rendering after the suite exits.
+
+Restart-recovery is exercised by scripts (kills the server) — verified
+manually: orphaned running jobs must become failed/INTERNAL.
 """
 import uuid
 
+import pytest
 import requests
 
+pytestmark = pytest.mark.live_gpu
+
 B = "http://127.0.0.1:8787"
+
+
+def _cancel(job_id: str):
+    """Best-effort cleanup so no test-spawned job keeps the GPU busy."""
+    try:
+        requests.post(f"{B}/api/job/{job_id}/cancel", timeout=10)
+    except requests.RequestException:
+        pass
 
 
 def test_health():
@@ -65,10 +82,16 @@ def test_idempotency_and_cancel_and_retry_rules():
             break
         time.sleep(3)
     r = requests.post(f"{B}/api/job/{a['id']}/retry", timeout=15)
-    if s.get("phase") == "done":
-        assert r.status_code == 400  # done jobs are not retryable
-    else:
-        assert r.status_code == 200 and "id" in r.json()
+    try:
+        if s.get("phase") == "done":
+            assert r.status_code == 400  # done jobs are not retryable
+        else:
+            assert r.status_code == 200 and "id" in r.json()
+    finally:
+        # the retry spawns a REAL generation job — never leave it rendering
+        if r.status_code == 200 and "id" in r.json():
+            _cancel(r.json()["id"])
+        _cancel(a["id"])
 
 
 def test_unknown_job_404():
