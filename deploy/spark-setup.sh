@@ -85,6 +85,19 @@ for pair in "nim-flux:8018:nvcr.io/nim/black-forest-labs/flux.1-schnell@sha256:6
     -p "127.0.0.1:$port":8000 -v ~/beast/nim-cache:/opt/nim/.cache/ "$img"
   docker update --restart unless-stopped "$name" >/dev/null
 done
+
+# TRELLIS is deliberately on-demand: its image-capable profile cannot share a
+# 128 GB Spark with the always-warm FLUX NIMs. Beast stops the image NIMs before
+# starting it, and stops TRELLIS before bringing an image NIM back.
+trellis_img="nvcr.io/nim/microsoft/trellis@sha256:fe31904b816a1e1a91764a82e65b33908ab6643bb234d1807be5bf31d22b10b7"
+trellis_profile="c4ac2b36251be5c1cc3e6792ede219646c2c6dd83b18682d7521c318db8630a8" # large:image
+docker image inspect "$trellis_img" >/dev/null 2>&1 || docker pull "$trellis_img"
+docker container inspect nim-trellis >/dev/null 2>&1 || docker create --name nim-trellis \
+  --restart no --gpus all --ipc=host --shm-size=8g \
+  -e NGC_API_KEY="$NGC_API_KEY" -e HF_TOKEN="$HF_TOKEN" \
+  -e NIM_MODEL_PROFILE="$trellis_profile" \
+  -p 127.0.0.1:8017:8000 -v ~/beast/nim-cache:/opt/nim/.cache/ "$trellis_img"
+docker update --restart no nim-trellis >/dev/null
 docker logout nvcr.io >/dev/null
 trap - EXIT
 echo "created (not started) — start from the Studio Backends panel or: docker start nim-flux"

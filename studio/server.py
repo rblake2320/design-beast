@@ -46,6 +46,7 @@ OLLAMA = _cfg_early.get("ollama_url")
 TRELLIS_LOCAL = "http://localhost:8017/v1/infer"   # docker -p 8017:8000
 FLUX_LOCAL = "http://localhost:8018/v1/infer"      # docker -p 8018:8000
 BACKENDS = {"nim-trellis": 8017, "nim-flux": 8018, "nim-kontext": 8019, "nim-flux2": 8020}
+IMAGE_NIM_BACKENDS = ("nim-flux", "nim-kontext", "nim-flux2")
 LOCAL_IMAGE_MODELS = {"local:flux.1-schnell": ("nim-flux", 8018),
                       "local:flux.2-klein": ("nim-flux2", 8020)}
 KONTEXT_LOCAL = "http://localhost:8019/v1/infer"
@@ -432,7 +433,13 @@ def ollama_json(model: str, prompt: str, timeout: int = 240) -> dict:
 
 
 def ensure_backend(name: str, run_dir: Path = None, wait_s: int = 480) -> bool:
-    """Start a NIM container if needed and wait until ready. Surfaces progress."""
+    """Start a NIM container if needed and wait until ready. Surfaces progress.
+
+    TRELLIS and image NIMs do not coexist safely on unified-memory nodes. A
+    ready target is never disturbed; before a cold start, stop only running
+    containers in the conflicting class. Missing optional peers are benign,
+    but failure to stop a running peer aborts rather than risking an OOM.
+    """
     port = BACKENDS.get(name)
     if not port:
         return False
@@ -451,6 +458,26 @@ def ensure_backend(name: str, run_dir: Path = None, wait_s: int = 480) -> bool:
     checkpoint()
     if ready():
         return True
+
+    conflicts = IMAGE_NIM_BACKENDS if name == "nim-trellis" else \
+        (("nim-trellis",) if name in IMAGE_NIM_BACKENDS else ())
+    for conflict in conflicts:
+        checkpoint()
+        inspected = subprocess.run(
+            ["docker", "inspect", "-f", "{{.State.Running}}", conflict],
+            capture_output=True, text=True, timeout=30)
+        checkpoint()
+        # A container that was never provisioned needs no action.
+        if inspected.returncode != 0:
+            continue
+        if (getattr(inspected, "stdout", "") or "").strip().lower() != "true":
+            continue
+        stopped = subprocess.run(
+            ["docker", "stop", conflict], capture_output=True, timeout=60)
+        checkpoint()
+        if stopped.returncode != 0:
+            return False
+
     started = subprocess.run(["docker", "start", name], capture_output=True, timeout=60)
     if started.returncode != 0:
         return False
