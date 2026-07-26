@@ -413,6 +413,37 @@ def _run_loop_inner(run_dir: Path, req: RunReq):
                            "no candidate scored above 3/10 — rework the prompt"))
         return
     winner = max(done, key=lambda c: c["score"])
+
+    # ---- P2: automatic judge-driven improvement pass ----
+    # If the winner is imperfect and the judge left a fix note, apply it via
+    # local Kontext, re-judge, and keep the better image. Max 2 iterations,
+    # stop on no improvement or score >= 8. Zero cost, fully local.
+    if winner.get("score", 0) < 8 and winner.get("fix"):
+        _status(run_dir, phase="improving", candidates=cands, winner=winner["i"])
+        if ensure_backend("nim-kontext", run_dir):
+            brief = req.brief
+            for it in (1, 2):
+                jobs.checkpoint(run_dir.name)
+                improved = run_dir / f"improved{it}.png"
+                instruction = (f"{winner['fix']} Keep the same subject, framing, "
+                               f"composition and style — change nothing else.")
+                r = kontext_local(run_dir / winner["file"], instruction, improved)
+                if "error" in r or dead_frame(improved):
+                    break
+                v = safe_judge(improved, brief)
+                new = {"i": 90 + it, "state": "done", "file": improved.name,
+                       "score": v.get("score", 0), "kill": v.get("kill", False),
+                       "fix": v.get("fix", ""), "auto_improved": True}
+                cands.append(new)
+                if not new["kill"] and new["score"] > winner["score"]:
+                    winner = new
+                    _status(run_dir, phase="improving", candidates=cands,
+                            winner=winner["i"])
+                    if winner["score"] >= 8:
+                        break
+                else:
+                    break  # no improvement — keep the original winner
+
     _status(run_dir, phase="grading", candidates=cands, winner=winner["i"])
     src = run_dir / winner["file"]
     up = run_dir / "upscaled.png"
