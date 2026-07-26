@@ -421,6 +421,19 @@ def animate(req: AnimateReq):
     return {"id": run_dir.name}
 
 
+COMFY_DIR = Path(r"D:\ai\comfyui")
+COMFY_PORT = 8188
+
+
+def _port_pid(port: int):
+    out = subprocess.run(["netstat", "-ano"], capture_output=True, text=True,
+                         timeout=30).stdout
+    for line in out.splitlines():
+        if f":{port}" in line and "LISTENING" in line:
+            return int(line.split()[-1])
+    return None
+
+
 @app.get("/api/backends")
 def backends():
     ps = subprocess.run(["docker", "ps", "-a", "--format", "{{.Names}}\t{{.State}}"],
@@ -437,6 +450,16 @@ def backends():
             except Exception:  # noqa: BLE001 — warming up
                 ready = False
         out.append({"name": name, "state": state, "ready": ready, "port": port})
+    pid = _port_pid(COMFY_PORT)
+    ready = False
+    if pid:
+        try:
+            ready = requests.get(f"http://localhost:{COMFY_PORT}/system_stats",
+                                 timeout=2).ok
+        except Exception:  # noqa: BLE001
+            ready = False
+    out.append({"name": "comfyui", "state": "running" if pid else "exited",
+                "ready": ready, "port": COMFY_PORT})
     return out
 
 
@@ -447,8 +470,21 @@ class BackendReq(BaseModel):
 
 @app.post("/api/backend")
 def backend(req: BackendReq):
-    if req.name not in BACKENDS or req.action not in ("start", "stop"):
-        return JSONResponse({"error": "unknown backend or action"}, 400)
+    if req.action not in ("start", "stop"):
+        return JSONResponse({"error": "unknown action"}, 400)
+    if req.name == "comfyui":
+        pid = _port_pid(COMFY_PORT)
+        if req.action == "start" and not pid:
+            subprocess.Popen([str(COMFY_DIR / "venv/Scripts/python.exe"), "main.py",
+                              "--port", str(COMFY_PORT)], cwd=COMFY_DIR,
+                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                             creationflags=0x00000008)  # DETACHED_PROCESS
+        elif req.action == "stop" and pid:
+            subprocess.run(["taskkill", "/F", "/PID", str(pid)], capture_output=True,
+                           timeout=30)
+        return {"ok": True, "note": "loads models on demand" if req.action == "start" else ""}
+    if req.name not in BACKENDS:
+        return JSONResponse({"error": "unknown backend"}, 400)
     r = subprocess.run(["docker", req.action, req.name],
                        capture_output=True, text=True, timeout=120)
     if r.returncode != 0:
