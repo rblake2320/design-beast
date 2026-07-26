@@ -290,7 +290,8 @@ def _status(run_dir: Path, **updates):
 
 
 def _new_run(brief: str, model: str, kind: str) -> Path:
-    run_dir = RUNS / time.strftime("%Y%m%d_%H%M%S")
+    import uuid
+    run_dir = RUNS / f"{time.strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:4]}"
     run_dir.mkdir()
     _status(run_dir, id=run_dir.name, brief=brief, model=model, kind=kind,
             phase="queued")
@@ -303,9 +304,9 @@ class RunReq(BaseModel):
     brief: str
     prompt: str = ""            # expanded prompt; falls back to brief
     variations: list[str] = []
-    model: str = "gpt_image_2"
+    model: str = "local:flux.1-schnell"  # default MUST be free/local
     aspect_ratio: str = "1:1"
-    reference: str = ""         # filename in uploads/
+    reference: str = ""         # filename in uploads/ — Higgsfield models only
 
 
 def _generate_one(run_dir: Path, i: int, prompt: str, req: RunReq) -> dict:
@@ -364,10 +365,12 @@ def _run_loop_inner(run_dir: Path, req: RunReq):
     with ThreadPoolExecutor(max_workers=4) as pool:
         cands = list(pool.map(lambda t: _generate_one(run_dir, t[0], t[1], req),
                               enumerate(prompts, 1)))
-    done = [c for c in cands if c["state"] == "done" and not c.get("kill")]
+    done = [c for c in cands if c["state"] == "done" and not c.get("kill")
+            and c.get("score", 0) > 3]
     if not done:
         _status(run_dir, phase="failed", candidates=cands,
-                error=next((c.get("error") for c in cands if c.get("error")), None))
+                error=next((c.get("error") for c in cands if c.get("error")),
+                           "no candidate scored above 3/10 — rework the prompt"))
         return
     winner = max(done, key=lambda c: c["score"])
     _status(run_dir, phase="grading", candidates=cands, winner=winner["i"])
@@ -462,6 +465,7 @@ class RefineReq(BaseModel):
     file: str
     instruction: str
     brief: str = ""
+    allow_cloud_fallback: bool = False  # True = may spend Higgsfield credits
 
 
 @app.post("/api/refine")
@@ -476,7 +480,7 @@ def refine(req: RefineReq):
         # local Kontext first (free); Higgsfield nano banana as fallback
         ensure_backend("nim-kontext", run_dir)
         r = kontext_local(src, req.instruction, run_dir / "cand1.png")
-        if "error" in r:
+        if "error" in r and req.allow_cloud_fallback:
             r = hf_generate("nano_banana_2", req.instruction, run_dir / "cand1.png",
                             ["--image", str(src)])
         if "error" in r:
@@ -578,6 +582,7 @@ class AnimateReq(BaseModel):
     motion: str = "slow cinematic dolly-in, subtle ambient movement"
     duration: int = 5
     quality: str = "fast"  # fast = Wan 2.2 5B · cinema = LTX-2.3 22B with audio
+    allow_cloud_fallback: bool = False  # True = may spend Higgsfield credits
 
 
 def wan_animate(src: Path, motion: str, out_mp4: Path, duration: int = 5) -> dict:
@@ -648,9 +653,8 @@ def animate(req: AnimateReq):
         if req.quality == "cinema":
             r = ltx_animate(src, req.motion, run_dir / "clip.mp4", req.duration)
         else:
-            # local Wan 2.2 first (free, fast); Seedance cloud fallback
             r = wan_animate(src, req.motion, run_dir / "clip.mp4", req.duration)
-        if "error" in r:
+        if "error" in r and req.allow_cloud_fallback:
             r = hf_generate("seedance_2_0", req.motion, run_dir / "clip.mp4",
                             ["--start-image", str(src), "--duration", str(req.duration)])
         if "error" in r:
@@ -833,6 +837,10 @@ def to_ue(req: ToUEReq):
 
 @app.post("/api/run")
 def start_run(req: RunReq):
+    if req.reference and req.model.startswith(("local:", "nim:")):
+        return JSONResponse({"error": "reference images are only supported by Higgsfield "
+                             "models (nano_banana_2, gpt_image_2) — local FLUX would "
+                             "silently ignore it. Drop the reference or switch model."}, 400)
     run_dir = _new_run(req.brief, req.model, "create")
     threading.Thread(target=_run_loop, args=(run_dir, req), daemon=True).start()
     return {"id": run_dir.name}
