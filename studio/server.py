@@ -184,22 +184,82 @@ def upscale(src: Path, dst: Path) -> bool:
     """2x upscale. Real-ESRGAN (serialized tiling) validated against source;
     falls back to Lanczos so a corrupt AI upscale can never ship as final."""
     if ESRGAN.exists():
-        # -j 1:1:1 serializes load/proc/save threads — fixes tile-stitching races
-        subprocess.run([str(ESRGAN), "-i", str(src), "-o", str(dst),
-                        "-s", "2", "-n", "realesrgan-x4plus",
-                        "-t", "1024", "-j", "1:1:1"],
-                       capture_output=True, timeout=300)
-        if dst.exists():
-            try:
-                if _upscale_valid(src, dst):
-                    return True
-            except Exception:  # noqa: BLE001 — treat unreadable output as invalid
-                pass
-            dst.unlink(missing_ok=True)
+        try:
+            # -j 1:1:1 serializes load/proc/save threads — fixes tile-stitching races
+            subprocess.run([str(ESRGAN), "-i", str(src), "-o", str(dst),
+                            "-s", "2", "-n", "realesrgan-x4plus",
+                            "-t", "1024", "-j", "1:1:1"],
+                           capture_output=True, timeout=180)
+            if dst.exists() and _upscale_valid(src, dst):
+                return True
+        except Exception:  # noqa: BLE001 — timeout/VRAM contention → Lanczos fallback
+            pass
+        dst.unlink(missing_ok=True)
     subprocess.run([shutil.which("magick") or "magick", str(src),
                     "-filter", "Lanczos", "-resize", "200%", str(dst)],
                    capture_output=True, timeout=120)
     return dst.exists()
+
+
+def ensure_comfy(timeout_s: int = 120) -> bool:
+    if _port_pid(COMFY_PORT):
+        return True
+    subprocess.Popen([str(COMFY_DIR / "venv/Scripts/python.exe"), "main.py",
+                      "--port", str(COMFY_PORT)], cwd=COMFY_DIR,
+                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                     creationflags=0x00000008)
+    t0 = time.time()
+    while time.time() - t0 < timeout_s:
+        try:
+            if requests.get(f"http://localhost:{COMFY_PORT}/system_stats", timeout=2).ok:
+                return True
+        except Exception:  # noqa: BLE001
+            pass
+        time.sleep(3)
+    return False
+
+
+def comfy_flux_image(prompt: str, out_file: Path, ar: str) -> dict:
+    """FLUX schnell via ComfyUI raw weights — NO NIM prompt filter. Free, local."""
+    if not ensure_comfy():
+        return {"error": "ComfyUI would not start on :8188"}
+    C = f"http://localhost:{COMFY_PORT}"
+    w, h = NIM_SIZES.get(ar, (1024, 1024))
+    import random
+    g = {
+        "1": {"class_type": "CheckpointLoaderSimple",
+              "inputs": {"ckpt_name": "flux1-schnell-fp8.safetensors"}},
+        "2": {"class_type": "CLIPTextEncode", "inputs": {"text": prompt, "clip": ["1", 1]}},
+        "3": {"class_type": "ConditioningZeroOut", "inputs": {"conditioning": ["2", 0]}},
+        "4": {"class_type": "EmptySD3LatentImage",
+              "inputs": {"width": w, "height": h, "batch_size": 1}},
+        "5": {"class_type": "KSampler", "inputs": {
+            "model": ["1", 0], "positive": ["2", 0], "negative": ["3", 0],
+            "latent_image": ["4", 0], "seed": random.randrange(1, 2**31),
+            "steps": 4, "cfg": 1.0, "sampler_name": "euler",
+            "scheduler": "simple", "denoise": 1.0}},
+        "6": {"class_type": "VAEDecode", "inputs": {"samples": ["5", 0], "vae": ["1", 2]}},
+        "7": {"class_type": "SaveImage", "inputs": {"images": ["6", 0],
+                                                    "filename_prefix": "beast/raw"}},
+    }
+    try:
+        pid = requests.post(f"{C}/prompt", json={"prompt": g, "client_id": "beast"},
+                            timeout=30).json()["prompt_id"]
+        t0 = time.time()
+        while time.time() - t0 < 600:
+            time.sleep(4)
+            h_ = requests.get(f"{C}/history/{pid}", timeout=30).json()
+            if pid in h_ and h_[pid]["status"].get("completed"):
+                img = h_[pid]["outputs"]["7"]["images"][0]
+                produced = COMFY_DIR / "output" / img["subfolder"] / img["filename"]
+                from PIL import Image
+                Image.open(produced).convert("RGB").save(out_file, "PNG")
+                return {"file": out_file.name, "url": ""}
+            if pid in h_ and h_[pid]["status"].get("status_str") == "error":
+                return {"error": "ComfyUI flux job errored"}
+        return {"error": "ComfyUI flux job timed out"}
+    except Exception as e:  # noqa: BLE001
+        return {"error": f"comfy flux failed: {str(e)[:200]}"}
 
 
 def trellis_3d(image_path: Path, out_glb: Path, allow_hosted: bool = False) -> dict:
@@ -333,6 +393,7 @@ def _new_run(brief: str, model: str, kind: str, params: dict = None,
 # ---------- create loop ----------
 
 MODEL_CHOICES = Literal["local:flux.1-schnell", "local:flux.2-klein",
+                        "comfy:flux.1-schnell",
                         "nim:flux.1-schnell", "nim:flux.1-dev",
                         "gpt_image_2", "nano_banana_2", "z_image"]
 
@@ -356,7 +417,9 @@ def _generate_one(run_dir: Path, i: int, prompt: str, req: RunReq) -> dict:
 
 
 def _generate_one_inner(cand: dict, run_dir: Path, i: int, prompt: str, req: RunReq) -> dict:
-    if req.model.startswith("local:"):
+    if req.model.startswith("comfy:"):
+        r = comfy_flux_image(prompt, run_dir / f"cand{i}.png", req.aspect_ratio)
+    elif req.model.startswith("local:"):
         _, port = LOCAL_IMAGE_MODELS.get(req.model, ("nim-flux", 8018))
         r = flux_local(prompt, run_dir / f"cand{i}.png", req.aspect_ratio, port)
     elif req.model.startswith("nim:"):
