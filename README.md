@@ -30,13 +30,16 @@ workflow, not model — and this repo encodes the workflow.
 | `docs/PIPELINES.md` | End-to-end recipes: image → 3D → UE, sprites, sites, video |
 | `scripts/` | judge_image.py (vision-model candidate scoring), sync_repos.ps1 |
 | `bin/beast.ps1` | CLI: `beast doctor` · `beast sync` · `beast recipes` |
+| `requirements*.txt` | Reproducible Studio runtime and test dependencies |
 | `repos.yml` | Linked project repos + `scripts/sync_repos.ps1` to clone/update them all |
 | `mcp/mcp.template.json` | MCP wiring template (Blender :9876, UE :8000/mcp, magic) |
 
 ## Beast Studio (the UI)
 
 ```powershell
-python studio/server.py     # → http://localhost:8787
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe studio\server.py     # → http://localhost:8787
 ```
 Brief + variations in a form, candidates stream into a grid with judge scores, winner
 gets badged and auto-graded. Runs land in `studio/runs/<id>/` (final.png = deliverable).
@@ -45,7 +48,7 @@ gets badged and auto-graded. Runs land in `studio/runs/<id>/` (final.png = deliv
 
 ```powershell
 # 1. Verify the whole stack (Blender bridge, UE, Higgsfield auth, ffmpeg, rembg, disk)
-python scripts/doctor.py
+.\bin\beast.ps1 doctor
 
 # 2. Pull the sibling repos this hub orchestrates
 powershell -File scripts/sync_repos.ps1
