@@ -81,13 +81,14 @@ cat > "$HOME/.config/systemd/user/beast-studio.service" <<EOF
 Description=Beast Studio local AI production API
 Wants=network-online.target
 After=network-online.target
+StartLimitIntervalSec=0
 
 [Service]
 Type=simple
 WorkingDirectory=$ROOT
 EnvironmentFile=-$CREDS_FILE
 ExecStart=$VENV_DIR/bin/python studio/server.py
-Restart=on-failure
+Restart=always
 RestartSec=5
 TimeoutStopSec=30
 
