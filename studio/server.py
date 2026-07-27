@@ -524,8 +524,10 @@ def ensure_backend(name: str, run_dir: Path = None, wait_s: int = None,
     while time.time() - t0 < wait_s:
         checkpoint()
         if run_dir:
+            warmup_hint_s = 1500 if name == "nim-wan" else 240
             _status(run_dir, phase="generating", candidates=[
-                {"i": 1, "state": f"starting {name} — warmup ~{max(0, int((240 - (time.time()-t0))/60))+1} min"}])
+                {"i": 1, "state": f"starting {name} — cold warmup up to "
+                 f"{max(1, int((warmup_hint_s - (time.time()-t0))/60)+1)} min"}])
         if ready():
             return True
         # Poll cancellation/deadline every second even though backend readiness
