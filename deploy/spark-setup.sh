@@ -133,6 +133,7 @@ Type=simple
 UMask=0077
 WorkingDirectory=$ROOT
 EnvironmentFile=-$CREDS_FILE
+ExecStartPre=/usr/bin/chmod -R go-rwx $ROOT
 ExecStart=$VENV_DIR/bin/python studio/server.py
 Restart=always
 RestartSec=5

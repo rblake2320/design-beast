@@ -22,6 +22,7 @@ def test_beast_service_enforces_private_umask():
         1,
     )[1].split("\nEOF", 1)[0]
     assert "UMask=0077" in service
+    assert "ExecStartPre=/usr/bin/chmod -R go-rwx $ROOT" in service
 
 
 def test_existing_checkout_is_hardened_before_service_start():
