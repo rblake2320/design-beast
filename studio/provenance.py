@@ -22,6 +22,32 @@ _SECRET_KEYS = {
 }
 
 
+def _media_type(path: Path) -> str:
+    """Identify supported artifacts from bytes, then fall back to the suffix.
+
+    Some backends return JPEG bytes while Beast keeps the requested ``.png``
+    filename. Provenance must describe the artifact that actually exists, not
+    the extension we expected the backend to honor.
+    """
+    with path.open("rb") as src:
+        header = src.read(16)
+    if header.startswith(b"\x89PNG\r\n\x1a\n"):
+        return "image/png"
+    if header.startswith(b"\xff\xd8\xff"):
+        return "image/jpeg"
+    if header.startswith((b"GIF87a", b"GIF89a")):
+        return "image/gif"
+    if header.startswith(b"RIFF") and header[8:12] == b"WEBP":
+        return "image/webp"
+    if header.startswith(b"RIFF") and header[8:12] == b"WAVE":
+        return "audio/wav"
+    if len(header) >= 8 and header[4:8] == b"ftyp":
+        return "video/mp4"
+    if header.startswith(b"glTF"):
+        return "model/gltf-binary"
+    return mimetypes.guess_type(path.name)[0] or "application/octet-stream"
+
+
 def _redact(value: Any, key: str = "") -> Any:
     if key.lower() in _SECRET_KEYS:
         return "[REDACTED]"
@@ -50,7 +76,7 @@ def artifact_record(run_dir: Path, file: str | Path) -> dict[str, Any]:
         "file": path.relative_to(root).as_posix(),
         "bytes": path.stat().st_size,
         "sha256": digest.hexdigest(),
-        "media_type": mimetypes.guess_type(path.name)[0] or "application/octet-stream",
+        "media_type": _media_type(path),
     }
 
 

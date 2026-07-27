@@ -35,6 +35,18 @@ def test_manifest_records_checksum_and_replay_fields(tmp_path):
     }]
 
 
+@pytest.mark.parametrize(("name", "payload", "expected"), [
+    ("wrong.jpg", b"\x89PNG\r\n\x1a\nrest", "image/png"),
+    ("wrong.png", b"\xff\xd8\xff\xe0rest", "image/jpeg"),
+    ("wrong.bin", b"\x00\x00\x00\x18ftypisomrest", "video/mp4"),
+    ("wrong.bin", b"glTF\x02\x00\x00\x00rest", "model/gltf-binary"),
+])
+def test_artifact_media_type_comes_from_bytes_before_suffix(
+        tmp_path, name, payload, expected):
+    (tmp_path / name).write_bytes(payload)
+    assert artifact_record(tmp_path, name)["media_type"] == expected
+
+
 def test_manifest_redacts_nested_credentials(tmp_path):
     (tmp_path / "clip.mp4").write_bytes(b"x")
     path = write_manifest(
