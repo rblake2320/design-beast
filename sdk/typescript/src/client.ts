@@ -23,7 +23,7 @@ const NIM_BACKENDS = new Set([
   "nim-flux", "nim-kontext", "nim-flux2", "nim-trellis", "nim-wan",
 ]);
 const DEFAULT_NIM_START_TIMEOUT_MS = 510_000;
-const WAN_START_TIMEOUT_MS = 1_530_000;
+const WAN_START_TIMEOUT_MS = 2_130_000;
 const NIM_STOP_TIMEOUT_MS = 150_000;
 
 export class BeastStudioError extends Error {

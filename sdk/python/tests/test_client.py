@@ -78,7 +78,7 @@ def test_backend_action(client):
 
 
 @pytest.mark.parametrize("name,action,expected", [
-    ("nim-wan", "start", 1530.0),
+    ("nim-wan", "start", 2130.0),
     ("nim-flux", "start", 510.0),
     ("nim-trellis", "start", 510.0),
     ("nim-wan", "stop", 150.0),

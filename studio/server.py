@@ -506,7 +506,7 @@ def ensure_backend(name: str, run_dir: Path = None, wait_s: int = None,
             return False
 
     if wait_s is None:
-        wait_s = 1500 if name == "nim-wan" else 480
+        wait_s = 2100 if name == "nim-wan" else 480
 
     checkpoint()
     # Enforce conflicts even if the target already answers ready: an operator
@@ -524,7 +524,7 @@ def ensure_backend(name: str, run_dir: Path = None, wait_s: int = None,
     while time.time() - t0 < wait_s:
         checkpoint()
         if run_dir:
-            warmup_hint_s = 1500 if name == "nim-wan" else 240
+            warmup_hint_s = 2100 if name == "nim-wan" else 240
             _status(run_dir, phase="generating", candidates=[
                 {"i": 1, "state": f"starting {name} — cold warmup up to "
                  f"{max(1, int((warmup_hint_s - (time.time()-t0))/60)+1)} min"}])

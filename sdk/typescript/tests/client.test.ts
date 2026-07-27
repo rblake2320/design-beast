@@ -71,7 +71,7 @@ test("backend() timeout covers synchronous NIM warmup and supports override", as
   } finally {
     globalThis.setTimeout = realSetTimeout;
   }
-  assert.deepEqual(delays, [1_530_000, 510_000, 150_000, 30_000, 12_345]);
+  assert.deepEqual(delays, [2_130_000, 510_000, 150_000, 30_000, 12_345]);
 });
 
 // ---- async-submit endpoints: privacy/credit flags default false ----

@@ -26,7 +26,7 @@ DEFAULT_BASE_URL = "http://127.0.0.1:8787"
 TERMINAL_PHASES = ("done", "failed", "cancelled")
 NIM_BACKENDS = frozenset(
     ("nim-flux", "nim-kontext", "nim-flux2", "nim-trellis", "nim-wan"))
-BACKEND_START_TIMEOUTS = {"nim-wan": 1530.0}
+BACKEND_START_TIMEOUTS = {"nim-wan": 2130.0}
 DEFAULT_NIM_START_TIMEOUT = 510.0
 NIM_STOP_TIMEOUT = 150.0
 
