@@ -538,6 +538,36 @@ def ensure_backend(name: str, run_dir: Path = None, wait_s: int = None,
     return False
 
 
+def _service_cmd(scope: str, action: str, unit: str) -> list[str]:
+    prefix = ["systemctl", "--user"] if scope == "user" else \
+        ["sudo", "-n", "systemctl"]
+    return [*prefix, action, unit]
+
+
+def _quiesce_wan_aux_services(run_dir: Path, stopped: list[tuple[str, str]]) -> bool:
+    """Temporarily stop non-Beast GPU consumers before loading WAN.
+
+    Spark's unified memory can look plentiful while the GPU virtual allocator
+    still cannot satisfy WAN. Record each successful stop before checkpointing
+    so cancellation cannot strand a service offline.
+    """
+    if sys.platform == "win32":
+        return True
+    for scope, unit in (("user", "llama-rpc.service"),
+                        ("system", "cheatvision.service")):
+        active = subprocess.run(_service_cmd(scope, "is-active", unit),
+                                capture_output=True, timeout=30)
+        if active.returncode != 0:
+            continue
+        result = subprocess.run(_service_cmd(scope, "stop", unit),
+                                capture_output=True, timeout=60)
+        if result.returncode != 0:
+            return False
+        stopped.append((scope, unit))
+        jobs.checkpoint(run_dir.name)
+    return True
+
+
 @contextmanager
 def job_backend(name: str, run_dir: Path):
     """Temporarily activate a mutually-exclusive backend for one leased job.
@@ -554,7 +584,12 @@ def job_backend(name: str, run_dir: Path):
         (was_running.stdout or "").strip().lower() == "true"
     stopped_conflicts: list[str] = []
     started_target: list[str] = []
+    stopped_services: list[tuple[str, str]] = []
     try:
+        if name == "nim-wan" and not _quiesce_wan_aux_services(
+                run_dir, stopped_services):
+            yield False
+            return
         yield ensure_backend(name, run_dir,
                              stopped_conflicts=stopped_conflicts,
                              started_target=started_target)
@@ -564,6 +599,9 @@ def job_backend(name: str, run_dir: Path):
                            capture_output=True, timeout=120)
         for conflict in stopped_conflicts:
             subprocess.run(["docker", "start", conflict],
+                           capture_output=True, timeout=120)
+        for scope, unit in reversed(stopped_services):
+            subprocess.run(_service_cmd(scope, "start", unit),
                            capture_output=True, timeout=120)
 
 

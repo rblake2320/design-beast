@@ -178,6 +178,8 @@ def _route_setup(monkeypatch, tmp_path):
     monkeypatch.setattr(server.sys, "platform", "linux")
     monkeypatch.setattr(server, "_backend_created", lambda name: name == "nim-wan")
     monkeypatch.setattr(server, "ensure_backend", lambda *a, **kw: True)
+    monkeypatch.setattr(server, "_quiesce_wan_aux_services",
+                        lambda *a, **kw: True)
     monkeypatch.setattr(jobs_mod, "gpu_lease",
                         lambda *a, **kw: nullcontext())
     return runs

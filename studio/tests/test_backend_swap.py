@@ -316,15 +316,37 @@ def test_backend_api_reaps_stale_lease_atomically_instead_of_false_busy(
 
 
 class _DockerState:
-    """Stateful docker subprocess fake for backend ownership/restore tests."""
+    """Stateful subprocess fake for backend and auxiliary-service transactions."""
 
-    def __init__(self, states):
+    def __init__(self, states, services=None, fail_service_stop=None):
         self.states = dict(states)
         self.initial = dict(states)
+        self.services = dict(services or {})
+        self.initial_services = dict(self.services)
+        self.fail_service_stop = fail_service_stop
         self.calls = []
 
     def run(self, cmd, **kwargs):
         self.calls.append(cmd)
+        if "systemctl" in cmd:
+            service = cmd[-1]
+            action = next(
+                (part for part in ("is-active", "stop", "start")
+                 if part in cmd), None)
+            if action == "is-active":
+                return _result(
+                    returncode=0 if self.services.get(service, False) else 3,
+                    stdout=("active\n" if self.services.get(service, False)
+                            else "inactive\n"))
+            if action == "stop":
+                if service == self.fail_service_stop:
+                    return _result(returncode=1)
+                self.services[service] = False
+                return _result()
+            if action == "start":
+                self.services[service] = True
+                return _result()
+            raise AssertionError(f"unexpected systemctl command: {cmd}")
         name = cmd[-1]
         if cmd[1] in {"inspect", "container"}:
             exists = name in self.states
@@ -415,6 +437,151 @@ def test_job_wan_never_stops_preexisting_target(monkeypatch, tmp_path):
     assert ["docker", "start", "nim-wan"] not in docker.calls
     assert ["docker", "stop", "nim-wan"] not in docker.calls
     assert docker.calls.count(["docker", "start", "nim-flux"]) == 1
+
+
+def _service_calls(machine, action, service):
+    return [
+        call for call in machine.calls
+        if "systemctl" in call and action in call and call[-1] == service
+    ]
+
+
+@pytest.mark.parametrize("outcome", ["success", "failure", "cancel"])
+def test_job_wan_aux_services_are_owned_and_restored(
+        monkeypatch, tmp_path, outcome):
+    monkeypatch.setattr(server.sys, "platform", "linux")
+    machine = _DockerState(
+        {
+            "nim-wan": False, "nim-flux": False, "nim-kontext": False,
+            "nim-flux2": False, "nim-trellis": False,
+        },
+        services={"llama-rpc.service": True, "cheatvision.service": True})
+    monkeypatch.setattr(server.subprocess, "run", machine.run)
+    monkeypatch.setattr(
+        server.requests, "get",
+        lambda *a, **kw: SimpleNamespace(ok=machine.states["nim-wan"]))
+    monkeypatch.setattr(server.time, "sleep", lambda _: None)
+    run_dir = tmp_path / f"wan-aux-{outcome}"
+    run_dir.mkdir()
+
+    try:
+        with server.job_backend("nim-wan", run_dir) as ready:
+            assert ready
+            assert machine.services == {
+                "llama-rpc.service": False,
+                "cheatvision.service": False,
+            }
+            wan_start = machine.calls.index(["docker", "start", "nim-wan"])
+            assert machine.calls.index(
+                _service_calls(machine, "stop", "llama-rpc.service")[0]
+            ) < wan_start
+            assert machine.calls.index(
+                _service_calls(machine, "stop", "cheatvision.service")[0]
+            ) < wan_start
+            if outcome == "failure":
+                raise RuntimeError("WAN inference failed")
+            if outcome == "cancel":
+                raise jobs_mod.JobCancelled("WAN inference cancelled")
+    except RuntimeError:
+        assert outcome == "failure"
+    except jobs_mod.JobCancelled:
+        assert outcome == "cancel"
+
+    assert machine.services == machine.initial_services
+    for service in ("llama-rpc.service", "cheatvision.service"):
+        assert len(_service_calls(machine, "stop", service)) == 1
+        assert len(_service_calls(machine, "start", service)) == 1
+
+
+def test_job_wan_never_starts_initially_inactive_aux_services(
+        monkeypatch, tmp_path):
+    monkeypatch.setattr(server.sys, "platform", "linux")
+    machine = _DockerState(
+        {
+            "nim-wan": True, "nim-flux": False, "nim-kontext": False,
+            "nim-flux2": False, "nim-trellis": False,
+        },
+        services={"llama-rpc.service": False, "cheatvision.service": False})
+    monkeypatch.setattr(server.subprocess, "run", machine.run)
+    monkeypatch.setattr(server.requests, "get",
+                        lambda *a, **kw: SimpleNamespace(ok=True))
+    run_dir = tmp_path / "wan-aux-inactive"
+    run_dir.mkdir()
+
+    with server.job_backend("nim-wan", run_dir) as ready:
+        assert ready
+
+    assert machine.services == machine.initial_services
+    assert not _service_calls(machine, "stop", "llama-rpc.service")
+    assert not _service_calls(machine, "stop", "cheatvision.service")
+    assert not _service_calls(machine, "start", "llama-rpc.service")
+    assert not _service_calls(machine, "start", "cheatvision.service")
+
+
+def test_job_wan_failed_aux_stop_aborts_and_restores_prior_stop(
+        monkeypatch, tmp_path):
+    monkeypatch.setattr(server.sys, "platform", "linux")
+    machine = _DockerState(
+        {
+            "nim-wan": False, "nim-flux": False, "nim-kontext": False,
+            "nim-flux2": False, "nim-trellis": False,
+        },
+        services={"llama-rpc.service": True, "cheatvision.service": True},
+        fail_service_stop="cheatvision.service")
+    monkeypatch.setattr(server.subprocess, "run", machine.run)
+    monkeypatch.setattr(
+        server.requests, "get",
+        lambda *a, **kw: pytest.fail(
+            "failed auxiliary stop must abort before backend warmup"))
+    run_dir = tmp_path / "wan-aux-stop-failed"
+    run_dir.mkdir()
+
+    with server.job_backend("nim-wan", run_dir) as ready:
+        assert ready is False
+
+    assert machine.services == machine.initial_services
+    assert len(_service_calls(machine, "stop", "llama-rpc.service")) == 1
+    assert len(_service_calls(machine, "start", "llama-rpc.service")) == 1
+    assert len(_service_calls(machine, "stop", "cheatvision.service")) == 1
+    assert not _service_calls(machine, "start", "cheatvision.service")
+    assert ["docker", "start", "nim-wan"] not in machine.calls
+
+
+def test_job_wan_cancel_after_aux_stop_restores_recorded_service(
+        monkeypatch, tmp_path):
+    monkeypatch.setattr(server.sys, "platform", "linux")
+    machine = _DockerState(
+        {
+            "nim-wan": False, "nim-flux": False, "nim-kontext": False,
+            "nim-flux2": False, "nim-trellis": False,
+        },
+        services={"llama-rpc.service": True, "cheatvision.service": False})
+    monkeypatch.setattr(server.subprocess, "run", machine.run)
+    monkeypatch.setattr(
+        server.requests, "get",
+        lambda *a, **kw: pytest.fail(
+            "cancel after service stop must prevent backend warmup"))
+
+    def checkpoint(_jid):
+        if _service_calls(machine, "stop", "llama-rpc.service"):
+            raise jobs_mod.JobCancelled(
+                "cancelled immediately after auxiliary stop")
+
+    monkeypatch.setattr(server.jobs, "checkpoint", checkpoint)
+    run_dir = tmp_path / "wan-aux-cancel-after-stop"
+    run_dir.mkdir()
+
+    with pytest.raises(
+            jobs_mod.JobCancelled,
+            match="cancelled immediately after auxiliary stop"):
+        with server.job_backend("nim-wan", run_dir):
+            pytest.fail("cancelled context must not enter")
+
+    assert machine.services == machine.initial_services
+    assert len(_service_calls(machine, "stop", "llama-rpc.service")) == 1
+    assert len(_service_calls(machine, "start", "llama-rpc.service")) == 1
+    assert not _service_calls(machine, "start", "cheatvision.service")
+    assert ["docker", "start", "nim-wan"] not in machine.calls
 
 
 def test_job_wan_startup_failure_restores_conflicts_without_stopping_wan(
