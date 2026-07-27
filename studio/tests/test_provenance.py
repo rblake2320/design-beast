@@ -117,6 +117,40 @@ def test_manifest_export_failure_cannot_change_terminal_state(tmp_path, monkeypa
     jobs._db().commit()
 
 
+def test_late_terminal_export_uses_canonical_row_error(tmp_path):
+    """Derived exports must agree with the immutable terminal DB outcome."""
+    jid, _ = jobs.create("animate", "wan2.2-nim-i2v-nvfp4",
+                         "terminal export authority", {})
+    run_dir = tmp_path / jid
+    run_dir.mkdir()
+    canonical = "cancelled at stage checkpoint"
+    try:
+        jobs.update_progress(jid, phase="generating")
+        jobs.set_phase(jid, "cancelled", canonical, jobs.E_CANCELLED)
+
+        # A late handler reaches the same terminal phase with different wording.
+        server._status(
+            run_dir, phase="cancelled", error="different late handler wording",
+            candidates=[])
+
+        authoritative = jobs.get_status(jid)
+        exported = json.loads(
+            (run_dir / "status.json").read_text(encoding="utf-8"))
+        manifest = json.loads(
+            (run_dir / "manifest.json").read_text(encoding="utf-8"))
+
+        assert authoritative["phase"] == "cancelled"
+        assert exported["phase"] == "cancelled"
+        assert manifest["outcome"]["phase"] == "cancelled"
+        assert authoritative["error"] == canonical
+        assert exported["error"] == canonical
+        assert manifest["outcome"]["error"] == canonical
+        assert manifest["outcome"]["trusted"] is False
+    finally:
+        jobs._db().execute("DELETE FROM jobs WHERE id=?", (jid,))
+        jobs._db().commit()
+
+
 def test_to3d_preserves_backend_seed_and_source(tmp_path, monkeypatch):
     src = tmp_path / "source.png"
     src.write_bytes(b"png")

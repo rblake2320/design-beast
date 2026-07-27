@@ -283,7 +283,8 @@ def test_backend_warmup_observes_cancel_within_one_poll(monkeypatch, tmp_path):
     monkeypatch.setattr(server.requests, "get",
                         lambda *a, **kw: SimpleNamespace(ok=False))
     monkeypatch.setattr(server.subprocess, "run",
-                        lambda *a, **kw: SimpleNamespace(returncode=0))
+                        lambda *a, **kw: SimpleNamespace(
+                            returncode=0, stdout="true\n"))
     threading.Timer(0.1, jobs_mod.request_cancel, args=(jid,)).start()
 
     try:

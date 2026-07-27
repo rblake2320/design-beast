@@ -133,6 +133,35 @@ def test_failed_conflict_stop_aborts_before_target_start(monkeypatch):
     assert ["docker", "start", "nim-trellis"] not in calls
 
 
+def test_backend_start_success_but_container_exit_fails_without_polling(
+        monkeypatch):
+    """A NIM process that dies during cold start is not a 35-minute warmup."""
+    monkeypatch.setattr(server.requests, "get",
+                        lambda *a, **kw: SimpleNamespace(ok=False))
+    calls = []
+
+    def run(cmd, **kwargs):
+        calls.append(cmd)
+        if cmd[1] == "inspect":
+            # Conflicts are absent; after target start its own state is exited.
+            if cmd[-1] == "nim-wan":
+                return _result(stdout="false\n")
+            return _result(returncode=1)
+        return _result()
+
+    monkeypatch.setattr(server.subprocess, "run", run)
+    monkeypatch.setattr(
+        server.time, "sleep",
+        lambda *_: pytest.fail("dead container entered readiness sleep loop"))
+
+    t0 = time.monotonic()
+    assert server.ensure_backend("nim-wan", wait_s=2100) is False
+    assert time.monotonic() - t0 < 1.0
+    assert ["docker", "start", "nim-wan"] in calls
+    assert ["docker", "inspect", "-f", "{{.State.Running}}",
+            "nim-wan"] in calls
+
+
 def test_cancel_checkpoint_runs_between_inspect_and_stop(monkeypatch, tmp_path):
     jid, _ = jobs_mod.create(
         "refine", "local:flux.1-kontext", "cancel during swap", {})
@@ -464,7 +493,11 @@ def test_job_wan_aux_services_are_owned_and_restored(
             "nim-wan": False, "nim-flux": False, "nim-kontext": False,
             "nim-flux2": False, "nim-trellis": False,
         },
-        services={"llama-rpc.service": True, "cheatvision.service": True})
+        services={
+            "rpc-watchdog.timer": True,
+            "llama-rpc.service": True,
+            "cheatvision.service": True,
+        })
     monkeypatch.setattr(server.subprocess, "run", machine.run)
     monkeypatch.setattr(
         server.requests, "get",
@@ -477,16 +510,19 @@ def test_job_wan_aux_services_are_owned_and_restored(
         with server.job_backend("nim-wan", run_dir) as ready:
             assert ready
             assert machine.services == {
+                "rpc-watchdog.timer": False,
                 "llama-rpc.service": False,
                 "cheatvision.service": False,
             }
             wan_start = machine.calls.index(["docker", "start", "nim-wan"])
-            assert machine.calls.index(
-                _service_calls(machine, "mask", "llama-rpc.service")[0]
-            ) < wan_start
-            assert machine.calls.index(
-                _service_calls(machine, "mask", "cheatvision.service")[0]
-            ) < wan_start
+            masks = [
+                _service_calls(machine, "mask", service)[0]
+                for service in ("rpc-watchdog.timer", "llama-rpc.service",
+                                "cheatvision.service")
+            ]
+            assert [machine.calls.index(call) for call in masks] == sorted(
+                machine.calls.index(call) for call in masks)
+            assert all(machine.calls.index(call) < wan_start for call in masks)
             if outcome == "failure":
                 raise RuntimeError("WAN inference failed")
             if outcome == "cancel":
@@ -498,7 +534,8 @@ def test_job_wan_aux_services_are_owned_and_restored(
 
     assert machine.services == machine.initial_services
     assert machine.masked == set()
-    for service in ("llama-rpc.service", "cheatvision.service"):
+    for service in ("rpc-watchdog.timer", "llama-rpc.service",
+                    "cheatvision.service"):
         assert len(_service_calls(machine, "mask", service)) == 1
         assert len(_service_calls(machine, "unmask", service)) == 1
         assert len(_service_calls(machine, "start", service)) == 1
@@ -515,7 +552,11 @@ def test_job_wan_never_starts_initially_inactive_aux_services(
             "nim-wan": True, "nim-flux": False, "nim-kontext": False,
             "nim-flux2": False, "nim-trellis": False,
         },
-        services={"llama-rpc.service": False, "cheatvision.service": False})
+        services={
+            "rpc-watchdog.timer": False,
+            "llama-rpc.service": False,
+            "cheatvision.service": False,
+        })
     monkeypatch.setattr(server.subprocess, "run", machine.run)
     monkeypatch.setattr(server.requests, "get",
                         lambda *a, **kw: SimpleNamespace(ok=True))
@@ -526,12 +567,14 @@ def test_job_wan_never_starts_initially_inactive_aux_services(
         assert ready
 
     assert machine.services == machine.initial_services
-    assert not _service_calls(machine, "mask", "llama-rpc.service")
-    assert not _service_calls(machine, "mask", "cheatvision.service")
-    assert not _service_calls(machine, "unmask", "llama-rpc.service")
-    assert not _service_calls(machine, "unmask", "cheatvision.service")
-    assert not _service_calls(machine, "start", "llama-rpc.service")
-    assert not _service_calls(machine, "start", "cheatvision.service")
+    assert machine.masked == set()
+    # Inactive units are still runtime-masked to block external resurrection,
+    # but are only unmasked—not started—during restoration.
+    for service in ("rpc-watchdog.timer", "llama-rpc.service",
+                    "cheatvision.service"):
+        assert len(_service_calls(machine, "mask", service)) == 1
+        assert len(_service_calls(machine, "unmask", service)) == 1
+        assert not _service_calls(machine, "start", service)
 
 
 def test_job_wan_failed_aux_stop_aborts_and_restores_prior_stop(
@@ -542,7 +585,11 @@ def test_job_wan_failed_aux_stop_aborts_and_restores_prior_stop(
             "nim-wan": False, "nim-flux": False, "nim-kontext": False,
             "nim-flux2": False, "nim-trellis": False,
         },
-        services={"llama-rpc.service": True, "cheatvision.service": True},
+        services={
+            "rpc-watchdog.timer": True,
+            "llama-rpc.service": False,
+            "cheatvision.service": True,
+        },
         fail_service_stop="cheatvision.service")
     monkeypatch.setattr(server.subprocess, "run", machine.run)
     monkeypatch.setattr(
@@ -556,9 +603,12 @@ def test_job_wan_failed_aux_stop_aborts_and_restores_prior_stop(
         assert ready is False
 
     assert machine.services == machine.initial_services
+    assert len(_service_calls(machine, "mask", "rpc-watchdog.timer")) == 1
+    assert len(_service_calls(machine, "unmask", "rpc-watchdog.timer")) == 1
+    assert len(_service_calls(machine, "start", "rpc-watchdog.timer")) == 1
     assert len(_service_calls(machine, "mask", "llama-rpc.service")) == 1
     assert len(_service_calls(machine, "unmask", "llama-rpc.service")) == 1
-    assert len(_service_calls(machine, "start", "llama-rpc.service")) == 1
+    assert not _service_calls(machine, "start", "llama-rpc.service")
     assert len(_service_calls(machine, "mask", "cheatvision.service")) == 1
     assert not _service_calls(machine, "unmask", "cheatvision.service")
     assert not _service_calls(machine, "start", "cheatvision.service")
@@ -573,7 +623,11 @@ def test_job_wan_cancel_after_aux_stop_restores_recorded_service(
             "nim-wan": False, "nim-flux": False, "nim-kontext": False,
             "nim-flux2": False, "nim-trellis": False,
         },
-        services={"llama-rpc.service": True, "cheatvision.service": False})
+        services={
+            "rpc-watchdog.timer": True,
+            "llama-rpc.service": True,
+            "cheatvision.service": False,
+        })
     monkeypatch.setattr(server.subprocess, "run", machine.run)
     monkeypatch.setattr(
         server.requests, "get",
@@ -581,7 +635,7 @@ def test_job_wan_cancel_after_aux_stop_restores_recorded_service(
             "cancel after service stop must prevent backend warmup"))
 
     def checkpoint(_jid):
-        if _service_calls(machine, "mask", "llama-rpc.service"):
+        if _service_calls(machine, "mask", "rpc-watchdog.timer"):
             raise jobs_mod.JobCancelled(
                 "cancelled immediately after auxiliary stop")
 
@@ -596,9 +650,12 @@ def test_job_wan_cancel_after_aux_stop_restores_recorded_service(
             pytest.fail("cancelled context must not enter")
 
     assert machine.services == machine.initial_services
-    assert len(_service_calls(machine, "mask", "llama-rpc.service")) == 1
-    assert len(_service_calls(machine, "unmask", "llama-rpc.service")) == 1
-    assert len(_service_calls(machine, "start", "llama-rpc.service")) == 1
+    assert len(_service_calls(machine, "mask", "rpc-watchdog.timer")) == 1
+    assert len(_service_calls(machine, "unmask", "rpc-watchdog.timer")) == 1
+    assert len(_service_calls(machine, "start", "rpc-watchdog.timer")) == 1
+    assert not _service_calls(machine, "mask", "llama-rpc.service")
+    assert not _service_calls(machine, "unmask", "llama-rpc.service")
+    assert not _service_calls(machine, "start", "llama-rpc.service")
     assert not _service_calls(machine, "start", "cheatvision.service")
     assert ["docker", "start", "nim-wan"] not in machine.calls
 

@@ -530,6 +530,12 @@ def ensure_backend(name: str, run_dir: Path = None, wait_s: int = None,
                  f"{max(1, int((warmup_hint_s - (time.time()-t0))/60)+1)} min"}])
         if ready():
             return True
+        running = subprocess.run(
+            ["docker", "inspect", "-f", "{{.State.Running}}", name],
+            capture_output=True, text=True, timeout=30)
+        if running.returncode != 0 or \
+                (running.stdout or "").strip().lower() != "true":
+            return False
         # Poll cancellation/deadline every second even though backend readiness
         # only needs an eight-second cadence.
         for _ in range(8):
@@ -544,7 +550,8 @@ def _service_cmd(scope: str, *args: str) -> list[str]:
     return [*prefix, *args]
 
 
-def _quiesce_wan_aux_services(run_dir: Path, stopped: list[tuple[str, str]]) -> bool:
+def _quiesce_wan_aux_services(
+        run_dir: Path, masked: list[tuple[str, str, bool]]) -> bool:
     """Temporarily stop non-Beast GPU consumers before loading WAN.
 
     Spark's unified memory can look plentiful while the GPU virtual allocator
@@ -553,12 +560,15 @@ def _quiesce_wan_aux_services(run_dir: Path, stopped: list[tuple[str, str]]) -> 
     """
     if sys.platform == "win32":
         return True
-    for scope, unit in (("user", "llama-rpc.service"),
+    # Quiesce resurrection owners first. rpc-watchdog.timer explicitly
+    # restarts llama-rpc when its port is absent, and empirically defeated a
+    # mask on the already-loaded service during the first live acceptance.
+    for scope, unit in (("user", "rpc-watchdog.timer"),
+                        ("user", "llama-rpc.service"),
                         ("system", "cheatvision.service")):
         active = subprocess.run(_service_cmd(scope, "is-active", unit),
                                 capture_output=True, timeout=30)
-        if active.returncode != 0:
-            continue
+        was_active = active.returncode == 0
         # A plain stop is insufficient on this fleet: watchdogs/power recovery
         # may start the unit again mid-compile. A runtime-only mask blocks that
         # resurrection without changing persistent enablement across reboot.
@@ -567,7 +577,7 @@ def _quiesce_wan_aux_services(run_dir: Path, stopped: list[tuple[str, str]]) -> 
                                 capture_output=True, timeout=60)
         if result.returncode != 0:
             return False
-        stopped.append((scope, unit))
+        masked.append((scope, unit, was_active))
         jobs.checkpoint(run_dir.name)
     return True
 
@@ -588,10 +598,10 @@ def job_backend(name: str, run_dir: Path):
         (was_running.stdout or "").strip().lower() == "true"
     stopped_conflicts: list[str] = []
     started_target: list[str] = []
-    stopped_services: list[tuple[str, str]] = []
+    masked_services: list[tuple[str, str, bool]] = []
     try:
         if name == "nim-wan" and not _quiesce_wan_aux_services(
-                run_dir, stopped_services):
+                run_dir, masked_services):
             yield False
             return
         yield ensure_backend(name, run_dir,
@@ -604,11 +614,12 @@ def job_backend(name: str, run_dir: Path):
         for conflict in stopped_conflicts:
             subprocess.run(["docker", "start", conflict],
                            capture_output=True, timeout=120)
-        for scope, unit in reversed(stopped_services):
+        for scope, unit, was_active in reversed(masked_services):
             subprocess.run(_service_cmd(scope, "unmask", "--runtime", unit),
                            capture_output=True, timeout=60)
-            subprocess.run(_service_cmd(scope, "start", unit),
-                           capture_output=True, timeout=120)
+            if was_active:
+                subprocess.run(_service_cmd(scope, "start", unit),
+                               capture_output=True, timeout=120)
 
 
 def _status(run_dir: Path, **updates):
@@ -618,13 +629,17 @@ def _status(run_dir: Path, **updates):
     compatibility snapshot (humans running `ls runs/<id>/`, legacy tooling);
     the server never reads it back for DB-known jobs."""
     snap = jobs.update_progress(run_dir.name, **updates)
+    # Re-read through the authoritative projection. Terminal monotonicity lives
+    # in the row columns (including the canonical error); the mutable progress
+    # blob may contain a late handler's wording after the row is already final.
+    view = jobs.get_status(run_dir.name) or snap
     try:
         with LOCK:
-            (run_dir / "status.json").write_text(json.dumps(snap, indent=1))
+            (run_dir / "status.json").write_text(json.dumps(view, indent=1))
     except OSError:
         pass  # export is best-effort; the DB already holds the truth
     if updates.get("phase") in jobs.TERMINAL \
-            and snap.get("phase") == updates.get("phase"):
+            and view.get("phase") == updates.get("phase"):
         # Every artifact receives a local checksum-backed provenance record.
         # Manifest failure never changes the already-committed job outcome.
         try:
@@ -640,19 +655,19 @@ def _status(run_dir: Path, **updates):
                  ("i", "seed", "source", "engine_note", "auto_improved",
                   "steps", "size", "seconds")
                  if key in cand}
-                for cand in snap.get("candidates", [])
+                for cand in view.get("candidates", [])
             ]
             write_manifest(
-                run_dir, run_id=run_dir.name, kind=snap.get("kind") or
-                job.get("kind", "unknown"), model=snap.get("model") or
+                run_dir, run_id=run_dir.name, kind=view.get("kind") or
+                job.get("kind", "unknown"), model=view.get("model") or
                 job.get("model", "unknown"), params=job.get("params") or {},
                 artifacts=artifacts,
                 engine={"server": "beast-studio", "candidates": candidate_meta},
                 seed={str(row["i"]): row["seed"] for row in candidate_meta
                       if "i" in row and "seed" in row},
-                workflow=f"{job.get('kind') or snap.get('kind', 'unknown')}:v1",
-                outcome={"phase": snap.get("phase"), "error": snap.get("error"),
-                         "trusted": snap.get("phase") == "done"},
+                workflow=f"{job.get('kind') or view.get('kind', 'unknown')}:v1",
+                outcome={"phase": view.get("phase"), "error": view.get("error"),
+                         "trusted": view.get("phase") == "done"},
             )
         except Exception:  # noqa: BLE001 — provenance is best-effort after outcome
             pass
