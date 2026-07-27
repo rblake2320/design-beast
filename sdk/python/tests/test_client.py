@@ -77,6 +77,28 @@ def test_backend_action(client):
     assert kwargs["json"] == {"name": "nim-flux", "action": "start"}
 
 
+@pytest.mark.parametrize("name,action,expected", [
+    ("nim-wan", "start", 1530.0),
+    ("nim-flux", "start", 510.0),
+    ("nim-trellis", "start", 510.0),
+    ("nim-wan", "stop", 150.0),
+    ("comfyui", "start", 30),
+])
+def test_backend_timeout_matches_synchronous_server_budget(
+        client, name, action, expected):
+    client.session.request.return_value = FakeResponse(payload={"ok": True})
+    client.backend(name, action)
+    _, kwargs = _last_call(client.session)
+    assert kwargs["timeout"] == expected
+
+
+def test_backend_timeout_can_be_overridden(client):
+    client.session.request.return_value = FakeResponse(payload={"ok": True})
+    client.backend("nim-wan", "start", timeout=12)
+    _, kwargs = _last_call(client.session)
+    assert kwargs["timeout"] == 12
+
+
 # ---- async-submit endpoints: privacy/credit flags default False ----
 
 @pytest.mark.parametrize("method,args,flag", [

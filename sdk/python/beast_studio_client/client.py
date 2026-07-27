@@ -24,6 +24,11 @@ from .models import AnimateDuration, AnimateQuality, AspectRatio, BackendAction,
 
 DEFAULT_BASE_URL = "http://127.0.0.1:8787"
 TERMINAL_PHASES = ("done", "failed", "cancelled")
+NIM_BACKENDS = frozenset(
+    ("nim-flux", "nim-kontext", "nim-flux2", "nim-trellis", "nim-wan"))
+BACKEND_START_TIMEOUTS = {"nim-wan": 1530.0}
+DEFAULT_NIM_START_TIMEOUT = 510.0
+NIM_STOP_TIMEOUT = 150.0
 
 
 class BeastStudioError(RuntimeError):
@@ -65,8 +70,10 @@ class BeastStudioClient:
     def _get(self, path: str) -> Any:
         return self._request("GET", path)
 
-    def _post(self, path: str, body: dict, *, headers: Optional[dict] = None) -> Any:
-        return self._request("POST", path, json_body=body, headers=headers)
+    def _post(self, path: str, body: dict, *, headers: Optional[dict] = None,
+              timeout: Optional[float] = None) -> Any:
+        return self._request(
+            "POST", path, json_body=body, headers=headers, timeout=timeout)
 
     # ---- sync endpoints (result in the response) ----
 
@@ -89,8 +96,21 @@ class BeastStudioClient:
     def backends(self) -> List[Dict[str, Any]]:
         return self._get("/api/backends")
 
-    def backend(self, name: str, action: BackendAction) -> Dict[str, Any]:
-        return self._post("/api/backend", {"name": name, "action": action})
+    def backend(self, name: str, action: BackendAction,
+                timeout: Optional[float] = None) -> Dict[str, Any]:
+        """Start/stop a backend synchronously.
+
+        NIM starts wait for server-side readiness (up to 25 minutes for WAN,
+        eight minutes for other NIMs), so their transport timeout is longer
+        than the client's normal 30-second request timeout. Pass ``timeout``
+        to choose a shorter or longer explicit limit.
+        """
+        if timeout is None and name in NIM_BACKENDS:
+            timeout = (BACKEND_START_TIMEOUTS.get(
+                name, DEFAULT_NIM_START_TIMEOUT)
+                if action == "start" else NIM_STOP_TIMEOUT)
+        return self._post(
+            "/api/backend", {"name": name, "action": action}, timeout=timeout)
 
     def health(self) -> Dict[str, Any]:
         return self._get("/api/health")

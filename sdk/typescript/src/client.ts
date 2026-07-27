@@ -19,6 +19,12 @@ import type {
 import { TERMINAL_PHASES } from "./types.ts";
 
 export const DEFAULT_BASE_URL = "http://127.0.0.1:8787";
+const NIM_BACKENDS = new Set([
+  "nim-flux", "nim-kontext", "nim-flux2", "nim-trellis", "nim-wan",
+]);
+const DEFAULT_NIM_START_TIMEOUT_MS = 510_000;
+const WAN_START_TIMEOUT_MS = 1_530_000;
+const NIM_STOP_TIMEOUT_MS = 150_000;
 
 export class BeastStudioError extends Error {
   cause?: unknown;
@@ -53,10 +59,11 @@ export class BeastStudioClient {
   // ---- transport ----
 
   private async request<T>(method: string, path: string, body?: unknown,
-                           headers?: Record<string, string>): Promise<T> {
+                           headers?: Record<string, string>,
+                           timeoutMs = this.timeoutMs): Promise<T> {
     const url = `${this.baseUrl}${path}`;
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), this.timeoutMs);
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
     let res: Response;
     try {
       res = await this.fetchImpl(url, {
@@ -87,8 +94,9 @@ export class BeastStudioClient {
     return this.request<T>("GET", path);
   }
 
-  private post<T>(path: string, body: unknown, headers?: Record<string, string>): Promise<T> {
-    return this.request<T>("POST", path, body, headers);
+  private post<T>(path: string, body: unknown, headers?: Record<string, string>,
+                  timeoutMs?: number): Promise<T> {
+    return this.request<T>("POST", path, body, headers, timeoutMs);
   }
 
   // ---- sync endpoints (result in the response) ----
@@ -118,8 +126,17 @@ export class BeastStudioClient {
     return this.get("/api/backends");
   }
 
-  backend(name: string, action: BackendAction): Promise<{ ok: boolean; note?: string }> {
-    return this.post("/api/backend", { name, action });
+  /** NIM starts synchronously wait for readiness (up to 25m for WAN and 8m
+   * for other NIMs), so backend control uses operation-aware transport
+   * timeouts rather than the normal 30s request timeout. */
+  backend(name: string, action: BackendAction,
+          timeoutMs?: number): Promise<{ ok: boolean; note?: string }> {
+    if (timeoutMs === undefined && NIM_BACKENDS.has(name)) {
+      timeoutMs = action === "start"
+        ? (name === "nim-wan" ? WAN_START_TIMEOUT_MS : DEFAULT_NIM_START_TIMEOUT_MS)
+        : NIM_STOP_TIMEOUT_MS;
+    }
+    return this.post("/api/backend", { name, action }, undefined, timeoutMs);
   }
 
   health(): Promise<{ ok: boolean; db: boolean; disk_free_gb: number; active_jobs: string[] }> {

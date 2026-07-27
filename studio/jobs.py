@@ -392,6 +392,33 @@ def gpu_lease(jid: str, kind: str, slot: str = "", resource: str = GPU_RESOURCE)
         release_gpu(holder, resource)
 
 
+@contextmanager
+def gpu_lease_nowait(holder: str, kind: str,
+                     resource: str = GPU_RESOURCE):
+    """Atomically acquire a lease or yield False without waiting.
+
+    Used by manual backend controls: a panel click must either own the GPU
+    before mutating containers or return busy. The heartbeat prevents a long
+    cold backend warmup from being mistaken for a stale holder.
+    """
+    if not _try_acquire_gpu(holder, holder, kind, resource):
+        yield False
+        return
+    stop = threading.Event()
+
+    def _beat():
+        while not stop.wait(LEASE_STALE_S / 6):
+            gpu_heartbeat(holder, resource)
+
+    beat = threading.Thread(target=_beat, daemon=True)
+    beat.start()
+    try:
+        yield True
+    finally:
+        stop.set()
+        release_gpu(holder, resource)
+
+
 def recent(limit: int = 30) -> list[dict]:
     rows = _db().execute(
         "SELECT id, kind, model, brief, phase, error_code, created FROM jobs "

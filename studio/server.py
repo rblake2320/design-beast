@@ -6,7 +6,10 @@ Create: brief → expand → N candidates → judge → graded winner.
 Plus: upload/drop any image → judge (free) / refine (ref edit) / animate (i2v).
 """
 import base64
+import io
 import json
+import os
+import random
 import re
 import shutil
 import subprocess
@@ -14,6 +17,7 @@ import sys
 import threading
 import time
 import urllib.request
+from contextlib import contextmanager
 from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait as futures_wait
 from pathlib import Path
 
@@ -45,8 +49,16 @@ import config as _cfg_early  # noqa: E402 — needed before constant block below
 OLLAMA = _cfg_early.get("ollama_url")
 TRELLIS_LOCAL = "http://localhost:8017/v1/infer"   # docker -p 8017:8000
 FLUX_LOCAL = "http://localhost:8018/v1/infer"      # docker -p 8018:8000
-BACKENDS = {"nim-trellis": 8017, "nim-flux": 8018, "nim-kontext": 8019, "nim-flux2": 8020}
+WAN_LOCAL = "http://localhost:8021/v1/videos/generations"
+WAN_FAST_STEPS = 8
+BACKENDS = {"nim-trellis": 8017, "nim-flux": 8018, "nim-kontext": 8019,
+            "nim-flux2": 8020, "nim-wan": 8021}
 IMAGE_NIM_BACKENDS = ("nim-flux", "nim-kontext", "nim-flux2")
+NIM_CONFLICTS = {
+    "nim-trellis": (*IMAGE_NIM_BACKENDS, "nim-wan"),
+    "nim-wan": (*IMAGE_NIM_BACKENDS, "nim-trellis"),
+    **{name: ("nim-trellis", "nim-wan") for name in IMAGE_NIM_BACKENDS},
+}
 LOCAL_IMAGE_MODELS = {"local:flux.1-schnell": ("nim-flux", 8018),
                       "local:flux.2-klein": ("nim-flux2", 8020)}
 KONTEXT_LOCAL = "http://localhost:8019/v1/infer"
@@ -432,7 +444,42 @@ def ollama_json(model: str, prompt: str, timeout: int = 240) -> dict:
     return json.loads(out["response"] or out.get("thinking", ""))
 
 
-def ensure_backend(name: str, run_dir: Path = None, wait_s: int = 480) -> bool:
+def _stop_backend_conflicts(name: str, checkpoint=lambda: None,
+                            stopped: list[str] = None) -> bool:
+    """Stop only running NIMs that cannot safely coexist with *name*.
+
+    This is shared by job-driven warmup and the manual Backends API so the UI
+    cannot bypass unified-memory safety. Missing/stopped optional containers
+    are benign; a failed stop aborts the target start.
+    """
+    for conflict in NIM_CONFLICTS.get(name, ()):
+        checkpoint()
+        inspected = subprocess.run(
+            ["docker", "inspect", "-f", "{{.State.Running}}", conflict],
+            capture_output=True, text=True, timeout=30)
+        checkpoint()
+        if inspected.returncode != 0:
+            continue
+        if (getattr(inspected, "stdout", "") or "").strip().lower() != "true":
+            continue
+        stop_result = subprocess.run(
+            ["docker", "stop", conflict], capture_output=True, timeout=60)
+        checkpoint()
+        if stop_result.returncode != 0:
+            return False
+        if stopped is not None:
+            stopped.append(conflict)
+    return True
+
+
+def _backend_created(name: str) -> bool:
+    return subprocess.run(["docker", "container", "inspect", name],
+                          capture_output=True, timeout=30).returncode == 0
+
+
+def ensure_backend(name: str, run_dir: Path = None, wait_s: int = None,
+                   stopped_conflicts: list[str] = None,
+                   started_target: list[str] = None) -> bool:
     """Start a NIM container if needed and wait until ready. Surfaces progress.
 
     TRELLIS and image NIMs do not coexist safely on unified-memory nodes. A
@@ -455,32 +502,21 @@ def ensure_backend(name: str, run_dir: Path = None, wait_s: int = 480) -> bool:
         except Exception:  # noqa: BLE001
             return False
 
+    if wait_s is None:
+        wait_s = 1500 if name == "nim-wan" else 480
+
     checkpoint()
+    # Enforce conflicts even if the target already answers ready: an operator
+    # may have manually started an incompatible peer after it.
+    if not _stop_backend_conflicts(name, checkpoint, stopped_conflicts):
+        return False
     if ready():
         return True
-
-    conflicts = IMAGE_NIM_BACKENDS if name == "nim-trellis" else \
-        (("nim-trellis",) if name in IMAGE_NIM_BACKENDS else ())
-    for conflict in conflicts:
-        checkpoint()
-        inspected = subprocess.run(
-            ["docker", "inspect", "-f", "{{.State.Running}}", conflict],
-            capture_output=True, text=True, timeout=30)
-        checkpoint()
-        # A container that was never provisioned needs no action.
-        if inspected.returncode != 0:
-            continue
-        if (getattr(inspected, "stdout", "") or "").strip().lower() != "true":
-            continue
-        stopped = subprocess.run(
-            ["docker", "stop", conflict], capture_output=True, timeout=60)
-        checkpoint()
-        if stopped.returncode != 0:
-            return False
-
     started = subprocess.run(["docker", "start", name], capture_output=True, timeout=60)
     if started.returncode != 0:
         return False
+    if started_target is not None:
+        started_target.append(name)
     t0 = time.time()
     while time.time() - t0 < wait_s:
         checkpoint()
@@ -495,6 +531,35 @@ def ensure_backend(name: str, run_dir: Path = None, wait_s: int = 480) -> bool:
             checkpoint()
             time.sleep(1)
     return False
+
+
+@contextmanager
+def job_backend(name: str, run_dir: Path):
+    """Temporarily activate a mutually-exclusive backend for one leased job.
+
+    Restore only state this context changed: a target that was already running
+    remains running, while conflicts stopped by this call are restarted. This
+    is deliberately inside the caller's GPU lease so no other job can enter
+    between teardown and restoration.
+    """
+    was_running = subprocess.run(
+        ["docker", "inspect", "-f", "{{.State.Running}}", name],
+        capture_output=True, text=True, timeout=30)
+    target_was_running = was_running.returncode == 0 and \
+        (was_running.stdout or "").strip().lower() == "true"
+    stopped_conflicts: list[str] = []
+    started_target: list[str] = []
+    try:
+        yield ensure_backend(name, run_dir,
+                             stopped_conflicts=stopped_conflicts,
+                             started_target=started_target)
+    finally:
+        if not target_was_running and started_target:
+            subprocess.run(["docker", "stop", name],
+                           capture_output=True, timeout=120)
+        for conflict in stopped_conflicts:
+            subprocess.run(["docker", "start", conflict],
+                           capture_output=True, timeout=120)
 
 
 def _status(run_dir: Path, **updates):
@@ -523,7 +588,8 @@ def _status(run_dir: Path, **updates):
             ]
             candidate_meta = [
                 {key: cand[key] for key in
-                 ("i", "seed", "source", "engine_note", "auto_improved")
+                 ("i", "seed", "source", "engine_note", "auto_improved",
+                  "steps", "size", "seconds")
                  if key in cand}
                 for cand in snap.get("candidates", [])
             ]
@@ -899,6 +965,16 @@ def refine(req: RefineReq):
     return {"id": run_dir.name}
 
 
+def _valid_mp4_file(path: Path) -> bool:
+    try:
+        if path.stat().st_size < 1024:
+            return False
+        with open(path, "rb") as f:
+            return f.read(8)[4:8] == b"ftyp"
+    except OSError:
+        return False
+
+
 def ltx_animate(src: Path, motion: str, out_mp4: Path, duration: int = 5) -> dict:
     """Image → cinema video WITH generated audio via LTX-2.3 22B nvfp4 (local ComfyUI)."""
     C = f"http://localhost:{COMFY_PORT}"
@@ -967,6 +1043,9 @@ def ltx_animate(src: Path, motion: str, out_mp4: Path, duration: int = 5) -> dic
                     img = h[pid]["outputs"]["13"]["images"][0]
                     shutil.copy2(COMFY_DIR / "output" / img["subfolder"] / img["filename"],
                                  out_mp4)
+                    if not _valid_mp4_file(out_mp4):
+                        out_mp4.unlink(missing_ok=True)
+                        return {"error": "LTX produced an invalid MP4"}
                     return {"file": out_mp4.name, "seed": seed,
                             "source": "comfyui:ltx-2.3"}
                 if pid in h and h[pid]["status"].get("status_str") == "error":
@@ -1042,6 +1121,9 @@ def wan_animate(src: Path, motion: str, out_mp4: Path, duration: int = 5) -> dic
                     img = h[pid]["outputs"]["11"]["images"][0]
                     produced = (COMFY_DIR / "output" / img["subfolder"] / img["filename"])
                     shutil.copy2(produced, out_mp4)
+                    if not _valid_mp4_file(out_mp4):
+                        out_mp4.unlink(missing_ok=True)
+                        return {"error": "ComfyUI Wan produced an invalid MP4"}
                     return {"file": out_mp4.name, "seed": seed,
                             "source": "comfyui:wan2.2"}
                 if pid in h and h[pid]["status"].get("status_str") == "error":
@@ -1055,12 +1137,95 @@ def wan_animate(src: Path, motion: str, out_mp4: Path, duration: int = 5) -> dic
         return {"error": f"local video failed: {str(e)[:200]}"}
 
 
+def wan_nim_animate(src: Path, motion: str, out_mp4: Path,
+                    duration: int = 5) -> dict:
+    """Image → video through the official local Wan2.2 A14B I2V NVFP4 NIM.
+
+    NVIDIA's endpoint is synchronous and exposes no job-scoped cancel API.
+    Therefore the caller's heavy GPU lease remains held for the entire HTTP
+    request. Cancellation/deadline checks run before submission, immediately
+    after it returns, and before publishing the atomically-written MP4.
+    """
+    from PIL import Image
+
+    run_id = out_mp4.parent.name
+    part = out_mp4.with_name(f".{out_mp4.name}.part")
+    part.unlink(missing_ok=True)
+    out_mp4.unlink(missing_ok=True)
+    seed = random.randrange(1, 2**32)
+    try:
+        jobs.checkpoint(run_id)
+        with Image.open(src) as image:
+            width, height = image.size
+            normalized = io.BytesIO()
+            image.convert("RGB").save(normalized, "PNG")
+        size = "832x480" if width >= height else "480x832"
+        image_uri = "data:image/png;base64," + \
+            base64.b64encode(normalized.getvalue()).decode("ascii")
+        payload = {
+            "model": "wan-ai/wan2.2",
+            "prompt": motion,
+            "input_reference": image_uri,
+            "size": size,
+            "seconds": int(duration),
+            "seed": seed,
+            "steps": WAN_FAST_STEPS,
+            "cfg_scale": 5.0,
+        }
+        response = requests.post(WAN_LOCAL, json=payload, timeout=(30, 1200))
+        # A cancel/deadline that arrived during the blocking NIM call wins
+        # before response classification, decoding, or cloud fallback.
+        jobs.checkpoint(run_id)
+        if response.status_code == 422:
+            return {"error": "Wan2.2 request rejected by the local safety filter",
+                    "filtered": True}
+        response.raise_for_status()
+        body = response.json()
+        data = body.get("data")
+        item = data[0] if isinstance(data, list) and data else \
+            (data if isinstance(data, dict) else {})
+        encoded = item.get("b64_json", "") if isinstance(item, dict) else ""
+        try:
+            raw = base64.b64decode(encoded, validate=True)
+        except Exception:  # noqa: BLE001 — malformed engine response
+            raw = b""
+        if len(raw) < 1024 or raw[4:8] != b"ftyp":
+            return {"error": "Wan2.2 returned an invalid MP4"}
+        jobs.checkpoint(run_id)
+        part.parent.mkdir(parents=True, exist_ok=True)
+        with open(part, "wb") as f:
+            f.write(raw)
+            f.flush()
+            os.fsync(f.fileno())
+        jobs.checkpoint(run_id)
+        os.replace(part, out_mp4)
+        return {"file": out_mp4.name, "seed": seed,
+                "source": "local-nim:wan2.2-i2v:nvfp4",
+                "steps": payload["steps"], "size": size,
+                "seconds": payload["seconds"]}
+    except (JobCancelled, JobTimeout):
+        raise
+    except requests.Timeout:
+        # Re-check state so cancellation/deadline always outranks an engine
+        # timeout that completed at the same instant.
+        jobs.checkpoint(run_id)
+        return {"error": "local Wan2.2 NIM timed out"}
+    except Exception as e:  # noqa: BLE001 — local engine/network/API failure
+        jobs.checkpoint(run_id)
+        return {"error": f"local Wan2.2 NIM failed: {str(e)[:180]}"}
+    finally:
+        part.unlink(missing_ok=True)
+
+
 @app.post("/api/animate")
 def animate(req: AnimateReq):
     src = _resolve(req.file)
     if not src or not src.exists():
         return JSONResponse({"error": "file not found"}, 404)
-    engine = "ltx-2.3-cinema" if req.quality == "cinema" else "wan2.2-local"
+    use_wan_nim = req.quality == "fast" and sys.platform != "win32" \
+        and _backend_created("nim-wan")
+    engine = "ltx-2.3-cinema" if req.quality == "cinema" else \
+        ("wan2.2-nim-i2v-nvfp4" if use_wan_nim else "wan2.2-comfy-5b")
     run_dir, created = _new_run(req.motion, engine, "animate", req.model_dump())
     if not created:
         return {"id": run_dir.name, "idempotent_replay": True}
@@ -1074,34 +1239,64 @@ def animate(req: AnimateReq):
             with jobs.gpu_lease(run_dir.name, "heavy"):
                 if req.quality == "cinema":
                     r = ltx_animate(src, req.motion, run_dir / "clip.mp4", req.duration)
+                elif use_wan_nim:
+                    with job_backend("nim-wan", run_dir) as ready:
+                        if not ready:
+                            r = {"error": "local Wan2.2 NIM did not become ready"}
+                        else:
+                            r = wan_nim_animate(
+                                src, req.motion, run_dir / "clip.mp4", req.duration)
                 else:
                     r = wan_animate(src, req.motion, run_dir / "clip.mp4", req.duration)
+                # The synchronous Wan NIM cannot be interrupted mid-request.
+                # Observe cancel/deadline while the exclusive lease is still held.
+                jobs.checkpoint(run_dir.name)
         except JobCancelled:
+            (run_dir / "clip.mp4").unlink(missing_ok=True)
+            (run_dir / ".clip.mp4.part").unlink(missing_ok=True)
             _status(run_dir, phase="cancelled", error="cancelled by request",
                     candidates=[])
             return
         except JobTimeout:
+            (run_dir / "clip.mp4").unlink(missing_ok=True)
+            (run_dir / ".clip.mp4.part").unlink(missing_ok=True)
             _status(run_dir, phase="failed",
                     error="exceeded the server-enforced deadline", candidates=[])
             return
-        if r.get("cancelled"):
+        if r.get("cancelled") or jobs.cancelled(run_dir.name):
             # ltx/wan observed the Beast cancel flag mid-render: this is a
             # cancellation, not an engine failure — and never a reason to
             # spend cloud credits on a fallback
+            (run_dir / "clip.mp4").unlink(missing_ok=True)
             _status(run_dir, phase="cancelled", error="cancelled by request",
                     candidates=[])
             return
         # cloud fallback: never for a timed-out job (no cloud-credit retries)
-        if "error" in r and req.allow_cloud_fallback \
+        if "error" in r and req.allow_cloud_fallback and not r.get("filtered") \
+                and not jobs.cancelled(run_dir.name) \
                 and not jobs.deadline_exceeded(run_dir.name):
-            r = hf_generate("seedance_2_0", req.motion, run_dir / "clip.mp4",
-                            ["--start-image", str(src), "--duration", str(req.duration)])
+            cloud_part = run_dir / ".clip.cloud.mp4"
+            cloud_part.unlink(missing_ok=True)
+            r = hf_generate("seedance_2_0", req.motion, cloud_part,
+                            ["--start-image", str(src), "--duration",
+                             str(req.duration)])
+            if "error" not in r:
+                jobs.checkpoint(run_dir.name)
+                if not _valid_mp4_file(cloud_part):
+                    cloud_part.unlink(missing_ok=True)
+                    r = {"error": "Seedance returned an invalid MP4"}
+                else:
+                    os.replace(cloud_part, run_dir / "clip.mp4")
+                    r.update(file="clip.mp4", source="cloud:seedance_2_0")
+                    _status(run_dir, model="seedance_2_0")
+            cloud_part.unlink(missing_ok=True)
         if "error" in r:
             _status(run_dir, phase="failed", error=r["error"], candidates=[])
             return
         _status(run_dir, phase="done", candidates=[
             {"i": 1, "state": "done", "file": "clip.mp4", "video": True,
-             **{key: r[key] for key in ("seed", "source") if key in r}}],
+             **{key: r[key] for key in
+                ("seed", "source", "steps", "size", "seconds") if key in r}}],
             final="clip.mp4", video=True)
 
     threading.Thread(target=work, daemon=True).start()
@@ -1204,11 +1399,27 @@ def backend(req: BackendReq):
         return {"ok": True, "note": "loads models on demand" if req.action == "start" else ""}
     if req.name not in BACKENDS:
         return JSONResponse({"error": "unknown backend"}, 400)
-    r = subprocess.run(["docker", req.action, req.name],
-                       capture_output=True, text=True, timeout=120)
-    if r.returncode != 0:
-        return JSONResponse({"error": r.stderr[-200:] or "docker failed"}, 500)
-    return {"ok": True, "note": "warmup takes ~5 min after start" if req.action == "start" else ""}
+    holder = f"manual-backend:{threading.get_ident()}:{time.time_ns()}"
+    with jobs.gpu_lease_nowait(holder, "heavy") as acquired:
+        # Close the gap between the read-only fast rejection above and the
+        # actual container mutation. A job that won that race owns the lease;
+        # the panel fails closed instead of stopping its backend.
+        if not acquired:
+            return JSONResponse(
+                {"error": "GPU backend is leased by an active job; retry when idle"},
+                409)
+        if req.action == "start":
+            # Use the same conflict cleanup and readiness policy as job-driven
+            # starts; the panel cannot bypass unified-memory safety.
+            if not ensure_backend(req.name):
+                return JSONResponse(
+                    {"error": f"{req.name} did not become ready"}, 500)
+            return {"ok": True, "note": "ready"}
+        r = subprocess.run(["docker", "stop", req.name],
+                           capture_output=True, text=True, timeout=120)
+        if r.returncode != 0:
+            return JSONResponse({"error": r.stderr[-200:] or "docker failed"}, 500)
+        return {"ok": True, "note": ""}
 
 
 class To3DReq(BaseModel):

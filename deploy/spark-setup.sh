@@ -98,6 +98,20 @@ docker container inspect nim-trellis >/dev/null 2>&1 || docker create --name nim
   -e NIM_MODEL_PROFILE="$trellis_profile" \
   -p 127.0.0.1:8017:8000 -v ~/beast/nim-cache:/opt/nim/.cache/ "$trellis_img"
 docker update --restart no nim-trellis >/dev/null
+
+# Official Wan2.2 A14B I2V NVFP4 NIM for Spark-native fast animation.
+# It is a heavy, synchronous backend, so it stays off until Beast acquires the
+# exclusive GPU lease and swaps out FLUX/Kontext/TRELLIS.
+wan_img="nvcr.io/nim/wan-ai/wan2.2@sha256:05c1d390af4eec607b654172fa889ae8cef2b2c238e84516514e61e5ba52e63b"
+wan_profile="6804489a9416df56fbc1e64b16ca12c356b225349134a5e4282446da4fc024f2" # i2v:nvfp4
+docker image inspect "$wan_img" >/dev/null 2>&1 || docker pull "$wan_img"
+docker container inspect nim-wan >/dev/null 2>&1 || docker create --name nim-wan \
+  --restart no --device nvidia.com/gpu=all --shm-size=16g \
+  -e NGC_API_KEY="$NGC_API_KEY" -e HF_TOKEN="$HF_TOKEN" \
+  -e NIM_MODEL_VARIANT=i2v -e NIM_MODEL_PRECISION=nvfp4 \
+  -e NIM_MODEL_PROFILE="$wan_profile" -e NIM_TRITON_REQUEST_TIMEOUT=900000000 \
+  -p 127.0.0.1:8021:8000 -v ~/beast/nim-cache:/opt/nim/.cache/ "$wan_img"
+docker update --restart no nim-wan >/dev/null
 docker logout nvcr.io >/dev/null
 trap - EXIT
 echo "created (not started) — start from the Studio Backends panel or: docker start nim-flux"

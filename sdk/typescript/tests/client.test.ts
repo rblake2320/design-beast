@@ -52,6 +52,28 @@ test("backend() posts name/action body", async () => {
   assert.deepEqual(body, { name: "nim-flux", action: "start" });
 });
 
+test("backend() timeout covers synchronous NIM warmup and supports override", async () => {
+  const { fetchImpl } = fakeFetch(() => ({ json: { ok: true } }));
+  const c = new BeastStudioClient({ fetchImpl });
+  const realSetTimeout = globalThis.setTimeout;
+  const delays: number[] = [];
+  globalThis.setTimeout = ((callback: (...args: unknown[]) => void,
+                            delay?: number) => {
+    delays.push(delay ?? 0);
+    return realSetTimeout(callback, delay);
+  }) as typeof setTimeout;
+  try {
+    await c.backend("nim-wan", "start");
+    await c.backend("nim-flux", "start");
+    await c.backend("nim-wan", "stop");
+    await c.backend("comfyui", "start");
+    await c.backend("nim-wan", "start", 12_345);
+  } finally {
+    globalThis.setTimeout = realSetTimeout;
+  }
+  assert.deepEqual(delays, [1_530_000, 510_000, 150_000, 30_000, 12_345]);
+});
+
 // ---- async-submit endpoints: privacy/credit flags default false ----
 
 test("refine() defaults allow_cloud_fallback to false", async () => {
