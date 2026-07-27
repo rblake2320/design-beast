@@ -8,6 +8,9 @@
 # Phase A gives you: server + judge + expand + FLUX image generation + TTS.
 # Phase B (optional, later): ComfyUI + Wan/LTX video, TRELLIS 3D.
 set -euo pipefail
+# Generated assets can contain private source images, prompts, voices, and job
+# metadata. Keep every file created by setup or the service owner-only.
+umask 077
 cd "$(dirname "$0")/.."
 ROOT="$(pwd)"
 VENV_DIR="${BEAST_VENV:-$ROOT/.venv}"
@@ -127,6 +130,7 @@ StartLimitIntervalSec=0
 
 [Service]
 Type=simple
+UMask=0077
 WorkingDirectory=$ROOT
 EnvironmentFile=-$CREDS_FILE
 ExecStart=$VENV_DIR/bin/python studio/server.py
@@ -137,6 +141,10 @@ TimeoutStopSec=30
 [Install]
 WantedBy=default.target
 EOF
+# Harden an existing checkout too: earlier releases used the host's permissive
+# 0002 umask, leaving jobs.db and generated artifacts readable by local users.
+# Removing only group/other bits preserves executable flags and owner access.
+chmod -R go-rwx "$ROOT"
 systemctl --user daemon-reload
 systemctl --user enable --now beast-studio.service
 if command -v loginctl >/dev/null && [ "$(loginctl show-user "$USER" -p Linger --value)" != "yes" ]; then
