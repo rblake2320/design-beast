@@ -538,10 +538,10 @@ def ensure_backend(name: str, run_dir: Path = None, wait_s: int = None,
     return False
 
 
-def _service_cmd(scope: str, action: str, unit: str) -> list[str]:
+def _service_cmd(scope: str, *args: str) -> list[str]:
     prefix = ["systemctl", "--user"] if scope == "user" else \
         ["sudo", "-n", "systemctl"]
-    return [*prefix, action, unit]
+    return [*prefix, *args]
 
 
 def _quiesce_wan_aux_services(run_dir: Path, stopped: list[tuple[str, str]]) -> bool:
@@ -559,7 +559,11 @@ def _quiesce_wan_aux_services(run_dir: Path, stopped: list[tuple[str, str]]) -> 
                                 capture_output=True, timeout=30)
         if active.returncode != 0:
             continue
-        result = subprocess.run(_service_cmd(scope, "stop", unit),
+        # A plain stop is insufficient on this fleet: watchdogs/power recovery
+        # may start the unit again mid-compile. A runtime-only mask blocks that
+        # resurrection without changing persistent enablement across reboot.
+        result = subprocess.run(
+            _service_cmd(scope, "mask", "--runtime", "--now", unit),
                                 capture_output=True, timeout=60)
         if result.returncode != 0:
             return False
@@ -601,6 +605,8 @@ def job_backend(name: str, run_dir: Path):
             subprocess.run(["docker", "start", conflict],
                            capture_output=True, timeout=120)
         for scope, unit in reversed(stopped_services):
+            subprocess.run(_service_cmd(scope, "unmask", "--runtime", unit),
+                           capture_output=True, timeout=60)
             subprocess.run(_service_cmd(scope, "start", unit),
                            capture_output=True, timeout=120)
 

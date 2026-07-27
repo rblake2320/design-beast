@@ -324,6 +324,7 @@ class _DockerState:
         self.services = dict(services or {})
         self.initial_services = dict(self.services)
         self.fail_service_stop = fail_service_stop
+        self.masked = set()
         self.calls = []
 
     def run(self, cmd, **kwargs):
@@ -331,19 +332,27 @@ class _DockerState:
         if "systemctl" in cmd:
             service = cmd[-1]
             action = next(
-                (part for part in ("is-active", "stop", "start")
+                (part for part in ("is-active", "mask", "unmask", "start")
                  if part in cmd), None)
             if action == "is-active":
                 return _result(
                     returncode=0 if self.services.get(service, False) else 3,
                     stdout=("active\n" if self.services.get(service, False)
                             else "inactive\n"))
-            if action == "stop":
+            if action == "mask":
                 if service == self.fail_service_stop:
                     return _result(returncode=1)
                 self.services[service] = False
+                self.masked.add(service)
+                assert "--runtime" in cmd and "--now" in cmd
+                return _result()
+            if action == "unmask":
+                assert "--runtime" in cmd
+                self.masked.discard(service)
                 return _result()
             if action == "start":
+                assert service not in self.masked, \
+                    "service start attempted before runtime unmask"
                 self.services[service] = True
                 return _result()
             raise AssertionError(f"unexpected systemctl command: {cmd}")
@@ -473,10 +482,10 @@ def test_job_wan_aux_services_are_owned_and_restored(
             }
             wan_start = machine.calls.index(["docker", "start", "nim-wan"])
             assert machine.calls.index(
-                _service_calls(machine, "stop", "llama-rpc.service")[0]
+                _service_calls(machine, "mask", "llama-rpc.service")[0]
             ) < wan_start
             assert machine.calls.index(
-                _service_calls(machine, "stop", "cheatvision.service")[0]
+                _service_calls(machine, "mask", "cheatvision.service")[0]
             ) < wan_start
             if outcome == "failure":
                 raise RuntimeError("WAN inference failed")
@@ -488,9 +497,14 @@ def test_job_wan_aux_services_are_owned_and_restored(
         assert outcome == "cancel"
 
     assert machine.services == machine.initial_services
+    assert machine.masked == set()
     for service in ("llama-rpc.service", "cheatvision.service"):
-        assert len(_service_calls(machine, "stop", service)) == 1
+        assert len(_service_calls(machine, "mask", service)) == 1
+        assert len(_service_calls(machine, "unmask", service)) == 1
         assert len(_service_calls(machine, "start", service)) == 1
+        unmask = _service_calls(machine, "unmask", service)[0]
+        start = _service_calls(machine, "start", service)[0]
+        assert machine.calls.index(unmask) < machine.calls.index(start)
 
 
 def test_job_wan_never_starts_initially_inactive_aux_services(
@@ -512,8 +526,10 @@ def test_job_wan_never_starts_initially_inactive_aux_services(
         assert ready
 
     assert machine.services == machine.initial_services
-    assert not _service_calls(machine, "stop", "llama-rpc.service")
-    assert not _service_calls(machine, "stop", "cheatvision.service")
+    assert not _service_calls(machine, "mask", "llama-rpc.service")
+    assert not _service_calls(machine, "mask", "cheatvision.service")
+    assert not _service_calls(machine, "unmask", "llama-rpc.service")
+    assert not _service_calls(machine, "unmask", "cheatvision.service")
     assert not _service_calls(machine, "start", "llama-rpc.service")
     assert not _service_calls(machine, "start", "cheatvision.service")
 
@@ -540,9 +556,11 @@ def test_job_wan_failed_aux_stop_aborts_and_restores_prior_stop(
         assert ready is False
 
     assert machine.services == machine.initial_services
-    assert len(_service_calls(machine, "stop", "llama-rpc.service")) == 1
+    assert len(_service_calls(machine, "mask", "llama-rpc.service")) == 1
+    assert len(_service_calls(machine, "unmask", "llama-rpc.service")) == 1
     assert len(_service_calls(machine, "start", "llama-rpc.service")) == 1
-    assert len(_service_calls(machine, "stop", "cheatvision.service")) == 1
+    assert len(_service_calls(machine, "mask", "cheatvision.service")) == 1
+    assert not _service_calls(machine, "unmask", "cheatvision.service")
     assert not _service_calls(machine, "start", "cheatvision.service")
     assert ["docker", "start", "nim-wan"] not in machine.calls
 
@@ -563,7 +581,7 @@ def test_job_wan_cancel_after_aux_stop_restores_recorded_service(
             "cancel after service stop must prevent backend warmup"))
 
     def checkpoint(_jid):
-        if _service_calls(machine, "stop", "llama-rpc.service"):
+        if _service_calls(machine, "mask", "llama-rpc.service"):
             raise jobs_mod.JobCancelled(
                 "cancelled immediately after auxiliary stop")
 
@@ -578,7 +596,8 @@ def test_job_wan_cancel_after_aux_stop_restores_recorded_service(
             pytest.fail("cancelled context must not enter")
 
     assert machine.services == machine.initial_services
-    assert len(_service_calls(machine, "stop", "llama-rpc.service")) == 1
+    assert len(_service_calls(machine, "mask", "llama-rpc.service")) == 1
+    assert len(_service_calls(machine, "unmask", "llama-rpc.service")) == 1
     assert len(_service_calls(machine, "start", "llama-rpc.service")) == 1
     assert not _service_calls(machine, "start", "cheatvision.service")
     assert ["docker", "start", "nim-wan"] not in machine.calls
