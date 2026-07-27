@@ -503,6 +503,15 @@ def test_job_wan_aux_services_are_owned_and_restored(
         server.requests, "get",
         lambda *a, **kw: SimpleNamespace(ok=machine.states["nim-wan"]))
     monkeypatch.setattr(server.time, "sleep", lambda _: None)
+    readiness_checks = []
+
+    def llama_ready():
+        assert _service_calls(machine, "start", "llama-rpc.service")
+        assert not _service_calls(machine, "unmask", "rpc-watchdog.timer")
+        readiness_checks.append("ready")
+        return True
+
+    monkeypatch.setattr(server, "_wait_llama_rpc_ready", llama_ready)
     run_dir = tmp_path / f"wan-aux-{outcome}"
     run_dir.mkdir()
 
@@ -534,6 +543,7 @@ def test_job_wan_aux_services_are_owned_and_restored(
 
     assert machine.services == machine.initial_services
     assert machine.masked == set()
+    assert readiness_checks == ["ready"]
     for service in ("rpc-watchdog.timer", "llama-rpc.service",
                     "cheatvision.service"):
         assert len(_service_calls(machine, "mask", service)) == 1
@@ -542,6 +552,81 @@ def test_job_wan_aux_services_are_owned_and_restored(
         unmask = _service_calls(machine, "unmask", service)[0]
         start = _service_calls(machine, "start", service)[0]
         assert machine.calls.index(unmask) < machine.calls.index(start)
+
+
+def test_llama_rpc_readiness_wait_is_bounded(monkeypatch):
+    now = [0.0]
+    attempts = []
+    monkeypatch.setenv("BEAST_LLAMA_RPC_HOST", "127.0.0.1")
+    monkeypatch.setenv("BEAST_LLAMA_RPC_PORT", "50052")
+
+    def refused(*args, **kwargs):
+        attempts.append((args, kwargs))
+        raise ConnectionRefusedError("not listening")
+
+    monkeypatch.setattr(server.socket, "create_connection", refused)
+    monkeypatch.setattr(server.time, "monotonic", lambda: now[0])
+    monkeypatch.setattr(
+        server.time, "sleep",
+        lambda seconds: now.__setitem__(0, now[0] + seconds))
+
+    assert server._wait_llama_rpc_ready(timeout_s=3.0) is False
+    assert now[0] == 3.0
+    assert len(attempts) == 3
+
+
+def test_llama_rpc_readiness_uses_explicit_env_endpoint(monkeypatch):
+    monkeypatch.setenv("BEAST_LLAMA_RPC_HOST", "10.23.45.67")
+    monkeypatch.setenv("BEAST_LLAMA_RPC_PORT", "50123")
+    seen = []
+
+    class Connected:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+    def connect(endpoint, **kwargs):
+        seen.append((endpoint, kwargs))
+        return Connected()
+
+    monkeypatch.setattr(server.socket, "create_connection", connect)
+
+    assert server._wait_llama_rpc_ready(timeout_s=1) is True
+    assert seen == [(("10.23.45.67", 50123), {"timeout": 1})]
+
+
+@pytest.mark.parametrize("port", ["not-a-port", "0", "65536", "-1"])
+def test_llama_rpc_invalid_explicit_port_fails_closed(monkeypatch, port):
+    monkeypatch.setenv("BEAST_LLAMA_RPC_HOST", "127.0.0.1")
+    monkeypatch.setenv("BEAST_LLAMA_RPC_PORT", port)
+    monkeypatch.setattr(
+        server.socket, "create_connection",
+        lambda *a, **kw: pytest.fail("invalid port attempted a connection"))
+
+    assert server._wait_llama_rpc_ready(timeout_s=1) is False
+
+
+@pytest.mark.parametrize("exec_start,expected", [
+    (
+        "{ argv[]=/opt/rpc-server --host 192.168.100.10 --port 50052 ; }",
+        ("192.168.100.10", 50052),
+    ),
+    (
+        "{ argv[]=/opt/rpc-server -H 192.168.100.20 -p 50052 ; }",
+        ("192.168.100.20", 50052),
+    ),
+])
+def test_llama_rpc_endpoint_infers_both_spark_unit_syntaxes(
+        monkeypatch, exec_start, expected):
+    monkeypatch.delenv("BEAST_LLAMA_RPC_HOST", raising=False)
+    monkeypatch.delenv("BEAST_LLAMA_RPC_PORT", raising=False)
+    monkeypatch.setattr(
+        server.subprocess, "run",
+        lambda *a, **kw: _result(stdout=exec_start))
+
+    assert server._llama_rpc_endpoint() == expected
 
 
 def test_job_wan_never_starts_initially_inactive_aux_services(

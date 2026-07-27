@@ -12,6 +12,7 @@ import os
 import random
 import re
 import shutil
+import socket
 import subprocess
 import sys
 import threading
@@ -550,6 +551,65 @@ def _service_cmd(scope: str, *args: str) -> list[str]:
     return [*prefix, *args]
 
 
+def _llama_rpc_endpoint() -> tuple[str, int] | None:
+    """Resolve the local fleet's llama RPC listener without host hardcoding.
+
+    Explicit BEAST_LLAMA_RPC_HOST/PORT values win. Missing values are inferred
+    from the systemd unit's ExecStart (Spark-1 uses --host/--port; Spark-2 uses
+    -H/-p). The localhost fallback is safe for conventional installations,
+    while invalid explicit ports fail closed.
+    """
+    host = os.environ.get("BEAST_LLAMA_RPC_HOST", "").strip()
+    port_raw = os.environ.get("BEAST_LLAMA_RPC_PORT", "").strip()
+    inferred_host = ""
+    inferred_port = ""
+    if not host or not port_raw:
+        try:
+            unit = subprocess.run(
+                ["systemctl", "--user", "show", "llama-rpc.service",
+                 "--property=ExecStart", "--value"],
+                capture_output=True, text=True, timeout=5)
+            if unit.returncode == 0:
+                command = unit.stdout or ""
+                match = re.search(r"(?:--host|-H)\s+([^\s;]+)", command)
+                if match:
+                    inferred_host = match.group(1)
+                match = re.search(r"(?:--port|-p)\s+(\d+)", command)
+                if match:
+                    inferred_port = match.group(1)
+        except (OSError, subprocess.SubprocessError):
+            pass
+    host = host or inferred_host or "127.0.0.1"
+    candidate = port_raw or inferred_port or "50052"
+    try:
+        port = int(candidate)
+    except (TypeError, ValueError):
+        return None
+    if not 1 <= port <= 65535:
+        return None
+    return host, port
+
+
+def _wait_llama_rpc_ready(timeout_s: float = 30.0) -> bool:
+    """Wait until this host's llama RPC listener accepts connections.
+
+    ``systemctl start`` returns before rpc-server binds its socket. Restoring
+    the persistent watchdog timer any earlier makes an overdue timer fire and
+    immediately restart the still-healthy service during initialization.
+    """
+    endpoint = _llama_rpc_endpoint()
+    if endpoint is None:
+        return False
+    deadline = time.monotonic() + timeout_s
+    while time.monotonic() < deadline:
+        try:
+            with socket.create_connection(endpoint, timeout=1):
+                return True
+        except OSError:
+            time.sleep(min(1.0, max(0.0, deadline - time.monotonic())))
+    return False
+
+
 def _quiesce_wan_aux_services(
         run_dir: Path, masked: list[tuple[str, str, bool]]) -> bool:
     """Temporarily stop non-Beast GPU consumers before loading WAN.
@@ -618,8 +678,13 @@ def job_backend(name: str, run_dir: Path):
             subprocess.run(_service_cmd(scope, "unmask", "--runtime", unit),
                            capture_output=True, timeout=60)
             if was_active:
-                subprocess.run(_service_cmd(scope, "start", unit),
-                               capture_output=True, timeout=120)
+                started = subprocess.run(
+                    _service_cmd(scope, "start", unit),
+                    capture_output=True, timeout=120)
+                if unit == "llama-rpc.service" and started.returncode == 0:
+                    # The next item restored is rpc-watchdog.timer. Do not
+                    # re-enable it until llama is actually listening.
+                    _wait_llama_rpc_ready()
 
 
 def _status(run_dir: Path, **updates):
