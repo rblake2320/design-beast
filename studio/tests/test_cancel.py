@@ -219,6 +219,10 @@ def test_animate_reports_cancelled_not_failed(monkeypatch, tmp_path):
     src.write_bytes(b"png-bytes")
     monkeypatch.setattr(server, "RUNS", tmp_path)
     monkeypatch.setattr(server, "_resolve", lambda f: src)
+    # This regression targets the legacy Comfy WAN return contract. On Linux
+    # an installed nim-wan container otherwise selects the NIM route before
+    # the monkeypatched wan_animate function is reached.
+    monkeypatch.setattr(server, "_backend_created", lambda name: False)
     monkeypatch.setattr(server, "wan_animate",
                         lambda *a, **kw: {"error": "cancelled by request",
                                           "cancelled": True})
