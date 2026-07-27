@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-# Beast Studio — DGX Spark / Linux arm64 node setup (phase A: control plane + image gen)
+# Beast Studio — DGX Spark / Linux arm64 production setup
 #
 #   git clone https://github.com/rblake2320/design-beast.git ~/design-beast
 #   cd ~/design-beast && NGC_API_KEY=... HF_TOKEN=... bash deploy/spark-setup.sh
 #
 # Idempotent. Heavy pulls run in the foreground — use tmux/nohup for the big ones.
-# Phase A gives you: server + judge + expand + FLUX image generation + TTS.
-# Phase B (optional, later): ComfyUI + Wan/LTX video, TRELLIS 3D.
+# Installs the server/control plane, judge/expand/TTS, local FLUX + Kontext,
+# on-demand WAN 2.2 I2V, and on-demand TRELLIS 3D. Unreal remains Windows-only;
+# ComfyUI/LTX cinema video is optional and is not installed by this script.
 set -euo pipefail
 # Generated assets can contain private source images, prompts, voices, and job
 # metadata. Keep every file created by setup or the service owner-only.

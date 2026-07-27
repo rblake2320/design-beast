@@ -1,7 +1,8 @@
 # Beast Studio — Agent Access
 
-Local AI production API on the RTX 5090. Base URL: `http://127.0.0.1:8787` (this
-machine only). Four sections: paste block · API contract · safety rules · worked example.
+Local AI production API on the current Beast host (Windows RTX 5090 or DGX
+Spark). Base URL: `http://127.0.0.1:8787` (that host only). Four sections:
+paste block · API contract · safety rules · worked example.
 
 ---
 
@@ -15,7 +16,8 @@ Interactive clients may instead subscribe to /api/events/{id} (SSE). Sync endpoi
 (/api/upload, /api/expand, /api/judge, /api/tts) return results directly.
 Default model is local:flux.1-schnell (free). Cloud fallback NEVER happens unless you
 send allow_cloud_fallback:true (it spends the human's Higgsfield credits — don't,
-unless told to). Full contract: C:\Users\techai\design-beast\AGENT_ACCESS.md
+unless told to). Full contract: AGENT_ACCESS.md in the current design-beast checkout
+(Windows: C:\Users\techai\design-beast\AGENT_ACCESS.md; Spark: ~/design-beast/AGENT_ACCESS.md)
 Smoke test: curl.exe -sS http://127.0.0.1:8787/api/recipes
 ```
 
@@ -39,9 +41,9 @@ Smoke test: curl.exe -sS http://127.0.0.1:8787/api/recipes
 |---|---|
 | `POST /api/run` | `brief` (required), `prompt`, `variations[]`, `model` (default `local:flux.1-schnell`), `aspect_ratio` (`1:1\|16:9\|9:16\|4:3\|3:4`), `reference` (Higgsfield models ONLY — 400 error with local/nim models) |
 | `POST /api/refine` | `file`, `instruction`, `brief`, `allow_cloud_fallback` (default false) |
-| `POST /api/animate` | `file`, `motion`, `duration` (3\|5), `quality` (`"fast"`=Wan silent ~3min · `"cinema"`=LTX-2.3 with generated audio ~25min), `allow_cloud_fallback` |
+| `POST /api/animate` | `file`, `motion`, `duration` (3\|5), `quality` (`"fast"`=Wan silent, ~3min once warm; Spark cold initialization is truthfully reported and can take up to 35min · `"cinema"`=LTX-2.3 with generated audio ~25min where configured), `allow_cloud_fallback` |
 | `POST /api/to3d` | `file`, `allow_hosted_fallback` (default false — true lets the image LEAVE this machine to NVIDIA's hosted API) → `model.glb` (TRELLIS auto-starts, warmup ~5min) |
-| `POST /api/to_ue` | `file:"runs/<id>/model.glb"` → StaticMesh in the RouteRush UE 5.6 project (NOT the UE 5.8/BeastLab MCP instance — those are separate engines) |
+| `POST /api/to_ue` | `file:"runs/<id>/model.glb"` → StaticMesh in the RouteRush UE 5.6 project on Windows (NOT the UE 5.8/BeastLab MCP instance — those are separate engines); cleanly unavailable on Spark because Unreal Editor has no supported Linux ARM64 build |
 | `GET /api/events/{id}` | SSE status stream; reconnect or fall back to `GET /api/run/{id}` if it drops |
 | `POST /api/job/{id}/cancel` | Job-specific cancellation; ComfyUI prompts use its atomic per-prompt cancel API |
 | `POST /api/job/{id}/retry` | Retry a terminal `failed` or `cancelled` job |
@@ -56,8 +58,9 @@ Smoke test: curl.exe -sS http://127.0.0.1:8787/api/recipes
 ```
 
 `file` fields accept an uploads filename or `runs/<id>/<file>`. Outputs on disk:
-`C:\Users\techai\design-beast\studio\runs\<id>\` → `final.png` (2048², validated
-upscale + grade), `clip.mp4`, `model.glb`.
+`studio/runs/<id>/` in the current checkout (Windows absolute path:
+`C:\Users\techai\design-beast\studio\runs\<id>\`) → `final.png` (2048²,
+validated upscale + grade), `clip.mp4`, `model.glb`.
 
 Models for `/api/run`: `local:flux.1-schnell` (default, ~7s/img), `local:flux.2-klein`
 (newest), `nim:flux.1-schnell|dev` (hosted, free, slow queue), `gpt_image_2` /
