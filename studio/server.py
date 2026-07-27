@@ -464,11 +464,14 @@ def _stop_backend_conflicts(name: str, checkpoint=lambda: None,
             continue
         stop_result = subprocess.run(
             ["docker", "stop", conflict], capture_output=True, timeout=60)
-        checkpoint()
         if stop_result.returncode != 0:
             return False
         if stopped is not None:
             stopped.append(conflict)
+        # Record ownership before observing cancellation. If checkpoint raises
+        # here, job_backend's finally must know this call actually stopped the
+        # peer so it can restore it.
+        checkpoint()
     return True
 
 

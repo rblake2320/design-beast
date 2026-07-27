@@ -449,3 +449,45 @@ def test_job_wan_startup_failure_restores_conflicts_without_stopping_wan(
     assert docker.calls.count(["docker", "start", "nim-trellis"]) == 1
     assert ["docker", "start", "nim-kontext"] not in docker.calls
     assert ["docker", "start", "nim-flux2"] not in docker.calls
+
+
+def test_job_wan_cancel_immediately_after_conflict_stop_restores_it(
+        monkeypatch, tmp_path):
+    """Ownership must be recorded before the post-stop cancel checkpoint.
+
+    This is the precise race where docker stop succeeds, cancellation fires
+    before ensure_backend returns, and job_backend's finally must still know
+    that this job owes the operator a restart.
+    """
+    docker = _DockerState({
+        "nim-wan": False,
+        "nim-flux": True,
+        "nim-kontext": False,
+        "nim-flux2": False,
+        "nim-trellis": False,
+    })
+    monkeypatch.setattr(server.subprocess, "run", docker.run)
+    monkeypatch.setattr(server.requests, "get",
+                        lambda *a, **kw: SimpleNamespace(ok=False))
+
+    def checkpoint(_jid):
+        if ["docker", "stop", "nim-flux"] in docker.calls:
+            raise jobs_mod.JobCancelled("cancelled after successful stop")
+
+    monkeypatch.setattr(server.jobs, "checkpoint", checkpoint)
+    run_dir = tmp_path / "wan-cancel-after-stop"
+    run_dir.mkdir()
+
+    with pytest.raises(jobs_mod.JobCancelled,
+                       match="cancelled after successful stop"):
+        with server.job_backend("nim-wan", run_dir):
+            pytest.fail("cancellation should prevent context body entry")
+
+    assert docker.states == docker.initial
+    assert docker.calls.count(["docker", "stop", "nim-flux"]) == 1
+    assert docker.calls.count(["docker", "start", "nim-flux"]) == 1
+    assert ["docker", "start", "nim-kontext"] not in docker.calls
+    assert ["docker", "start", "nim-flux2"] not in docker.calls
+    assert ["docker", "start", "nim-trellis"] not in docker.calls
+    assert ["docker", "start", "nim-wan"] not in docker.calls
+    assert ["docker", "stop", "nim-wan"] not in docker.calls
