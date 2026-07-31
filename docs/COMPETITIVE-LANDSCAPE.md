@@ -47,6 +47,15 @@ Unreal delivery **+** operator-owned content policy. Each competitor has at most
 6. **Support hostage-taking (Discord-only, email-only)** → self-hosted + `beast doctor`
    + honest degradation notes means the operator is never waiting on a support queue.
 
+## Amendments (2026-07-31, post-verification external comparison)
+- Local video lane verified (Wan 48s, LTX-2.3 85s WITH synced audio). External read:
+  unit economics beat every Runway tier at volume; single-pass audio+video has no
+  Runway equivalent at any tier. Full pricing baseline + methodology: COSTS-BASELINE.md.
+- Honest gaps vs Runway to log, not hide: camera control (Motion Brush), face
+  performance transfer (Act-One), video-to-video editing (Aleph), and validation
+  breadth (our smoke tests ≠ their months of production traffic). Candidates for a
+  future scout: local camera-control LoRAs / ATI-style trajectory control for Wan.
+
 ## Positioning sentence
 Design-beast is what Krea/Higgsfield would be if they ran on your own GPU with no
 credit meter, what ComfyUI would be if environments reproduced exactly, what Scenario
