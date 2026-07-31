@@ -106,6 +106,15 @@ COSTS-BASELINE.md (pricing sources), WIN-PLAN.md (what we build next).
 | Legal-floor-only content policy (minors/consent/age) | CONTENT-POLICY-ARCHITECTURE.md + registry | free | others: opaque blanket bans |
 | Crypto-first billing design | BTCPay scoped (WIN-PLAN #5) | — | Civitai (forced into it mid-crisis) |
 
+## Video understanding (watching, not just reading)
+
+| Capability | Beast | Cost | Who else / their model |
+|---|---|---|---|
+| Any video → frames+transcript bundle an agent can "watch" | **beast watch (verified 2026-07-31: recovered visual facts absent from transcript)** | free (captions) / Whisper fallback | Gemini video-in ($, metered); transcript-only tools miss all visuals |
+| Timestamp-correlated visual Q&A ("what graph appeared at 12:30?") | frames named f_MMSS + [MM:SS] transcript lines | free | same |
+| Section-only processing (--start/--end) | shipped | free | rare |
+| Competitor video analysis (score shots, pacing, judge frames) | watch bundle + judge/YOLO/SAM over frames | free | nobody |
+
 ## Knowledge & Automation (the surround)
 
 - MemoryWeb (6,185 memories, 3-tier search) · UltraRAG · project-hub · NotebookLM
