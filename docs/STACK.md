@@ -15,6 +15,11 @@ One line per capability; re-verify dates when checked. Machine: Windows 11, RTX 
 | ffmpeg 8.1.2 / ImageMagick 7.1.2 / rembg[gpu] | CLI — assembly, grading, background removal | ✅ 2026-07-02 |
 | HyperFrames 0.7.86 | `npx hyperframes` — HTML/CSS/GSAP → deterministic MP4/WebM; 27 agent skills (`/hyperframes` router + 10 workflows); Studio preview; renders ~15s/8s-clip local | ✅ 2026-07-31 |
 | ai-content-engine | `D:\content\ai-content-engine` — faceless long-form YouTube + shorts + thread + blog from one topic (Claude script → ElevenLabs → ffmpeg) | cloned 2026-07-31, needs .env keys |
+| Local video gen (staged) | ComfyUI `D:\AI\ComfyUI` — LTX-2.3 22B nvfp4 (21 GB, +gemma-3 encoder) and Wan 2.2 TI2V 5B fp16 (+umt5, wan VAE) in models/ | ⚠ weights staged, render UNVERIFIED |
+| Chatterbox TTS 0.1.7 | `D:\AI\tts\chatterbox-venv` — local voice cloning (10s clip), beats ElevenLabs in blind tests; NOTE: runs on torch 2.11+cu128 overriding its 2.6 pin (2.6 has no Blackwell build); save via soundfile, not torchaudio | ✅ 2026-07-31 |
+| Kokoro TTS | `D:\ai\tools\kokoro` (onnx + 54 voices) — fast fixed-voice narration, CPU-capable; studio config.py points at it | staged, wiring unverified |
+| Real-ESRGAN | `D:\ai\tools\realesrgan\realesrgan-ncnn-vulkan.exe` — image upscale (video: see SeedVR2 in SCOUT-2026-07) | staged |
+| ACE-Step 1.5 | `D:\AI\ACE-Step-1.5` (`uv run acestep` → Gradio, `acestep-api` → REST) — local music gen, Apache 2.0 ship-safe, full songs in seconds on 5090; DiT/LM weights auto-download on first run | ✅ installed 2026-07-31, first-run download pending |
 
 ## Design skills (native Skill tool)
 frontend-design · impeccable · theme-factory · dataviz · algorithmic-art ·
@@ -37,8 +42,11 @@ Win32/SelfConnect desktop control · gh CLI
 ## Vision / detection (real-time QA eyes)
 `D:\content\yolo-vision` venv — torch 2.11+cu128, OpenCV 5.0, Ultralytics 8.4 YOLO11 +
 community YOLO-Face (`models/yolov11n-face.pt`); 5.2 ms/frame on the 5090. ✅ 2026-07-31.
+Also **SAM 2.1** (`sam2.1_b.pt`, visual-prompt segmentation — 22 masks on test) ✅
+2026-07-31; SAM 3 (concept prompts) blocked on gated Meta weights, see SCOUT-2026-07.
 Use cases here: auto-QA renders (faces/objects where expected), webcam-reactive demos,
-counting/detection overlays for content.
+counting/detection overlays, masks for inpaint/rembg, game screenshot judging
+(recipe: game-look-pass).
 
 ## Known constraints
 - sm_120 (Blackwell): CUDA Python deps need cu128 builds or "no kernel image" — this
@@ -46,7 +54,8 @@ counting/detection overlays for content.
 - HyperFrames gotchas live in `design-system/recipes/motion-graphic-video.md` (root
   index.html, init silent-fail on nested paths, radial-gradient squares, ffmpeg PATH)
 - BRIA RMBG-2.0 is non-commercial — use birefnet-general for shippable work
-- AI music (Suno/Udio) not ship-safe until Sony suit resolves
+- AI music via HOSTED services (Suno/Udio) still not ship-safe (Sony suit); local
+  ACE-Step 1.5 / YuE are Apache 2.0 with commercial rights — use those for BGM
 - Two UE installs coexist on purpose: 5.8 serves the MCP (BeastLab), 5.6.1 serves
   `/api/to_ue` (RouteRush). Migrating to_ue to 5.8 is future work — do not assume
   one engine does both.
