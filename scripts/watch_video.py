@@ -142,19 +142,45 @@ def main() -> int:
         transcript.write_text(transcript_note, encoding="utf-8")
 
     frames = sorted(frames_dir.glob("f_*.jpg"))
+
+    # token estimate: Claude vision charges ~(w*h)/750 tokens per image;
+    # transcript ~= chars/4. Numbers guide the READING strategy below.
+    try:
+        from PIL import Image
+        fw, fh = Image.open(frames[0]).size if frames else (0, 0)
+    except Exception:  # noqa: BLE001 — estimate from 16:9 if PIL absent
+        fh = args.height
+        fw = int(fh * 16 / 9)
+    per_frame = (fw * fh) // 750
+    t_tokens = len(transcript.read_text(encoding="utf-8")) // 4
+    all_frames = per_frame * len(frames)
+
     (bundle / "MANIFEST.md").write_text(
         f"# Watch bundle\n\n"
         f"- source: {args.source}\n- duration: {duration:.0f}s\n"
         f"- frames: {len(frames)} at ~{interval:.0f}s intervals — filename "
         f"f_MMSS.jpg is the timestamp\n- transcript: {transcript_note}\n\n"
+        f"## Token budget (estimate)\n"
+        f"- per frame ({fw}x{fh}): ~{per_frame} tokens\n"
+        f"- transcript: ~{t_tokens:,} tokens\n"
+        f"- ALL frames + transcript: ~{all_frames + t_tokens:,} tokens\n"
+        f"- transcript + 3 targeted frames: ~{per_frame * 3 + t_tokens:,} tokens\n\n"
         f"## How to read this bundle (agent instructions)\n"
-        f"1. Read transcript.txt — lines carry [MM:SS] stamps.\n"
-        f"2. Read frames/ selectively: match f_MMSS.jpg to the transcript "
-        f"moments that reference visuals ('this graph', 'as you can see').\n"
-        f"3. Correlate both before answering; cite timestamps in answers.\n",
+        f"1. Read transcript.txt first — lines carry [MM:SS] stamps.\n"
+        f"2. Read frames SELECTIVELY: only f_MMSS.jpg near transcript moments "
+        f"that reference visuals ('this graph', 'as you can see'). Reading "
+        f"every frame is rarely worth {all_frames:,} tokens.\n"
+        f"3. For deep visual passes or long videos, dispatch a subagent to "
+        f"consume this bundle and return findings — keeps the main context "
+        f"clean.\n"
+        f"4. Correlate frames with transcript before answering; cite "
+        f"timestamps.\n",
         encoding="utf-8")
-    print(f"bundle ready: {bundle}\n  frames: {len(frames)}  "
-          f"duration: {duration:.0f}s  transcript: {transcript_note}")
+    print(f"bundle ready: {bundle}\n  frames: {len(frames)} ({fw}x{fh}, "
+          f"~{per_frame} tok each)  duration: {duration:.0f}s\n"
+          f"  transcript: {transcript_note} (~{t_tokens:,} tok)\n"
+          f"  est. full read ~{all_frames + t_tokens:,} tok | "
+          f"selective ~{per_frame * 3 + t_tokens:,} tok")
     return 0
 
 
