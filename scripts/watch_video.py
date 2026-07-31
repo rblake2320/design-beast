@@ -1,19 +1,14 @@
-"""beast watch — turn any video into a Claude-readable bundle (frames + transcript).
+"""beast watch — build timestamped visual evidence from any tutorial video.
 
-The pipeline: yt-dlp downloads the video (or takes a local file) and grabs
-captions when they exist (free — no transcription cost); ffmpeg samples
-frames evenly across the duration (capped, so an hour costs about the same
-as 20 minutes); everything lands in one bundle folder with a MANIFEST that
-tells the reading agent how to correlate frame timestamps with transcript
-lines. No video model involved — an agent that reads images + text IS the
-video model.
+The watcher is deliberately hierarchical: scene changes + periodic safety
+samples + optional dense windows.  It writes a machine-readable timeline that
+an agent can query and revisit before compiling demonstrated work into a skill.
 
-Usage:
-  python scripts/watch_video.py <url-or-file> [--start 45:00] [--end 55:00]
-      [--max-frames 40] [--height 720] [--out DIR]
-
-Output bundle:
-  <out>/video.mp4  frames/f_MMSS.jpg ...  transcript.txt  MANIFEST.md
+Examples:
+  beast watch tutorial.mp4
+  beast watch URL --start 12:00 --end 18:00
+  beast watch tutorial.mp4 --dense-window 12:04-12:12@4
+  beast watch tutorial.mp4 --periodic 6 --max-frames 300
 """
 from __future__ import annotations
 
@@ -25,164 +20,291 @@ import subprocess
 import sys
 from pathlib import Path
 
+REPO = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO))
+
+from watch.core import (SCHEMA_VERSION, WatchError, build_sampling_plan, clean_vtt,
+                        detect_scene_times, extract_frame, format_time, frame_name,
+                        hamming_hash, parse_dense_window, parse_timecode,
+                        perceptual_hash, probe_video, sha256, transcribe_local)
+
 FFMPEG_HINT = (Path.home() / "AppData/Local/Microsoft/WinGet/Packages"
                / "Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe"
                / "ffmpeg-8.1.2-full_build/bin")
 
 
-def _tool(name: str) -> str:
-    if shutil.which(name):
-        return name
+def _tool(name: str, required: bool = True) -> str | None:
+    found = shutil.which(name)
+    if found:
+        return found
     hinted = FFMPEG_HINT / f"{name}.exe"
     if hinted.exists():
         return str(hinted)
-    sys.exit(f"{name} not found on PATH (checked {hinted})")
+    if required:
+        raise WatchError(f"{name} not found on PATH (checked {hinted})")
+    return None
 
 
-def _seconds(ts: str | None) -> float | None:
-    if not ts:
-        return None
-    parts = [float(p) for p in ts.split(":")]
-    while len(parts) < 3:
-        parts.insert(0, 0.0)
-    return parts[0] * 3600 + parts[1] * 60 + parts[2]
+def _slug(source: str) -> str:
+    raw = source.rsplit("/", 1)[-1].split("?", 1)[0] if re.match(r"^https?://", source) \
+        else Path(source).stem
+    return re.sub(r"[^A-Za-z0-9]+", "-", raw).strip("-")[:60] or "video"
 
 
-def _clean_vtt(vtt: Path, out_txt: Path) -> int:
-    """VTT -> timestamped transcript lines (MM:SS  text), deduplicated."""
-    stamp = None
-    lines: list[str] = []
-    seen: set[str] = set()
-    for raw in vtt.read_text(encoding="utf-8", errors="replace").splitlines():
-        m = re.match(r"(\d+):(\d+):(\d+)\.\d+\s+-->", raw)
-        if m:
-            h, mnt, s = int(m[1]), int(m[2]), int(m[3])
-            stamp = f"{h * 60 + mnt:02d}:{s:02d}"
+def _download(source: str, bundle: Path, height: int,
+              start: float | None, end: float | None) -> tuple[Path, float]:
+    ytdlp = _tool("yt-dlp")
+    output = bundle / "video.%(ext)s"
+    cmd = [ytdlp, "--no-playlist",
+           "-f", f"bv*[height<={height}]+ba/b[height<={height}]/b",
+           "--merge-output-format", "mp4", "--write-auto-subs", "--write-subs",
+           "--sub-lang", "en.*", "--sub-format", "vtt", "-o", str(output)]
+    if start is not None or end is not None:
+        if end is None:
+            raise WatchError("--end is required when clipping a URL")
+        cmd += ["--download-sections", f"*{start or 0}-{end}", "--force-keyframes-at-cuts"]
+    proc = subprocess.run(cmd + [source], capture_output=True, text=True, timeout=7200)
+    if proc.returncode != 0:
+        raise WatchError(f"yt-dlp failed: {proc.stderr[-800:]}")
+    video = next((path for path in bundle.glob("video.*")
+                  if path.suffix.lower() not in (".vtt", ".part", ".ytdl")), None)
+    if video is None:
+        raise WatchError("download produced no video file")
+    return video, start or 0.0
+
+
+def _clip_local(ffmpeg: str, source: Path, bundle: Path,
+                start: float | None, end: float | None) -> tuple[Path, float]:
+    if start is None and end is None:
+        destination = bundle / f"video{source.suffix.lower()}"
+        shutil.copy2(source, destination)
+        return destination, 0.0
+    offset = start or 0.0
+    destination = bundle / "video.mp4"
+    cmd = [ffmpeg, "-v", "error", "-ss", f"{offset:.3f}", "-i", str(source)]
+    if end is not None:
+        if end <= offset:
+            raise WatchError("--end must be after --start")
+        cmd += ["-t", f"{end - offset:.3f}"]
+    # Re-encode around exact requested boundaries; stream copying can begin at
+    # an earlier keyframe and corrupt source timestamp alignment.
+    cmd += ["-c:v", "libx264", "-preset", "fast", "-crf", "18",
+            "-c:a", "aac", "-movflags", "+faststart", str(destination), "-y"]
+    proc = subprocess.run(cmd, capture_output=True, text=True, timeout=7200)
+    if proc.returncode != 0:
+        raise WatchError(f"local clipping failed: {proc.stderr[-800:]}")
+    return destination, offset
+
+
+def _caption_source(bundle: Path, video: Path, no_transcribe: bool) -> tuple[Path | None, str]:
+    downloaded = next(bundle.glob("*.vtt"), None)
+    if downloaded:
+        return downloaded, "captions"
+    if no_transcribe:
+        return None, "disabled"
+    vtt = transcribe_local(video, bundle)
+    return (vtt, "local_whisper") if vtt else (None, "unavailable")
+
+
+def _write_manifest(bundle: Path, timeline: dict) -> None:
+    frames = timeline["frames"]
+    transcript = timeline["transcript"]
+    coverage = timeline["coverage"]
+    text = f"""# Beast Watch evidence bundle
+
+- schema: `{timeline['schema']}`
+- source: {timeline['source']['input']}
+- selected source range: {timeline['source']['range']['start']} – {timeline['source']['range']['end']}
+- frames: {len(frames)} ({coverage['scene_samples']} scene, {coverage['dense_samples']} targeted-dense)
+- transcript: {len(transcript['segments'])} segments ({transcript['method']})
+- evidence fingerprint: `{timeline['bundle_fingerprint']}`
+
+## How an agent must read this
+
+1. Search `transcript.txt` and `timeline.json`; do not consume every image blindly.
+2. Inspect scene-change frames and frames around statements such as “click”, “set”,
+   “change”, “as you can see”, “before”, and “after”.
+3. For any uncertain action, rerun `beast watch` with
+   `--dense-window START-END@FPS` and keep the new evidence.
+4. A demonstrated action is not a learned skill until it has a precondition,
+   action, observed postcondition, source timestamps, executable implementation,
+   and a passing validation.
+5. Cite source timestamps in every extracted procedure step.
+
+## Files
+
+- `timeline.json`: authoritative evidence index and transcript alignment
+- `transcript.txt`: human-readable timestamped narration
+- `frames/`: source-timestamped evidence frames (`f_<milliseconds>.jpg`)
+- `procedure.template.json`: contract for compiling evidence into a verified skill
+"""
+    (bundle / "MANIFEST.md").write_text(text, encoding="utf-8")
+
+
+def _procedure_template(timeline: dict) -> dict:
+    return {
+        "schema": "beast.watch.procedure/v1",
+        "source_timeline": "timeline.json",
+        "goal": "",
+        "application": "",
+        "version_context": [],
+        "prerequisites": [],
+        "steps": [{
+            "id": "step-001", "intent": "", "preconditions": [],
+            "action": {"type": "unknown", "target": "", "operation": "", "value": None},
+            "observed_postconditions": [],
+            "evidence": [{"start_seconds": None, "end_seconds": None,
+                          "frame_ids": [], "transcript_segment_ids": []}],
+            "implementation": {"preferred": "api_or_mcp", "code": None,
+                               "fallback": "gui", "confidence": 0.0},
+            "validation": {"structural": [], "behavioral": [], "visual": []},
+            "uncertainties": []
+        }],
+        "publication_gate": {
+            "executed_in_sandbox": False, "structural_validation_passed": False,
+            "behavioral_validation_passed": False, "visual_validation_passed": False,
+            "human_approved": False
+        }
+    }
+
+
+def run(args: argparse.Namespace) -> Path:
+    ffmpeg, ffprobe = _tool("ffmpeg"), _tool("ffprobe")
+    start, end = parse_timecode(args.start), parse_timecode(args.end)
+    bundle = Path(args.out).resolve() if args.out else (REPO / "watched" / _slug(args.source))
+    frames_dir = bundle / "frames"
+    frames_dir.mkdir(parents=True, exist_ok=True)
+
+    is_url = bool(re.match(r"^https?://", args.source))
+    if is_url:
+        video, source_offset = _download(args.source, bundle, args.height, start, end)
+    else:
+        source = Path(args.source).expanduser().resolve()
+        if not source.is_file():
+            raise WatchError(f"video not found: {source}")
+        video, source_offset = _clip_local(ffmpeg, source, bundle, start, end)
+
+    media = probe_video(ffprobe, video)
+    duration = media["duration_seconds"]
+    scene_relative = [] if args.no_scenes else detect_scene_times(
+        ffmpeg, video, args.scene_threshold)
+    scene_source = [source_offset + value for value in scene_relative]
+    dense = [parse_dense_window(value) for value in args.dense_window]
+    plan = build_sampling_plan(
+        duration, source_offset=source_offset, scene_times=scene_source,
+        periodic_seconds=args.periodic, dense_windows=dense, max_frames=args.max_frames)
+
+    frame_rows, previous_hash = [], None
+    for index, sample in enumerate(plan, 1):
+        destination = frames_dir / frame_name(sample.time)
+        if not extract_frame(ffmpeg, video, sample.time - source_offset,
+                             destination, args.height):
             continue
-        text = re.sub(r"<[^>]+>", "", raw).strip()
-        if not text or text.startswith(("WEBVTT", "Kind:", "Language:", "NOTE")):
-            continue
-        if text in seen:
-            continue
-        seen.add(text)
-        lines.append(f"[{stamp}] {text}" if stamp else text)
-    out_txt.write_text("\n".join(lines), encoding="utf-8")
-    return len(lines)
+        phash = perceptual_hash(destination)
+        distance = hamming_hash(previous_hash, phash)
+        duplicate = distance is not None and distance <= args.dedupe_distance \
+            and "targeted_dense" not in sample.reasons
+        row = {
+            "id": f"frame-{index:04d}", "file": destination.relative_to(bundle).as_posix(),
+            "source_seconds": round(sample.time, 3), "source_time": format_time(sample.time),
+            "clip_seconds": round(sample.time - source_offset, 3),
+            "reasons": list(sample.reasons), "perceptual_hash": phash,
+            "change_from_previous": distance, "near_duplicate": duplicate,
+        }
+        frame_rows.append(row)
+        previous_hash = phash
+
+    vtt, transcript_method = _caption_source(bundle, video, args.no_transcribe)
+    transcript_path = bundle / "transcript.txt"
+    segments = clean_vtt(vtt, transcript_path, source_offset) if vtt else []
+    if not segments:
+        transcript_path.write_text(
+            "No captions or local Whisper-compatible CLI were available. Visual evidence "
+            "is still indexed; install whisper-ctranslate2 or openai-whisper and rerun.",
+            encoding="utf-8")
+
+    source_end = source_offset + duration
+    fingerprint_input = "\n".join(
+        f"{row['source_seconds']}:{row['perceptual_hash']}" for row in frame_rows)
+    timeline = {
+        "schema": SCHEMA_VERSION,
+        "source": {
+            "input": args.source, "is_url": is_url, "local_video": video.name,
+            "sha256": sha256(video),
+            "range": {"start_seconds": source_offset, "end_seconds": source_end,
+                      "start": format_time(source_offset), "end": format_time(source_end)},
+            "media": media,
+        },
+        "sampling": {
+            "strategy": "scene+periodic+targeted-dense", "periodic_seconds": args.periodic,
+            "scene_threshold": None if args.no_scenes else args.scene_threshold,
+            "dense_windows": args.dense_window, "max_frames": args.max_frames,
+            "height": args.height,
+        },
+        "coverage": {
+            "planned_frames": len(plan), "extracted_frames": len(frame_rows),
+            "scene_samples": sum("scene_change" in row["reasons"] for row in frame_rows),
+            "dense_samples": sum("targeted_dense" in row["reasons"] for row in frame_rows),
+            "near_duplicates": sum(row["near_duplicate"] for row in frame_rows),
+        },
+        "frames": frame_rows,
+        "transcript": {"method": transcript_method, "file": "transcript.txt",
+                       "segments": [{"id": f"speech-{i:04d}", **row}
+                                    for i, row in enumerate(segments, 1)]},
+        "bundle_fingerprint": __import__("hashlib").sha256(
+            fingerprint_input.encode()).hexdigest(),
+        "learning_contract": {
+            "unit": "precondition -> action -> observed_postcondition",
+            "requires_source_evidence": True,
+            "requires_sandbox_execution": True,
+            "requires_validation": ["structural", "behavioral", "visual"],
+        },
+    }
+    (bundle / "timeline.json").write_text(json.dumps(timeline, indent=2), encoding="utf-8")
+    (bundle / "procedure.template.json").write_text(
+        json.dumps(_procedure_template(timeline), indent=2), encoding="utf-8")
+    _write_manifest(bundle, timeline)
+    return bundle
+
+
+def parser() -> argparse.ArgumentParser:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("source", help="yt-dlp-supported URL or local video")
+    ap.add_argument("--start", help="source HH:MM:SS, MM:SS, or seconds")
+    ap.add_argument("--end", help="source HH:MM:SS, MM:SS, or seconds")
+    ap.add_argument("--periodic", type=float, default=10.0,
+                    help="fallback sample interval in seconds (default: 10)")
+    ap.add_argument("--dense-window", action="append", default=[], metavar="START-END@FPS",
+                    help="targeted reinspection window; repeatable")
+    ap.add_argument("--max-frames", type=int, default=240)
+    ap.add_argument("--height", type=int, default=900)
+    ap.add_argument("--scene-threshold", type=float, default=0.28)
+    ap.add_argument("--no-scenes", action="store_true")
+    ap.add_argument("--no-transcribe", action="store_true")
+    ap.add_argument("--dedupe-distance", type=int, default=3,
+                    help="aHash Hamming distance marked near-duplicate")
+    ap.add_argument("--out")
+    return ap
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("source", help="URL (yt-dlp-supported site) or local video file")
-    ap.add_argument("--start", help="HH:MM:SS or MM:SS — process from here")
-    ap.add_argument("--end", help="HH:MM:SS or MM:SS — stop here")
-    ap.add_argument("--max-frames", type=int, default=40)
-    ap.add_argument("--height", type=int, default=720, help="download/scale height")
-    ap.add_argument("--out", help="bundle dir (default: watched/<slug>)")
-    args = ap.parse_args()
-
-    ffmpeg, ffprobe = _tool("ffmpeg"), _tool("ffprobe")
-    is_url = re.match(r"^https?://", args.source)
-
-    if args.out:
-        bundle = Path(args.out)
-    else:
-        slug = (re.sub(r"[^A-Za-z0-9]+", "-", args.source.split("=")[-1])[:40]
-                if is_url else Path(args.source).stem)
-        bundle = Path(__file__).resolve().parent.parent / "watched" / slug
-    frames_dir = bundle / "frames"
-    frames_dir.mkdir(parents=True, exist_ok=True)
-    video = bundle / "video.mp4"
-
-    if is_url:
-        ytdlp = _tool("yt-dlp")
-        cmd = [ytdlp, "--no-playlist",
-               "-f", f"bv*[height<={args.height}]+ba/b[height<={args.height}]/b",
-               "--merge-output-format", "mp4",
-               "--write-auto-subs", "--write-subs", "--sub-lang", "en.*",
-               "--sub-format", "vtt", "-o", str(bundle / "video.%(ext)s")]
-        if args.start or args.end:
-            cmd += ["--download-sections",
-                    f"*{args.start or '0:00'}-{args.end or 'inf'}"]
-        subprocess.run(cmd + [args.source], check=True)
-    else:
-        src = Path(args.source)
-        if not src.exists():
-            sys.exit(f"not found: {src}")
-        shutil.copy2(src, video)
-
-    if not video.exists():
-        found = next(bundle.glob("video.*"), None)
-        if found is None:
-            sys.exit("download produced no video file")
-        video = found
-
-    probe = json.loads(subprocess.run(
-        [ffprobe, "-v", "quiet", "-print_format", "json", "-show_format",
-         str(video)], capture_output=True, text=True).stdout)
-    duration = float(probe["format"]["duration"])
-
-    n = min(args.max_frames, max(6, int(duration // 10)))
-    interval = duration / n
-    for i in range(n):
-        t = i * interval + interval / 2
-        stamp = f"{int(t // 60):02d}{int(t % 60):02d}"
-        subprocess.run(
-            [ffmpeg, "-v", "quiet", "-ss", f"{t:.2f}", "-i", str(video),
-             "-frames:v", "1", "-vf", f"scale=-2:{args.height}", "-q:v", "4",
-             str(frames_dir / f"f_{stamp}.jpg"), "-y"], check=False)
-
-    vtt = next(bundle.glob("*.vtt"), None)
-    transcript = bundle / "transcript.txt"
-    if vtt:
-        count = _clean_vtt(vtt, transcript)
-        transcript_note = f"{count} caption lines (free — no transcription cost)"
-    else:
-        transcript_note = ("NO captions found — run Whisper on video.mp4 "
-                           "(faster-whisper) and save as transcript.txt")
-        transcript.write_text(transcript_note, encoding="utf-8")
-
-    frames = sorted(frames_dir.glob("f_*.jpg"))
-
-    # token estimate: Claude vision charges ~(w*h)/750 tokens per image;
-    # transcript ~= chars/4. Numbers guide the READING strategy below.
     try:
-        from PIL import Image
-        fw, fh = Image.open(frames[0]).size if frames else (0, 0)
-    except Exception:  # noqa: BLE001 — estimate from 16:9 if PIL absent
-        fh = args.height
-        fw = int(fh * 16 / 9)
-    per_frame = (fw * fh) // 750
-    t_tokens = len(transcript.read_text(encoding="utf-8")) // 4
-    all_frames = per_frame * len(frames)
-
-    (bundle / "MANIFEST.md").write_text(
-        f"# Watch bundle\n\n"
-        f"- source: {args.source}\n- duration: {duration:.0f}s\n"
-        f"- frames: {len(frames)} at ~{interval:.0f}s intervals — filename "
-        f"f_MMSS.jpg is the timestamp\n- transcript: {transcript_note}\n\n"
-        f"## Token budget (estimate)\n"
-        f"- per frame ({fw}x{fh}): ~{per_frame} tokens\n"
-        f"- transcript: ~{t_tokens:,} tokens\n"
-        f"- ALL frames + transcript: ~{all_frames + t_tokens:,} tokens\n"
-        f"- transcript + 3 targeted frames: ~{per_frame * 3 + t_tokens:,} tokens\n\n"
-        f"## How to read this bundle (agent instructions)\n"
-        f"1. Read transcript.txt first — lines carry [MM:SS] stamps.\n"
-        f"2. Read frames SELECTIVELY: only f_MMSS.jpg near transcript moments "
-        f"that reference visuals ('this graph', 'as you can see'). Reading "
-        f"every frame is rarely worth {all_frames:,} tokens.\n"
-        f"3. For deep visual passes or long videos, dispatch a subagent to "
-        f"consume this bundle and return findings — keeps the main context "
-        f"clean.\n"
-        f"4. Correlate frames with transcript before answering; cite "
-        f"timestamps.\n",
-        encoding="utf-8")
-    print(f"bundle ready: {bundle}\n  frames: {len(frames)} ({fw}x{fh}, "
-          f"~{per_frame} tok each)  duration: {duration:.0f}s\n"
-          f"  transcript: {transcript_note} (~{t_tokens:,} tok)\n"
-          f"  est. full read ~{all_frames + t_tokens:,} tok | "
-          f"selective ~{per_frame * 3 + t_tokens:,} tok")
-    return 0
+        args = parser().parse_args()
+        if args.periodic <= 0 or args.max_frames < 1 or not 240 <= args.height <= 2160:
+            raise WatchError("periodic/max-frames must be positive; height must be 240..2160")
+        bundle = run(args)
+        timeline = json.loads((bundle / "timeline.json").read_text(encoding="utf-8"))
+        print(f"evidence ready: {bundle}")
+        print(f"  {timeline['coverage']['extracted_frames']} frames | "
+              f"{len(timeline['transcript']['segments'])} transcript segments | "
+              f"schema {timeline['schema']}")
+        print("  next: inspect timeline.json, then densify uncertain moments with "
+              "--dense-window START-END@FPS")
+        return 0
+    except (WatchError, ValueError) as exc:
+        print(f"beast watch: {exc}", file=sys.stderr)
+        return 2
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main())
