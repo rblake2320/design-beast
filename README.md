@@ -32,14 +32,10 @@ workflow, not model — and this repo encodes the workflow.
 | `docs/WIN-PLAN.md` + `COMPETITIVE-LANDSCAPE.md` + `COSTS-BASELINE.md` | Strategy: scoped moves, rivals' pain, defensible cost claims |
 | `docs/CONTENT-POLICY-ARCHITECTURE.md` | Neutral platform: registry-routed policy, BYOK, legal floor |
 | `docs/PIPELINES.md` | End-to-end recipes: image → 3D → UE, sprites, sites, video |
-<<<<<<< HEAD
+| `docs/OPPORTUNITY-LEDGER.md` | Evidence-first discovery protocol + parked openings |
 | `studio/` | The API: jobs, GPU leases, judge loop, provenance manifests, env snapshots, chained ledger, backend registry |
-| `scripts/` | doctor.py (25-check stack verify) · judge_image.py · replay_diff.py · ledger_verify.py · watch_video.py |
-| `bin/beast.ps1` | CLI: `beast doctor · sync · judge · replay · ledger · watch · recipes` |
-=======
-| `scripts/` | image judging, video evidence/indexing, replay, repo sync |
-| `bin/beast.ps1` | CLI: `beast doctor` · `beast sync` · `beast recipes` |
->>>>>>> origin/codex/watch-learn
+| `scripts/` | doctor.py (25-check stack verify) · judge_image.py · replay_diff.py · ledger_verify.py · watch_video.py · watch_index.py |
+| `bin/beast.ps1` | CLI: `beast doctor · sync · judge · replay · ledger · watch · watch-index · recipes` |
 | `requirements*.txt` | Reproducible Studio runtime and test dependencies |
 | `repos.yml` | Linked project repos (incl. vigil, hyperframes, ai-content-engine) |
 | `mcp/mcp.template.json` | MCP wiring template (Blender :9876, UE :8000/mcp, magic) |

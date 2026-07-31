@@ -16,12 +16,14 @@ Any AI agent (Claude Code, Codex, mesh peer) working in or from this repo follow
    PIE/viewport screenshot → vision judge → fix-list cycle against the game's art bible
    (`design-system/recipes/game-look-pass.md`). "It compiles and plays" is a blockout,
    not a deliverable; an on-screen engine error in a frame is an automatic fail.
-6. **Doors get logged, claims get receipts.** When a build or research result opens
-   an unplanned opportunity, add an internet-checked entry to
-   `docs/OPPORTUNITIES.md` before moving on — even when it doesn't serve the current
-   task. And nothing is claimed without proof: no hype, no mockups presented as
-   working, every capability statement carries a verify date or a test — an
-   unverified thing is labeled unverified.
+6. **Doors get logged, claims get receipts.** If implementation or research makes a
+   previously unavailable capability possible, follow `docs/OPPORTUNITY-LEDGER.md`
+   before moving on — preserve the triggering evidence, research prior art, assess
+   value inside AND outside the current project, and route it deliberately (even
+   when it doesn't serve the current task). No hype, no mockups presented as
+   working: every capability statement carries the ledger's evidence language
+   (observed/reproduced/measured/verified/generalized), and "novel" requires
+   documented prior-art research.
 
 ## Tool access map
 | Capability | How to reach it |
