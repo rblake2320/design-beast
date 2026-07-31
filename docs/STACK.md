@@ -15,7 +15,7 @@ One line per capability; re-verify dates when checked. Machine: Windows 11, RTX 
 | ffmpeg 8.1.2 / ImageMagick 7.1.2 / rembg[gpu] | CLI — assembly, grading, background removal | ✅ 2026-07-02 |
 | HyperFrames 0.7.86 | `npx hyperframes` — HTML/CSS/GSAP → deterministic MP4/WebM; 27 agent skills (`/hyperframes` router + 10 workflows); Studio preview; renders ~15s/8s-clip local | ✅ 2026-07-31 |
 | ai-content-engine | `D:\content\ai-content-engine` — faceless long-form YouTube + shorts + thread + blog from one topic (Claude script → ElevenLabs → ffmpeg) | cloned 2026-07-31, needs .env keys |
-| Local video gen (staged) | ComfyUI `D:\AI\ComfyUI` — LTX-2.3 22B nvfp4 (21 GB, +gemma-3 encoder) and Wan 2.2 TI2V 5B fp16 (+umt5, wan VAE) in models/ | ⚠ weights staged, render UNVERIFIED |
+| Local video gen | ComfyUI `D:\AI\ComfyUI` (0.28.0) — **Wan 2.2 TI2V 5B** (i2v 704², 33f in 48s) and **LTX-2.3 22B nvfp4** (i2v + synced AAC audio in one pass, 25f in 85s), both smoke-rendered from a real image on the 5090; graphs live in studio/server.py (wan_animate, ltx_animate) | ✅ verified 2026-07-31 |
 | Chatterbox TTS 0.1.7 | `D:\AI\tts\chatterbox-venv` — local voice cloning (10s clip), beats ElevenLabs in blind tests; NOTE: runs on torch 2.11+cu128 overriding its 2.6 pin (2.6 has no Blackwell build); save via soundfile, not torchaudio | ✅ 2026-07-31 |
 | Kokoro TTS | `D:\ai\tools\kokoro` (onnx + 54 voices) — fast fixed-voice narration, CPU-capable; studio config.py points at it | staged, wiring unverified |
 | Real-ESRGAN | `D:\ai\tools\realesrgan\realesrgan-ncnn-vulkan.exe` — image upscale (video: see SeedVR2 in SCOUT-2026-07) | staged |
