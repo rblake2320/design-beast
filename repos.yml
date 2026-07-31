@@ -19,7 +19,19 @@ repos:
     url: https://github.com/rblake2320/sand-portrait.git
     role: photo-to-sand hourglass PWA (PRIVATE concept)
 
+  - name: ai-content-engine
+    url: https://github.com/rblake2320/ai-content-engine.git
+    role: faceless multi-platform content pipeline — topic → YouTube long-form + shorts + thread + blog (local at D:\content\ai-content-engine)
+
 external:
   - name: VibeUE
     url: https://github.com/kevinpbuckley/VibeUE.git
     role: UE MCP toolsets (MIT) — staged locally at ~\ue-plugins\VibeUE; copy into <UEProject>\Plugins\
+
+  - name: hyperframes
+    url: https://github.com/heygen-com/hyperframes.git
+    role: HTML → deterministic video framework (Apache 2.0) — installed via `npx hyperframes skills update`, skills in ~\.claude\skills
+
+  - name: Claude-Code-Frontend-Design-Toolkit
+    url: https://github.com/wilwaldon/Claude-Code-Frontend-Design-Toolkit.git
+    role: curated index of 70+ frontend-design tools for Claude Code — source of ui-ux-pro-max + context7 picks
