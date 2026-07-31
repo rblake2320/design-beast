@@ -28,6 +28,7 @@ workflow, not model — and this repo encodes the workflow.
 | `skills/game-content-pipeline/` | Full 2D/3D/game pipeline skill (Blender ⇄ UE ⇄ Higgsfield) |
 | `docs/STACK.md` | Complete tool inventory: what's installed, ports, how to verify |
 | `docs/PIPELINES.md` | End-to-end recipes: image → 3D → UE, sprites, sites, video |
+| `docs/OPPORTUNITY-LEDGER.md` | Evidence-first discovery protocol + parked openings |
 | `scripts/` | image judging, video evidence/indexing, replay, repo sync |
 | `bin/beast.ps1` | CLI: `beast doctor` · `beast sync` · `beast recipes` |
 | `requirements*.txt` | Reproducible Studio runtime and test dependencies |

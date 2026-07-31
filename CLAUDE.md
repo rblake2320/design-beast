@@ -16,6 +16,11 @@ Any AI agent (Claude Code, Codex, mesh peer) working in or from this repo follow
    PIE/viewport screenshot → vision judge → fix-list cycle against the game's art bible
    (`design-system/recipes/game-look-pass.md`). "It compiles and plays" is a blockout,
    not a deliverable; an on-screen engine error in a frame is an automatic fail.
+6. **Capture newly opened doors.** If implementation or research makes a previously
+   unavailable capability possible, follow `docs/OPPORTUNITY-LEDGER.md`: preserve the
+   triggering evidence, research current prior art when warranted, step back to assess
+   value inside and outside the current project, and route it deliberately. Never call
+   an observation proven, general, or novel without the corresponding evidence.
 
 ## Tool access map
 | Capability | How to reach it |
