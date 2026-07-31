@@ -16,6 +16,12 @@ Any AI agent (Claude Code, Codex, mesh peer) working in or from this repo follow
    PIE/viewport screenshot → vision judge → fix-list cycle against the game's art bible
    (`design-system/recipes/game-look-pass.md`). "It compiles and plays" is a blockout,
    not a deliverable; an on-screen engine error in a frame is an automatic fail.
+6. **Doors get logged, claims get receipts.** When a build or research result opens
+   an unplanned opportunity, add an internet-checked entry to
+   `docs/OPPORTUNITIES.md` before moving on — even when it doesn't serve the current
+   task. And nothing is claimed without proof: no hype, no mockups presented as
+   working, every capability statement carries a verify date or a test — an
+   unverified thing is labeled unverified.
 
 ## Tool access map
 | Capability | How to reach it |
