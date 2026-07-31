@@ -47,8 +47,16 @@ Nothing below may be promoted to `[x]` without naming the verification.
       PARTIAL: every terminal run writes an atomic `manifest.json` with artifact
       SHA-256/size/type, request params, workflow identifier, model/source and
       retained local seeds (covered by `studio/tests/test_provenance.py`).
-      Immutable backend container/model digests and exact ComfyUI graph hashes
-      are not yet captured, so exact replay is not claimed.
+      2026-07-31 (WIN-PLAN #1): ComfyUI-backed runs now also capture an
+      `environment` record — ComfyUI + custom-node commits (repo-root-strict),
+      venv package digest + torch version, exact submitted graph hash, and
+      SHA-256 of every referenced model file (persistent (size,mtime) cache) —
+      via `studio/env_snapshot.py`; drift is named precisely by
+      `beast replay <run-id> | --save-baseline | --check`
+      (`scripts/replay_diff.py`; covered by `test_env_snapshot.py`, 7 tests;
+      live baseline verified against D:\AI\ComfyUI). Remaining for [x]:
+      cloud/hosted backend container digests, and same-seed re-run artifact
+      comparison (needs seed plumbing through the comfy request path).
 - [x] `execution policy`: cloud/hosted fallback opt-in only (done 2026-07-25 —
       `allow_cloud_fallback`, `allow_hosted_fallback`, truthful refine provenance)
 

@@ -1,0 +1,15 @@
+{
+  "captured_unix": 1785533520.3549533,
+  "comfy": {
+    "commit": "f966a2b38c21702c906ab4103261641c322e0a2d",
+    "dirty": false
+  },
+  "custom_nodes": {},
+  "graph_sha256": null,
+  "models": {},
+  "package_count": 85,
+  "packages_sha256": "aeb77267507634c092a467582c2c1b7accf205983bb5a6375d9737015d31765f",
+  "python": "3.12.10",
+  "schema_version": "1.0",
+  "torch": "2.11.0+cu128"
+}

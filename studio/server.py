@@ -36,6 +36,7 @@ from file_access import resolve_media
 from jobs import (E_BACKEND_DOWN, E_CANCELLED, E_CENSORED, E_ENGINE,
                   E_JUDGE_REJECTED, E_VALIDATION, JobCancelled, JobTimeout)
 from provenance import write_manifest
+import env_snapshot
 
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
@@ -326,6 +327,8 @@ def comfy_flux_image(prompt: str, out_file: Path, ar: str) -> dict:
                                                     "filename_prefix": "beast/raw"}},
     }
     run_id = out_file.parent.name
+    env_snapshot.capture_and_write(out_file.parent, COMFY_DIR,
+                                   COMFY_DIR / config.get("comfy_python"), g)
     try:
         pid = requests.post(f"{C}/prompt", json={"prompt": g, "client_id": "beast"},
                             timeout=30).json()["prompt_id"]
@@ -733,6 +736,7 @@ def _status(run_dir: Path, **updates):
                 workflow=f"{job.get('kind') or view.get('kind', 'unknown')}:v1",
                 outcome={"phase": view.get("phase"), "error": view.get("error"),
                          "trusted": view.get("phase") == "done"},
+                environment=env_snapshot.load(run_dir),
             )
         except Exception:  # noqa: BLE001 — provenance is best-effort after outcome
             pass
@@ -1156,6 +1160,8 @@ def ltx_animate(src: Path, motion: str, out_mp4: Path, duration: int = 5) -> dic
                 "video": ["12", 0], "filename_prefix": "beast/cinema",
                 "format": "mp4", "codec": "h264"}},
         }
+        env_snapshot.capture_and_write(out_mp4.parent, COMFY_DIR,
+                                       COMFY_DIR / config.get("comfy_python"), g)
         pid = requests.post(f"{C}/prompt", json={"prompt": g, "client_id": "beast"},
                             timeout=60).json()["prompt_id"]
         run_id = out_mp4.parent.name
@@ -1234,6 +1240,8 @@ def wan_animate(src: Path, motion: str, out_mp4: Path, duration: int = 5) -> dic
                 "video": ["10", 0], "filename_prefix": "beast/clip",
                 "format": "mp4", "codec": "h264"}},
         }
+        env_snapshot.capture_and_write(out_mp4.parent, COMFY_DIR,
+                                       COMFY_DIR / config.get("comfy_python"), g)
         pid = requests.post(f"{C}/prompt", json={"prompt": g, "client_id": "beast"},
                             timeout=30).json()["prompt_id"]
         run_id = out_mp4.parent.name

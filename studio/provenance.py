@@ -92,6 +92,7 @@ def write_manifest(
     seed: Any | None = None,
     workflow: str | None = None,
     outcome: dict[str, Any] | None = None,
+    environment: dict[str, Any] | None = None,
 ) -> Path:
     """Atomically write a redacted, checksum-backed provenance manifest."""
     run_dir.mkdir(parents=True, exist_ok=True)
@@ -108,6 +109,8 @@ def write_manifest(
         "outcome": _redact(outcome or {}),
         "params": _redact(params or {}),
         "artifacts": records,
+        # exact-replay record: comfy/node commits, venv digest, graph + model hashes
+        "environment": _redact(environment) if environment else None,
     }
     target = run_dir / MANIFEST_NAME
     temp = run_dir / f".{MANIFEST_NAME}.{os.getpid()}.tmp"
