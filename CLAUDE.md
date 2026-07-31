@@ -12,6 +12,10 @@ Any AI agent (Claude Code, Codex, mesh peer) working in or from this repo follow
    freehand those prompts.
 4. **Websites are built, not generated.** frontend-design/impeccable/theme-factory own
    layout; generated art fills slots only.
+5. **Games get judged by their screenshots.** Every game/UE work session ends with a
+   PIE/viewport screenshot → vision judge → fix-list cycle against the game's art bible
+   (`design-system/recipes/game-look-pass.md`). "It compiles and plays" is a blockout,
+   not a deliverable; an on-screen engine error in a frame is an automatic fail.
 
 ## Tool access map
 | Capability | How to reach it |
