@@ -4,6 +4,8 @@ Source: independent agent review 2026-07-25 (scored Beast 8.4 personal system,
 8.7 agent-first design, 4.8 reliability). Strategy: do NOT chase Adobe/Krea breadth —
 become the best **private, agent-operated creative production + game-asset pipeline**.
 
+> **Competitive differentiation is scoped separately in [docs/WIN-PLAN.md](docs/WIN-PLAN.md)** — six moves + two novel plays (vision-gated creative CI, beast packs), sequenced against this roadmap.
+
 State legend (audited 2026-07-26): `[x]` implemented and verified · `[~]` partial —
 some of it exists, the rest does not; the note says exactly which half · `[ ]` not built.
 Nothing below may be promoted to `[x]` without naming the verification.
