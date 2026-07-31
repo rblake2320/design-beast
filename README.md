@@ -28,7 +28,7 @@ workflow, not model — and this repo encodes the workflow.
 | `skills/game-content-pipeline/` | Full 2D/3D/game pipeline skill (Blender ⇄ UE ⇄ Higgsfield) |
 | `docs/STACK.md` | Complete tool inventory: what's installed, ports, how to verify |
 | `docs/PIPELINES.md` | End-to-end recipes: image → 3D → UE, sprites, sites, video |
-| `scripts/` | judge_image.py (vision-model candidate scoring), sync_repos.ps1 |
+| `scripts/` | image judging, video evidence/indexing, replay, repo sync |
 | `bin/beast.ps1` | CLI: `beast doctor` · `beast sync` · `beast recipes` |
 | `requirements*.txt` | Reproducible Studio runtime and test dependencies |
 | `repos.yml` | Linked project repos + `scripts/sync_repos.ps1` to clone/update them all |
@@ -56,6 +56,21 @@ powershell -File scripts/sync_repos.ps1
 # 3. Pick a recipe and go
 Get-ChildItem design-system/recipes
 ```
+
+### Watch and learn from tutorials
+
+```powershell
+.\bin\beast.ps1 watch tutorial.mp4 --start 12:00 --end 18:00
+.\bin\beast.ps1 watch tutorial.mp4 --dense-window 12:04-12:12@4
+.\bin\beast.ps1 watch-index watched\tutorial
+.\bin\beast.ps1 watch-index watched\tutorial "Unreal material editor"
+```
+
+Watch v2 combines scene changes, periodic safety samples, targeted dense
+reinspection, source-aligned transcripts, perceptual deduplication, and optional
+OpenCLIP/Faiss semantic search. Its evidence and validation contract is designed to
+compile tutorials into practiced Unreal/Python/MCP skills rather than summaries.
+See [`docs/WATCH-LEARN.md`](docs/WATCH-LEARN.md).
 
 ## Domains this covers
 

@@ -118,6 +118,18 @@ class BeastStudioClient:
     def runs(self) -> List[Dict[str, Any]]:
         return self._get("/api/runs")
 
+    def registry(self, kind: Optional[str] = None, content_class: str = "general",
+                 allow_cloud: bool = True) -> Any:
+        params = []
+        if kind is not None:
+            params.append(f"kind={quote(kind, safe='')}")
+        params.append(f"content_class={quote(content_class, safe='')}")
+        params.append(f"allow_cloud={'true' if allow_cloud else 'false'}")
+        return self._get(f"/api/registry?{'&'.join(params)}")
+
+    def verify_ledger(self) -> Dict[str, Any]:
+        return self._get("/api/ledger/verify")
+
     # ---- async-submit endpoints (return {id, idempotent_replay}) ----
 
     def run(self, brief: str, prompt: str = "",

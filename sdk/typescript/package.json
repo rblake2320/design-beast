@@ -12,7 +12,7 @@
     "node": ">=22.6.0"
   },
   "scripts": {
-    "test": "node --test tests/"
+    "test": "node --test tests/client.test.ts"
   },
   "files": ["src"],
   "license": "UNLICENSED",

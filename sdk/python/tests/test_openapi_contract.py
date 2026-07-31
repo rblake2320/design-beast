@@ -27,6 +27,8 @@ EXPECTED_COVERAGE = {
     ("POST", "/api/backend"): "backend",
     ("GET", "/api/health"): "health",
     ("GET", "/api/runs"): "runs",
+    ("GET", "/api/registry"): "registry",
+    ("GET", "/api/ledger/verify"): "verify_ledger",
     ("POST", "/api/run"): "run",
     ("POST", "/api/refine"): "refine",
     ("POST", "/api/animate"): "animate",

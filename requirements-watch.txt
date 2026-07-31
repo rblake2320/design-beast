@@ -1,0 +1,5 @@
+# Optional semantic visual memory + local transcription for Beast Watch.
+# The base watcher only needs requirements.txt plus ffmpeg/ffprobe.
+open_clip_torch==3.1.0
+faiss-cpu==1.11.0
+openai-whisper==20250625

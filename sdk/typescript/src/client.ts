@@ -147,6 +147,20 @@ export class BeastStudioClient {
     return this.get("/api/runs");
   }
 
+  registry(options: { kind?: string; contentClass?: string; allowCloud?: boolean } = {})
+      : Promise<unknown> {
+    const params = new URLSearchParams({
+      content_class: options.contentClass ?? "general",
+      allow_cloud: String(options.allowCloud ?? true),
+    });
+    if (options.kind !== undefined) params.set("kind", options.kind);
+    return this.get(`/api/registry?${params.toString()}`);
+  }
+
+  verifyLedger(): Promise<{ ok: boolean; message: string }> {
+    return this.get("/api/ledger/verify");
+  }
+
   // ---- async-submit endpoints (return {id, idempotent_replay}) ----
 
   run(req: {
