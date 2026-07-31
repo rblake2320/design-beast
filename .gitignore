@@ -28,3 +28,4 @@ candidates/
 *.blend1
 node_modules/
 beast.config.json
+watched/
