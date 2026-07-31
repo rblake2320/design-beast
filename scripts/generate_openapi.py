@@ -47,6 +47,10 @@ def generate() -> dict:
                 jobs_mod._LOCAL.conn.close()
                 del jobs_mod._LOCAL.conn
             jobs_mod.DB_PATH = original_db
+            # restore must leave the caller's DB USABLE, not just pointed-at:
+            # on a fresh clone the real jobs.db has no schema until init runs
+            # (idempotent CREATE IF NOT EXISTS), so run it here.
+            jobs_mod.init()
 
     schema["info"]["version"] = CONTRACT_VERSION
     schema["info"]["title"] = "Beast Studio API"

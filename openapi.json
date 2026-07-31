@@ -46,10 +46,16 @@
       "BackendReq": {
         "properties": {
           "action": {
+            "enum": [
+              "start",
+              "stop"
+            ],
             "title": "Action",
             "type": "string"
           },
           "name": {
+            "maxLength": 100,
+            "minLength": 1,
             "title": "Name",
             "type": "string"
           }
@@ -64,11 +70,15 @@
       "ExpandReq": {
         "properties": {
           "brief": {
+            "maxLength": 4000,
+            "minLength": 1,
             "title": "Brief",
             "type": "string"
           },
           "recipe": {
             "default": "cinematic-scene",
+            "maxLength": 100,
+            "pattern": "^[\\w\\-]+$",
             "title": "Recipe",
             "type": "string"
           }
@@ -95,10 +105,14 @@
       "JudgeReq": {
         "properties": {
           "brief": {
+            "maxLength": 4000,
+            "minLength": 1,
             "title": "Brief",
             "type": "string"
           },
           "file": {
+            "maxLength": 500,
+            "minLength": 1,
             "title": "File",
             "type": "string"
           }
@@ -234,11 +248,15 @@
       "TtsReq": {
         "properties": {
           "text": {
+            "maxLength": 10000,
+            "minLength": 1,
             "title": "Text",
             "type": "string"
           },
           "voice": {
             "default": "af_heart",
+            "maxLength": 60,
+            "pattern": "^[\\w\\-]+$",
             "title": "Voice",
             "type": "string"
           }
@@ -252,10 +270,14 @@
       "UploadReq": {
         "properties": {
           "data": {
+            "maxLength": 44040192,
+            "minLength": 1,
             "title": "Data",
             "type": "string"
           },
           "name": {
+            "maxLength": 200,
+            "minLength": 1,
             "title": "Name",
             "type": "string"
           }
@@ -620,6 +642,22 @@
         "summary": "Judge Only"
       }
     },
+    "/api/ledger/verify": {
+      "get": {
+        "operationId": "ledger_verify_api_ledger_verify_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Ledger Verify"
+      }
+    },
     "/api/recipes": {
       "get": {
         "operationId": "recipes_api_recipes_get",
@@ -670,6 +708,71 @@
           }
         },
         "summary": "Refine"
+      }
+    },
+    "/api/registry": {
+      "get": {
+        "description": "Capability discovery: local backends free-by-default, cloud with auth.\n\nWith ?kind= returns the resolution order plus each skipped backend's\nreason (policy vs missing auth); without it, the full capability map.",
+        "operationId": "registry_view_api_registry_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "kind",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Kind"
+            }
+          },
+          {
+            "in": "query",
+            "name": "content_class",
+            "required": false,
+            "schema": {
+              "default": "general",
+              "title": "Content Class",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "allow_cloud",
+            "required": false,
+            "schema": {
+              "default": true,
+              "title": "Allow Cloud",
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Registry View"
       }
     },
     "/api/run": {

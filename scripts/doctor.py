@@ -123,6 +123,12 @@ sys.path.insert(0, str(REPO / "studio"))
 import ledger  # noqa: E402
 ok, msg = ledger.verify(REPO / "studio" / "runs" / ledger.LEDGER_NAME)
 check("provenance ledger chain", ok, msg, "investigate tampering/corruption")
+prov_errors = list((REPO / "studio" / "runs").glob("*/provenance_error.txt"))
+check("provenance writes", not prov_errors,
+      "clean" if not prov_errors else
+      f"{len(prov_errors)} run(s) failed to record provenance "
+      f"(e.g. {prov_errors[0].parent.name})",
+      "read the provenance_error.txt files; manifests may be missing")
 baseline = REPO / "studio" / ".beast_env_baseline.json"
 if baseline.exists() and comfy_dir.exists():
     r = subprocess.run([sys.executable, str(REPO / "scripts" / "replay_diff.py"),

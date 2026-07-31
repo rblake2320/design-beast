@@ -198,13 +198,13 @@ async function withSseServer(
   chunks: string[],
   fn: (baseUrl: string) => Promise<void>,
 ) {
-  const server = http.createServer((req, res) => {
+  const server = http.createServer((req: http.IncomingMessage, res: http.ServerResponse) => {
     res.writeHead(200, { "Content-Type": "text/event-stream" });
     let i = 0;
     const pump = () => {
       if (i >= chunks.length) return res.end();
       res.write(chunks[i++]);
-      setImmediate(pump);
+      setTimeout(pump, 0);
     };
     pump();
   });

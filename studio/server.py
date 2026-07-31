@@ -751,8 +751,15 @@ def _status(run_dir: Path, **updates):
                 artifacts=manifest_doc.get("artifacts") or [],
                 outcome=view.get("phase"),
             )
-        except Exception:  # noqa: BLE001 — provenance is best-effort after outcome
-            pass
+        except Exception as exc:  # noqa: BLE001 — non-fatal, but NEVER silent:
+            # provenance is a flagship guarantee; record the failure where both
+            # humans (run dir) and doctor (glob over runs/) will see it.
+            try:
+                (run_dir / "provenance_error.txt").write_text(
+                    f"{time.strftime('%Y-%m-%d %H:%M:%S')} "
+                    f"{type(exc).__name__}: {exc}\n", encoding="utf-8")
+            except OSError:
+                pass
 
 
 def _new_run(brief: str, model: str, kind: str, params: dict = None,
@@ -975,8 +982,9 @@ def recipes():
 
 
 class UploadReq(BaseModel):
-    name: str
-    data: str  # dataURL or raw base64
+    name: str = Field(min_length=1, max_length=200)
+    # dataURL or raw base64; 30MB binary ≈ 40MB encoded
+    data: str = Field(min_length=1, max_length=42 * 1024 * 1024)
 
 
 @app.post("/api/upload")
@@ -999,8 +1007,9 @@ def upload(req: UploadReq):
 
 
 class ExpandReq(BaseModel):
-    brief: str
-    recipe: str = "cinematic-scene"
+    brief: str = Field(min_length=1, max_length=4000)
+    recipe: str = Field("cinematic-scene", max_length=100,
+                        pattern=r"^[\w\-]+$")
 
 
 @app.post("/api/expand")
@@ -1030,8 +1039,9 @@ under 90 words>", "axis": "<the ONE axis the variations change>",
 
 
 class JudgeReq(BaseModel):
-    file: str            # uploads/ filename or runs/<id>/<file>
-    brief: str
+    # uploads/ filename or runs/<id>/<file>
+    file: str = Field(min_length=1, max_length=500)
+    brief: str = Field(min_length=1, max_length=4000)
 
 
 def _resolve(f: str) -> Path:
@@ -1534,8 +1544,8 @@ def backends():
 
 
 class BackendReq(BaseModel):
-    name: str
-    action: str  # start | stop
+    name: str = Field(min_length=1, max_length=100)
+    action: Literal["start", "stop"]
 
 
 @app.post("/api/backend")
@@ -1635,8 +1645,8 @@ def to_3d(req: To3DReq):
 
 
 class TtsReq(BaseModel):
-    text: str
-    voice: str = "af_heart"
+    text: str = Field(min_length=1, max_length=10000)
+    voice: str = Field("af_heart", max_length=60, pattern=r"^[\w\-]+$")
 
 
 @app.post("/api/tts")

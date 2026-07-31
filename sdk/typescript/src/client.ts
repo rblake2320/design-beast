@@ -143,6 +143,24 @@ export class BeastStudioClient {
     return this.get("/api/health");
   }
 
+  /** Capability discovery: with `kind`, the resolution order (local-first,
+   * then authenticated cloud) plus per-backend skip reasons; without it,
+   * the full capability map. */
+  registry(opts: { kind?: string; contentClass?: string; allowCloud?: boolean } = {}):
+      Promise<Record<string, unknown>> {
+    const params = new URLSearchParams({
+      content_class: opts.contentClass ?? "general",
+      allow_cloud: String(opts.allowCloud ?? true),
+    });
+    if (opts.kind) params.set("kind", opts.kind);
+    return this.get(`/api/registry?${params.toString()}`);
+  }
+
+  /** Walk the tamper-evident provenance chain; names the first break. */
+  ledgerVerify(): Promise<{ ok: boolean; message: string }> {
+    return this.get("/api/ledger/verify");
+  }
+
   runs(): Promise<Array<{ id: string; brief: string; phase: string; kind: string }>> {
     return this.get("/api/runs");
   }

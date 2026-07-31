@@ -138,3 +138,27 @@ Then: A + B fall out of combining 1+2+3 — packaging, not new invention
 ```
 
 Total to differentiation: ~3-4 focused weeks of agent-days on hardware already owned.
+
+---
+
+## Verified cleanup backlog (external Codex review, fact-checked 2026-07-31)
+
+Every claim was verified against the repo before acceptance; all numbers were exact.
+Fixed same-day: stale openapi.json (+ generator now re-inits caller DB schema on
+fresh clones), request-model bounds (Upload/Expand/Judge/Backend/Tts), silent
+provenance failure (now recorded to provenance_error.txt + doctor check), TS SDK
+test invocation + typecheck + @types/node (2 real type errors found), CI workflow
+(.github/workflows/ci.yml: pytest, OpenAPI drift, ruff fatal-only, compileall,
+TS typecheck+tests). Remaining, in priority order:
+
+1. Modularize studio/server.py (1,828 lines) — api/routes + services/* without
+   behavior change; do AFTER current parallel work lands to avoid conflicts
+2. Structured logging (job id, op, backend, elapsed, fallback, GPU wait, error code)
+3. Auth before any non-loopback bind — 127.0.0.1 is currently the entire boundary
+4. Machine identity out of committed defaults → beast.config.example.json + first-run
+5. Split studio/index.html (575 lines) when P3 workspace features arrive
+6. TS SDK packaging: build output + publishable exports (currently source-only)
+
+Codex's "highest-leverage additions" (workspace, approval gates, declarative
+pipelines, multi-dimensional judging, reproducibility completion, native MCP)
+confirm ROADMAP P2-P4 and WIN-PLAN #3 — same direction, independently derived.

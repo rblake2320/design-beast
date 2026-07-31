@@ -36,6 +36,8 @@ EXPECTED_COVERAGE = {
     ("POST", "/api/job/{run_id}/cancel"): "cancel",
     ("POST", "/api/job/{run_id}/retry"): "retry",
     ("GET", "/api/events/{run_id}"): "stream_events",  # + events_url()
+    ("GET", "/api/registry"): "registry",
+    ("GET", "/api/ledger/verify"): "ledger_verify",
 }
 
 

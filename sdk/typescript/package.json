@@ -12,9 +12,16 @@
     "node": ">=22.6.0"
   },
   "scripts": {
-    "test": "node --test tests/"
+    "test": "node --test tests/client.test.ts",
+    "typecheck": "tsc --noEmit"
   },
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "license": "UNLICENSED",
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "@types/node": "^26.1.2",
+    "typescript": "^7.0.2"
+  }
 }

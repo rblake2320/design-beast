@@ -115,6 +115,23 @@ class BeastStudioClient:
     def health(self) -> Dict[str, Any]:
         return self._get("/api/health")
 
+    def registry(self, kind: Optional[str] = None,
+                 content_class: str = "general",
+                 allow_cloud: bool = True) -> Dict[str, Any]:
+        """Capability discovery. With ``kind``, returns the resolution order
+        (local-first, then authenticated cloud) plus per-backend skip reasons;
+        without it, the full capability map."""
+        from urllib.parse import urlencode
+        params = {"content_class": content_class,
+                  "allow_cloud": str(allow_cloud).lower()}
+        if kind:
+            params["kind"] = kind
+        return self._get(f"/api/registry?{urlencode(params)}")
+
+    def ledger_verify(self) -> Dict[str, Any]:
+        """Walk the tamper-evident provenance chain; names the first break."""
+        return self._get("/api/ledger/verify")
+
     def runs(self) -> List[Dict[str, Any]]:
         return self._get("/api/runs")
 

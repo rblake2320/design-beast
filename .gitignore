@@ -30,3 +30,4 @@ node_modules/
 beast.config.json
 watched/
 studio/.beast_model_hashes.json
+node_modules/
