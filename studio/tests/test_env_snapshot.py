@@ -49,12 +49,16 @@ def test_capture_and_write_roundtrip(tmp_path):
     assert snap["packages_sha256"] is None
 
 
-def test_model_hash_cache_persists_and_hits(tmp_path):
+def test_model_hash_cache_persists_and_hits(tmp_path, monkeypatch):
+    monkeypatch.setattr(env_snapshot, "_CACHE_DIR", tmp_path / "cachedir")
+    (tmp_path / "cachedir").mkdir()
     comfy = _fake_comfy(tmp_path)
     names = ["tiny.safetensors"]
     first = env_snapshot._model_records(comfy, names)
-    cache_file = comfy / env_snapshot.HASH_CACHE_NAME
+    cache_file = tmp_path / "cachedir" / env_snapshot.HASH_CACHE_NAME
     assert cache_file.exists()
+    # the cache must never land inside comfy_dir — it flips that repo dirty
+    assert not (comfy / env_snapshot.HASH_CACHE_NAME).exists()
     cached = json.loads(cache_file.read_text())
     assert len(cached) == 1
     second = env_snapshot._model_records(comfy, names)

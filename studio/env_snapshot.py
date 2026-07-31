@@ -83,18 +83,23 @@ def _packages(comfy_python: Path) -> dict[str, Any]:
     return result
 
 
+# cache lives beside this module, NOT inside comfy_dir — a foreign file there
+# flips the ComfyUI repo to dirty and pollutes the very drift signal we record
+_CACHE_DIR = Path(__file__).resolve().parent
+
+
 def _load_hash_cache(comfy_dir: Path) -> dict[str, Any]:
     try:
-        return json.loads((comfy_dir / HASH_CACHE_NAME).read_text(encoding="utf-8"))
+        return json.loads((_CACHE_DIR / HASH_CACHE_NAME).read_text(encoding="utf-8"))
     except Exception:  # noqa: BLE001
         return {}
 
 
 def _save_hash_cache(comfy_dir: Path, cache: dict[str, Any]) -> None:
     try:
-        tmp = comfy_dir / f"{HASH_CACHE_NAME}.{os.getpid()}.tmp"
+        tmp = _CACHE_DIR / f"{HASH_CACHE_NAME}.{os.getpid()}.tmp"
         tmp.write_text(json.dumps(cache, indent=1, sort_keys=True), encoding="utf-8")
-        os.replace(tmp, comfy_dir / HASH_CACHE_NAME)
+        os.replace(tmp, _CACHE_DIR / HASH_CACHE_NAME)
     except Exception:  # noqa: BLE001
         pass
 

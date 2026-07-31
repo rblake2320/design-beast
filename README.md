@@ -24,14 +24,19 @@ workflow, not model — and this repo encodes the workflow.
 
 | Path | What |
 |---|---|
-| `design-system/` | QUALITY-LOOP.md + prompt recipe cards — the secret sauce |
+| `design-system/` | QUALITY-LOOP.md + recipe cards (incl. motion-graphic-video, game-look-pass — the anti-Roblox loop) |
 | `skills/game-content-pipeline/` | Full 2D/3D/game pipeline skill (Blender ⇄ UE ⇄ Higgsfield) |
-| `docs/STACK.md` | Complete tool inventory: what's installed, ports, how to verify |
+| `docs/STACK.md` | Complete tool inventory: what's installed, verify dates |
+| `docs/SETUP.md` | Rebuild the whole stack from zero, lane by lane |
+| `docs/CAPABILITY-MATRIX.md` | Everything we can do vs the field, with receipts |
+| `docs/WIN-PLAN.md` + `COMPETITIVE-LANDSCAPE.md` + `COSTS-BASELINE.md` | Strategy: scoped moves, rivals' pain, defensible cost claims |
+| `docs/CONTENT-POLICY-ARCHITECTURE.md` | Neutral platform: registry-routed policy, BYOK, legal floor |
 | `docs/PIPELINES.md` | End-to-end recipes: image → 3D → UE, sprites, sites, video |
-| `scripts/` | judge_image.py (vision-model candidate scoring), sync_repos.ps1 |
-| `bin/beast.ps1` | CLI: `beast doctor` · `beast sync` · `beast recipes` |
+| `studio/` | The API: jobs, GPU leases, judge loop, provenance manifests, env snapshots, chained ledger, backend registry |
+| `scripts/` | doctor.py (25-check stack verify) · judge_image.py · replay_diff.py · ledger_verify.py · watch_video.py |
+| `bin/beast.ps1` | CLI: `beast doctor · sync · judge · replay · ledger · watch · recipes` |
 | `requirements*.txt` | Reproducible Studio runtime and test dependencies |
-| `repos.yml` | Linked project repos + `scripts/sync_repos.ps1` to clone/update them all |
+| `repos.yml` | Linked project repos (incl. vigil, hyperframes, ai-content-engine) |
 | `mcp/mcp.template.json` | MCP wiring template (Blender :9876, UE :8000/mcp, magic) |
 
 ## Beast Studio (the UI)

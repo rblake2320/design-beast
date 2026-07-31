@@ -4,7 +4,7 @@ param([Parameter(Position = 0)][string]$Cmd = 'help', [Parameter(ValueFromRemain
 $Repo = Split-Path $PSScriptRoot -Parent
 
 switch ($Cmd) {
-    'doctor'  { python (Join-Path $Repo 'skills\game-content-pipeline\scripts\doctor.py') @Rest }
+    'doctor'  { python (Join-Path $Repo 'scripts\doctor.py') @Rest }
     'sync'    { & (Join-Path $Repo 'scripts\sync_repos.ps1') @Rest }
     'judge'   { python (Join-Path $Repo 'scripts\judge_image.py') @Rest }
     'replay'  { python (Join-Path $Repo 'scripts\replay_diff.py') @Rest }
