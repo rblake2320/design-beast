@@ -23,6 +23,10 @@ repos:
     url: https://github.com/rblake2320/ai-content-engine.git
     role: faceless multi-platform content pipeline — topic → YouTube long-form + shorts + thread + blog (local at D:\content\ai-content-engine)
 
+  - name: vigil
+    url: https://github.com/rblake2320/vigil.git
+    role: vision-to-action platform — source of the hash-chained ledger pattern (studio/ledger.py) and the local→cloud reasoning cascade; shares the YOLO+VLM two-tier perception approach with the judge loop
+
 external:
   - name: VibeUE
     url: https://github.com/kevinpbuckley/VibeUE.git

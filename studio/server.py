@@ -37,6 +37,8 @@ from jobs import (E_BACKEND_DOWN, E_CANCELLED, E_CENSORED, E_ENGINE,
                   E_JUDGE_REJECTED, E_VALIDATION, JobCancelled, JobTimeout)
 from provenance import write_manifest
 import env_snapshot
+import ledger
+import registry
 
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
@@ -737,6 +739,17 @@ def _status(run_dir: Path, **updates):
                 outcome={"phase": view.get("phase"), "error": view.get("error"),
                          "trusted": view.get("phase") == "done"},
                 environment=env_snapshot.load(run_dir),
+            )
+            manifest_doc = json.loads(
+                (run_dir / "manifest.json").read_text(encoding="utf-8"))
+            ledger.append(
+                run_dir.parent / ledger.LEDGER_NAME,
+                run_id=run_dir.name,
+                kind=manifest_doc.get("kind", "unknown"),
+                model=manifest_doc.get("model", "unknown"),
+                manifest_sha256=ledger.manifest_sha256(run_dir / "manifest.json"),
+                artifacts=manifest_doc.get("artifacts") or [],
+                outcome=view.get("phase"),
             )
         except Exception:  # noqa: BLE001 — provenance is best-effort after outcome
             pass
@@ -1459,6 +1472,26 @@ def _port_pid(port: int):
         if f":{port}" in line and "LISTENING" in line:
             return int(line.split()[-1])
     return None
+
+
+@app.get("/api/registry")
+def registry_view(kind: str | None = None, content_class: str = "general",
+                  allow_cloud: bool = True):
+    """Capability discovery: local backends free-by-default, cloud with auth.
+
+    With ?kind= returns the resolution order plus each skipped backend's
+    reason (policy vs missing auth); without it, the full capability map.
+    """
+    if kind:
+        return registry.resolve(kind, content_class=content_class,
+                                allow_cloud=allow_cloud)
+    return registry.capability_map()
+
+
+@app.get("/api/ledger/verify")
+def ledger_verify():
+    ok, message = ledger.verify(RUNS / ledger.LEDGER_NAME)
+    return {"ok": ok, "message": message}
 
 
 @app.get("/api/backends")

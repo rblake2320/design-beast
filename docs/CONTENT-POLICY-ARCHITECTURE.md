@@ -40,6 +40,12 @@ to process an image, that judge is unregistered for that content class and the r
 uses one that doesn't (local judges via Ollama don't phone home). A refusal
 masquerading as a low score corrupts the quality loop — treat it as a bug.
 
+> **Implemented 2026-07-31:** `studio/model_registry.json` + `studio/registry.py`
+> (resolver: local-first, BYOK/subscription cloud, one named skip-reason per backend)
+> served at `GET /api/registry`; hash-chained tamper-evident run ledger
+> (`studio/ledger.py`, pattern from rblake2320/vigil) at `GET /api/ledger/verify`
+> and `beast ledger`. Tests: `studio/tests/test_ledger_registry.py`.
+
 ## Per-tenant policy (SaaS mode)
 
 - Each tenant (operator of a deployment, or customer of the SaaS) gets a policy object:

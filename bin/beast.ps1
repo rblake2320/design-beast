@@ -8,6 +8,7 @@ switch ($Cmd) {
     'sync'    { & (Join-Path $Repo 'scripts\sync_repos.ps1') @Rest }
     'judge'   { python (Join-Path $Repo 'scripts\judge_image.py') @Rest }
     'replay'  { python (Join-Path $Repo 'scripts\replay_diff.py') @Rest }
+    'ledger'  { python (Join-Path $Repo 'scripts\ledger_verify.py') @Rest }
     'recipes' {
         Get-ChildItem (Join-Path $Repo 'design-system\recipes') -Filter *.md | ForEach-Object {
             $head = (Get-Content $_.FullName -TotalCount 3) -join ' '
@@ -20,6 +21,7 @@ beast doctor    verify the whole stack (Blender bridge, UE, Higgsfield, ffmpeg, 
 beast sync      clone/update all linked repos (repos.yml)
 beast judge     score generated images vs a brief (local llava)  <imgs> --brief "..."
 beast replay    name env drift vs a recorded run  <run-id> | --save-baseline | --check
+beast ledger    verify the hash-chained provenance ledger (tamper-evident history)
 beast recipes   list prompt recipe cards
 '@
     }
