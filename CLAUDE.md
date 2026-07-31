@@ -20,8 +20,12 @@ Any AI agent (Claude Code, Codex, mesh peer) working in or from this repo follow
 | Blender 5.1 | mcp__blender__* tools, bridge :9876 — Blender must be RUNNING |
 | Unreal Engine | UE 5.8 first-party MCP `http://127.0.0.1:8000/mcp` (headless BeastLab; start via Studio Backends panel "unreal-mcp"); `/api/to_ue` imports go to UE 5.6 RouteRush — separate installs, both current |
 | 2D/3D/game pipeline | `skills/game-content-pipeline/SKILL.md` (also installed at `~/.claude/skills/`) |
-| Web components | magic MCP (21st.dev) + frontend-design/impeccable skills |
+| Web components | magic MCP (21st.dev) + frontend-design/impeccable skills + ui-ux-pro-max plugin |
+| Motion-graphic / HTML video | `/hyperframes` skill router + `npx hyperframes` CLI — recipe: `design-system/recipes/motion-graphic-video.md` |
+| Faceless content pipeline | `D:\content\ai-content-engine` (topic → YouTube + shorts + thread + blog) |
 | Local vision judge | `python scripts/judge_image.py` (Ollama llava) or Read the image directly |
+| Real-time detection / QA | `D:\content\yolo-vision` venv — YOLO11 + YOLO-Face, 5.2 ms/frame GPU |
+| Live library docs | context7 MCP (user scope) — use before writing framework code |
 | Sibling repos | `repos.yml` → `scripts/sync_repos.ps1` |
 
 ## Machine facts (verified 2026-07)
