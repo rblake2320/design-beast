@@ -11,6 +11,7 @@ switch ($Cmd) {
     'ledger'  { python (Join-Path $Repo 'scripts\ledger_verify.py') @Rest }
     'watch'   { python (Join-Path $Repo 'scripts\watch_video.py') @Rest }
     'watch-index' { python (Join-Path $Repo 'scripts\watch_index.py') @Rest }
+    'watch-seek' { python (Join-Path $Repo 'scripts\watch_seek.py') @Rest }
     'recipes' {
         Get-ChildItem (Join-Path $Repo 'design-system\recipes') -Filter *.md | ForEach-Object {
             $head = (Get-Content $_.FullName -TotalCount 3) -join ' '
@@ -26,6 +27,7 @@ beast replay    name env drift vs a recorded run  <run-id> | --save-baseline | -
 beast ledger    verify the hash-chained provenance ledger (tamper-evident history)
 beast watch     video URL/file -> frames+transcript bundle an agent can "watch"
 beast watch-index BUNDLE ["query"] -> build/search semantic visual memory
+beast watch-seek BUNDLE --at TIME [--level 1|2|3] -> rewind/forward for missing evidence
 beast recipes   list prompt recipe cards
 '@
     }

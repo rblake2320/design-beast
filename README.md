@@ -68,6 +68,7 @@ Get-ChildItem design-system/recipes
 ```powershell
 .\bin\beast.ps1 watch tutorial.mp4 --start 12:00 --end 18:00
 .\bin\beast.ps1 watch tutorial.mp4 --dense-window 12:04-12:12@4
+.\bin\beast.ps1 watch-seek watched\tutorial --at 12:08 --level 2
 .\bin\beast.ps1 watch-index watched\tutorial
 .\bin\beast.ps1 watch-index watched\tutorial "Unreal material editor"
 ```

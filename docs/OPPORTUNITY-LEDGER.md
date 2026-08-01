@@ -85,14 +85,28 @@ another capability. “Later” is not a trigger.
   disposable Unreal projects.
 - Outside-project value: a general compiler from instructional video to practiced
   agent procedures may be more valuable than the video-watching feature itself.
-- Prior art and primary sources (searched 2026-07-31): "observational AI" is an
-  emerging 2026 category (OpenAGI, LittleBird, OpenClaw — e.g.
-  blog.buildbetter.ai on observational AI) but it watches the USER'S OWN screen to
-  automate the user's own repeated patterns. Compiling THIRD-PARTY demonstrated
-  expertise from arbitrary internet video into sandbox-validated, evidence-chained
-  executable skills was not found in that category — "novel within surveyed scope,"
-  pending deeper prior-art review (LfD/robotics literature shares the concept at a
-  different substrate).
+- Prior art and primary sources (corrected 2026-07-31 after a deeper search): the
+  broad category is **not unoccupied**. Google's *Watch and Learn: Learning to Use
+  Computers from Online Videos* (arXiv 2510.04673v3, dated 2026-03-16) reports a
+  framework that converts online human computer-use videos into executable UI
+  trajectories using inverse dynamics and retrieval. Earlier work includes automatic
+  procedure learning from web instructional videos (AAAI 2018), procedure planning
+  from instructional videos (ECCV 2020/CVPR 2022), and learning web procedures from
+  explanations plus demonstrations (ACL 2020). A 2026 defensive publication titled
+  *GUI-OBSERVE-API-LEARN (GOAL)* also describes producing callable workflow skills
+  from demonstrations, tutorials, and documentation by reproducing workflows in a
+  sandbox and capturing APIs. Primary/source records:
+  https://arxiv.org/abs/2510.04673 ·
+  https://doi.org/10.1609/aaai.v32i1.12342 ·
+  https://arxiv.org/abs/1907.01172 ·
+  https://arxiv.org/abs/2205.02300 ·
+  https://aclanthology.org/2020.acl-main.684/ ·
+  https://www.tdcommons.org/dpubs_series/10260/
+- Differentiation hypothesis, not novelty claim: Beast may still contribute a useful
+  combination of source-time evidence chains, uncertainty-driven reinspection,
+  application-native Unreal/Python/MCP compilation, deterministic replay provenance,
+  and structural + behavioral + visual validation. That combination must be compared
+  experimentally against the retrieved prior art before any narrower novelty claim.
 - Falsifiable claim: for a bounded Unreal tutorial, Beast can recover the required
   settings and ordered actions, implement them through supported APIs, and produce a
   result that passes structural and visual acceptance checks.

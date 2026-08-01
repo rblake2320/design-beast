@@ -16,6 +16,10 @@ that sparse screenshots are continuous video understanding.
 # Reinspect an uncertain eight-second interaction at four frames/second.
 .\bin\beast.ps1 watch tutorial.mp4 --dense-window 12:04-12:12@4
 
+# Let an agent rewind/forward around evidence that was not retained.
+.\bin\beast.ps1 watch-seek watched\tutorial --at 12:08 --level 2 `
+  --reason "Need to identify the property and exact value that changed"
+
 # Build semantic visual memory, then find relevant screens by meaning.
 .\bin\beast.ps1 watch-index watched\tutorial
 .\bin\beast.ps1 watch-index watched\tutorial "Unreal material editor roughness setting"
@@ -37,6 +41,27 @@ The watcher merges three sampling lanes:
 This is bounded by `--max-frames`. Scene and targeted samples are preferred over
 periodic samples, and any required down-selection is distributed across the full
 range rather than taking only the beginning.
+
+## Reversible evidence seeking
+
+An agent must not guess when the retained evidence is insufficient. `beast watch-seek`
+can move backward, forward, or both around a source timestamp or frame ID and append
+new evidence to the same timeline:
+
+| Level | Window/rate | Use |
+|---|---|---|
+| 0 | Original adaptive overview | Locate likely chapters and states |
+| 1 — context | ±6s at 1 fps | Establish what led into and followed a state |
+| 2 — action | ±3s at 4 fps | Resolve clicks, values, node links, short actions |
+| 3 — forensic | ±1.5s at 10 fps | Resolve rapid or ambiguous transitions |
+
+The default uncertainty policy recommends level 1 below 0.85 confidence, level 2
+below 0.65 or whenever evidence is missing, and level 3 below 0.35 or for rapid
+actions. High confidence does not override an explicit missing-evidence signal.
+
+Every seek is appended to `timeline.json.evidence_requests` with the reason, center,
+direction, density, and number of new frames. If semantic embeddings already exist,
+the timeline marks them stale so new evidence cannot be silently absent from search.
 
 Every frame stores original-source time, clip-relative time, its sampling reasons,
 a perceptual hash, visual change from the prior sample, and near-duplicate status.
