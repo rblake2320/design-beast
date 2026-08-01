@@ -42,6 +42,10 @@ def main() -> dict:
             raise RuntimeError(f"Failed to spawn generated Blueprint: {asset_path}")
         actor.set_actor_label(actor_label)
     actors.set_selected_level_actors([actor])
+    saved = bool(unreal.EditorLoadingAndSavingUtils.save_dirty_packages(True, True))
+    if not saved:
+        raise RuntimeError("Spawned actor exists but the proof map could not be saved")
+    world = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
     result = {
         "state": "SPAWNED",
         "project": context["project"],
@@ -50,7 +54,14 @@ def main() -> dict:
         "actor": actor.get_path_name(),
         "actor_label": actor_label,
         "class": actor.get_class().get_path_name(),
-        "assembly_state": "ASSEMBLED",
+        "world": world.get_path_name(),
+        "saved": saved,
+        "assembly_state": (
+            "ADOPTED_LOCAL_ASSEMBLY"
+            if assembly.get("assembly_mode") == "ADOPTED_LOCAL_UE58_BLUEPRINT"
+            else "ASSEMBLED"
+        ),
+        "assembly_mode": assembly.get("assembly_mode", "BUILT_IN_FRESH_RUN"),
         "assembly_log_reviewed_by_user": True,
     }
     unreal.log(MARKER + json.dumps(result, sort_keys=True))

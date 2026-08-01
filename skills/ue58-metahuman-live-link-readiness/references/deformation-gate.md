@@ -1,6 +1,6 @@
 # Numerical deformation gate
 
-`BOUND_READY` is the v1 skill result. This gate can identify a `DEFORMATION_CANDIDATE`, but it cannot promote a run to `ANIMATION_CONFIRMED` because the current script accepts user-supplied images and summary values rather than collecting raw UE samples and captures itself.
+`BOUND_READY` is the v1 skill result. The legacy `measure_two_pose.py` can identify a `DEFORMATION_CANDIDATE`, but it accepts user-supplied images and summary values. Prefer the source-built `BeastEvidenceCollector` plugin plus `verify_pose_receipts.py`, which can reach `DEFORMATION_MEASURED` from engine-issued samples and hashed captures. Neither path promotes a run to `ANIMATION_CONFIRMED` without the separate visual-region gate.
 
 ## Capture protocol
 
@@ -29,18 +29,19 @@ python scripts/measure_two_pose.py neutral-a.png neutral-b.png expression.png --
 
 Omit `--visual-validity-confirmed` until a human or vision review has checked the changed region. Even when all gates pass, the script exits with code 3 and returns `DEFORMATION_CANDIDATE`, `promotion_allowed=false`.
 
-## Missing trusted collector
+## Trusted collector boundary
 
-Promotion remains blocked until a collector can produce one run-scoped receipt containing:
+On a successful runtime capture, the bundled collector produces run-scoped pose receipts containing:
 
 - raw timestamped Live Link coefficient samples captured from UE;
 - neutral and expression frames captured from the locked UE viewport;
 - hashes and paths for every source image;
-- camera, exposure, resolution, actor-transform, subject, engine, and project identity;
-- crop/alignment parameters and metric outputs;
-- a visual-region review tied to those exact hashed frames.
+- run, actor path/transform, subject, engine, project, and resolution identity;
+- camera transform/FOV and sample/image identity.
 
-Only that collector—not manually typed curve medians or unrelated images—may authorize an `ANIMATION_CONFIRMED` claim.
+The offline verifier adds crop parameters and metric outputs. Promotion remains blocked because the final visual-region review tied to those exact hashed frames is not yet automated or signed.
+
+Only collector-issued receipts—not manually typed curve medians or unrelated images—may participate in a future `ANIMATION_CONFIRMED` claim.
 
 The thresholds are a version-one operational gate, not a universal scientific standard. Record the raw values. Recalibrate only from repeated controlled captures, never to make a failing run pass retroactively.
 

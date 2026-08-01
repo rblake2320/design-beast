@@ -7,10 +7,12 @@
 | `PREFLIGHT_READY` | UE 5.8, valid MetaHuman Character asset, required local content | Rigged or assembled |
 | `ASSEMBLY_ELIGIBLE` | Full rig requested, all eight texture-source fields configured/read back as 2K, high-resolution textures present, `can_build_meta_human=true`; blendshape rig and downloaded pixel dimensions remain unverified unless separately observed | Full blendshape rig or eight downloaded 2K files proven; assembly succeeded |
 | `ASSEMBLY_CANDIDATE` | Fresh run-scoped assets, one newly discovered generated Blueprint, saved assets, clean-log review still required | Assembly accepted or Live Link drives it |
+| `ADOPTED_LOCAL_ASSEMBLY` | A reviewed local UE 5.8 Blueprint duplicated under the fresh run, with its source Blueprint and reused prior dependencies recorded | Rebuilt in this run or dependency-isolated |
 | `ASSEMBLED` | `ASSEMBLY_CANDIDATE` receipt plus explicit user confirmation of a clean assembly-log review | Live Link drives it |
 | `BOUND_READY` | Chained reviewed-assembly/spawn receipt, actor property readback, and subject present, enabled, and `CONNECTED` through the UE Live Link API | Visible deformation |
 | `DEFORMATION_CANDIDATE` | Every numerical gate in `deformation-gate.md` passes using user-supplied values and images | Animation confirmed |
-| `ANIMATION_CONFIRMED` | Reserved for a future trusted UE sample-and-capture collector with provenance, thresholds, and visual-region validation | Production integration |
+| `DEFORMATION_MEASURED` | Three collector-issued receipts from one run/actor/view, image hashes, raw curve bursts, and all numerical thresholds pass | Intended facial motion or production readiness |
+| `ANIMATION_CONFIRMED` | `DEFORMATION_MEASURED` plus visual-region review tied to the exact three image hashes | Production integration or generalization to other characters |
 
 ## Required language
 

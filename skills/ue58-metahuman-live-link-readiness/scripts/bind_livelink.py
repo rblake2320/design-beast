@@ -17,10 +17,11 @@ MARKER = "BEAST_METAHUMAN_BOUND_READY="
 def main() -> dict:
     context = require_context()
     spawn = read_receipt(context, "spawn", "SPAWNED")
-    if spawn.get("assembly_state") != "ASSEMBLED" or not spawn.get(
-        "assembly_log_reviewed_by_user"
-    ):
-        raise RuntimeError("Reviewed ASSEMBLED state is required before Live Link binding")
+    if spawn.get("assembly_state") not in {
+        "ASSEMBLED",
+        "ADOPTED_LOCAL_ASSEMBLY",
+    } or not spawn.get("assembly_log_reviewed_by_user"):
+        raise RuntimeError("Reviewed assembled or locally adopted state is required before Live Link binding")
     actor_label = os.environ.get("BEAST_MH_ACTOR_LABEL", f"BEAST_{context['run_id']}")
     subject_name = os.environ.get("BEAST_LIVE_LINK_SUBJECT", "me")
     actors = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)

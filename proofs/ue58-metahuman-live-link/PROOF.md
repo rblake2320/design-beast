@@ -41,7 +41,7 @@ BEAST_LIVELINK_BOUND={"actor": "/Temp/Untitled_1.Untitled_1:PersistentLevel.BP_A
 - `scripts/ue58_spawn_metahuman_probe.py` loads the discovered generated Blueprint, spawns or reuses the proof actor, selects it, and emits its actual class/path.
 - `scripts/ue58_introspect_metahuman_livelink.py` searches the live generated actor and its components for UE 5.8 Live Link fields instead of guessing names from another engine version.
 - `scripts/ue58_bind_metahuman_livelink.py` assigns the exact subject and requires reflected readback before reporting success.
-- `scripts/ue_remote_exec.py` is a remote-Python helper. It discovered no nodes in this project because Unreal remote Python was disabled; it is a documented optional path, not part of this successful execution chain.
+- `scripts/ue_remote_exec.py` is a remote-Python helper. Remote execution was disabled during this original Run001 proof. It was enabled and runtime-proven during the later `Run20260801A` collector extension; see `COLLECTOR-RUN-20260801A.md`.
 
 UE 5.8's Python `Actor` wrapper did not expose `rerun_construction_scripts`, and `LevelEditorSubsystem` did not expose the attempted viewport focus helper. Neither absence invalidated spawning or binding; the proof uses direct property readback and screenshots instead.
 

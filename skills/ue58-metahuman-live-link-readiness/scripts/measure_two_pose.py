@@ -40,7 +40,7 @@ def evaluate(
         "state": "DEFORMATION_CANDIDATE" if all(gates.values()) else "METRICS_REJECTED",
         "passed_metrics": all(gates.values()),
         "promotion_allowed": False,
-        "reason": "Raw UE Live Link sampling and capture-provenance collector is not yet implemented",
+        "reason": "Legacy evaluator accepts user-supplied curve summaries and images; only collector-issued receipts can reach DEFORMATION_MEASURED",
         "metrics": {
             "neutral_rmse": neutral_noise,
             "expression_rmse": expression_rmse,

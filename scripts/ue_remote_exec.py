@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 import time
 from pathlib import Path
@@ -14,7 +15,21 @@ def main() -> int:
     parser.add_argument("script", type=Path)
     parser.add_argument("--engine-root", type=Path, required=True)
     parser.add_argument("--discover-seconds", type=float, default=3.0)
+    parser.add_argument(
+        "--env",
+        action="append",
+        default=[],
+        metavar="NAME=VALUE",
+        help="Set a validated BEAST_* run-control value in the remote Unreal Python process",
+    )
     args = parser.parse_args()
+
+    remote_env: dict[str, str] = {}
+    for item in args.env:
+        name, separator, value = item.partition("=")
+        if not separator or not re.fullmatch(r"BEAST_[A-Z0-9_]+", name):
+            parser.error(f"invalid --env value: {item!r}")
+        remote_env[name] = value
 
     remote_python = (
         args.engine_root
@@ -23,7 +38,19 @@ def main() -> int:
     sys.path.insert(0, str(remote_python))
     import remote_execution  # type: ignore[import-not-found]
 
-    source = args.script.read_text(encoding="utf-8")
+    script_path = args.script.resolve()
+    file_source = script_path.read_text(encoding="utf-8")
+    source = (
+        "import os as _beast_os; _beast_os.environ.update("
+        + repr(remote_env)
+        + "); exec(compile("
+        + repr(file_source)
+        + ", "
+        + repr(str(script_path))
+        + ", 'exec'), {'__file__': "
+        + repr(str(script_path))
+        + ", '__name__': '__main__'})"
+    )
     session = remote_execution.RemoteExecution()
     session.start()
     try:
@@ -44,7 +71,9 @@ def main() -> int:
             exec_mode=remote_execution.MODE_EXEC_FILE,
             raise_on_failure=False,
         )
-        print(json.dumps(result, default=str))
+        public_result = dict(result)
+        public_result["command"] = str(script_path)
+        print(json.dumps(public_result, default=str))
         return 0 if result.get("success") else 1
     finally:
         session.stop()
