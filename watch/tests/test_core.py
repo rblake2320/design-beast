@@ -6,7 +6,7 @@ import pytest
 
 from watch.core import (SCHEMA_VERSION, build_sampling_plan, clean_vtt, format_time,
                         frame_name, hamming_hash, parse_dense_window, parse_timecode)
-from scripts.watch_video import _select_downloaded_video
+from scripts.watch_video import _select_downloaded_video, _slug
 
 
 @pytest.mark.parametrize(("raw", "expected"), [
@@ -47,6 +47,12 @@ def test_helpers():
     assert frame_name(1.5) == "f_000000001500.jpg"
     assert hamming_hash("0000000000000000", "000000000000000f") == 4
     assert SCHEMA_VERSION.endswith("/v2")
+
+
+def test_slug_uses_youtube_video_id_without_collisions():
+    assert _slug("https://www.youtube.com/watch?v=alpha123") == "alpha123"
+    assert _slug("https://www.youtube.com/watch?v=beta456&t=30") == "beta456"
+    assert _slug("https://youtu.be/gamma789?si=x") == "gamma789"
 
 
 def test_clean_vtt_preserves_source_offset(tmp_path):
