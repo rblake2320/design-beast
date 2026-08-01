@@ -115,7 +115,23 @@ another capability. “Later” is not a trigger.
 - Measures and acceptance threshold: all required assets/settings present, no editor
   errors, deterministic replay, target visual score met, and every implemented step
   traceable to source evidence or official documentation.
-- Decision: build and measure before making broader claims.
+- Evidence (2026-07-31):
+  - `proofs/watch-001-lumen-emissive/` — the UE experiment RAN: emissive-material
+    Lumen lighting executed in a real UE 5.8.0 project with retained before/after
+    viewport captures (dark unlit sphere → emissive sphere with visible Lumen
+    bounce), structural probe (`reflection-probe.json`: engine version +
+    post-process state), and a replay-capture script. Evidence level:
+    **reproduced + measured** (structural); formal acceptance writeup (PROOF.md
+    with scored criteria) still owed before "verified".
+  - `proofs/watch-002-devin/` — 38:05 tutorial → 206 frames / 1,225 segments /
+    176 embeddings → structurally valid compiled `SKILL.md` + source-time
+    evidence map + replay log; recovered UI-only facts (the four approval
+    choices). Evidence level: **verified for compile-and-validate**; execution
+    inside the target agent explicitly NOT claimed.
+  - Side yield: two real watcher defects found + fixed with regression tests
+    (audio-only stream selection → zero frames; HTTP 429 on caption refresh).
+- Decision: build and measure before making broader claims. watch-001 owes its
+  scored PROOF.md; watch-002 owes target-agent execution.
 - Revisit trigger: completion of the first end-to-end tutorial-to-verified-skill run.
 
 ### OPP-20260731-02 — Evidence-linked, cross-agent skill compilation

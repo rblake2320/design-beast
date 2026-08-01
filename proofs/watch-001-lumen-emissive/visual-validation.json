@@ -1,0 +1,32 @@
+{
+  "schema": "beast.watch.visual-validation/v1",
+  "proof": "watch-001-lumen-emissive",
+  "method": {
+    "renderer": "Unreal Engine 5.8 offscreen high-resolution screenshot",
+    "resolution": "1280x720",
+    "judge": "local qwen3-vl:8b via scripts/judge_image.py",
+    "brief": "A real Unreal Engine test room containing a visible emissive orange sphere whose light affects surrounding walls and floor; technically readable exposure, no black failed render"
+  },
+  "before": {
+    "file": "evidence/before.png",
+    "sha256": "EC4E09F6355D60572F276122BCFCFCF08D1588E3BC35AA720EABC548DA5B902E",
+    "mean_luminance": 0.250275,
+    "judge_score": 2,
+    "judge_kill": true,
+    "judge_fix": "Missing emissive orange sphere; add an orange sphere with realistic lighting effects on walls/floor to meet the brief."
+  },
+  "after": {
+    "file": "evidence/after.png",
+    "sha256": "F833F27C1F8CF8DED456DA8A3515FF65753FE83F345DBA1293789269E576E116",
+    "mean_luminance": 0.764179,
+    "judge_score": 8,
+    "judge_kill": false,
+    "judge_fix": "Slight overexposure on sun causes washout; reduce brightness slightly for cleaner light affect"
+  },
+  "comparison": {
+    "rmse_normalized": 0.663314,
+    "score_delta": 6,
+    "acceptance": "pass",
+    "bounded_conclusion": "The recovered settings produced a materially different, non-black, locally judged deliverable in this UE 5.8 test scene. The result is overexposed and does not establish general tutorial-to-skill reliability."
+  }
+}

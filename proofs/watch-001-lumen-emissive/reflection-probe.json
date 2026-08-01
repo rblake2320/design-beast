@@ -1,0 +1,62 @@
+{
+  "engine_version": "5.8.0-55116800+++UE5+Release-5.8",
+  "post_process": {
+    "override_auto_exposure_method": {
+      "available": true,
+      "value": "False",
+      "type": "bool"
+    },
+    "auto_exposure_method": {
+      "available": true,
+      "value": "<AutoExposureMethod.AEM_HISTOGRAM: 0>",
+      "type": "AutoExposureMethod"
+    },
+    "override_auto_exposure_bias": {
+      "available": true,
+      "value": "False",
+      "type": "bool"
+    },
+    "auto_exposure_bias": {
+      "available": true,
+      "value": "1.0",
+      "type": "float"
+    },
+    "override_lumen_scene_detail": {
+      "available": true,
+      "value": "False",
+      "type": "bool"
+    },
+    "lumen_scene_detail": {
+      "available": true,
+      "value": "1.0",
+      "type": "float"
+    },
+    "override_dynamic_global_illumination_method": {
+      "available": true,
+      "value": "False",
+      "type": "bool"
+    },
+    "dynamic_global_illumination_method": {
+      "available": true,
+      "value": "<DynamicGlobalIlluminationMethod.LUMEN: 1>",
+      "type": "DynamicGlobalIlluminationMethod"
+    }
+  },
+  "material": {
+    "shading_model": {
+      "available": true,
+      "value": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "type": "MaterialShadingModel"
+    },
+    "blend_mode": {
+      "available": true,
+      "value": "<BlendMode.BLEND_OPAQUE: 0>",
+      "type": "BlendMode"
+    },
+    "material_domain": {
+      "available": true,
+      "value": "<MaterialDomain.MD_SURFACE: 0>",
+      "type": "MaterialDomain"
+    }
+  }
+}

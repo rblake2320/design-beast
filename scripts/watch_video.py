@@ -79,7 +79,7 @@ def _download(source: str, bundle: Path, height: int,
               ffprobe: str) -> tuple[Path, float]:
     ytdlp = _tool("yt-dlp")
     output = bundle / "video.%(ext)s"
-    cmd = [ytdlp, "--no-playlist",
+    cmd = [ytdlp, "--no-playlist", "--ignore-errors",
            "-f", f"bv*[height<={height}]+ba/b[height<={height}]/b",
            "--merge-output-format", "mp4", "--write-auto-subs", "--write-subs",
            "--sub-lang", "en.*", "--sub-format", "vtt", "-o", str(output)]

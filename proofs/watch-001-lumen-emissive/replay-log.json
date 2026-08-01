@@ -1,0 +1,318 @@
+{
+  "schema": "beast.watch.proof/v1",
+  "proof": "watch-001-lumen-emissive",
+  "engine_version": "5.8.0-55116800+++UE5+Release-5.8",
+  "source": "https://www.youtube.com/watch?v=AO5I0yJEcPY",
+  "status": "structural_pass",
+  "checks": {
+    "post_process_unbound": true,
+    "manual_exposure_override": true,
+    "manual_exposure": true,
+    "exposure_bias_override": true,
+    "exposure_bias_15": true,
+    "lumen_detail_override": true,
+    "lumen_detail_2": true,
+    "material_exists": true,
+    "level_exists": true
+  },
+  "events": [
+    {
+      "time_unix": 1785543761.914249,
+      "event": "set_property",
+      "object": "Material",
+      "property": "shading_model",
+      "requested": "<MaterialShadingModel.MSM_UNLIT: 0>",
+      "actual": "<MaterialShadingModel.MSM_UNLIT: 0>"
+    },
+    {
+      "time_unix": 1785543761.92724,
+      "event": "set_property",
+      "object": "MaterialExpressionVectorParameter",
+      "property": "parameter_name",
+      "requested": "Color",
+      "actual": "Color"
+    },
+    {
+      "time_unix": 1785543761.9350815,
+      "event": "set_property",
+      "object": "MaterialExpressionVectorParameter",
+      "property": "default_value",
+      "requested": "<Struct 'LinearColor' (0x0000026827F3B5E0) {r: 1.000000, g: 0.055000, b: 0.010000, a: 1.000000}>",
+      "actual": "<Struct 'LinearColor' (0x0000026830EDC878) {r: 1.000000, g: 0.055000, b: 0.010000, a: 1.000000}>"
+    },
+    {
+      "time_unix": 1785543761.9428973,
+      "event": "set_property",
+      "object": "MaterialExpressionScalarParameter",
+      "property": "parameter_name",
+      "requested": "Intensity",
+      "actual": "Intensity"
+    },
+    {
+      "time_unix": 1785543761.9507482,
+      "event": "set_property",
+      "object": "MaterialExpressionScalarParameter",
+      "property": "default_value",
+      "requested": "25.0",
+      "actual": "25.0"
+    },
+    {
+      "time_unix": 1785543762.1417491,
+      "event": "create_material",
+      "asset": "/Game/Proof/M_TutorialEmissive",
+      "shading_model": "MSM_UNLIT",
+      "graph": "VectorParameter(Color) * ScalarParameter(Intensity) -> Emissive Color"
+    },
+    {
+      "time_unix": 1785543762.156964,
+      "event": "spawn_actor",
+      "label": "Floor",
+      "cls": "StaticMeshActor",
+      "location": [
+        0,
+        0,
+        -25
+      ],
+      "scale": [
+        10,
+        10,
+        0.5
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "time_unix": 1785543762.1589146,
+      "event": "spawn_actor",
+      "label": "BackWall",
+      "cls": "StaticMeshActor",
+      "location": [
+        450,
+        0,
+        250
+      ],
+      "scale": [
+        0.5,
+        10,
+        5
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "time_unix": 1785543762.1608682,
+      "event": "spawn_actor",
+      "label": "LeftWall",
+      "cls": "StaticMeshActor",
+      "location": [
+        0,
+        -475,
+        250
+      ],
+      "scale": [
+        10,
+        0.5,
+        5
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "time_unix": 1785543762.1628208,
+      "event": "spawn_actor",
+      "label": "RightWall",
+      "cls": "StaticMeshActor",
+      "location": [
+        0,
+        475,
+        250
+      ],
+      "scale": [
+        10,
+        0.5,
+        5
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "time_unix": 1785543762.1643245,
+      "event": "spawn_actor",
+      "label": "EmissiveSphere",
+      "cls": "StaticMeshActor",
+      "location": [
+        250,
+        0,
+        175
+      ],
+      "scale": [
+        1.4,
+        1.4,
+        1.4
+      ],
+      "mesh": "/Engine/BasicShapes/Sphere.Sphere"
+    },
+    {
+      "time_unix": 1785543762.1682649,
+      "event": "set_property",
+      "object": "PostProcessVolume",
+      "property": "unbound",
+      "requested": "True",
+      "actual": "True"
+    },
+    {
+      "time_unix": 1785543762.1682649,
+      "event": "set_property",
+      "object": "PostProcessSettings",
+      "property": "override_dynamic_global_illumination_method",
+      "requested": "True",
+      "actual": "True"
+    },
+    {
+      "time_unix": 1785543762.1682649,
+      "event": "set_property",
+      "object": "PostProcessSettings",
+      "property": "dynamic_global_illumination_method",
+      "requested": "<DynamicGlobalIlluminationMethod.LUMEN: 1>",
+      "actual": "<DynamicGlobalIlluminationMethod.LUMEN: 1>"
+    },
+    {
+      "time_unix": 1785543762.1682649,
+      "event": "set_property",
+      "object": "PostProcessSettings",
+      "property": "override_auto_exposure_method",
+      "requested": "True",
+      "actual": "True"
+    },
+    {
+      "time_unix": 1785543762.1682649,
+      "event": "set_property",
+      "object": "PostProcessSettings",
+      "property": "auto_exposure_method",
+      "requested": "<AutoExposureMethod.AEM_MANUAL: 2>",
+      "actual": "<AutoExposureMethod.AEM_MANUAL: 2>"
+    },
+    {
+      "time_unix": 1785543762.1682649,
+      "event": "set_property",
+      "object": "PostProcessSettings",
+      "property": "override_auto_exposure_bias",
+      "requested": "True",
+      "actual": "True"
+    },
+    {
+      "time_unix": 1785543762.1682649,
+      "event": "set_property",
+      "object": "PostProcessSettings",
+      "property": "auto_exposure_bias",
+      "requested": "1.0",
+      "actual": "1.0"
+    },
+    {
+      "time_unix": 1785543762.1688092,
+      "event": "set_property",
+      "object": "PostProcessSettings",
+      "property": "override_lumen_scene_detail",
+      "requested": "True",
+      "actual": "True"
+    },
+    {
+      "time_unix": 1785543762.1688092,
+      "event": "set_property",
+      "object": "PostProcessSettings",
+      "property": "lumen_scene_detail",
+      "requested": "1.0",
+      "actual": "1.0"
+    },
+    {
+      "time_unix": 1785543762.1717432,
+      "event": "baseline_ready",
+      "level": "/Game/Proof/L_WatchTutorialProof",
+      "exposure_bias": 1.0,
+      "lumen_scene_detail": 1.0
+    },
+    {
+      "time_unix": 1785543762.9819384,
+      "event": "screenshot",
+      "file": "C:\\Users\\techai\\brain\\design-beast\\proofs\\watch-001-lumen-emissive\\evidence\\before.png",
+      "exists": true
+    },
+    {
+      "time_unix": 1785543763.0202193,
+      "event": "set_property",
+      "object": "PostProcessSettings",
+      "property": "override_auto_exposure_method",
+      "requested": "True",
+      "actual": "True"
+    },
+    {
+      "time_unix": 1785543763.0202193,
+      "event": "set_property",
+      "object": "PostProcessSettings",
+      "property": "auto_exposure_method",
+      "requested": "<AutoExposureMethod.AEM_MANUAL: 2>",
+      "actual": "<AutoExposureMethod.AEM_MANUAL: 2>"
+    },
+    {
+      "time_unix": 1785543763.0202193,
+      "event": "set_property",
+      "object": "PostProcessSettings",
+      "property": "override_auto_exposure_bias",
+      "requested": "True",
+      "actual": "True"
+    },
+    {
+      "time_unix": 1785543763.0202193,
+      "event": "set_property",
+      "object": "PostProcessSettings",
+      "property": "auto_exposure_bias",
+      "requested": "15.0",
+      "actual": "15.0"
+    },
+    {
+      "time_unix": 1785543763.0202193,
+      "event": "set_property",
+      "object": "PostProcessSettings",
+      "property": "override_lumen_scene_detail",
+      "requested": "True",
+      "actual": "True"
+    },
+    {
+      "time_unix": 1785543763.0202193,
+      "event": "set_property",
+      "object": "PostProcessSettings",
+      "property": "lumen_scene_detail",
+      "requested": "2.0",
+      "actual": "2.0"
+    },
+    {
+      "time_unix": 1785543763.0211966,
+      "event": "learned_settings_applied",
+      "evidence": {
+        "manual_exposure": "video 00:02:27.000 forensic seek",
+        "exposure_bias_15": "video 00:02:27.800 forensic frame",
+        "lumen_scene_detail_2": "video 00:02:54.500 corrective forensic frame",
+        "infinite_extent": "transcript 00:02:12.959\u201300:02:17.480"
+      }
+    },
+    {
+      "time_unix": 1785543763.215893,
+      "event": "screenshot",
+      "file": "C:\\Users\\techai\\brain\\design-beast\\proofs\\watch-001-lumen-emissive\\evidence\\after.png",
+      "exists": true
+    },
+    {
+      "time_unix": 1785543763.2326586,
+      "event": "validation",
+      "passed": true,
+      "checks": {
+        "post_process_unbound": true,
+        "manual_exposure_override": true,
+        "manual_exposure": true,
+        "exposure_bias_override": true,
+        "exposure_bias_15": true,
+        "lumen_detail_override": true,
+        "lumen_detail_2": true,
+        "material_exists": true,
+        "level_exists": true
+      }
+    }
+  ],
+  "visual_validation": "pending screenshot comparison"
+}
