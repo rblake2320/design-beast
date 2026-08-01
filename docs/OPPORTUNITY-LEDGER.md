@@ -173,3 +173,45 @@ another capability. “Later” is not a trigger.
   until the two-runtime experiment passes.
 - Revisit trigger: a second compatible agent is installed and available for a
   disposable behavioral run.
+
+### OPP-20260801-01 — Beast Docs: instructional webpages as an evidence substrate
+
+- Status: researching
+- Trigger: scoping review (2026-08-01) of the iPhone → MetaHuman → Motion Design →
+  Remote Control workflow concluded webpage tutorials need their OWN subsystem, not
+  reuse of Watch's video-frame abstraction; no code exists yet.
+- New capability hypothesis: an agent can ingest an image-rich instructional webpage
+  (Epic's Motion Design quick start), preserve source evidence (URL + version
+  selector + retrieval timestamp, DOM section paths, ordered instructions, figures
+  with captions/alt text, screenshot crops, exact values, text↔figure links,
+  confidence + unresolved ambiguities, reinspection history), compile a procedure,
+  and reproduce it in the documented application. The adaptive-inspection concept
+  from Watch carries over (back to prerequisites, reopen figures full-res, switch
+  doc versions) WITHOUT pretending HTML is video.
+- Engine-version policy (user decision, 2026-08-01): **UE 5.8 is the required
+  target.** Epic currently serves the Motion Design tutorial as 5.8 docs; local
+  descriptor diff confirmed real 5.6→5.8 drift (AvalancheDataLink/SceneState moved
+  Experimental→VirtualProduction and →beta; core Avalanche no longer beta; new
+  SequenceNavigator dep; new AvalancheMaterial/AvalancheFunctionalTest modules).
+  Rules: 5.8 docs only · enable 5.8 Avalanche + StormSyncAvalancheBridge · every
+  proof in a disposable UE 5.8 GUI project · record "5.8" in every manifest and
+  compiled skill · 5.6 findings are drift evidence only, never implementation
+  guidance · stop execution if a project opens under another engine version.
+- Proof decomposition (each independently gated; combined workflow only after all):
+  - A: Live Link Face → Unreal valid subject (network path proven; subject/render NOT)
+  - B: MetaHuman renders + responds to that subject (not attempted in GUI)
+  - C: Beast Docs compiles Epic's webpage into a reproducible Motion Design
+    procedure (not implemented — the next honest artifact is an ingestion manifest
+    + evidence map, not an Unreal execution)
+  - D: Remote Control changes the resulting graphic externally (Epic-documented,
+    locally unproven)
+- Prior art and primary sources:
+  https://dev.epicgames.com/documentation/en-us/unreal-engine/motion-design-quickstart-guide-in-unreal-engine ·
+  https://dev.epicgames.com/documentation/en-us/unreal-engine/your-first-graphic-with-motion-design-in-unreal-engine
+- Falsifiable claim (proof C first): Beast Docs can recover Epic's "Your First
+  Graphic" procedure — every step, exact values, prerequisites — into an evidence
+  map whose each step cites its DOM section and figure, accurately enough that a
+  human following only the compiled procedure reproduces the tutorial result.
+- Decision: build the ingestion manifest + evidence map first; no Unreal execution
+  claims until C passes, no combined-workflow claims until A–D pass independently.
+- Revisit trigger: first Beast Docs ingestion manifest produced from the Epic page.

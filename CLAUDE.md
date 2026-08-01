@@ -41,6 +41,11 @@ Any AI agent (Claude Code, Codex, mesh peer) working in or from this repo follow
 | Sibling repos | `repos.yml` → `scripts/sync_repos.ps1` |
 
 ## Machine facts (verified 2026-07)
+- **UE 5.8 is the REQUIRED target for all new UE proofs and skill compilation**
+  (user decision 2026-08-01, OPP-20260801-01): 5.8 docs only, disposable 5.8 GUI
+  projects, record "5.8" in every manifest/skill, stop if a project opens under
+  another version. UE 5.6 exists ONLY for the legacy /api/to_ue → RouteRush path;
+  its findings are version-drift evidence, never implementation guidance.
 - RTX 5090 = Blackwell sm_120 → CUDA deps need cu128+ builds
 - Blender bridge lives INSIDE Blender; launch it if :9876 is down
 - Higgsfield auth expires → user runs `higgsfield auth login` (interactive)
