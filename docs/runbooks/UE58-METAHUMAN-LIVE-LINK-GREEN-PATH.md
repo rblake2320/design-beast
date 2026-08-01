@@ -99,6 +99,8 @@ py "C:/Users/techai/brain/design-beast/scripts/ue58_metahuman_preflight.py"
 
 The script hard-stops outside UE 5.8, verifies/duplicates the configured project asset, checks assembly readiness, emits one JSON evidence marker, and performs no external work by default. A validated run returned engine `5.8.1-56057345`, a saved `MetaHumanCharacter`, `can_build=false`, `high_resolution_textures=false`, and `live_link.attempted=false`.
 
+Measured on this machine, the first asset-editor load took about 38 seconds while Unreal built and cached optional assets. A subsequent warm preflight emitted its evidence marker in about 2.6 seconds. Prefer one explicit warm-up followed by API checks instead of repeatedly rediscovering state through UI actions.
+
 Observed on 2026-08-01 after the phone left the network: source-handle creation returned `True`, while connection returned `False`. That is expected offline behavior and is not evidence of a plugin failure.
 
 ### Local preset experiment
@@ -113,6 +115,21 @@ C:\Users\techai\Unreal Projects\MoodBuddyUE58Proof\Content\Characters\MetaHumans
 The duplicate saved successfully as class `MetaHumanCharacter`. The first readiness query failed because character data had not loaded. Opening it through `AssetEditorSubsystem` loaded the character data and local optional assets. A second `can_build_meta_human` query then failed for the narrower reason `Character is not rigged`.
 
 This is a useful hard gate: do not run assembly until `can_build_meta_human` returns true. Do not silently invoke cloud autorig or texture services when it returns false.
+
+### Cloud Full Rig gate
+
+Epic documents `request_auto_rigging` and `request_texture_sources` as supported UE 5.8 Python operations. No checkout or per-call price is documented, but do not state that the service is guaranteed to remain free. The two documented service hosts are:
+
+```text
+mh-uemhc-autorig-service.eeeb.live.use1a.on.epicgames.com:443
+mh-texture-synthesis-service.eeeb.live.use1a.on.epicgames.com:443
+```
+
+Both hosts passed a TCP 443 preflight on 2026-08-01. The reflected UE 5.8 Full Rig enum is `MetaHumanRigType.JOINTS_AND_BLEND_SHAPES` (with an underscore between `BLEND` and `SHAPES`). Introspect the live enum rather than copying a display label or guessing its Python name.
+
+A single Full Rig request on the generic Ada preset reached Epic authentication and opened a device-authorization page. The log reported no persistent auth credentials and `authorization_pending`. No credentials, verification code, access approval, or terms acceptance were supplied by the agent. This is a required human boundary: if authentication is not already active, pause for the user.
+
+For privacy language, Epic says an uploaded Face Mesh is not retained after processing; do not broaden that into “Epic retains nothing,” because ordinary account, usage, and technical telemetry may still be retained.
 
 ## UE 5.8 preflight and known confounds
 
@@ -154,3 +171,4 @@ Not yet proven at the time of this record:
 - [MetaHuman Creator Python Scripting](https://dev.epicgames.com/documentation/metahuman/metahuman-creator-python-scripting-in-unreal-engine?lang=en-US)
 - [MetaHuman Known Issues 5.8](https://dev.epicgames.com/documentation/unreal-engine/metahuman-known-issues-5-8-in-unreal-engine)
 - [MetaHuman 5.8 Release Notes](https://dev.epicgames.com/documentation/metahuman/metahuman-5-8-release-notes-in-unreal-engine)
+- [MetaHuman Data Use](https://dev.epicgames.com/documentation/en-us/metahuman/metahuman-data-use)
