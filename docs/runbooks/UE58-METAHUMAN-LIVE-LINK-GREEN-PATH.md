@@ -91,6 +91,14 @@ connected = unreal.LiveLinkFaceSourceBlueprint.connect(
 )
 ```
 
+Design Beast packages the non-cloud checks in `scripts/ue58_metahuman_preflight.py`. Run it from an open UE 5.8 editor console with:
+
+```text
+py "C:/Users/techai/brain/design-beast/scripts/ue58_metahuman_preflight.py"
+```
+
+The script hard-stops outside UE 5.8, verifies/duplicates the configured project asset, checks assembly readiness, emits one JSON evidence marker, and performs no external work by default. A validated run returned engine `5.8.1-56057345`, a saved `MetaHumanCharacter`, `can_build=false`, `high_resolution_textures=false`, and `live_link.attempted=false`.
+
 Observed on 2026-08-01 after the phone left the network: source-handle creation returned `True`, while connection returned `False`. That is expected offline behavior and is not evidence of a plugin failure.
 
 ### Local preset experiment
