@@ -131,6 +131,22 @@ A single Full Rig request on the generic Ada preset reached Epic authentication 
 
 For privacy language, Epic says an uploaded Face Mesh is not retained after processing; do not broaden that into “Epic retains nothing,” because ordinary account, usage, and technical telemetry may still be retained.
 
+### Post-consent continuation (researched, not yet executed)
+
+After the user explicitly accepts the consent page and the single Full Rig call succeeds:
+
+1. Use one blocking `MetaHumanCharacterTextureRequestParams` request. UE 5.8 stores source resolutions on the character; all eight installed defaults are 2K.
+2. Require `character.has_high_resolution_textures is True`.
+3. Require `can_build_meta_human(character) is True`.
+4. Snapshot Asset Registry results under a new run-scoped root such as `/Game/MoodBuddyProof/Run001/MetaHumans`.
+5. Build `OPTIMIZED` / `MEDIUM` with its Common folder under that same run root.
+6. Because `build_meta_human` returns no success value, prove assembly by comparing absent-before with unique assets-after and a clean log. Expect `AdaProof/BP_AdaProof`, but discover the actual path instead of assuming it.
+7. Spawn the generated Blueprint and introspect the reflected `LiveLinkSubject` and `UseLiveLink` property types before setting them.
+8. Require property readback plus a connected Live Link subject before testing deformation.
+9. Capture two deliberately different phone poses and require measurable visual change. If the phone remains offline, claim only assembled/bound readiness.
+
+The post-consent sequence is supported by installed UE 5.8 examples and source, but it remains a researched procedure until executed and evidenced in this project.
+
 ## UE 5.8 preflight and known confounds
 
 - Live Link Face on iOS must use `MetaHuman Animator` capture mode. Epic documents that realtime connection fails in ARKit mode in UE 5.8.
