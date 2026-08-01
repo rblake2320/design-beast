@@ -1,0 +1,30 @@
+{
+  "schema": "beast.watch.proof/v1",
+  "source": "https://www.youtube.com/watch?v=GFlFABWeqDc",
+  "duration_seconds": 2285.661,
+  "watch_bundle": "watched/proof-002-devin-full-tutorial",
+  "evidence": {
+    "frames_extracted": 206,
+    "frames_indexed": 176,
+    "transcript_segments": 1225,
+    "timeline_schema": "beast.watch.timeline/v2"
+  },
+  "executed": [
+    "downloaded captions and adaptive media streams",
+    "probed media and extracted source-timed frames",
+    "built OpenCLIP/Faiss visual index on CUDA",
+    "visually inspected permission, subagent, and handoff frames",
+    "checked current official Devin documentation",
+    "compiled portable operate-devin-safely skill",
+    "ran Beast Watch regression tests",
+    "ran static skill validation"
+  ],
+  "not_executed": [
+    "Devin CLI installation or authentication",
+    "Devin task execution",
+    "cloud handoff or paid usage",
+    "GitHub, Slack, or Linear connection",
+    "pull request, schedule, secret, or external mutation"
+  ],
+  "conclusion": "Video-to-skill compilation reproduced locally; target-agent execution remains unvalidated."
+}

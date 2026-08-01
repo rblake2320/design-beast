@@ -1,0 +1,4 @@
+interface:
+  display_name: "Operate Devin Safely"
+  short_description: "Run Devin workflows with evidence and approval"
+  default_prompt: "Use $operate-devin-safely to prepare and validate this repository for a safe Devin workflow."

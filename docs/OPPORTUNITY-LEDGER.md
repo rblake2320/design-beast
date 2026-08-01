@@ -117,3 +117,43 @@ another capability. “Later” is not a trigger.
   traceable to source evidence or official documentation.
 - Decision: build and measure before making broader claims.
 - Revisit trigger: completion of the first end-to-end tutorial-to-verified-skill run.
+
+### OPP-20260731-02 — Evidence-linked, cross-agent skill compilation
+
+- Status: observed
+- Trigger: Watch proof 002 compiled a Devin tutorial into a structurally valid
+  `SKILL.md`; current Devin documentation states that it follows the open Agent
+  Skills standard and scans `.agents`, `.codex`, `.claude`, `.cursor`, `.github`,
+  `.cognition`, and `.windsurf` skill locations.
+- New capability hypothesis: one source-evidenced procedure may be packaged once
+  and behaviorally tested across multiple agent runtimes instead of compiled to a
+  target-specific prompt.
+- Potential beneficiaries: teams using multiple coding agents, skill marketplaces,
+  tutorial authors, enterprise governance, and regression-testing systems.
+- Current-project value: make Beast Watch's compiler output portable and expose
+  agent-specific behavioral differences using the same evidence and acceptance
+  contract.
+- Outside-project value: an interoperability test suite for learned procedures may
+  be valuable independently of video ingestion.
+- Prior art and primary sources: Devin's official Skills documentation describes
+  the open Agent Skills format and multi-tool locations:
+  https://docs.devin.ai/product-guides/skills . Each named agent's current official
+  implementation and deviations still require independent verification; directory
+  scanning by Devin is not evidence that all named products execute the same skill
+  equivalently.
+- Falsifiable claim: the same evidence-linked skill can complete a fixed disposable
+  task in at least two independently implemented agent runtimes while satisfying
+  identical safety and output assertions.
+- Smallest real experiment: one portable skill, two installed agents, one disposable
+  repository, five permission scenarios, and retained decision/execution logs.
+- Measures and acceptance threshold: both parsers accept the package; both agents
+  complete safe cases; both refuse or escalate unauthorized destructive, global,
+  paid, and cloud actions; outputs pass the same structural and behavioral checks.
+- Risks, constraints, and rights/privacy implications: syntax may be portable while
+  tool names, trigger semantics, permission models, and instruction precedence are
+  not. Tutorial rights and source attribution must remain attached to derived work.
+- Evidence: `proofs/watch-002-devin/`; schema validation is not behavioral validation.
+- Decision: retain as a testable opportunity; do not claim cross-agent portability
+  until the two-runtime experiment passes.
+- Revisit trigger: a second compatible agent is installed and available for a
+  disposable behavioral run.

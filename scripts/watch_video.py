@@ -51,8 +51,32 @@ def _slug(source: str) -> str:
     return re.sub(r"[^A-Za-z0-9]+", "-", raw).strip("-")[:60] or "video"
 
 
+def _select_downloaded_video(bundle: Path, ffprobe: str) -> Path:
+    """Select a downloaded file that actually contains a video stream.
+
+    Adaptive YouTube downloads can leave separate ``video.fNNN`` audio and
+    video streams when merging is unavailable.  Filename order is therefore
+    not evidence that a file is visual media.
+    """
+    candidates = [path for path in bundle.glob("video.*")
+                  if path.suffix.lower() not in (".vtt", ".part", ".ytdl")]
+    visual: list[tuple[int, Path]] = []
+    for path in candidates:
+        try:
+            media = probe_video(ffprobe, path)
+        except WatchError:
+            continue
+        if media.get("video_codec"):
+            pixels = int(media.get("width") or 0) * int(media.get("height") or 0)
+            visual.append((pixels, path))
+    if not visual:
+        raise WatchError("download produced no file containing a video stream")
+    return max(visual, key=lambda row: row[0])[1]
+
+
 def _download(source: str, bundle: Path, height: int,
-              start: float | None, end: float | None) -> tuple[Path, float]:
+              start: float | None, end: float | None,
+              ffprobe: str) -> tuple[Path, float]:
     ytdlp = _tool("yt-dlp")
     output = bundle / "video.%(ext)s"
     cmd = [ytdlp, "--no-playlist",
@@ -65,12 +89,17 @@ def _download(source: str, bundle: Path, height: int,
         cmd += ["--download-sections", f"*{start or 0}-{end}", "--force-keyframes-at-cuts"]
     proc = subprocess.run(cmd + [source], capture_output=True, text=True, timeout=7200)
     if proc.returncode != 0:
-        raise WatchError(f"yt-dlp failed: {proc.stderr[-800:]}")
-    video = next((path for path in bundle.glob("video.*")
-                  if path.suffix.lower() not in (".vtt", ".part", ".ytdl")), None)
-    if video is None:
-        raise WatchError("download produced no video file")
-    return video, start or 0.0
+        # A retry may be rate-limited after yt-dlp already completed the media
+        # streams (for example while refreshing optional subtitles).  Reuse is
+        # safe only when ffprobe confirms an existing visual stream.
+        try:
+            existing = _select_downloaded_video(bundle, ffprobe)
+        except WatchError:
+            raise WatchError(f"yt-dlp failed: {proc.stderr[-800:]}") from None
+        print("warning: yt-dlp refresh failed; reusing validated local video "
+              f"{existing.name}", file=sys.stderr)
+        return existing, start or 0.0
+    return _select_downloaded_video(bundle, ffprobe), start or 0.0
 
 
 def _clip_local(ffmpeg: str, source: Path, bundle: Path,
@@ -177,7 +206,8 @@ def run(args: argparse.Namespace) -> Path:
 
     is_url = bool(re.match(r"^https?://", args.source))
     if is_url:
-        video, source_offset = _download(args.source, bundle, args.height, start, end)
+        video, source_offset = _download(
+            args.source, bundle, args.height, start, end, ffprobe)
     else:
         source = Path(args.source).expanduser().resolve()
         if not source.is_file():

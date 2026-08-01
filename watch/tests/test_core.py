@@ -6,6 +6,7 @@ import pytest
 
 from watch.core import (SCHEMA_VERSION, build_sampling_plan, clean_vtt, format_time,
                         frame_name, hamming_hash, parse_dense_window, parse_timecode)
+from scripts.watch_video import _select_downloaded_video
 
 
 @pytest.mark.parametrize(("raw", "expected"), [
@@ -57,3 +58,18 @@ def test_clean_vtt_preserves_source_offset(tmp_path):
     rows = clean_vtt(source, output, source_offset=600)
     assert rows[0]["time_seconds"] == 601.5
     assert "00:10:01.500" in output.read_text(encoding="utf-8")
+
+
+def test_download_selector_rejects_audio_only_adaptive_stream(tmp_path, monkeypatch):
+    audio = tmp_path / "video.f251.webm"
+    visual = tmp_path / "video.f399.mp4"
+    audio.write_bytes(b"audio")
+    visual.write_bytes(b"visual")
+
+    def fake_probe(_ffprobe, path):
+        if path == audio:
+            return {"video_codec": None, "width": None, "height": None}
+        return {"video_codec": "av1", "width": 1920, "height": 1080}
+
+    monkeypatch.setattr("scripts.watch_video.probe_video", fake_probe)
+    assert _select_downloaded_video(tmp_path, "ffprobe") == visual
