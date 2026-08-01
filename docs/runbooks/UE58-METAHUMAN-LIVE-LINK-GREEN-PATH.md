@@ -74,6 +74,47 @@ Install evidence:
 
 If the phone is offline, continue through character creation/assembly and binding readiness. Record the final response proof as blocked by source availability, not failed.
 
+## Verified deterministic automation path
+
+UE 5.8 ships first-party MetaHuman Python examples under:
+
+```text
+D:\DEpic GamesUE_5.8\UE_5.8\Engine\Plugins\MetaHuman\MetaHumanCharacter\Content\Python\examples
+```
+
+The installed examples cover asset creation, assembly, and actor spawning. Prefer these supported editor APIs over OCR for deterministic construction; retain SelfConnect screenshots for visual verification. The installed Live Link plugin also exposes a scriptable source connection:
+
+```python
+handle, created = unreal.LiveLinkFaceSourceBlueprint.create_live_link_face_source()
+connected = unreal.LiveLinkFaceSourceBlueprint.connect(
+    handle, "me", "192.168.12.238", 14785
+)
+```
+
+Observed on 2026-08-01 after the phone left the network: source-handle creation returned `True`, while connection returned `False`. That is expected offline behavior and is not evidence of a plugin failure.
+
+### Local preset experiment
+
+The bundled preset `/MetaHumanCharacter/Optional/Presets/Ada` was duplicated through `unreal.EditorAssetLibrary` to:
+
+```text
+/Game/Characters/MetaHumans/AdaProof
+C:\Users\techai\Unreal Projects\MoodBuddyUE58Proof\Content\Characters\MetaHumans\AdaProof.uasset
+```
+
+The duplicate saved successfully as class `MetaHumanCharacter`. The first readiness query failed because character data had not loaded. Opening it through `AssetEditorSubsystem` loaded the character data and local optional assets. A second `can_build_meta_human` query then failed for the narrower reason `Character is not rigged`.
+
+This is a useful hard gate: do not run assembly until `can_build_meta_human` returns true. Do not silently invoke cloud autorig or texture services when it returns false.
+
+## UE 5.8 preflight and known confounds
+
+- Live Link Face on iOS must use `MetaHuman Animator` capture mode. Epic documents that realtime connection fails in ARKit mode in UE 5.8.
+- Use port `14785`; VPNs, different subnets, and an offline phone can prevent connection.
+- A green source confirms incoming data only. It does not prove character deformation.
+- Full Rig is required for blendshape facial animation. An unrigged character cannot be assembled for this proof.
+- UE 5.8 documents visible seam and some groom/quality issues on assembled characters. Do not automatically classify those known rendering issues as failed assembly or failed Live Link.
+- MetaHuman Creator rigging and texture synthesis use Epic cloud services. Keep those external operations explicit in proof logs.
+
 ## Proof boundaries
 
 Proven:
@@ -82,11 +123,15 @@ Proven:
 - PC-to-phone Live Link source discovery and active green subject.
 - MetaHuman Creator Core Data installation completed on D:.
 - Optional MetaHuman content now exists on disk.
+- A fresh UE 5.8.1 session loaded MetaHuman Character and Live Link modules without the former limited-features warning.
+- A bundled preset duplicated and saved as a project-scoped MetaHuman Character asset.
+- The supported readiness API distinguished unloaded data from the current unrigged state.
+- The supported Live Link Python API created a source handle; an offline phone correctly produced `connected=False`.
 
 Not yet proven at the time of this record:
 
-- The repaired optional content loads without warning in a fresh UE session.
-- A MetaHuman Character can be created and assembled in the disposable project.
+- The project-scoped MetaHuman Character has a Full Rig.
+- A MetaHuman Character can be assembled in the disposable project.
 - Subject `me` drives visible facial deformation on that character.
 - The same path is integrated into Mood Buddy production.
 
@@ -96,4 +141,8 @@ Not yet proven at the time of this record:
 - [Using a Live Link Face Source](https://dev.epicgames.com/documentation/en-us/metahuman/using-a-live-link-face-source)
 - [Realtime Animation Using Live Link](https://dev.epicgames.com/documentation/en-us/metahuman/realtime-animation-using-live-link)
 - [Getting Started with MetaHuman Creator](https://dev.epicgames.com/documentation/metahuman/getting-started-with-metahuman-creator?lang=en-US)
-
+- [Creating a Character](https://dev.epicgames.com/documentation/en-us/metahuman/creating-a-character)
+- [MetaHuman Assembly](https://dev.epicgames.com/documentation/metahuman/assembly?lang=en-US)
+- [MetaHuman Creator Python Scripting](https://dev.epicgames.com/documentation/metahuman/metahuman-creator-python-scripting-in-unreal-engine?lang=en-US)
+- [MetaHuman Known Issues 5.8](https://dev.epicgames.com/documentation/unreal-engine/metahuman-known-issues-5-8-in-unreal-engine)
+- [MetaHuman 5.8 Release Notes](https://dev.epicgames.com/documentation/metahuman/metahuman-5-8-release-notes-in-unreal-engine)
