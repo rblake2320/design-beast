@@ -19,6 +19,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from urllib.parse import parse_qs, urlparse
 
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO))
@@ -46,8 +47,17 @@ def _tool(name: str, required: bool = True) -> str | None:
 
 
 def _slug(source: str) -> str:
-    raw = source.rsplit("/", 1)[-1].split("?", 1)[0] if re.match(r"^https?://", source) \
-        else Path(source).stem
+    if re.match(r"^https?://", source):
+        parsed = urlparse(source)
+        host = parsed.netloc.lower().removeprefix("www.")
+        if host in {"youtube.com", "m.youtube.com"}:
+            raw = parse_qs(parsed.query).get("v", [parsed.path.rsplit("/", 1)[-1]])[0]
+        elif host == "youtu.be":
+            raw = parsed.path.strip("/").split("/", 1)[0]
+        else:
+            raw = parsed.path.rstrip("/").rsplit("/", 1)[-1]
+    else:
+        raw = Path(source).stem
     return re.sub(r"[^A-Za-z0-9]+", "-", raw).strip("-")[:60] or "video"
 
 
