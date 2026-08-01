@@ -2,7 +2,7 @@
 
 Last verified: 2026-08-01 (America/Chicago)
 
-This runbook records only what was observed or verified on the local machine. It separates a working network/Live Link connection from the still-unproven final MetaHuman facial-animation response.
+This runbook records only what was observed or verified on the local machine. It separates a working network/Live Link connection and assembled/bound character from the still-unproven final facial-deformation response.
 
 ## Fixed target
 
@@ -131,7 +131,7 @@ A single Full Rig request on the generic Ada preset reached Epic authentication 
 
 For privacy language, Epic says an uploaded Face Mesh is not retained after processing; do not broaden that into “Epic retains nothing,” because ordinary account, usage, and technical telemetry may still be retained.
 
-### Post-consent continuation (researched, not yet executed)
+### Post-consent continuation (executed 2026-08-01)
 
 After the user explicitly accepts the consent page and the single Full Rig call succeeds:
 
@@ -145,7 +145,19 @@ After the user explicitly accepts the consent page and the single Full Rig call 
 8. Require property readback plus a connected Live Link subject before testing deformation.
 9. Capture two deliberately different phone poses and require measurable visual change. If the phone remains offline, claim only assembled/bound readiness.
 
-The post-consent sequence is supported by installed UE 5.8 examples and source, but it remains a researched procedure until executed and evidenced in this project.
+The sequence above was executed in the disposable project:
+
+- A fresh device authorization completed with `EOS_Success` after an earlier code expired.
+- Full Rig autorig completed in 47.899 seconds.
+- All eight 2K texture sources downloaded; readback returned `has_high_resolution_textures=True` and `can_build_meta_human=True`.
+- Optimized/medium assembly succeeded under `/Game/MoodBuddyProof/Run001/MetaHumans` and produced 282 assets.
+- The generated `/Game/MoodBuddyProof/Run001/MetaHumans/AdaProof/BP_AdaProof` was saved and spawned as `BEAST_AdaProof`.
+- Reflection found the generated actor's exact UE 5.8 fields: `LiveLinkSubject` (`LiveLinkSubjectName`) and `UseLiveLink` (`bool`).
+- Subject `me` and `UseLiveLink=true` passed direct readback validation while the Live Link panel showed the phone subject green.
+
+Use `scripts/ue58_spawn_metahuman_probe.py`, `scripts/ue58_introspect_metahuman_livelink.py`, and `scripts/ue58_bind_metahuman_livelink.py` for the discovered spawn/introspect/bind path. UE 5.8's Python `Actor` wrapper did not expose `rerun_construction_scripts`; direct reflected readback is the successful validation mechanism.
+
+Detailed evidence is in `proofs/ue58-metahuman-live-link/PROOF.md`.
 
 ## UE 5.8 preflight and known confounds
 
@@ -168,11 +180,13 @@ Proven:
 - A bundled preset duplicated and saved as a project-scoped MetaHuman Character asset.
 - The supported readiness API distinguished unloaded data from the current unrigged state.
 - The supported Live Link Python API created a source handle; an offline phone correctly produced `connected=False`.
+- A fresh authorized Full Rig call completed, followed by all eight 2K texture-source downloads.
+- Optimized/medium assembly created and saved 282 run-scoped assets, including `BP_AdaProof`.
+- The generated Blueprint spawned in the disposable level.
+- The phone subject `me` was active/green and the spawned actor read back `LiveLinkSubject=me` and `UseLiveLink=true`.
 
 Not yet proven at the time of this record:
 
-- The project-scoped MetaHuman Character has a Full Rig.
-- A MetaHuman Character can be assembled in the disposable project.
 - Subject `me` drives visible facial deformation on that character.
 - The same path is integrated into Mood Buddy production.
 
