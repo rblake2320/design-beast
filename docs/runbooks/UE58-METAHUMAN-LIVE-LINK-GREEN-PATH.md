@@ -127,7 +127,7 @@ mh-texture-synthesis-service.eeeb.live.use1a.on.epicgames.com:443
 
 Both hosts passed a TCP 443 preflight on 2026-08-01. The reflected UE 5.8 Full Rig enum is `MetaHumanRigType.JOINTS_AND_BLEND_SHAPES` (with an underscore between `BLEND` and `SHAPES`). Introspect the live enum rather than copying a display label or guessing its Python name.
 
-A single Full Rig request on the generic Ada preset reached Epic authentication and opened a device-authorization page. The log reported no persistent auth credentials and `authorization_pending`. No credentials, verification code, access approval, or terms acceptance were supplied by the agent. This is a required human boundary: if authentication is not already active, pause for the user.
+A single Full Rig request on the generic Ada preset reached Epic authentication and opened a device-authorization page. The browser then displayed an explicit `MetaHuman Face Mesh Consent` page with `Accept` and `Decline` choices. The log reported no persistent auth credentials and `authorization_pending`. No credentials, verification code, access approval, consent choice, or terms acceptance were supplied by the agent. This is a required human boundary: pause for the user.
 
 For privacy language, Epic says an uploaded Face Mesh is not retained after processing; do not broaden that into “Epic retains nothing,” because ordinary account, usage, and technical telemetry may still be retained.
 
