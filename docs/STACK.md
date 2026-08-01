@@ -20,6 +20,8 @@ One line per capability; re-verify dates when checked. Machine: Windows 11, RTX 
 | Kokoro TTS | `D:\ai\tools\kokoro` (onnx + 54 voices) — fast fixed-voice narration, CPU-capable; studio config.py points at it | staged, wiring unverified |
 | Real-ESRGAN | `D:\ai\tools\realesrgan\realesrgan-ncnn-vulkan.exe` — image upscale (video: see SeedVR2 in SCOUT-2026-07) | staged |
 | ACE-Step 1.5 | `D:\AI\ACE-Step-1.5` (`uv run acestep` → Gradio, `acestep-api` → REST) — local music gen, Apache 2.0 ship-safe, full songs in seconds on 5090; DiT/LM weights auto-download on first run | ✅ installed 2026-07-31, first-run download pending |
+| Game editing suite | Krita 5 (paint) · GIMP 3.2 (`%LOCALAPPDATA%\Programs\GIMP 3`) · Audacity (audio) · Tiled (tilemaps) · Inkscape (vector/UI) · Godot 4.7.1 (`D:\tools\godot`, portable — 2D-strong second engine) · Pixelorama 1.2 (`D:\tools\pixelorama`, pixel art/sprite sheets) · gltf-transform CLI (GLB optimize) — all free/OSS, all in doctor | ✅ installed + verified 2026-07-31 |
+| OCR | easyocr at `D:\ai` (+ deepface) — feeds the skill-compiler's UI-text extraction | staged, pre-existing |
 
 ## Design skills (native Skill tool)
 frontend-design · impeccable · theme-factory · dataviz · algorithmic-art ·

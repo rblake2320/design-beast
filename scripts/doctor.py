@@ -110,6 +110,21 @@ for name, path in [
     check(name, True if path.exists() else None, str(path),
           "see docs/SETUP.md for this lane")
 
+# ---- game editing suite (optional lane, installed 2026-07-31) ----
+for name, path in [
+    ("Krita", Path(r"C:\Program Files\Krita (x64)\bin\krita.exe")),
+    ("GIMP 3", Path(r"C:\Users\techai\AppData\Local\Programs\GIMP 3\bin\gimp-3.exe")),
+    ("Audacity", Path(r"C:\Program Files\Audacity\audacity.exe")),
+    ("Tiled", Path(r"C:\Program Files\Tiled\tiled.exe")),
+    ("Inkscape", Path(r"C:\Program Files\Inkscape\bin\inkscape.exe")),
+    ("Godot 4.7", Path(r"D:\tools\godot\Godot_v4.7.1-stable_win64.exe")),
+    ("Pixelorama", Path(r"D:\tools\pixelorama\Pixelorama-Windows-64bit\Pixelorama.exe")),
+]:
+    check(name, True if path.exists() else None, "",
+          "see STACK.md game-editing row (winget / GitHub releases)")
+check("gltf-transform", shutil.which("gltf-transform") is not None, "",
+      "npm install -g @gltf-transform/cli")
+
 # ---- engines (optional lanes) ----
 check("Blender", Path(config.get("blender")).exists(), "",
       "install Blender 5.x, update config")
