@@ -62,9 +62,20 @@ entirely. All six failed artifacts were preserved under
 `failed-captures/view-drift-20260802-0730/`. The capture path now writes one
 run-scoped `PROOF_CAMERA_LOCKED` receipt, uses the assembled MetaHuman's local
 right axis for a frontal view, and restores that exact transform before every
-pose request. A corrected 80 cm frontal camera is saved. The phone session ended
-before the replacement neutral/neutral/expression set, so facial deformation is
-still not claimed.
+pose request. A corrected 80 cm frontal camera is saved.
+
+After resume, a replacement neutral/neutral/expression sequence produced three
+collector-issued receipts, 10 distinct expression source frames, and exact
+hashed viewport images. Visual review shows a closed mouth in both neutral
+images and a wide-open mouth with displaced jaw in the expression image. The
+independent jaw-control median changed from `0.0783184059` neutral to
+`0.8174888790` expression, a delta of `0.7391704731`.
+
+This reproduces the same practical evidence class as the earlier AdaProof run:
+visible intended facial motion plus a matching independent source signal. The
+stricter automated state remains `MEASUREMENT_REJECTED`, because neutral crop
+RMSE `0.06486526` exceeds the predeclared `0.01` threshold. AdaProof also failed
+that stricter threshold. The threshold was not changed after seeing Marcus.
 
 ## Defects converted into fixes
 
@@ -90,16 +101,16 @@ still not claimed.
 Proven: deterministic male Character asset, user-authorized cloud output,
 successful UE 5.8 assembly, generated Blueprint existence, saved level actor,
 isolated visual render, exact transform, connected Live Link subject, actor
-binding, and crash-resumable evidence receipts.
+binding, crash-resumable evidence receipts, visible intended mouth/jaw motion,
+and a matching independent Live Link curve change.
 
-Not yet proven: measured facial deformation, production lighting/appearance, or
-an end-to-end Mood Buddy avatar.
+Not yet proven: the stricter `DEFORMATION_MEASURED` state, production
+lighting/appearance, or an end-to-end Mood Buddy avatar.
 
 ## Resume point
 
-Do not repeat cloud preparation, assembly, spawning, or binding. Open the same
-UE 5.8.1 project and map, reconnect Live Link Face if needed, and collect fresh
-`neutral-a`, `neutral-b`, and `expression` receipts. The request script restores
-the saved proof camera automatically. Then run `verify_pose_receipts.py` on a
-single face crop shared by all three images. Promotion remains blocked beyond
-`DEFORMATION_MEASURED` until the hashed images receive visual-region review.
+Do not repeat cloud preparation, assembly, spawning, binding, or this visual
+reproduction. The next measurement experiment should address rigid face
+alignment and background exclusion prospectively, then use a fresh run and
+predeclared method. Do not recalculate these captured frames with a post-hoc
+threshold merely to promote them.

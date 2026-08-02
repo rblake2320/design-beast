@@ -1,0 +1,116 @@
+{
+	"schema": 1,
+	"state": "POSE_CAPTURED",
+	"engine_version": "5.8.1-56057345+++UE5+Release-5.8",
+	"project": "C:/Users/techai/Unreal Projects/MoodBuddyUE58Proof/MoodBuddyUE58Proof.uproject",
+	"run_id": "Run20260802MaleB",
+	"subject": "iPhone",
+	"curve": "CTRL_expressions_jawOpen",
+	"capture_label": "neutral-a",
+	"started_utc": "2026-08-02T16:44:11.842Z",
+	"completed_utc": "2026-08-02T16:44:12.699Z",
+	"requested_samples": 10,
+	"editor_view":
+	{
+		"location_x": 300.29486857950593,
+		"location_y": 89.722098297026548,
+		"location_z": 158.66419481243619,
+		"rotation_pitch": 0,
+		"rotation_yaw": -90,
+		"rotation_roll": 0,
+		"fov": 90
+	},
+	"actor":
+	{
+		"path": "/Game/MetaHumanLiveLinkProof.MetaHumanLiveLinkProof:PersistentLevel.BP_MarcusProof_C_UAID_10FFE0B701E3F8F302_1919857751",
+		"location_x": 300,
+		"location_y": 0,
+		"location_z": 0,
+		"rotation_pitch": 0,
+		"rotation_yaw": 0,
+		"rotation_roll": -0,
+		"scale_x": 1,
+		"scale_y": 1,
+		"scale_z": 1
+	},
+	"samples": [
+		{
+			"captured_utc": "2026-08-02T16:44:11.890Z",
+			"platform_seconds": 17644538.549624301,
+			"source_world_seconds": 17644538.517587598,
+			"frame_id": 11624,
+			"value": 0.0635996013879776
+		},
+		{
+			"captured_utc": "2026-08-02T16:44:11.941Z",
+			"platform_seconds": 17644538.599656198,
+			"source_world_seconds": 17644538.517587598,
+			"frame_id": 11624,
+			"value": 0.0635996013879776
+		},
+		{
+			"captured_utc": "2026-08-02T16:44:11.991Z",
+			"platform_seconds": 17644538.650131501,
+			"source_world_seconds": 17644538.616620373,
+			"frame_id": 11625,
+			"value": 0.06048288568854332
+		},
+		{
+			"captured_utc": "2026-08-02T16:44:12.039Z",
+			"platform_seconds": 17644538.698833499,
+			"source_world_seconds": 17644538.6225981,
+			"frame_id": 11630,
+			"value": 0.064209967851638794
+		},
+		{
+			"captured_utc": "2026-08-02T16:44:12.093Z",
+			"platform_seconds": 17644538.752281599,
+			"source_world_seconds": 17644538.723307617,
+			"frame_id": 11636,
+			"value": 0.063450530171394348
+		},
+		{
+			"captured_utc": "2026-08-02T16:44:12.143Z",
+			"platform_seconds": 17644538.803087998,
+			"source_world_seconds": 17644538.771883886,
+			"frame_id": 11639,
+			"value": 0.073822617530822754
+		},
+		{
+			"captured_utc": "2026-08-02T16:44:12.193Z",
+			"platform_seconds": 17644538.852698501,
+			"source_world_seconds": 17644538.820053302,
+			"frame_id": 11642,
+			"value": 0.076417185366153717
+		},
+		{
+			"captured_utc": "2026-08-02T16:44:12.243Z",
+			"platform_seconds": 17644538.902366899,
+			"source_world_seconds": 17644538.872499783,
+			"frame_id": 11645,
+			"value": 0.062751799821853638
+		},
+		{
+			"captured_utc": "2026-08-02T16:44:12.294Z",
+			"platform_seconds": 17644538.953331001,
+			"source_world_seconds": 17644538.926551577,
+			"frame_id": 11648,
+			"value": 0.073713004589080811
+		},
+		{
+			"captured_utc": "2026-08-02T16:44:12.325Z",
+			"platform_seconds": 17644538.984869201,
+			"source_world_seconds": 17644538.93606798,
+			"frame_id": 11649,
+			"value": 0.075358025729656219
+		}
+	],
+	"image":
+	{
+		"path": "C:/Users/techai/Unreal Projects/MoodBuddyUE58Proof/Saved/BeastProof/Run20260802MaleB/deformation/neutral-a.png",
+		"width": 2033,
+		"height": 1936,
+		"byte_count": 4563401,
+		"sha256": "e608a50c5586782227cf30cd89a510c4d229e287c53af878143c5fb64fd45038"
+	}
+}
