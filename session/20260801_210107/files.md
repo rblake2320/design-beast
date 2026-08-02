@@ -8,6 +8,7 @@
 - `skills/ue58-metahuman-live-link-readiness/references/deformation-gate.md` - fixed v1 thresholds.
 - `D:\DEpic GamesUE_5.8\UE_5.8\Engine\Plugins\Experimental\ModelContextProtocol\ModelContextProtocol.uplugin` - official UE 5.8 MCP plugin.
 - `D:\DEpic GamesUE_5.8\UE_5.8\Engine\Plugins\Experimental\Toolsets\AllToolsets\AllToolsets.uplugin` - official MCP tool provider.
+- `C:\Users\techai\Unreal Projects\MoodBuddyUE58Proof\Content\BeastMCPProof\BP_MCPGraphProbe.uasset` - MCP-created, compiled, and saved whole-graph proof asset.
 
 ## Changed
 
@@ -16,6 +17,8 @@
 - `skills/ue58-metahuman-live-link-readiness/tests/test_verify_pose_receipts.py` - regression test for a frozen frame ID/source time.
 - `skills/ue58-metahuman-live-link-readiness/scripts/frame_bound_actor.py` - deterministic front/back camera framing discovered during the run.
 - `skills/ue58-metahuman-live-link-readiness/scripts/inspect_bound_actor_render.py` - read-only bound actor component/render inspection.
+- `scripts/probe_ue58_mcp.py` - read-only, loopback-only official MCP handshake/discovery/viewport probe.
+- `proofs/ue58-official-mcp/PROOF.md` - measured behavior, mutation proof, defects, and claim boundary.
 
 ## Generated
 
