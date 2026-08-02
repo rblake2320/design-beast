@@ -8,6 +8,7 @@
 #include "ILiveLinkClient.h"
 #include "ImageUtils.h"
 #include "Internationalization/Regex.h"
+#include "LiveLinkFaceSourceBlueprint.h"
 #include "LiveLinkRole.h"
 #include "LiveLinkTypes.h"
 #include "LevelEditorViewport.h"
@@ -15,6 +16,7 @@
 #include "Misc/DateTime.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
+#include "PlatformCryptoContextIncludes.h"
 #include "Serialization/JsonSerializer.h"
 #include "Serialization/JsonWriter.h"
 #include "Roles/LiveLinkBasicRole.h"
@@ -69,18 +71,44 @@ static bool SampleCurve(FCurveSample& OutSample, FString& OutError)
     }
     ILiveLinkClient& Client = IModularFeatures::Get().GetModularFeature<ILiveLinkClient>(
         ILiveLinkClient::ModularFeatureName);
-    FLiveLinkSubjectFrameData Frame;
-    if (!Client.EvaluateFrame_AnyThread(State.Subject, ULiveLinkBasicRole::StaticClass(), Frame))
+    const TSubclassOf<ULiveLinkRole> SubjectRole = Client.GetSubjectRole_AnyThread(State.Subject);
+    if (!SubjectRole)
     {
-        OutError = FString::Printf(TEXT("Unable to evaluate Live Link subject %s"), *State.Subject.ToString());
+        OutError = FString::Printf(TEXT("Live Link subject %s has no evaluable role"), *State.Subject.ToString());
+        return false;
+    }
+    FLiveLinkSubjectFrameData Frame;
+    if (!Client.EvaluateFrame_AnyThread(State.Subject, SubjectRole, Frame))
+    {
+        OutError = FString::Printf(
+            TEXT("Unable to evaluate Live Link subject %s with role %s"),
+            *State.Subject.ToString(),
+            *SubjectRole->GetName());
         return false;
     }
     const FLiveLinkBaseStaticData* StaticData = Frame.StaticData.Cast<FLiveLinkBaseStaticData>();
     const FLiveLinkBaseFrameData* FrameData = Frame.FrameData.Cast<FLiveLinkBaseFrameData>();
     if (!StaticData || !FrameData || !StaticData->FindPropertyValue(*FrameData, State.Curve, OutSample.Value))
     {
+        FString AvailableProperties;
+        if (StaticData)
+        {
+            const int32 PropertyLimit = FMath::Min(StaticData->PropertyNames.Num(), 40);
+            for (int32 Index = 0; Index < PropertyLimit; ++Index)
+            {
+                if (!AvailableProperties.IsEmpty())
+                {
+                    AvailableProperties += TEXT(",");
+                }
+                AvailableProperties += StaticData->PropertyNames[Index].ToString();
+            }
+        }
         OutError = FString::Printf(
-            TEXT("Curve %s is absent from subject %s"), *State.Curve.ToString(), *State.Subject.ToString());
+            TEXT("Curve %s is absent from subject %s (role %s; available: %s)"),
+            *State.Curve.ToString(),
+            *State.Subject.ToString(),
+            *SubjectRole->GetName(),
+            *AvailableProperties);
         return false;
     }
     OutSample.CapturedUtc = FDateTime::UtcNow().ToIso8601();
@@ -122,9 +150,13 @@ static void OnScreenshotCaptured(int32 Width, int32 Height, const TArray<FColor>
         return;
     }
 
-    FSHA256Signature Signature;
-    const bool bHashed = PngBytes.Num() <= MAX_uint32
-        && FPlatformMisc::GetSHA256Signature(PngBytes.GetData(), static_cast<uint32>(PngBytes.Num()), Signature);
+    TArray<uint8> Signature;
+    FEncryptionContext Crypto;
+    const bool bHashed = PngBytes.Num() <= MAX_int32
+        && Crypto.CalcSHA256(
+            MakeArrayView(PngBytes.GetData(), static_cast<int32>(PngBytes.Num())),
+            Signature)
+        && Signature.Num() == 32;
 
     TSharedRef<FJsonObject> Root = MakeShared<FJsonObject>();
     Root->SetNumberField(TEXT("schema"), 1);
@@ -183,7 +215,9 @@ static void OnScreenshotCaptured(int32 Width, int32 Height, const TArray<FColor>
     Image->SetNumberField(TEXT("width"), Width);
     Image->SetNumberField(TEXT("height"), Height);
     Image->SetNumberField(TEXT("byte_count"), static_cast<double>(PngBytes.Num()));
-    Image->SetStringField(TEXT("sha256"), bHashed ? Signature.ToString() : TEXT(""));
+    Image->SetStringField(
+        TEXT("sha256"),
+        bHashed ? BytesToHex(Signature.GetData(), Signature.Num()).ToLower() : TEXT(""));
     Root->SetObjectField(TEXT("image"), Image);
 
     FString Json;
@@ -234,6 +268,44 @@ static bool TickCapture(float)
     FScreenshotRequest::RequestScreenshot(false, false);
     return true;
 }
+}
+
+bool UBeastEvidenceCollectorLibrary::ConnectLiveLinkFaceSource(
+    FString SubjectName,
+    FString Address,
+    int32 Port,
+    FString& OutError)
+{
+    OutError.Reset();
+    SubjectName.TrimStartAndEndInline();
+    Address.TrimStartAndEndInline();
+    if (SubjectName.IsEmpty() || Address.IsEmpty() || Port < 1 || Port > 65535)
+    {
+        OutError = TEXT("Invalid Live Link Face subject, address, or port");
+        return false;
+    }
+
+    FLiveLinkSourceHandle SourceHandle;
+    bool bCreated = false;
+    ULiveLinkFaceSourceBlueprint::CreateLiveLinkFaceSource(SourceHandle, bCreated);
+    if (!bCreated)
+    {
+        OutError = TEXT("UE 5.8 failed to create a native Live Link Face source");
+        return false;
+    }
+
+    bool bConnected = false;
+    ULiveLinkFaceSourceBlueprint::Connect(SourceHandle, SubjectName, Address, bConnected, Port);
+    if (!bConnected)
+    {
+        OutError = FString::Printf(
+            TEXT("UE 5.8 Live Link Face source rejected %s:%d for subject %s"),
+            *Address,
+            Port,
+            *SubjectName);
+        return false;
+    }
+    return true;
 }
 
 bool UBeastEvidenceCollectorLibrary::RequestPoseCapture(

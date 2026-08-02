@@ -21,11 +21,14 @@ def main() -> dict:
     if label not in {"neutral-a", "neutral-b", "expression"}:
         raise RuntimeError("BEAST_CAPTURE_LABEL must be neutral-a, neutral-b, or expression")
     subject = os.environ.get("BEAST_LIVE_LINK_SUBJECT", "me").strip()
-    curve = os.environ.get("BEAST_LIVE_LINK_CURVE", "jawOpen").strip()
+    curve = os.environ.get("BEAST_LIVE_LINK_CURVE", "CTRL_expressions_jawOpen").strip()
     samples = int(os.environ.get("BEAST_CAPTURE_SAMPLES", "10"))
     interval = float(os.environ.get("BEAST_CAPTURE_INTERVAL", "0.05"))
     output = os.path.join(context["receipt_dir"], "deformation")
-    accepted = unreal.BeastEvidenceCollectorLibrary.request_pose_capture(
+    # UE's Python wrapper exposes the FString out parameter as the return value;
+    # the native bool is not present in the generated Python signature.  An
+    # empty/None error therefore means the request was accepted.
+    error = unreal.BeastEvidenceCollectorLibrary.request_pose_capture(
         subject,
         curve,
         output,
@@ -33,11 +36,8 @@ def main() -> dict:
         samples,
         interval,
     )
-    if not accepted:
-        raise RuntimeError(
-            "Collector rejected capture: "
-            + unreal.BeastEvidenceCollectorLibrary.get_last_error()
-        )
+    if error:
+        raise RuntimeError("Collector rejected capture: " + str(error))
     result = {
         "state": "POSE_CAPTURE_REQUESTED",
         "project": context["project"],

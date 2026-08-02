@@ -71,3 +71,16 @@ Not proven:
 - Neutral-versus-expression deformation of the spawned MetaHuman.
 - A saved production level or packaged build.
 - Integration into Mood Buddy's production renderer.
+
+## Run20260801A collector extension
+
+The saved proof map was reopened and a fresh receipt chain reached `BOUND_READY`. Unreal reported subject `me` as enabled and `CONNECTED`, and read back `UseLiveLink=true` on actor label `BEAST_Run20260801A`. The original runtime `bound-ready.json` has SHA-256 `12e7c180d59a9e297acc256958032da83bc74752f947543ba98bf994692a12bb`; normalized repository snapshots are under `receipts/`.
+
+This extension reproduced and repaired four integration defects:
+
+1. UE's generated Python wrapper copied the opaque `LiveLinkSourceHandle`, making a Python-only create/connect sequence fail. A C++ bridge now creates and connects the source without crossing that wrapper boundary.
+2. UE's Python wrapper exposes an output error string for the collector request rather than the native boolean. Empty error now means accepted.
+3. The UE 5.8 MetaHuman Animator stream exposes `CTRL_expressions_jawOpen`, not legacy `jawOpen`. The skill default and documentation now use the emitted UE 5.8 control.
+4. `FPlatformMisc::GetSHA256Signature` crashed the editor with `No SHA256 Platform implementation` after writing the first PNG. The native collector now uses `PlatformCryptoContext::CalcSHA256`; the partial PNG was archived under the runtime run's `failed-captures` directory and is not counted as evidence.
+
+The repaired native plugin builds successfully. The user left with the phone before a fresh live three-pose capture could be completed, so rendered deformation and end-to-end animation remain unproven. Resume by reconnecting `192.168.12.238:14785`, requiring `BOUND_READY` again, and capturing `neutral-a`, `neutral-b`, and `expression` with `CTRL_expressions_jawOpen`.

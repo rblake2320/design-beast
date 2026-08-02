@@ -9,6 +9,13 @@ class BEASTEVIDENCECOLLECTOR_API UBeastEvidenceCollectorLibrary : public UBluepr
     GENERATED_BODY()
 
 public:
+    UFUNCTION(BlueprintCallable, Category = "Beast|LiveLink")
+    static bool ConnectLiveLinkFaceSource(
+        FString SubjectName,
+        FString Address,
+        int32 Port,
+        FString& OutError);
+
     UFUNCTION(BlueprintCallable, Category = "Beast|Evidence")
     static bool RequestPoseCapture(
         FName SubjectName,

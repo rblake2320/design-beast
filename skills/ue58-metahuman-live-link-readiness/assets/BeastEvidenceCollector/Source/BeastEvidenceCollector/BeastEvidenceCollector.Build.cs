@@ -6,6 +6,6 @@ public class BeastEvidenceCollector : ModuleRules
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
         PublicDependencyModuleNames.AddRange(new[] { "Core", "CoreUObject", "Engine" });
-        PrivateDependencyModuleNames.AddRange(new[] { "LiveLinkInterface", "Json", "UnrealEd" });
+        PrivateDependencyModuleNames.AddRange(new[] { "LiveLinkInterface", "LiveLinkFaceSource", "PlatformCryptoContext", "Json", "UnrealEd" });
     }
 }

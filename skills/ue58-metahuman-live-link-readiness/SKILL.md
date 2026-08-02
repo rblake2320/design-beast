@@ -65,6 +65,8 @@ Run these scripts in order:
 3. `scripts/introspect_livelink.py`
 4. `scripts/bind_livelink.py`
 
+For the current Live Link Face app in MetaHuman Animator mode, create the UE-side source with `scripts/connect_livelink_face_source.py` using the phone address and required port `14785` before binding. This is a PC-pulls-from-phone source; do not substitute the legacy ARKit phone-push workflow.
+
 Use the exact reflected UE 5.8 fields `LiveLinkSubject` and `UseLiveLink`. Require the chained reviewed-assembly/spawn receipt, readback of the intended subject and `true`, plus the subject name in Unreal's enabled-subject list, the subject enabled flag, and `CONNECTED` subject state. These checks establish `BOUND_READY`; they do not establish facial animation.
 
 ### 5. Record the receipt
@@ -97,6 +99,8 @@ For trusted collection, source-build the plugin in `assets/BeastEvidenceCollecto
 - `spawn.py` — spawn or reuse the generated proof actor.
 - `introspect_livelink.py` — discover reflected Live Link fields on the actor/components.
 - `bind_livelink.py` — set and read back subject and enable state.
+- `connect_livelink_face_source.py` — create and connect the UE 5.8 Live Link Face source through the native bridge without copying the opaque source handle through Python.
+- `load_proof_map.py`, `save_proof_assets.py`, and `quit_editor.py` — preserve and safely reopen the disposable proof state around native plugin rebuilds.
 - `request_pose_capture.py` / `capture_status.py` — request and poll native trusted pose receipts.
 - `measure_two_pose.py` — evaluate candidate metrics without promoting an animation claim.
 - `verify_pose_receipts.py` — verify collector-issued neutral/expression receipts, hashes, identity, timestamps, curve delta, continuity, and rendered change without accepting typed-in curve values.

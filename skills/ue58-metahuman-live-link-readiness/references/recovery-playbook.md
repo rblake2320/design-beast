@@ -37,3 +37,11 @@ UE 5.8's Python Actor wrapper did not expose `rerun_construction_scripts`, and t
 ## Nanite/SM6 restart pending
 
 Do not use a level screenshot as deformation evidence while Shader Model 6 is disabled or a settings restart is pending. Save assets, restart into a clean SM6 session, reconnect the phone, and then run the two-pose gate.
+
+## Live Link Face source connects but `jawOpen` is absent
+
+Check the subject's reported properties before changing phone modes. In the reproduced UE 5.8 MetaHuman Animator stream, the subject used `LiveLinkBasicRole` but emitted MetaHuman control names such as `CTRL_expressions_jawOpen`, not the legacy ARKit name `jawOpen`. Use the exact emitted property and preserve the mismatch as version evidence.
+
+## Screenshot capture crashes on SHA-256
+
+`FPlatformMisc::GetSHA256Signature` asserted on UE 5.8 Windows with `No SHA256 Platform implementation`. The collector must use `PlatformCryptoContext::CalcSHA256`. A PNG written before that assertion is only a failed-capture artifact because it has no completed collector receipt; archive it and rerun the same label after rebuilding.

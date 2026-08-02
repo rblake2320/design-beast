@@ -9,6 +9,16 @@
   "CanContainContent": false,
   "IsBetaVersion": true,
   "Installed": false,
+  "Plugins": [
+    {
+      "Name": "MetaHumanLiveLink",
+      "Enabled": true
+    },
+    {
+      "Name": "PlatformCrypto",
+      "Enabled": true
+    }
+  ],
   "Modules": [
     {
       "Name": "BeastEvidenceCollector",

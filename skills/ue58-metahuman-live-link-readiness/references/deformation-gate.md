@@ -8,7 +8,7 @@
 2. Lock viewport camera, resolution, exposure, quality, and character transform.
 3. Capture two neutral frames at least 500 ms apart.
 4. Collect at least 10 Live Link samples for the neutral pose.
-5. Hold one deliberate expression for at least 5 consecutive samples and capture its frame. Prefer `jawOpen`; otherwise name the chosen ARKit coefficient.
+5. Hold one deliberate expression for at least 5 consecutive samples and capture its frame. In UE 5.8 MetaHuman Animator mode prefer `CTRL_expressions_jawOpen`; otherwise record the exact control property emitted by the active subject.
 6. Crop the same face region from all three frames. Align the crops to the eye centers. Do not include UI, background motion, or camera changes.
 
 ## Required thresholds
