@@ -62,6 +62,12 @@ def main() -> dict:
         "subject_state": str(subject_state),
         "animation_confirmed": False,
     }
+    saved = bool(
+        unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).save_current_level()
+    )
+    result["saved"] = saved
+    if not saved:
+        raise RuntimeError("Live Link fields changed but the proof level could not be saved")
     if (
         read_subject != subject_name
         or not read_enabled
@@ -70,6 +76,9 @@ def main() -> dict:
         or not connected
     ):
         result["state"] = "BINDING_CONFIGURED"
+        # Preserve the useful partial state so a dropped phone stream or editor
+        # crash resumes from the exact configured actor instead of starting over.
+        write_receipt(context, "binding-configured", result)
         raise RuntimeError("Live Link binding failed readback: " + json.dumps(result))
     unreal.log(MARKER + json.dumps(result, sort_keys=True))
     write_receipt(context, "bound-ready", result)

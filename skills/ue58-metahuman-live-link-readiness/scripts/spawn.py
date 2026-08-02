@@ -42,7 +42,12 @@ def main() -> dict:
             raise RuntimeError(f"Failed to spawn generated Blueprint: {asset_path}")
         actor.set_actor_label(actor_label)
     actors.set_selected_level_actors([actor])
-    saved = bool(unreal.EditorLoadingAndSavingUtils.save_dirty_packages(True, True))
+    # Save only the proof level. Saving every dirty package can fail on an
+    # unrelated shared MetaHuman dependency (for example an ARKit mapping asset)
+    # even when this actor and its World Partition external-actor package are
+    # valid. Ctrl+S and the editor's current-level save use this narrower scope.
+    level_editor = unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)
+    saved = bool(level_editor.save_current_level())
     if not saved:
         raise RuntimeError("Spawned actor exists but the proof map could not be saved")
     world = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()

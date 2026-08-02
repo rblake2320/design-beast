@@ -78,6 +78,11 @@ For the current Live Link Face app in MetaHuman Animator mode, create the UE-sid
 
 Use the exact reflected UE 5.8 fields `LiveLinkSubject` and `UseLiveLink`. Require the chained reviewed-assembly/spawn receipt, readback of the intended subject and `true`, plus the subject name in Unreal's enabled-subject list, the subject enabled flag, and `CONNECTED` subject state. These checks establish `BOUND_READY`; they do not establish facial animation.
 
+If the phone is absent or its subject is disabled, `bind_livelink.py` saves the
+actor configuration and writes `binding-configured.json` before failing the
+connected gate. Resume from that checkpoint; do not repeat cloud preparation
+or assembly.
+
 ### 5. Record the receipt
 
 Capture:
