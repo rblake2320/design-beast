@@ -51,6 +51,9 @@ def main() -> dict:
     if not saved:
         raise RuntimeError("Spawned actor exists but the proof map could not be saved")
     world = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
+    location = actor.get_actor_location()
+    rotation = actor.get_actor_rotation()
+    scale = actor.get_actor_scale3d()
     result = {
         "state": "SPAWNED",
         "project": context["project"],
@@ -61,6 +64,15 @@ def main() -> dict:
         "class": actor.get_class().get_path_name(),
         "world": world.get_path_name(),
         "saved": saved,
+        "transform": {
+            "location": {"x": location.x, "y": location.y, "z": location.z},
+            "rotation": {
+                "pitch": rotation.pitch,
+                "yaw": rotation.yaw,
+                "roll": rotation.roll,
+            },
+            "scale": {"x": scale.x, "y": scale.y, "z": scale.z},
+        },
         "assembly_state": (
             "ADOPTED_LOCAL_ASSEMBLY"
             if assembly.get("assembly_mode") == "ADOPTED_LOCAL_UE58_BLUEPRINT"
