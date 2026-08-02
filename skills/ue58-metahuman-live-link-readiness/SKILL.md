@@ -43,6 +43,15 @@ os.environ["BEAST_USER_AUTHORIZED_METAHUMAN_CLOUD"] = "1"
 
 Run `scripts/cloud_prepare.py`. Require its marker to report the requested rig type, readback showing all eight texture-source resolution fields configured to 2K, high-resolution textures, and `can_build=true`. This proves configuration and build eligibility, not that every downloaded source independently has 2K pixel dimensions. The UE Python API also does not expose a sufficient postcondition for proving that the requested blendshape rig exists, so the script reports `blendshape_rig_verified=false`. Treat Full Rig as requested—not verified—unless a separate UI/log artifact proves it.
 
+If the user already completed rigging and texture download in the UI, do not repeat
+the cloud requests. Record authorization and run
+`scripts/reconcile_cloud_prepared.py`; it requires the same eight 2K readbacks,
+then writes a receipt labeled as adopted existing cloud output rather than fresh
+cloud work. Before assembly it also requires high-resolution textures and
+`can_build=true`. After a successful assembly has unloaded the editable Character
+data, it instead requires the receipt's generated Blueprint to exist and reports
+`can_build=null`; do not mistake that expected post-assembly state for a failure.
+
 ### 3. Assemble and discover
 
 Run `scripts/assemble.py`. Do not assume the generated Blueprint path. Require:
@@ -93,6 +102,7 @@ For trusted collection, source-build the plugin in `assets/BeastEvidenceCollecto
 
 - `preflight.py` — version, asset, assembly-readiness, and optional connection checks without cloud work.
 - `cloud_prepare.py` — explicitly gated Full Rig and texture requests.
+- `reconcile_cloud_prepared.py` — verify and adopt user-completed cloud output without requesting it again.
 - `assemble.py` — optimized/medium assembly with before/after asset evidence.
 - `adopt_assembled.py` — explicitly adopt one reviewed local UE 5.8 Blueprint into a fresh run without claiming a fresh build.
 - `load_proof_map.py` — reopen an explicit saved disposable proof map.
