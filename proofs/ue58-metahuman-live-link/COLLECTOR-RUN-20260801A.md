@@ -4,9 +4,9 @@ Run date: 2026-08-01 (America/Chicago)
 
 ## Current result
 
-The native `BeastEvidenceCollector` source plugin compiled against UE 5.8.1, was installed into the disposable `MoodBuddyUE58Proof` project, and was loaded by the running editor. A fresh receipt chain reached `SPAWNED` through an explicitly labeled local-assembly adoption path. The collector then refused a pose request because the fresh run had no `BOUND_READY` receipt.
+The native `BeastEvidenceCollector` source plugin compiled against UE 5.8.1, was installed into the disposable `MoodBuddyUE58Proof` project, and was loaded by the running editor. A fresh receipt chain reached `BOUND_READY`, then an acknowledged neutral/neutral/expression sequence produced three trusted receipts and exact hashed viewport images.
 
-This proves the plugin's UE 5.8 runtime load, fresh-run local adoption, saved actor state, remote execution path, and fail-closed precondition. It does not prove a fresh cloud build, a connected phone subject for this run, deformation, or animation.
+The run reproduced visible Live Link facial animation across two independent evidence surfaces: changing UE source frames/curve values and changed pixels on the intended MetaHuman mouth/jaw. It does not satisfy the stricter v1 `DEFORMATION_MEASURED` state because neutral image stability failed, and it does not prove a fresh cloud build or production integration.
 
 ## Runtime evidence
 
@@ -45,8 +45,12 @@ LogModuleManager: InternalLoadLibrary: 'BeastEvidenceCollector' (.../UnrealEdito
 
 - Plugin package: UE 5.8.1 `BuildPlugin` successful.
 - Skill structure: valid.
-- Automated tests: 26 passed, including image-hash tampering and cross-run receipt rejection.
-- Remaining human input: point Live Link Face at the current PC Wi-Fi endpoint and turn `LIVE` on so the fresh run can reach `BOUND_READY` and collect neutral/expression receipts.
+- Final source frames: neutral A `9`, neutral B `9`, expression `10` distinct IDs.
+- Jaw medians: combined neutral `0.1300153881`, expression `0.8075177372`; delta `0.6775023490`.
+- Automated v1 result: `MEASUREMENT_REJECTED`; neutral RMSE `0.03789118` exceeded `0.01`.
+- Exact evidence: `deformation/Run20260801A/` in this proof package.
+- New stale-frame regression: all repeated frame IDs/source times are rejected; focused Python tests pass.
+- Rebuilt project plugin after stale-frame hardening: `UnrealEditor-BeastEvidenceCollector.dll` SHA-256 `b7d781919963ce649f31a40e950e0956d5578b724162a0d1c86f3cb1f1e1a7c5`.
 
 ## Claim boundary
 
@@ -60,7 +64,6 @@ Proven in this extension:
 
 Not yet proven in this extension:
 
-- fresh-run `BOUND_READY`;
-- three native pose receipts;
 - `DEFORMATION_MEASURED`;
-- visual-region review or `ANIMATION_CONFIRMED`.
+- `ANIMATION_CONFIRMED` under the evidence contract;
+- production Mood Buddy integration.

@@ -1,0 +1,87 @@
+{
+  "current": "Final Live Link evidence preserved; v1 RMSE promotion rejected honestly; stale-frame guard built into project plugin; Unreal and local models stopped",
+  "evidence": [
+    {
+      "bytes": 3371,
+      "path": "C:\\Users\\techai\\brain\\design-beast\\proofs\\ue58-metahuman-live-link\\deformation\\Run20260801A\\neutral-a.json",
+      "sha256": "4b560e4f833170d659156f01c972b302b4926ad16a783d17e5b33a69c4c6fd04"
+    },
+    {
+      "bytes": 4642627,
+      "path": "C:\\Users\\techai\\brain\\design-beast\\proofs\\ue58-metahuman-live-link\\deformation\\Run20260801A\\neutral-a.png",
+      "sha256": "977ea3edc82160e44dd4e1ab730eccfccef1e8043fc75d0093c93af476c15fb5"
+    },
+    {
+      "bytes": 3370,
+      "path": "C:\\Users\\techai\\brain\\design-beast\\proofs\\ue58-metahuman-live-link\\deformation\\Run20260801A\\neutral-b.json",
+      "sha256": "087ecea7a7651ba5899452352ace8f2a01ca1913bb2aeb7d9fb68f24ce69cc10"
+    },
+    {
+      "bytes": 4589515,
+      "path": "C:\\Users\\techai\\brain\\design-beast\\proofs\\ue58-metahuman-live-link\\deformation\\Run20260801A\\neutral-b.png",
+      "sha256": "ccabe6696334d2ef019370fb46a47c2b303239c8519235d073496066f072c347"
+    },
+    {
+      "bytes": 3373,
+      "path": "C:\\Users\\techai\\brain\\design-beast\\proofs\\ue58-metahuman-live-link\\deformation\\Run20260801A\\expression.json",
+      "sha256": "e5ca7325f704c1e531e66df1fd00fad2ece1627274d7aea2bb28e67792f96f84"
+    },
+    {
+      "bytes": 4598322,
+      "path": "C:\\Users\\techai\\brain\\design-beast\\proofs\\ue58-metahuman-live-link\\deformation\\Run20260801A\\expression.png",
+      "sha256": "ad6d74834cf61862156dd9b585f72537b09947d8ab464fb1a8aae48de01c386f"
+    },
+    {
+      "bytes": 3296,
+      "path": "C:\\Users\\techai\\brain\\design-beast\\proofs\\ue58-metahuman-live-link\\deformation\\Run20260801A\\measurement.json",
+      "sha256": "c2f8ad7c431ce9cadab03596957241102be55156ee7611d36e3a9938851ab847"
+    },
+    {
+      "bytes": 1194,
+      "path": "C:\\Users\\techai\\brain\\design-beast\\proofs\\ue58-metahuman-live-link\\deformation\\Run20260801A\\visual-review.json",
+      "sha256": "c245bf75800142553e186e4d76d2dcf736caee7949f11fb6078ee19a3dac669f"
+    },
+    {
+      "bytes": 223744,
+      "path": "C:\\Users\\techai\\Unreal Projects\\MoodBuddyUE58Proof\\Plugins\\BeastEvidenceCollector\\Binaries\\Win64\\UnrealEditor-BeastEvidenceCollector.dll",
+      "sha256": "b7d781919963ce649f31a40e950e0956d5578b724162a0d1c86f3cb1f1e1a7c5"
+    }
+  ],
+  "git": {
+    "branch": "agent/ue58-trusted-pose-collector",
+    "head": "8d9f40f3025e7c2b97ee5af02892c59d5efe1328",
+    "status_porcelain": [
+      "M docs/OPPORTUNITY-LEDGER.md",
+      " M proofs/ue58-metahuman-live-link/COLLECTOR-RUN-20260801A.md",
+      " M proofs/ue58-metahuman-live-link/PROOF.md",
+      " M skills/ue58-metahuman-live-link-readiness/assets/BeastEvidenceCollector/Source/BeastEvidenceCollector/Private/BeastEvidenceCollectorLibrary.cpp",
+      " M skills/ue58-metahuman-live-link-readiness/scripts/verify_pose_receipts.py",
+      " M skills/ue58-metahuman-live-link-readiness/tests/test_verify_pose_receipts.py",
+      "?? docs/runbooks/UE58-MCP-BLUEPRINT-PATHBOOK.md",
+      "?? proofs/ue58-metahuman-live-link/deformation/",
+      "?? proofs/watch-004-ue58-first-game/",
+      "?? scripts/write_recovery_checkpoint.py",
+      "?? session/",
+      "?? skills/ue58-metahuman-live-link-readiness/scripts/frame_bound_actor.py",
+      "?? skills/ue58-metahuman-live-link-readiness/scripts/inspect_bound_actor_render.py",
+      "?? tests/"
+    ]
+  },
+  "goal": "Proof-driven tutorial learning and UE 5.8 MetaHuman Live Link execution",
+  "next_actions": [
+    "Read session/20260801_210107/handoff.md and verify git status",
+    "Verify checkpoint evidence SHA-256 values",
+    "On next launch verify BeastEvidenceCollector DLL loads, then evaluate official UE 5.8 MCP in a disposable project",
+    "Do not retroactively change the failed v1 measurement threshold"
+  ],
+  "recorded_utc": "2026-08-02T02:09:38.513107+00:00",
+  "repo": "C:\\Users\\techai\\brain\\design-beast",
+  "schema": 1,
+  "secrets_stored": false,
+  "unreal": {
+    "engine_root": "D:\\DEpic GamesUE_5.8\\UE_5.8",
+    "map": "/Game/MetaHumanLiveLinkProof",
+    "project": "C:\\Users\\techai\\Unreal Projects\\MoodBuddyUE58Proof\\MoodBuddyUE58Proof.uproject",
+    "run_id": "Run20260801A"
+  }
+}

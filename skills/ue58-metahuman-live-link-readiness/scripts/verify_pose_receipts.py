@@ -50,6 +50,9 @@ def load_receipt(path: Path) -> tuple[dict, Image.Image]:
     source_times = [float(item["source_world_seconds"]) for item in samples]
     if platform_times != sorted(platform_times) or source_times != sorted(source_times):
         raise ValueError(f"Non-monotonic sample timestamps in {path}")
+    frame_ids = [int(item["frame_id"]) for item in samples]
+    if len(set(frame_ids)) < 3 or source_times[-1] - source_times[0] < 0.10:
+        raise ValueError(f"Stale Live Link frame burst in {path}")
     image_meta = data["image"]
     image_path = Path(image_meta["path"]).resolve()
     if image_path.parent != path.resolve().parent:

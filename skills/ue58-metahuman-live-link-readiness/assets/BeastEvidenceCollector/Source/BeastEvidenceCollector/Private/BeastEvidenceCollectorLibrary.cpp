@@ -140,6 +140,20 @@ static void OnScreenshotCaptured(int32 Width, int32 Height, const TArray<FColor>
     }
     State.Samples.Add(FinalSample);
 
+    TSet<int32> UniqueFrameIds;
+    for (const FCurveSample& Sample : State.Samples)
+    {
+        UniqueFrameIds.Add(Sample.FrameId);
+    }
+    const double SourceTimeSpan = State.Samples.Last().SourceWorldSeconds
+        - State.Samples[0].SourceWorldSeconds;
+    if (UniqueFrameIds.Num() < 3 || SourceTimeSpan < 0.10)
+    {
+        State.LastError = TEXT("Live Link subject is stale; fewer than three distinct source frames were observed");
+        ClearPending();
+        return;
+    }
+
     TArray64<uint8> PngBytes;
     FImageUtils::PNGCompressImageArray(Width, Height, Colors, PngBytes);
     const FString ImagePath = FPaths::Combine(State.OutputDirectory, State.Label + TEXT(".png"));

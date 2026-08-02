@@ -98,3 +98,17 @@ def test_receipt_path_must_match_run_id(tmp_path: Path) -> None:
 
     with pytest.raises(ValueError, match="path does not match"):
         verifier.load_receipt(receipt)
+
+
+def test_stale_livelink_frame_burst_is_rejected(tmp_path: Path) -> None:
+    root = tmp_path / "RunTest001" / "deformation"
+    root.mkdir(parents=True)
+    receipt = _write_pose(root, "neutral-a", 0.1, 20)
+    payload = json.loads(receipt.read_text(encoding="utf-8"))
+    for sample in payload["samples"]:
+        sample["frame_id"] = 42537
+        sample["source_world_seconds"] = 1234.5
+    receipt.write_text(json.dumps(payload), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="Stale Live Link frame burst"):
+        verifier.load_receipt(receipt)
