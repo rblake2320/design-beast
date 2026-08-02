@@ -1,8 +1,11 @@
 # MarcusProof Run20260802MaleB
 
-Date: 2026-08-02  
-Engine: Unreal Engine 5.8.1  
-Project: `MoodBuddyUE58Proof` (disposable proof project)  
+Date: 2026-08-02
+
+Engine: Unreal Engine 5.8.1
+
+Project: `MoodBuddyUE58Proof` (disposable proof project)
+
 Map: `/Game/MetaHumanLiveLinkProof`
 
 ## Result
