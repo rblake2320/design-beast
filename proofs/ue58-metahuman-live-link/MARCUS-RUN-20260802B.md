@@ -40,7 +40,7 @@ Run receipts are under:
 `Saved/BeastProof/Run20260802MaleB/`
 
 They preserve preflight, reconciled cloud output, assembly adoption, spawn,
-Live Link Face source request, and the partial binding checkpoint.
+Live Link Face source request, `BOUND_READY`, and the locked proof camera.
 
 ## Live Link boundary
 
@@ -52,11 +52,19 @@ The actor readback currently proves:
 - the phone responds at `192.168.12.238`
 - the UE-side native Live Link Face source accepted the connection request
 
-Unreal currently reports no enabled subject and
-`LiveLinkSubjectState.INVALID_OR_DISABLED`. Therefore the honest current state
-is `BINDING_CONFIGURED`, not `BOUND_READY`, and facial animation is not claimed.
-The checkpoint is saved so restoring the phone stream does not require repeating
-character creation, cloud preparation, assembly, or spawning.
+After the phone returned at `192.168.12.238:14785`, refreshing only the native
+Live Link Face source changed the readback to an enabled `iPhone` subject with
+`LiveLinkSubjectState.CONNECTED`. The actor is therefore `BOUND_READY`.
+
+The first trusted three-pose attempt was rejected before measurement because
+the editor camera changed between captures; one screenshot omitted Marcus
+entirely. All six failed artifacts were preserved under
+`failed-captures/view-drift-20260802-0730/`. The capture path now writes one
+run-scoped `PROOF_CAMERA_LOCKED` receipt, uses the assembled MetaHuman's local
+right axis for a frontal view, and restores that exact transform before every
+pose request. A corrected 80 cm frontal camera is saved. The phone session ended
+before the replacement neutral/neutral/expression set, so facial deformation is
+still not claimed.
 
 ## Defects converted into fixes
 
@@ -73,13 +81,25 @@ character creation, cloud preparation, assembly, or spawning.
 5. Failed connected-state readback formerly lost useful partial state. Binding
    now saves the actor and writes `binding-configured.json` before stopping at
    the connected gate.
+6. Repeated deformation screenshots could silently use different editor camera
+   transforms. The trusted verifier rejected the run; the collector workflow
+   now locks and restores one run-scoped frontal proof camera before every pose.
 
 ## Claim boundary
 
 Proven: deterministic male Character asset, user-authorized cloud output,
 successful UE 5.8 assembly, generated Blueprint existence, saved level actor,
-isolated visual render, exact transform, Live Link property configuration, and
-crash-resumable evidence receipts.
+isolated visual render, exact transform, connected Live Link subject, actor
+binding, and crash-resumable evidence receipts.
 
-Not yet proven: a connected Live Link subject for this run, measured facial
-deformation, production lighting/appearance, or an end-to-end Mood Buddy avatar.
+Not yet proven: measured facial deformation, production lighting/appearance, or
+an end-to-end Mood Buddy avatar.
+
+## Resume point
+
+Do not repeat cloud preparation, assembly, spawning, or binding. Open the same
+UE 5.8.1 project and map, reconnect Live Link Face if needed, and collect fresh
+`neutral-a`, `neutral-b`, and `expression` receipts. The request script restores
+the saved proof camera automatically. Then run `verify_pose_receipts.py` on a
+single face crop shared by all three images. Promotion remains blocked beyond
+`DEFORMATION_MEASURED` until the hashed images receive visual-region review.

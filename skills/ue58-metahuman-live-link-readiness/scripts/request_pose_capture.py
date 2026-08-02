@@ -11,6 +11,7 @@ import unreal
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from guard import require_context
+from frame_bound_actor import main as restore_proof_camera
 
 MARKER = "BEAST_POSE_CAPTURE_REQUESTED="
 
@@ -25,6 +26,10 @@ def main() -> dict:
     samples = int(os.environ.get("BEAST_CAPTURE_SAMPLES", "10"))
     interval = float(os.environ.get("BEAST_CAPTURE_INTERVAL", "0.05"))
     output = os.path.join(context["receipt_dir"], "deformation")
+    # Restore the run-scoped locked view immediately before every trusted
+    # capture.  This prevents incidental viewport navigation from turning
+    # camera movement into apparent facial deformation.
+    restore_proof_camera()
     # UE's Python wrapper exposes the FString out parameter as the return value;
     # the native bool is not present in the generated Python signature.  An
     # empty/None error therefore means the request was accepted.
