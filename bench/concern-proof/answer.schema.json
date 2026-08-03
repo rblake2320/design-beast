@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "status", "values", "evidence", "unsupported_claims"],
+  "properties": {
+    "task_id": {"type": "string"},
+    "status": {"enum": ["answered", "insufficient_evidence"]},
+    "values": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "value"],
+        "properties": {
+          "name": {"type": "string"},
+          "value": {"type": ["string", "number", "boolean"]}
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "unsupported_claims": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}

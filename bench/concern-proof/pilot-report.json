@@ -1,0 +1,61 @@
+{
+  "claim_boundary": "A report is comparable only within its frozen envelope; pilot results cannot establish breadth.",
+  "conditions": {
+    "adaptive_frames": {
+      "hard_gate_pass_rate": 0.0,
+      "median_human_interventions": 0.0,
+      "median_retries": 0.0,
+      "median_tool_calls": 2.0,
+      "median_wall_clock_seconds": 32.13,
+      "reinspection_trigger_recall": 0.0,
+      "runs": 3,
+      "unsupported_claims": 0,
+      "visual_only_fact_precision": 1.0
+    },
+    "baseline": {
+      "hard_gate_pass_rate": 0.0,
+      "median_human_interventions": 0.0,
+      "median_retries": 0.0,
+      "median_tool_calls": 2.0,
+      "median_wall_clock_seconds": 19.11,
+      "reinspection_trigger_recall": 0.0,
+      "runs": 3,
+      "unsupported_claims": 0,
+      "visual_only_fact_precision": null
+    },
+    "beast": {
+      "hard_gate_pass_rate": 0.6666666666666666,
+      "median_human_interventions": 0.0,
+      "median_retries": 0.0,
+      "median_tool_calls": 1.0,
+      "median_wall_clock_seconds": 16.7,
+      "reinspection_trigger_recall": 1.0,
+      "runs": 3,
+      "unsupported_claims": 0,
+      "visual_only_fact_precision": 0.9705882352941176
+    }
+  },
+  "correctness_improved": true,
+  "domains": [
+    "3d",
+    "audio",
+    "vector"
+  ],
+  "envelope_fingerprint": "fdff2b41289f0e3bcdda33073aef3c004216206239e28117bd5406e3091c07e1",
+  "errors": [],
+  "lower_is_better_improvements": {
+    "human_interventions": false,
+    "retries": false,
+    "tool_calls": true,
+    "wall_clock_seconds": true
+  },
+  "ok": true,
+  "pilot": true,
+  "promotion_eligible": false,
+  "schema": "beast.loop-benchmark-report/v1",
+  "tasks": [
+    "audio-encnl-state-01",
+    "blender-flute-state-01",
+    "svg-radial-repeat-01"
+  ]
+}
