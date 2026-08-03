@@ -361,3 +361,13 @@ another capability. “Later” is not a trigger.
   an observed repair hypothesis until a held-out task passes.
 - Revisit trigger: held-out validation of the typed compiler, then the first
   complete non-pilot Beast-loop benchmark report.
+- Held-out update 2026-08-03: the compiler was frozen in `24a4c38` before a
+  transcript-absent Inkscape MetaBalls tutorial was selected. The first execution
+  failed because the target contract captured filter parameters but omitted the
+  visual action “enter the group and move one circle closer.” Adding only fixed
+  source geometry failed again. Reinspection recovered the feedback action; a
+  post-failure repair then moved closer until an unchanged pixel gate measured
+  one component and center alpha `255`. This is a measured repair on the same
+  tutorial, not held-out validation. Both failures and the passing repair are
+  retained in `bench/heldout-typed-compiler/PROOF.md`. The next trigger remains a
+  new unseen tutorial under the repaired frozen contract.

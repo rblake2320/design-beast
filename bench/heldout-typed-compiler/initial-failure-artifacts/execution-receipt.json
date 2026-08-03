@@ -1,0 +1,53 @@
+{
+  "schema": "beast.heldout.metaballs-execution/v1",
+  "ok": false,
+  "typed_state_fingerprint": "a1fabddb6b733df8a3bd72a884a2252253cf70fe24448e6bb80317a89a49af35",
+  "inkscape_version": "Inkscape 1.4.4 (dcaf3e7, 2026-05-05)",
+  "structure": {
+    "primitive_order": [
+      "feGaussianBlur",
+      "feColorMatrix",
+      "feColorMatrix"
+    ],
+    "std_deviation": "34.79 34.79",
+    "matrix_count": 2,
+    "matrix_values_equal": true,
+    "matrix_value_count": 20
+  },
+  "measured": {
+    "control_components": 2,
+    "filtered_components": 2,
+    "control_center_alpha": 0,
+    "filtered_center_alpha": 0,
+    "width": 640,
+    "height": 480
+  },
+  "gates": {
+    "typed_state_answered": true,
+    "primitive_order_exact": true,
+    "blur_exact": true,
+    "two_identical_20_value_matrices": true,
+    "control_is_two_objects": true,
+    "filter_fuses_to_one_object": false,
+    "gap_changes_from_empty_to_filled": false,
+    "render_size_exact": true
+  },
+  "artifacts": {
+    "control.svg": {
+      "bytes": 185,
+      "sha256": "0304d51d86c118a1bedd78e4d5b020f5165a09d8c167a2cb2d048827fb2b5869"
+    },
+    "metaballs.svg": {
+      "bytes": 621,
+      "sha256": "3150499af3acd443973adfc56ec7ff80304ba0481c887c5ca48759f990ac9e07"
+    },
+    "control.png": {
+      "bytes": 6336,
+      "sha256": "b130c5f0b6d20bc93174d8aac13f658f307eba9570c6d9cf71ec143d5b24c864"
+    },
+    "metaballs.png": {
+      "bytes": 17607,
+      "sha256": "c15801ca7fadc17442799a9a861cff16607f10c9b455e8481a378294192ce720"
+    }
+  }
+}

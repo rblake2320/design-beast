@@ -1,0 +1,23 @@
+{
+  "schema": "beast.heldout-selection/v1",
+  "compiler_frozen_commit": "24a4c38",
+  "selection_started_after_freeze": true,
+  "candidates": [
+    {
+      "source_id": "5G4jZPDLfGo",
+      "decision": "rejected",
+      "reason": "The ingested bundle contained 135 instructional caption segments, so it was not a transcript-absent visual test."
+    },
+    {
+      "source_id": "QqXYbdGFFrw",
+      "decision": "rejected_before_ingestion",
+      "reason": "YouTube exposed original automatic captions, so the candidate did not meet the transcript-absent selection rule."
+    },
+    {
+      "source_id": "cT41th-pIJc",
+      "url": "https://www.youtube.com/watch?v=cT41th-pIJc",
+      "decision": "selected",
+      "reason": "The Watch bundle had zero transcript segments. A separate local Whisper base audit produced punctuation only and no lexical words; this corroborates but does not prove the absence of speech."
+    }
+  ]
+}
