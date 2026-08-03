@@ -122,7 +122,8 @@ this file owns competitive differentiation.
   pipeline (game, site, video, image) ends with a screenshot/frame judged against a
   bible, wired as a *gate* (like tests), exposed as an MCP primitive (move 3) and
   fed by style packs (move 2). Competitors do generation; none do enforcement.
-- **B. Beast packs** — a style LoRA + recipe + env lockfile + judge rubric bundled
+- **B. Beast style packs** — a future creative specialization of the general
+  `beast.pack/v1` contract: style LoRA + recipe + env lockfile + judge rubric bundled
   as one shareable, *exactly replayable* artifact (moves 1+2 combined). This is what
   ComfyUI workflow-sharing wants to be and can't: a look that reproduces anywhere,
   not a graph that breaks on import. Also the natural SaaS unit of sale later.

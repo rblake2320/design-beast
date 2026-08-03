@@ -22,8 +22,13 @@ Nothing below may be promoted to `[x]` without naming the verification.
       and fully excluded while a heavy lease is held; lease waits are
       cancellation- and deadline-aware; crashed holders reclaimed via
       heartbeat staleness (30s) and boot recovery; verified by
-      studio/tests/test_gpu_lease.py. Note: admission is fixed-concurrency by
-      design, not VRAM-probed — revisit only if OOMs are observed.)
+      studio/tests/test_gpu_lease.py. Extended 2026-08-03 under approved BR-006:
+      `studio/resource_guard.py` now checks live NVIDIA free VRAM against a
+      workload budget plus protected reserve before granting the internal lease;
+      it fails closed on unknown state and never terminates user processes.
+      Deterministic tests plus one live Unreal-active admission/denial pair are
+      retained in `proofs/beast-core/PROOF.md`. The check is point-in-time and
+      cannot prevent later allocations by unrelated applications.)
 - [x] Cancel / retry / timeout endpoints; idempotency keys (done 2026-07-26:
       cancel is job-specific down to ComfyUI's atomic per-prompt endpoint and
       observed at ≤1s intervals mid-generation; retry + idempotency keys work;

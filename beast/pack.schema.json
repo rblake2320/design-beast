@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://design-beast.local/schemas/pack-v1.json",
+  "title": "Beast Pack v1",
+  "type": "object",
+  "required": ["schema", "id", "version", "lifecycle", "supersedes", "capability_id", "claim", "boundary", "evidence_level", "target", "procedure", "evidence", "validation", "recovery", "resource_profile"],
+  "properties": {
+    "schema": {"const": "beast.pack/v1"},
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
+    "version": {"type": "string"},
+    "lifecycle": {"enum": ["candidate", "active", "superseded", "deprecated"]},
+    "supersedes": {"type": "array", "items": {"type": "string"}},
+    "supersession_reason": {"type": "string"},
+    "capability_id": {"type": "string"},
+    "claim": {"type": "string", "minLength": 1},
+    "boundary": {"type": "string", "minLength": 1},
+    "evidence_level": {"enum": ["observed", "reproduced", "measured", "verified", "generalized"]},
+    "target": {"type": "object"},
+    "procedure": {"type": "string"},
+    "evidence": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "validation": {"type": "object"},
+    "recovery": {"type": "object"},
+    "resource_profile": {"type": "string"}
+  },
+  "additionalProperties": true
+}

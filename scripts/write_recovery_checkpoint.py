@@ -39,6 +39,21 @@ def atomic_write(path: Path, content: str) -> None:
     temporary.replace(path)
 
 
+def gpu_snapshot() -> dict[str, object]:
+    """Capture bounded point-in-time GPU state without making it a dependency."""
+    try:
+        result = subprocess.run(
+            ["nvidia-smi", "--query-gpu=name,memory.total,memory.used,memory.free",
+             "--format=csv,noheader,nounits"],
+            check=True, capture_output=True, text=True, timeout=3,
+        )
+        name, total, used, free = [part.strip() for part in result.stdout.splitlines()[0].split(",")]
+        return {"available": True, "name": name, "total_mib": int(total),
+                "used_mib": int(used), "free_mib": int(free)}
+    except (FileNotFoundError, IndexError, subprocess.SubprocessError, ValueError) as exc:
+        return {"available": False, "error": str(exc)}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo", type=Path, default=Path.cwd())
@@ -51,6 +66,12 @@ def main() -> int:
     parser.add_argument("--engine-root", default="")
     parser.add_argument("--run-id", default="")
     parser.add_argument("--map", dest="map_name", default="")
+    parser.add_argument("--loop-stage", choices=[
+        "DISCOVER", "OBSERVE", "REINSPECT", "COMPILE", "EXECUTE",
+        "MEASURE", "REPAIR", "PROVE", "REMEMBER", "REFLECT",
+    ], default="DISCOVER")
+    parser.add_argument("--capability", action="append", default=[])
+    parser.add_argument("--last-command", default="")
     args = parser.parse_args()
 
     repo = args.repo.resolve()
@@ -62,7 +83,7 @@ def main() -> int:
         evidence.append(hash_file(resolved))
 
     checkpoint = {
-        "schema": 1,
+        "schema": "beast.recovery/v2",
         "recorded_utc": datetime.now(timezone.utc).isoformat(),
         "repo": str(repo),
         "git": {
@@ -73,6 +94,11 @@ def main() -> int:
         "goal": args.goal,
         "current": args.current,
         "next_actions": args.next_action,
+        "loop": {
+            "stage": args.loop_stage,
+            "capabilities": args.capability,
+            "last_command": args.last_command,
+        },
         "unreal": {
             "project": args.project,
             "engine_root": args.engine_root,
@@ -80,6 +106,7 @@ def main() -> int:
             "map": args.map_name,
         },
         "evidence": evidence,
+        "resources": {"gpu": gpu_snapshot()},
         "secrets_stored": False,
     }
     payload = json.dumps(checkpoint, indent=2, sort_keys=True) + "\n"
@@ -93,12 +120,13 @@ def main() -> int:
         f"- Branch: `{checkpoint['git']['branch']}`",
         f"- HEAD: `{checkpoint['git']['head']}`",
         f"- Current: {args.current}",
+        f"- Beast loop stage: `{args.loop_stage}`",
         "",
         "## Resume",
         "",
     ]
     lines.extend(f"- {action}" for action in args.next_action)
-    lines.extend(["", "Read `latest.json` and verify Git status and evidence hashes before acting.", ""])
+    lines.extend(["", "Run `beast recover <path-to-latest.json>` before acting; it verifies Git state and evidence hashes.", ""])
     atomic_write(args.session_dir / "RECOVER.md", "\n".join(lines))
     print(args.session_dir / "latest.json")
     return 0

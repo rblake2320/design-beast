@@ -188,6 +188,22 @@ def _procedure_template(timeline: dict) -> dict:
         "application": "",
         "version_context": [],
         "prerequisites": [],
+        "watching_evidence": {
+            "visual_only_facts": [{
+                "claim": "",
+                "frame_ids": [],
+                "transcript_search_terms": [],
+                "transcript_absence_checked": False
+            }],
+            "ambiguous_segments": [{
+                "description": "",
+                "source_seconds": None,
+                "requires_reinspection": True,
+                "evidence_request_index": None,
+                "resolved": False
+            }],
+            "transcript_only_limitations": []
+        },
         "steps": [{
             "id": "step-001", "intent": "", "preconditions": [],
             "action": {"type": "unknown", "target": "", "operation": "", "value": None},
@@ -202,6 +218,8 @@ def _procedure_template(timeline: dict) -> dict:
         "publication_gate": {
             "executed_in_sandbox": False, "structural_validation_passed": False,
             "behavioral_validation_passed": False, "visual_validation_passed": False,
+            "visual_only_evidence_validated": False,
+            "required_reinspection_completed": False,
             "human_approved": False
         }
     }

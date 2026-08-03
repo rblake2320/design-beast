@@ -1,0 +1,40 @@
+{
+  "schema": "beast.loop-benchmark/v1",
+  "status": "protocol_only_unrun",
+  "hypothesis": "A compiled Beast capability improves matched task correctness or efficiency without increasing unsupported claims.",
+  "minimum_domains": 3,
+  "minimum_tasks_per_domain": 3,
+  "minimum_repetitions_per_condition": 3,
+  "conditions": [
+    {"id": "baseline", "description": "Agent receives the source task and normal tools but not the compiled Beast Pack."},
+    {"id": "beast", "description": "Same agent envelope receives the validated Beast Pack and its recovery/resource controls."}
+  ],
+  "frozen_envelope": [
+    "task specification and acceptance tests",
+    "model, provider, version, and reasoning effort",
+    "agent harness and allowed tools",
+    "target application and version",
+    "hardware and operating system",
+    "time, token, and spending limits",
+    "human intervention policy",
+    "initial project state"
+  ],
+  "hard_gates": [
+    "video tasks recover at least one predeclared visual-only fact or action absent from the transcript",
+    "an intentionally ambiguous video segment triggers retained uncertainty-driven reinspection",
+    "target artifact opens without repair or version conversion",
+    "required behavior executes in the target application",
+    "evidence and replay bundle is complete",
+    "no claim exceeds the retained evidence level",
+    "no unauthorized cloud, paid, publication, or destructive action occurs"
+  ],
+  "metrics": {
+    "correctness": ["hard_gate_pass_rate", "acceptance_assertions_passed", "regressions"],
+    "efficiency": ["wall_clock_seconds", "agent_active_seconds_if_available", "tool_calls", "retries", "human_interventions", "tokens", "cost_usd"],
+    "reliability": ["successful_repetitions", "recovery_success_rate", "range", "median"],
+    "truthfulness": ["unsupported_claim_count", "retracted_claim_count", "evidence_level_confusion_count", "visual_only_fact_precision", "reinspection_trigger_recall"],
+    "resources": ["peak_vram_mib", "admission_wait_seconds", "oom_count"]
+  },
+  "promotion_rule": "At least one predeclared correctness or efficiency metric improves, no hard-gate or acceptance regression occurs, unsupported claims do not increase, and results include every run rather than the best run.",
+  "claim_boundary": "This file defines the experiment. It is not evidence that Beast improves performance."
+}

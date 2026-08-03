@@ -1,0 +1,29 @@
+{
+  "schema": "beast.pack/v1",
+  "id": "ue58-enhanced-input-movement",
+  "version": "1.0.0",
+  "lifecycle": "active",
+  "supersedes": [],
+  "capability_id": "watch.compile_execute",
+  "claim": "Build and validate the retained UE 5.8 Enhanced Input movement procedure under its recorded project assumptions.",
+  "boundary": "This pack does not establish portability to another UE version, arbitrary pawn architecture, or arbitrary tutorial.",
+  "evidence_level": "reproduced",
+  "target": {"application": "Unreal Engine", "version": "5.8"},
+  "procedure": "proofs/watch-004-ue58-first-game/compiled-skill/ue-enhanced-input-movement/SKILL.md",
+  "evidence": [
+    "proofs/watch-004-ue58-first-game/PROOF.md",
+    "proofs/watch-004-ue58-first-game/EXECUTION-PROOF.md",
+    "proofs/watch-004-ue58-first-game/replay-log.json"
+  ],
+  "validation": {
+    "structural": "All expected assets, mappings, Blueprint nodes, pin connections, and compile state pass.",
+    "behavioral": "A retained input sequence produces forward/back/left/right movement.",
+    "visual": "Viewport evidence is reviewed for engine errors and intended response.",
+    "human_gate": "Required before presenting a generated game artifact as showcase quality."
+  },
+  "recovery": {
+    "checkpoint_command": "beast checkpoint",
+    "resume_rule": "Verify checkpoint hashes and UE 5.8 project identity before continuing."
+  },
+  "resource_profile": "unreal_incremental"
+}

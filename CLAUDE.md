@@ -24,6 +24,13 @@ Any AI agent (Claude Code, Codex, mesh peer) working in or from this repo follow
    working: every capability statement carries the ledger's evidence language
    (observed/reproduced/measured/verified/generalized), and "novel" requires
    documented prior-art research.
+7. **Operate the Beast loop.** Read `BEAST.md`; use the machine-readable claim
+   boundaries in `beast/capabilities.json`. Validate packs and the graph with
+   `python scripts/beast_core.py validate`. Before loading GPU work, run the
+   matching `beast resource-check` profile; never terminate a user process to
+   reclaim VRAM. Checkpoint long work and verify the checkpoint before resuming.
+   A video transcript is not proof of watching: published Watch procedures require
+   frame-linked visual-only evidence and retained reinspection for ambiguity.
 
 ## Tool access map
 | Capability | How to reach it |

@@ -301,3 +301,49 @@ another capability. “Later” is not a trigger.
   OpenAI package and the Beast evidence boundary is project-specific.
 - Revisit trigger: first reviewed report with accepted/rejected proposal outcomes
   and a matched before/after replay.
+
+### OPP-20260803-02 — Video-grounded verified capability engine
+
+- Status: experiment
+- Trigger: Watch retained visual facts absent from tutorial transcripts, sought
+  denser source windows when evidence was ambiguous, and two Unreal proof paths
+  reached retained execution evidence. MetaHuman work independently demonstrated
+  executable evidence-state gates and crash-resumable recovery.
+- New capability: the existing eyes, hands, proof, recovery, resource, and
+  reflection mechanisms can be governed as one explicit Beast loop rather than a
+  collection of creative tools. A procedure cannot satisfy the new watching gate
+  without frame-linked visual-only evidence; transcript parsing alone fails.
+- Potential beneficiaries: agents operating visual applications, tutorial
+  learners, creative-production teams, engine/tool vendors, and regulated
+  workflows needing auditable procedure provenance.
+- Current-project value: one claim graph, immutable versioned Beast Packs, VRAM
+  admission, recovery verification, and a matched benchmark make unsupported
+  scope expansion mechanically visible.
+- Outside-project value: if controlled tests succeed, demonstrated human work may
+  be compiled into cheaper replayable execution without losing provenance or
+  increasing unsupported claims.
+- Prior art and primary sources: not researched in this implementation pass; no
+  novelty or category-ownership claim is made. Video procedure learning, learning
+  from demonstration, workflow capture, agent skills, and resource schedulers all
+  have established prior art. The experiment concerns their local composition and
+  measured effect.
+- Falsifiable claim: on a frozen matched task set, the Beast condition improves at
+  least one correctness or efficiency measure, does not regress a hard gate, does
+  not increase unsupported claims, recovers predeclared visual-only facts, and
+  triggers reinspection for intentionally ambiguous video evidence.
+- Smallest real experiment: one pilot task followed by three tasks in each of three
+  materially different domains, with baseline and Beast conditions repeated three
+  times under an identical model/tool/version/hardware envelope.
+- Measures and acceptance threshold: `bench/beast-loop-protocol.json`; report all
+  runs, hard-gate pass rate, time, tool calls, retries, interventions, recovery,
+  peak VRAM, visual-only precision, reinspection recall, and claim errors.
+- Risks, constraints, and rights/privacy implications: tutorial rights and site
+  terms remain source-specific; recorded UI may contain private data; a point-in-
+  time resource admission cannot control later allocations by unrelated programs;
+  reflection remains proposal-only until human approval.
+- Evidence: `BEAST.md`, `beast/capabilities.json`, `beast/pack.schema.json`,
+  `bench/beast-loop-protocol.json`, `scripts/validate_watch_procedure.py`, and
+  `docs/decisions/BR-006-APPROVAL-20260803.md`.
+- Decision: integrate the contract and measurement machinery; keep the system-level
+  improvement hypothesis explicitly unproven until the matched benchmark runs.
+- Revisit trigger: first complete non-pilot Beast-loop benchmark report.

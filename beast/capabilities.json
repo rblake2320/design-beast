@@ -1,0 +1,116 @@
+{
+  "schema": "beast.capability-graph/v1",
+  "updated": "2026-08-03",
+  "evidence_order": ["observed", "reproduced", "measured", "verified", "generalized"],
+  "system_hypothesis": {
+    "claim": "Expensive intelligence and human demonstrations can be compiled into cheaper, verified, replayable execution without increasing unsupported claims.",
+    "state": "unproven",
+    "test": "Run the matched before/after protocol in bench/beast-loop-protocol.json across materially different domains."
+  },
+  "capabilities": [
+    {
+      "id": "watch.acquire",
+      "name": "Source-linked tutorial video acquisition",
+      "domain": "eyes",
+      "level": "verified",
+      "claim": "Adaptive video ingestion retains timestamped frames, transcript segments, source metadata, and targeted reinspection history.",
+      "boundary": "Sparse retained frames are not continuous video understanding.",
+      "depends_on": [],
+      "targets": ["local video", "YouTube video"],
+      "evidence": ["docs/WATCH-LEARN.md", "proofs/watch-002-devin/PROOF.md", "watch/tests/test_core.py", "watch/tests/test_seek.py"],
+      "breadth_count": 3,
+      "next_test": "Measure recovery accuracy on a frozen set of visually ambiguous procedures."
+    },
+    {
+      "id": "watch.compile_execute",
+      "name": "Tutorial evidence to executed procedure",
+      "domain": "brain_hands",
+      "level": "reproduced",
+      "claim": "Tutorial evidence has been compiled and executed in retained Unreal Engine proof cases.",
+      "boundary": "The result is not generalized to arbitrary tutorials, sites, applications, or engine versions.",
+      "depends_on": ["watch.acquire", "ue58.control"],
+      "targets": ["Unreal Engine 5.8"],
+      "evidence": ["proofs/watch-001-lumen-emissive/replay-log.json", "proofs/watch-004-ue58-first-game/EXECUTION-PROOF.md"],
+      "breadth_count": 2,
+      "next_test": "Run the frozen cross-domain Beast-loop benchmark with matched direct and compiled execution."
+    },
+    {
+      "id": "ue58.control",
+      "name": "Official Unreal Engine 5.8 MCP control",
+      "domain": "hands",
+      "level": "verified",
+      "claim": "The official UE 5.8 MCP can inspect and mutate a disposable project with retained receipts.",
+      "boundary": "A working control plane does not prove that every Unreal workflow is automatable or correct.",
+      "depends_on": [],
+      "targets": ["Unreal Engine 5.8"],
+      "evidence": ["proofs/ue58-official-mcp/PROOF.md", "tests/test_probe_ue58_mcp.py"],
+      "breadth_count": 1,
+      "next_test": "Benchmark whole-graph operations against node-by-node construction on identical tasks."
+    },
+    {
+      "id": "avatar.livelink_metahuman",
+      "name": "iPhone Live Link Face to assembled MetaHuman",
+      "domain": "eyes_hands",
+      "level": "verified",
+      "claim": "A UE 5.8 MetaHuman was assembled, bound to Live Link Face, and practical facial reproduction was retained through independent curve and image evidence.",
+      "boundary": "The rejected strict DEFORMATION_MEASURED gate is not silently promoted, and production readiness is not established.",
+      "depends_on": ["ue58.control"],
+      "targets": ["Unreal Engine 5.8", "Live Link Face"],
+      "evidence": ["proofs/ue58-metahuman-live-link/MARCUS-RUN-20260802B.md", "docs/decisions/BR-APPROVALS-20260803.md"],
+      "breadth_count": 2,
+      "next_test": "Repeat the frozen capture protocol on a materially different character and lighting setup."
+    },
+    {
+      "id": "memory.recovery",
+      "name": "Atomic crash recovery checkpoint",
+      "domain": "memory",
+      "level": "verified",
+      "claim": "A secret-free atomic checkpoint records Git state, next actions, target environment, and hashed evidence, and can be verified before resume.",
+      "boundary": "A checkpoint cannot preserve unsaved third-party application state unless that state is separately saved and cited.",
+      "depends_on": [],
+      "targets": ["Git work sessions"],
+      "evidence": ["scripts/write_recovery_checkpoint.py", "tests/test_write_recovery_checkpoint.py"],
+      "breadth_count": 1,
+      "next_test": "Kill and resume a long external workflow from the last verified checkpoint without repeating a completed paid or cloud step."
+    },
+    {
+      "id": "resources.gpu_internal",
+      "name": "Durable internal GPU leases",
+      "domain": "immune_system",
+      "level": "verified",
+      "claim": "Beast Studio serializes heavy workloads, bounds light concurrency, reclaims stale leases, and observes cancellation and deadlines.",
+      "boundary": "Internal leases alone cannot prevent unrelated desktop applications from consuming VRAM.",
+      "depends_on": [],
+      "targets": ["RTX 5090"],
+      "evidence": ["studio/jobs.py", "studio/tests/test_gpu_lease.py"],
+      "breadth_count": 1,
+      "next_test": "Exercise external VRAM admission while Unreal and an Ollama model are independently active."
+    },
+    {
+      "id": "resources.gpu_external",
+      "name": "External-aware GPU admission",
+      "domain": "immune_system",
+      "level": "measured",
+      "claim": "Before a Beast GPU lease is granted, live NVIDIA memory pressure is compared with a workload budget and a protected reserve.",
+      "boundary": "Admission is a point-in-time guard and cannot stop another desktop process from allocating VRAM afterward.",
+      "depends_on": ["resources.gpu_internal"],
+      "targets": ["RTX 5090", "Windows WDDM"],
+      "evidence": ["beast/resource-policy.json", "studio/resource_guard.py", "studio/tests/test_resource_guard.py", "proofs/beast-core/PROOF.md"],
+      "breadth_count": 1,
+      "next_test": "Retain three real admission decisions under idle, Unreal-active, and Ollama-active conditions."
+    },
+    {
+      "id": "reflection.collect",
+      "name": "Evidence-scoped cross-session reflection",
+      "domain": "metabolism",
+      "level": "measured",
+      "claim": "Repository-scoped session and proof evidence can be reduced into a bounded, redacted review bundle with freshness and exclusion receipts.",
+      "boundary": "Collection does not prove that a proposed change improves later agent performance.",
+      "depends_on": ["memory.recovery"],
+      "targets": ["Codex session journals", "Design Beast repository"],
+      "evidence": ["docs/decisions/BR-EXECUTION-20260803.md", "tests/test_collect_reflection_evidence.py"],
+      "breadth_count": 1,
+      "next_test": "Run the predeclared five-task before/after replay after approved proposals."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "beast.resource-policy/v1",
+  "gpu": {
+    "expected_name": "NVIDIA GeForce RTX 5090",
+    "expected_total_mib": 32607,
+    "protected_reserve_mib": 4096,
+    "measurement_ttl_seconds": 2,
+    "unknown_state_policy": "deny",
+    "automatic_process_termination": false
+  },
+  "workloads": {
+    "judge": {"requested_mib": 6144, "class": "light", "description": "Local 8B vision judge"},
+    "local_llm_8b": {"requested_mib": 8192, "class": "light", "description": "Local quantized 8B-class model"},
+    "studio_light": {"requested_mib": 12288, "class": "light", "description": "Image generation or refinement"},
+    "unreal_incremental": {"requested_mib": 4096, "class": "light", "description": "Additional headroom for an already-open Unreal editor"},
+    "unreal_full": {"requested_mib": 12288, "class": "heavy", "description": "Cold Unreal editor plus substantial content"},
+    "video_generation": {"requested_mib": 24576, "class": "heavy", "description": "Wan or LTX video generation"},
+    "3d_generation": {"requested_mib": 24576, "class": "heavy", "description": "Large local image-to-3D workload"},
+    "studio_heavy": {"requested_mib": 24576, "class": "heavy", "description": "Beast Studio video or 3D class"}
+  }
+}

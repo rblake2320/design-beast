@@ -6,7 +6,7 @@ import pytest
 
 from watch.core import (SCHEMA_VERSION, build_sampling_plan, clean_vtt, format_time,
                         frame_name, hamming_hash, parse_dense_window, parse_timecode)
-from scripts.watch_video import _select_downloaded_video, _slug
+from scripts.watch_video import _procedure_template, _select_downloaded_video, _slug
 
 
 @pytest.mark.parametrize(("raw", "expected"), [
@@ -79,3 +79,11 @@ def test_download_selector_rejects_audio_only_adaptive_stream(tmp_path, monkeypa
 
     monkeypatch.setattr("scripts.watch_video.probe_video", fake_probe)
     assert _select_downloaded_video(tmp_path, "ffprobe") == visual
+
+
+def test_procedure_template_cannot_conflate_transcript_with_watching():
+    template = _procedure_template({})
+    watching = template["watching_evidence"]
+    assert "visual_only_facts" in watching
+    assert "ambiguous_segments" in watching
+    assert template["publication_gate"]["visual_only_evidence_validated"] is False
