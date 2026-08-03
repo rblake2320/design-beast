@@ -1,0 +1,13 @@
+{
+  "assembly_mode": "ADOPTED_LOCAL_UE58_BLUEPRINT",
+  "asset": "/Game/MoodBuddyProof/Run20260801A/Characters/AdaProof",
+  "blueprint": "/Game/MoodBuddyProof/Run20260801A/MetaHumans/AdaProof/BP_AdaProof",
+  "clean_log_review_required": true,
+  "dependencies_reused_from_prior_local_assembly": true,
+  "external_work_performed": false,
+  "new_asset_count": 1,
+  "project": "c:\\users\\techai\\unreal projects\\moodbuddyue58proof\\moodbuddyue58proof.uproject",
+  "run_id": "Run20260801A",
+  "source_blueprint": "/Game/MoodBuddyProof/Run001/MetaHumans/AdaProof/BP_AdaProof",
+  "state": "ASSEMBLY_CANDIDATE"
+}

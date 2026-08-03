@@ -1,0 +1,14 @@
+{
+  "actor": "/Game/MetaHumanLiveLinkProof.MetaHumanLiveLinkProof:PersistentLevel.BP_AdaProof_C_UAID_10FFE0B701E3DDF302_1554157999",
+  "animation_confirmed": false,
+  "enabled_subject_names": [
+    "me"
+  ],
+  "project": "c:\\users\\techai\\unreal projects\\moodbuddyue58proof\\moodbuddyue58proof.uproject",
+  "run_id": "Run20260801A",
+  "state": "BOUND_READY",
+  "subject": "me",
+  "subject_enabled": true,
+  "subject_state": "<LiveLinkSubjectState.CONNECTED: 0>",
+  "use_live_link": true
+}

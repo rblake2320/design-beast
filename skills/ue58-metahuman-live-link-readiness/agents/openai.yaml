@@ -1,0 +1,4 @@
+interface:
+  display_name: "UE 5.8 MetaHuman Live Link Readiness"
+  short_description: "Prove UE 5.8 MetaHuman binding readiness"
+  default_prompt: "Use $ue58-metahuman-live-link-readiness to prepare a disposable UE 5.8 MetaHuman, verify an enabled connected Live Link subject and binding readback, and stop without claiming facial animation."

@@ -1,0 +1,39 @@
+{
+  "current": "Official UE 5.8 MCP is live at 127.0.0.1:8000/mcp. Read-only probe passes. Whole-graph Blueprint proof asset /Game/BeastMCPProof/BP_MCPGraphProbe was created, read back, compiled with warnings as errors, and saved. Actor label annotations remain unproven.",
+  "evidence": [
+    {
+      "bytes": 4827,
+      "path": "C:\\Users\\techai\\brain\\design-beast\\proofs\\ue58-official-mcp\\PROOF.md",
+      "sha256": "8496de85480c8283006bf8c292c90226ee617c84a67a2dbf29f6761c8c967086"
+    }
+  ],
+  "git": {
+    "branch": "agent/ue58-trusted-pose-collector",
+    "head": "f61ca69eddfb4b9069b0f31396a5e2e8a8bf00dc",
+    "status_porcelain": [
+      "M docs/OPPORTUNITY-LEDGER.md",
+      " M session/20260801_210107/files.md",
+      " M session/20260801_210107/handoff.md",
+      " M session/20260801_210107/session_state.md",
+      " M session/20260801_210107/timeline.md",
+      "?? docs/runbooks/UE58-MCP-BLUEPRINT-PATHBOOK.md",
+      "?? proofs/ue58-official-mcp/",
+      "?? proofs/watch-004-ue58-first-game/",
+      "?? scripts/probe_ue58_mcp.py"
+    ]
+  },
+  "goal": "Build a proof-driven tutorial-to-execution system; current target is UE 5.8 MetaHuman Live Link with official MCP as control plane.",
+  "next_actions": [
+    "Wrap BeastEvidenceCollector operations as a guarded custom MCP Toolset and benchmark whole-graph DSL against node-by-node construction."
+  ],
+  "recorded_utc": "2026-08-02T06:01:46.612424+00:00",
+  "repo": "C:\\Users\\techai\\brain\\design-beast",
+  "schema": 1,
+  "secrets_stored": false,
+  "unreal": {
+    "engine_root": "D:\\DEpic GamesUE_5.8\\UE_5.8",
+    "map": "/Game/MetaHumanLiveLinkProof",
+    "project": "C:\\Users\\techai\\Unreal Projects\\MoodBuddyUE58Proof\\MoodBuddyUE58Proof.uproject",
+    "run_id": "Run20260801A"
+  }
+}

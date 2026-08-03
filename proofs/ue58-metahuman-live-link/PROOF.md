@@ -6,7 +6,7 @@ Run date: 2026-08-01 (America/Chicago)
 
 The disposable UE 5.8.1 project produced and saved a full-rig MetaHuman, assembled an optimized/medium runtime character, spawned its generated Blueprint, received the iPhone Live Link Face subject `me`, and bound that exact subject to the actor with `UseLiveLink=true`.
 
-This proves assembly and bound Live Link readiness. It does **not** yet prove visible facial deformation: that requires two deliberately different phone poses and a measurable change in the rendered character.
+This proves assembly and bound Live Link readiness. A later acknowledged three-pose run also reproduced visible facial animation with independent source and render evidence. The strict v1 automated measurement did **not** promote the run because the two neutral images exceeded its stability threshold; `DEFORMATION_MEASURED` and `ANIMATION_CONFIRMED` therefore remain unclaimed.
 
 ## Fixed environment
 
@@ -41,7 +41,7 @@ BEAST_LIVELINK_BOUND={"actor": "/Temp/Untitled_1.Untitled_1:PersistentLevel.BP_A
 - `scripts/ue58_spawn_metahuman_probe.py` loads the discovered generated Blueprint, spawns or reuses the proof actor, selects it, and emits its actual class/path.
 - `scripts/ue58_introspect_metahuman_livelink.py` searches the live generated actor and its components for UE 5.8 Live Link fields instead of guessing names from another engine version.
 - `scripts/ue58_bind_metahuman_livelink.py` assigns the exact subject and requires reflected readback before reporting success.
-- `scripts/ue_remote_exec.py` is a remote-Python helper. It discovered no nodes in this project because Unreal remote Python was disabled; it is a documented optional path, not part of this successful execution chain.
+- `scripts/ue_remote_exec.py` is a remote-Python helper. Remote execution was disabled during this original Run001 proof. It was enabled and runtime-proven during the later `Run20260801A` collector extension; see `COLLECTOR-RUN-20260801A.md`.
 
 UE 5.8's Python `Actor` wrapper did not expose `rerun_construction_scripts`, and `LevelEditorSubsystem` did not expose the attempted viewport focus helper. Neither absence invalidated spawning or binding; the proof uses direct property readback and screenshots instead.
 
@@ -68,6 +68,25 @@ Proven:
 
 Not proven:
 
-- Neutral-versus-expression deformation of the spawned MetaHuman.
+- `DEFORMATION_MEASURED` or `ANIMATION_CONFIRMED` under the v1 numerical contract.
 - A saved production level or packaged build.
 - Integration into Mood Buddy's production renderer.
+
+## Run20260801A collector extension
+
+The saved proof map was reopened and a fresh receipt chain reached `BOUND_READY`. Unreal reported subject `me` as enabled and `CONNECTED`, and read back `UseLiveLink=true` on actor label `BEAST_Run20260801A`. The original runtime `bound-ready.json` has SHA-256 `12e7c180d59a9e297acc256958032da83bc74752f947543ba98bf994692a12bb`; normalized repository snapshots are under `receipts/`.
+
+This extension reproduced and repaired four integration defects:
+
+1. UE's generated Python wrapper copied the opaque `LiveLinkSourceHandle`, making a Python-only create/connect sequence fail. A C++ bridge now creates and connects the source without crossing that wrapper boundary.
+2. UE's Python wrapper exposes an output error string for the collector request rather than the native boolean. Empty error now means accepted.
+3. The UE 5.8 MetaHuman Animator stream exposes `CTRL_expressions_jawOpen`, not legacy `jawOpen`. The skill default and documentation now use the emitted UE 5.8 control.
+4. `FPlatformMisc::GetSHA256Signature` crashed the editor with `No SHA256 Platform implementation` after writing the first PNG. The native collector now uses `PlatformCryptoContext::CalcSHA256`; the partial PNG was archived under the runtime run's `failed-captures` directory and is not counted as evidence.
+
+The repaired native plugin built successfully. A later capture was performed only after explicit user acknowledgements for neutral and expression poses. The final receipts contain 9, 9, and 10 distinct source frames. The combined neutral jaw median is `0.1300153881`; the expression median is `0.8075177372`; the source delta is `0.6775023490`, and all 10 expression samples clear the continuity condition. The exact hashed expression render visibly shows the intended mouth/jaw deformation.
+
+The verifier still emitted `MEASUREMENT_REJECTED`: fixed mouth-region neutral RMSE was `0.03789118` versus the predeclared maximum `0.01`, so the rendered-deformation threshold became `0.18945590` while observed expression RMSE was `0.11791251`. This is ordinary head/eyelid/lighting motion in unregistered crops, but the threshold is not changed after seeing the data. The run supports the narrower statement that UE 5.8 Live Link facial animation was reproduced and verified across source data and hashed pixels. It does not support the formal promotion states.
+
+Exact artifacts are under `deformation/Run20260801A/`. `visual-review.json` binds the human visual review to the three image hashes and explicitly blocks promotion because `measurement.json` failed.
+
+A frozen-source attempt also exposed a collector weakness: an evaluable Live Link subject can return the same stale frame repeatedly. Native collection and offline verification now require at least three distinct frame IDs and at least `0.10` seconds of source-time span. The Python regression test passes; the native plugin must be rebuilt before the next run for the C++ guard to take effect.

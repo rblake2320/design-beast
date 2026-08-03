@@ -215,3 +215,89 @@ another capability. “Later” is not a trigger.
 - Decision: build the ingestion manifest + evidence map first; no Unreal execution
   claims until C passes, no combined-workflow claims until A–D pass independently.
 - Revisit trigger: first Beast Docs ingestion manifest produced from the Epic page.
+
+### OPP-20260801-02 — Unreal tutorial dependency-graph compilation
+<!-- renumbered from -01 at merge: ID collided with Beast Docs entry above -->
+
+- Status: observed
+- Trigger: Watch proof 004 recovered a named Unreal movement procedure from a
+  75-minute course: assets, prerequisites, ordered Blueprint actions, and
+  compile/play checks are separable from the narration.
+- New capability hypothesis: Beast can compile instructional chapters into a
+  dependency graph before emitting a skill, then schedule reinspection whenever
+  a prerequisite, property, or node is uncertain.
+- Potential beneficiaries: Unreal/Unity tooling, Blender workflows, CAD, and
+  any visual application with named objects and ordered state transitions.
+- Falsifiable claim: a graph-first compiler produces fewer missing-precondition
+  and wrong-target failures than direct transcript-to-skill compilation on a
+  matched tutorial set.
+- Smallest real experiment: compile the movement slice in proof 004 twice—once
+  directly and once through an explicit asset/prerequisite graph—then run both
+  in disposable UE5.8 projects with identical movement assertions.
+- Measures and acceptance threshold: all referenced assets resolve, every action
+  has source-time evidence, no compile errors, and W/A/S/D movement plus rotation
+  checks pass with retained logs/screenshots.
+- Evidence: `proofs/watch-004-ue58-first-game/`; currently a hypothesis with
+  source evidence, not a demonstrated advantage.
+- Decision: retain for the next UE execution experiment; do not claim improved
+  reliability until the matched comparison is run.
+- Revisit trigger: first disposable UE5.8 execution of the proof-004 skill.
+
+### OPP-20260803-01 — Evidence-gated cross-session operational learning
+
+- Status: observed
+- Trigger: a Claude Code “dreaming” tutorial demonstrated cross-session memory
+  reconciliation, while the local Codex install exposed readable JSONL sessions,
+  reusable skills, noninteractive execution, and scheduled Codex Automations.
+  A 24-hour Beast collector streamed a 292.9 MB active session plus a second
+  session into a 52 KB private evidence bundle in 7.2 seconds including tests and
+  skill validation: 9,571 JSONL records, 51 retained conversation messages, 11
+  recent repository artifacts, zero parse errors, and zero truncations.
+- New capability hypothesis: combining cross-session conversation with git,
+  proof manifests, replay receipts, tests, and opportunity state can produce
+  better evidence-gated knowledge and recovery proposals than transcript-only
+  memory consolidation.
+- Current-project value: detect repeated Unreal/Watch failure paths, stale or
+  conflicting skills, claim debt, reusable procedures, missed opportunities, and
+  verified resume points without feeding raw tool/image payloads back to a model.
+- Outside-project value: the same proposal-and-approval pattern could support
+  auditable operational memory for long-running engineering and creative agents.
+- Prior art and current product evidence: the category is occupied. OpenAI Codex
+  officially supports reusable Skills and scheduled Automations with results
+  returned for review; community skills include `memory-reflect`,
+  `session-reflection`, `dream`, and `openclaw-auto-dream`. The tutorial itself
+  reports an Anthropic enterprise “dreaming” process. Sources:
+  https://openai.com/index/introducing-the-codex-app/ ·
+  https://openai.com/academy/codex-automations/ ·
+  https://skills.sh/basicmachines-co/basic-memory-skills/memory-reflect ·
+  https://skills.sh/jwilger/agent-skills/session-reflection ·
+  https://skills.sh/boshu2/agentops/dream ·
+  https://skills.sh/leoyeai/openclaw-auto-dream/openclaw-auto-dream
+- Differentiation hypothesis, not novelty claim: Beast’s useful distinction may
+  be cross-modal evidence and proof-state reconciliation plus strict authority
+  gates, not the general idea of agent reflection or memory consolidation.
+- Falsifiable claim: after approved reflection proposals update a bounded skill
+  or instruction set, repeated matched tasks show higher correctness or lower
+  retries/tool calls/elapsed time without new regressions than the pre-reflection
+  baseline.
+- Smallest real experiment: run `beast-reflection` manually on one 24-hour window,
+  approve at most three evidence-backed proposals, then replay five matched tasks
+  before and after the changes.
+- Measures and acceptance threshold: every proposal has source pointers and a
+  validation step; no unattended authority-file edits; no leaked secret fixture;
+  at least one predeclared performance or correctness measure improves, none of
+  the matched acceptance tests regress, and rejected proposals do not recur
+  without new evidence.
+- Risks, constraints, and rights/privacy implications: session logs may contain
+  private conversation and credentials; raw evidence stays gitignored, common
+  secret forms are redacted, reasoning/tool payloads are excluded, and substantive
+  changes remain user-approved. “Learning” here means durable instruction/skill
+  updates, not model-weight training.
+- Evidence: `skills/beast-reflection/`,
+  `tests/test_collect_reflection_evidence.py`, and local gitignored bundle
+  `.beast/reflection/evidence-20260803T171233Z.json`.
+- Decision: retain and manually forward-test before scheduling. No community
+  reflection skill was installed because none found was an official trusted
+  OpenAI package and the Beast evidence boundary is project-specific.
+- Revisit trigger: first reviewed report with accepted/rejected proposal outcomes
+  and a matched before/after replay.

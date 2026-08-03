@@ -1,0 +1,14 @@
+{
+  "actor": "/Game/MetaHumanLiveLinkProof.MetaHumanLiveLinkProof:PersistentLevel.BP_AdaProof_C_UAID_10FFE0B701E3DDF302_1554157999",
+  "actor_label": "BEAST_Run20260801A",
+  "assembly_log_reviewed_by_user": true,
+  "assembly_mode": "ADOPTED_LOCAL_UE58_BLUEPRINT",
+  "assembly_state": "ADOPTED_LOCAL_ASSEMBLY",
+  "asset": "/Game/MoodBuddyProof/Run20260801A/MetaHumans/AdaProof/BP_AdaProof",
+  "class": "/Game/MoodBuddyProof/Run20260801A/MetaHumans/AdaProof/BP_AdaProof.BP_AdaProof_C",
+  "project": "c:\\users\\techai\\unreal projects\\moodbuddyue58proof\\moodbuddyue58proof.uproject",
+  "run_id": "Run20260801A",
+  "saved": true,
+  "state": "SPAWNED",
+  "world": "/Game/MetaHumanLiveLinkProof.MetaHumanLiveLinkProof"
+}
