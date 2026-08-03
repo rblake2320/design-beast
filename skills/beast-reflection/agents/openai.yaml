@@ -1,0 +1,4 @@
+interface:
+  display_name: "Beast Reflection"
+  short_description: "Evidence-gated cross-session learning"
+  default_prompt: "Use $beast-reflection to review recent Codex work and propose evidence-linked improvements."
