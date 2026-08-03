@@ -26,6 +26,17 @@ The command prints only the output path and counts. Its JSON output is private w
 - records source file, line, timestamp, and content hash;
 - inventories recent commits, worktree changes, and proof/document artifacts.
 
+Repository scope is the default. It includes sessions whose active CWD or explicit
+workspace root is inside the repository or one of its registered Git worktrees.
+Unrelated sessions are counted but excluded. Use `--scope global` only for a
+deliberate user-wide preference review; never mix that lane into a repository
+automation silently.
+
+If a manually reviewed Codex thread is intentionally rooted above the repository,
+pass its exact ID with `--include-session SESSION_ID`. The override is recorded in
+the receipt and includes only that named session. Do not use session overrides in
+nightly automation; start the automation from the repository instead.
+
 Use `--sessions-root` when `CODEX_HOME` is nonstandard. Increase `--since-hours` only when the evidence window is genuinely needed.
 
 ## Reflect
@@ -66,6 +77,11 @@ Prefer a Codex Automation that invokes this skill and deposits the report in a r
 Use a fresh reflection context, read-only access where practical, and no external messages or pushes. Never pass `--dangerously-bypass-approvals-and-sandbox` to an unattended reflection.
 
 Start with a manual run. Schedule it only after the report is useful and false-positive rates are measured.
+
+Require a new successful `run_receipt` on every scheduled run. Verify its
+`completed_at`, repository HEAD, scope, source-activity status, receipt ID, and
+bundle fingerprint. Treat a missing, stale, wrong-scope, or reused receipt as an
+automation failure even if the scheduler itself reports success.
 
 ## Measure improvement
 
