@@ -40,7 +40,7 @@ def test_reinspect_revises_timeline_and_records_reason(tmp_path, monkeypatch):
     (bundle / "frames").mkdir()
     (bundle / "video.mp4").write_bytes(b"video")
     timeline = {
-        "schema": "beast.watch.timeline/v2",
+        "schema": "beast.watch.timeline/v3",
         "source": {"local_video": "video.mp4", "range": {
             "start_seconds": 100, "end_seconds": 110,
             "start": "00:01:40.000", "end": "00:01:50.000"}},
@@ -63,3 +63,34 @@ def test_reinspect_revises_timeline_and_records_reason(tmp_path, monkeypatch):
     assert updated["frames"][0]["source_seconds"] >= 102
     assert updated["frames"][-1]["source_seconds"] <= 108
     assert updated["bundle_fingerprint"] != "old"
+    assert all(row["sha256"] for row in updated["frames"])
+
+
+def test_reinspect_reextracts_before_backfilling_missing_v3_hash(tmp_path, monkeypatch):
+    bundle = tmp_path
+    (bundle / "frames").mkdir()
+    (bundle / "video.mp4").write_bytes(b"video")
+    frame = bundle / "frames" / "f_000000005000.jpg"
+    frame.write_bytes(b"same-source-frame")
+    timeline = {
+        "schema": "beast.watch.timeline/v3",
+        "source": {"local_video": "video.mp4", "range": {
+            "start_seconds": 0, "end_seconds": 10,
+            "start": "00:00:00.000", "end": "00:00:10.000"}},
+        "sampling": {"height": 720}, "coverage": {},
+        "frames": [{"id": "frame-0001", "file": "frames/f_000000005000.jpg",
+                    "source_seconds": 5.0, "source_time": "00:00:05.000",
+                    "perceptual_hash": "0", "reasons": []}],
+        "bundle_fingerprint": "old",
+    }
+    (bundle / "timeline.json").write_text(json.dumps(timeline), encoding="utf-8")
+
+    def fake_extract(_ffmpeg, _video, _clip_seconds, destination, _height):
+        destination.write_bytes(b"same-source-frame")
+        return True
+
+    monkeypatch.setattr(seek, "extract_frame", fake_extract)
+    seek.reinspect(bundle, "ffmpeg", center=5, level=3, before=0, after=0, fps=1)
+    updated = json.loads((bundle / "timeline.json").read_text(encoding="utf-8"))
+    assert updated["frames"][0]["sha256"] == seek.sha256(frame)
+    assert not list((bundle / "frames").glob("*.verify.jpg"))
