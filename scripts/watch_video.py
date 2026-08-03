@@ -176,6 +176,8 @@ def _write_manifest(bundle: Path, timeline: dict) -> None:
 - `transcript.txt`: human-readable timestamped narration
 - `frames/`: source-timestamped evidence frames (`f_<milliseconds>.jpg`)
 - `procedure.template.json`: contract for compiling evidence into a verified skill
+- `typed-target.template.json`: explicit application/version field types and mappings
+- `typed-observations.template.json`: frame-region observations bound to that target
 """
     (bundle / "MANIFEST.md").write_text(text, encoding="utf-8")
 
@@ -187,6 +189,12 @@ def _procedure_template(timeline: dict) -> dict:
         "goal": "",
         "application": "",
         "version_context": [],
+        "typed_state": {
+            "target": "typed-target.json",
+            "observations": "typed-observations.json",
+            "compiled": "typed-state.json",
+            "validated": False
+        },
         "prerequisites": [],
         "watching_evidence": {
             "visual_only_facts": [{
@@ -220,8 +228,49 @@ def _procedure_template(timeline: dict) -> dict:
             "behavioral_validation_passed": False, "visual_validation_passed": False,
             "visual_only_evidence_validated": False,
             "required_reinspection_completed": False,
+            "typed_state_validated": False,
             "human_approved": False
         }
+    }
+
+
+def _typed_target_template() -> dict:
+    return {
+        "schema": "beast.watch.typed-target/v1",
+        "application": "",
+        "version": "",
+        "fields": [{
+            "name": "",
+            "type": "enum",
+            "required": True,
+            "enum_values": [],
+            "aliases": {},
+            "finality": {
+                "confidence_threshold": 0.9,
+                "min_confirmations": 2,
+                "min_span_seconds": 0.5
+            }
+        }]
+    }
+
+
+def _typed_observations_template(timeline: dict) -> dict:
+    return {
+        "schema": "beast.watch.typed-observations/v1",
+        "target_fingerprint": "",
+        "timeline_fingerprint": timeline["bundle_fingerprint"],
+        "observations": [{
+            "field": "",
+            "raw_value": "",
+            "phase": "final",
+            "confidence": 0.0,
+            "source_ui_label": "",
+            "evidence": [{
+                "frame_id": "",
+                "region": [0, 0, 1, 1],
+                "method": "vision"
+            }]
+        }]
     }
 
 
@@ -267,6 +316,7 @@ def run(args: argparse.Namespace) -> Path:
             "source_seconds": round(sample.time, 3), "source_time": format_time(sample.time),
             "clip_seconds": round(sample.time - source_offset, 3),
             "reasons": list(sample.reasons), "perceptual_hash": phash,
+            "sha256": sha256(destination),
             "change_from_previous": distance, "near_duplicate": duplicate,
         }
         frame_rows.append(row)
@@ -321,6 +371,10 @@ def run(args: argparse.Namespace) -> Path:
     (bundle / "timeline.json").write_text(json.dumps(timeline, indent=2), encoding="utf-8")
     (bundle / "procedure.template.json").write_text(
         json.dumps(_procedure_template(timeline), indent=2), encoding="utf-8")
+    (bundle / "typed-target.template.json").write_text(
+        json.dumps(_typed_target_template(), indent=2), encoding="utf-8")
+    (bundle / "typed-observations.template.json").write_text(
+        json.dumps(_typed_observations_template(timeline), indent=2), encoding="utf-8")
     _write_manifest(bundle, timeline)
     return bundle
 

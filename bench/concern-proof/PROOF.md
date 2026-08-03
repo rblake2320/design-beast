@@ -55,3 +55,21 @@ three repetitions per condition. The typed-compiler repair needs a held-out
 video task before it can count as improvement rather than test-set repair.
 Prior-art rarity remains a separate research question and is not implied by
 this performance pilot.
+
+## Post-pilot typed repair (not a replacement result)
+
+The deterministic typed compiler added after this pilot reprocessed two fields
+from the preserved failed Inkscape evidence. Its frozen target contract declares
+the SVG enum, the Inkscape `Direct` → SVG `repeat` alias with its evidence basis,
+the exact RGBA type, confidence thresholds, and two-frame temporal confirmation.
+The resulting `typed-state.json` compiled `repeat` and `ec146eff` with four
+timestamped pixel-region receipts and compilation fingerprint
+`d24f2cabe1d34cdab8462b2067a2d12f41e743cdad53c101b1f3a74c7e3733f4`.
+
+This does **not** alter the table above or promote the failed pilot. The repair
+was designed with knowledge of that failure. It only establishes that the new
+compiler deterministically closes the two observed defect classes on the known
+evidence. Its next gate is an untouched silent tutorial selected after the
+compiler commit is frozen. Because the historical bundle used timeline v2,
+these receipts hash the current frames but correctly report
+`ingest_hash_verified: false`; new timeline v3 bundles hash frames at ingestion.

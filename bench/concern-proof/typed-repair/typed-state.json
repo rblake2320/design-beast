@@ -1,0 +1,219 @@
+{
+  "schema": "beast.watch.typed-state/v1",
+  "status": "answered",
+  "application": "Inkscape",
+  "version": "1.4.4",
+  "target_fingerprint": "50e6e37ec517c4709f79727680ddd139ac4fb8ef85b40bd2a7de427fa7e238c4",
+  "timeline_fingerprint": "1d5f58a4bd8f83e7971d8b08694bd48e24ebf8b4c52c133b0876eb38f791c15f",
+  "values": [
+    {
+      "name": "pink_rgba",
+      "type": "color_rgba",
+      "value": "ec146eff",
+      "confidence": 0.99,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0123",
+          "source_seconds": 179.746,
+          "source_time": "00:02:59.746",
+          "frame_sha256": "b7772d12ef8299e29114e1b2ff2f2b32259110cbbb2a6958235179f995619130",
+          "ingest_hash_verified": false,
+          "region": [
+            1450,
+            370,
+            125,
+            45
+          ],
+          "region_rgba_sha256": "50bcfb4313652cc31637fac39d516e4513470cbbd9bf27fe9b454edb48d8eaa2",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0124",
+          "source_seconds": 180.047,
+          "source_time": "00:03:00.047",
+          "frame_sha256": "08e808a9a75cb9f251e306bee326bc3553fdcfe09a2c0f66af2ac857c1476de9",
+          "ingest_hash_verified": false,
+          "region": [
+            1450,
+            370,
+            125,
+            45
+          ],
+          "region_rgba_sha256": "8227a7b3c080c7e8750b68e8bfb96dab4bd961080a9dcfe1a59572e854c25f83",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "spread_method",
+      "type": "enum",
+      "value": "repeat",
+      "confidence": 0.99,
+      "source_ui_labels": [
+        "Direct"
+      ],
+      "evidence": [
+        {
+          "frame_id": "frame-0131",
+          "source_seconds": 190.5,
+          "source_time": "00:03:10.500",
+          "frame_sha256": "8a7e522a21a12e41e0c53ac896ff1de3ca96d8261d2c6f92a46b6aec8fea39b5",
+          "ingest_hash_verified": false,
+          "region": [
+            525,
+            20,
+            120,
+            45
+          ],
+          "region_rgba_sha256": "e865f17b617477b8aa3adbc96916b73faf63569fe15e8b77aeb928daf90845a1",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0132",
+          "source_seconds": 193.5,
+          "source_time": "00:03:13.500",
+          "frame_sha256": "ad258c54eac090ec017849e1615059e13f812df72628d30afa8dd9954e5b5cb0",
+          "ingest_hash_verified": false,
+          "region": [
+            525,
+            20,
+            120,
+            45
+          ],
+          "region_rgba_sha256": "e6995703827229d50b2e43161ff5f2a35c5187640c9606d450c438f0ec1b8a60",
+          "method": "manual_review"
+        }
+      ]
+    }
+  ],
+  "unresolved": [],
+  "errors": [],
+  "history": [
+    {
+      "field": "pink_rgba",
+      "raw_value": "ec146eff",
+      "value": "ec146eff",
+      "phase": "final",
+      "confidence": 0.99,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0123",
+          "source_seconds": 179.746,
+          "source_time": "00:02:59.746",
+          "frame_sha256": "b7772d12ef8299e29114e1b2ff2f2b32259110cbbb2a6958235179f995619130",
+          "ingest_hash_verified": false,
+          "region": [
+            1450,
+            370,
+            125,
+            45
+          ],
+          "region_rgba_sha256": "50bcfb4313652cc31637fac39d516e4513470cbbd9bf27fe9b454edb48d8eaa2",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0123"
+      ],
+      "times": [
+        179.746
+      ]
+    },
+    {
+      "field": "pink_rgba",
+      "raw_value": "ec146eff",
+      "value": "ec146eff",
+      "phase": "final",
+      "confidence": 0.99,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0124",
+          "source_seconds": 180.047,
+          "source_time": "00:03:00.047",
+          "frame_sha256": "08e808a9a75cb9f251e306bee326bc3553fdcfe09a2c0f66af2ac857c1476de9",
+          "ingest_hash_verified": false,
+          "region": [
+            1450,
+            370,
+            125,
+            45
+          ],
+          "region_rgba_sha256": "8227a7b3c080c7e8750b68e8bfb96dab4bd961080a9dcfe1a59572e854c25f83",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0124"
+      ],
+      "times": [
+        180.047
+      ]
+    },
+    {
+      "field": "spread_method",
+      "raw_value": "Direct",
+      "value": "repeat",
+      "phase": "final",
+      "confidence": 0.99,
+      "source_ui_label": "Direct",
+      "evidence": [
+        {
+          "frame_id": "frame-0131",
+          "source_seconds": 190.5,
+          "source_time": "00:03:10.500",
+          "frame_sha256": "8a7e522a21a12e41e0c53ac896ff1de3ca96d8261d2c6f92a46b6aec8fea39b5",
+          "ingest_hash_verified": false,
+          "region": [
+            525,
+            20,
+            120,
+            45
+          ],
+          "region_rgba_sha256": "e865f17b617477b8aa3adbc96916b73faf63569fe15e8b77aeb928daf90845a1",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0131"
+      ],
+      "times": [
+        190.5
+      ]
+    },
+    {
+      "field": "spread_method",
+      "raw_value": "Direct",
+      "value": "repeat",
+      "phase": "final",
+      "confidence": 0.99,
+      "source_ui_label": "Direct",
+      "evidence": [
+        {
+          "frame_id": "frame-0132",
+          "source_seconds": 193.5,
+          "source_time": "00:03:13.500",
+          "frame_sha256": "ad258c54eac090ec017849e1615059e13f812df72628d30afa8dd9954e5b5cb0",
+          "ingest_hash_verified": false,
+          "region": [
+            525,
+            20,
+            120,
+            45
+          ],
+          "region_rgba_sha256": "e6995703827229d50b2e43161ff5f2a35c5187640c9606d450c438f0ec1b8a60",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0132"
+      ],
+      "times": [
+        193.5
+      ]
+    }
+  ],
+  "compilation_fingerprint": "d24f2cabe1d34cdab8462b2067a2d12f41e743cdad53c101b1f3a74c7e3733f4"
+}
