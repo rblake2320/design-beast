@@ -46,3 +46,21 @@ def test_generalized_requires_breadth():
         ],
     }
     assert any("breadth_count >= 3" in error for error in beast_core.validate_graph(graph))
+
+
+def test_recover_subcommand_uses_existing_verifier(monkeypatch, capsys, tmp_path):
+    checkpoint = tmp_path / "latest.json"
+    checkpoint.write_text("{}", encoding="utf-8")
+    monkeypatch.setattr(
+        beast_core.recovery_verifier,
+        "verify",
+        lambda path, allow_head_drift=False: {
+            "ok": True,
+            "checkpoint": str(path),
+            "head_drift_allowed": allow_head_drift,
+        },
+    )
+    assert beast_core.main(["recover", str(checkpoint)]) == 0
+    result = __import__("json").loads(capsys.readouterr().out)
+    assert result["ok"] is True
+    assert result["head_drift_allowed"] is False

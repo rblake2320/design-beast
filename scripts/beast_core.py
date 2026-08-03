@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import subprocess
 import sys
 from collections import Counter
 from pathlib import Path
@@ -21,6 +22,8 @@ LEVELS = ["observed", "reproduced", "measured", "verified", "generalized"]
 
 sys.path.insert(0, str(REPO / "studio"))
 import resource_guard  # noqa: E402
+sys.path.insert(0, str(REPO / "scripts"))
+import verify_recovery_checkpoint as recovery_verifier  # noqa: E402
 
 
 def read_json(path: Path) -> Any:
@@ -179,12 +182,24 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("status", help="show capability and live resource state")
     resource = sub.add_parser("resource-check", help="test one workload against live VRAM")
     resource.add_argument("workload")
+    recover = sub.add_parser("recover", help="verify a recovery checkpoint before resuming")
+    recover.add_argument("checkpoint", type=Path)
+    recover.add_argument("--allow-head-drift", action="store_true")
     args = parser.parse_args(argv)
 
     if args.command == "validate":
         result = validate_all()
     elif args.command == "status":
         result = status()
+    elif args.command == "recover":
+        try:
+            result = recovery_verifier.verify(
+                args.checkpoint, allow_head_drift=args.allow_head_drift
+            )
+        except (OSError, ValueError, KeyError, subprocess.SubprocessError,
+                json.JSONDecodeError) as exc:
+            print(json.dumps({"ok": False, "error": str(exc)}))
+            return 2
     else:
         try:
             result = resource_guard.admission(args.workload, use_cache=False)
@@ -196,6 +211,8 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if result["ok"] else 1
     if args.command == "resource-check":
         return 0 if result["admitted"] else 3
+    if args.command == "recover":
+        return 0 if result["ok"] else 1
     return 0 if result["validation"]["ok"] else 1
 
 
