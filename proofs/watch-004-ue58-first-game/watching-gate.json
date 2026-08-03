@@ -1,0 +1,27 @@
+{
+  "schema": "beast.watch.procedure/v1",
+  "source_timeline": "watched/proof-004-ue58-first-game/timeline.json",
+  "goal": "Prove that the compiled movement procedure used visual evidence beyond narration.",
+  "watching_evidence": {
+    "visual_only_facts": [
+      {
+        "claim": "The Swizzle Input Axis Values order shown for the A-key mapping is YXZ.",
+        "frame_ids": ["frame-0161"],
+        "transcript_search_terms": ["YXZ"],
+        "transcript_absence_checked": true
+      }
+    ],
+    "ambiguous_segments": [
+      {
+        "description": "The exact modifier state was too small in the adaptive overview and required a forensic resample.",
+        "source_seconds": 905.0,
+        "requires_reinspection": true,
+        "evidence_request_index": 2,
+        "resolved": true
+      }
+    ],
+    "transcript_only_limitations": [
+      "The narration names Swizzle and Negate but does not state the visible YXZ order."
+    ]
+  }
+}

@@ -180,6 +180,11 @@ def _route_setup(monkeypatch, tmp_path):
     monkeypatch.setattr(server, "ensure_backend", lambda *a, **kw: True)
     monkeypatch.setattr(server, "_quiesce_wan_aux_services",
                         lambda *a, **kw: True)
+    # This is a routing contract test, not a Docker integration test. Mock the
+    # complete backend context so clean CI runners cannot block in the real
+    # `docker inspect` performed before ensure_backend() is reached.
+    monkeypatch.setattr(server, "job_backend",
+                        lambda *a, **kw: nullcontext(True))
     monkeypatch.setattr(jobs_mod, "gpu_lease",
                         lambda *a, **kw: nullcontext())
     return runs

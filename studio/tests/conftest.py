@@ -17,3 +17,6 @@ import jobs as jobs_mod  # noqa: E402
 
 _TMP = Path(tempfile.mkdtemp(prefix="beast-test-db-"))
 jobs_mod.DB_PATH = _TMP / "jobs.db"
+# Scheduler unit tests stay independent of the developer's live GPU. External
+# admission behavior has separate deterministic tests.
+jobs_mod.EXTERNAL_GPU_GUARD = False

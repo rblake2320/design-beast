@@ -42,8 +42,24 @@ def test_checkpoint_is_atomic_and_hashes_evidence(tmp_path: Path) -> None:
     )
 
     payload = json.loads((session / "latest.json").read_text(encoding="utf-8"))
+    assert payload["schema"] == "beast.recovery/v2"
     assert payload["goal"] == "recover"
     assert payload["evidence"][0]["sha256"] == "c1cda26362828b69266512052b97cb3729e3b052e4ade47c0a1e3383defe73c7"
     assert payload["secrets_stored"] is False
     assert not (session / "latest.json.tmp").exists()
     assert (session / "RECOVER.md").is_file()
+
+    verifier = Path(__file__).resolve().parents[1] / "scripts" / "verify_recovery_checkpoint.py"
+    verified = subprocess.run(
+        [sys.executable, str(verifier), str(session / "latest.json")],
+        check=False, capture_output=True, text=True,
+    )
+    assert verified.returncode == 0, verified.stdout + verified.stderr
+
+    evidence.write_bytes(b"tampered")
+    rejected = subprocess.run(
+        [sys.executable, str(verifier), str(session / "latest.json")],
+        check=False, capture_output=True, text=True,
+    )
+    assert rejected.returncode == 1
+    assert not json.loads(rejected.stdout)["evidence_ok"]
