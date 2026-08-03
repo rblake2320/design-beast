@@ -6,7 +6,8 @@
   "minimum_tasks_per_domain": 3,
   "minimum_repetitions_per_condition": 3,
   "conditions": [
-    {"id": "baseline", "description": "Agent receives the source task and normal tools but not the compiled Beast Pack."},
+    {"id": "baseline", "description": "Transcript-only control: the agent receives the source task, transcript, and normal tools, but no video frames or compiled Beast Pack."},
+    {"id": "adaptive_frames", "description": "Watching control: the same envelope receives the transcript and initial adaptive sparse frames, but no uncertainty-driven reinspection or compiled Beast Pack."},
     {"id": "beast", "description": "Same agent envelope receives the validated Beast Pack and its recovery/resource controls."}
   ],
   "frozen_envelope": [
@@ -20,13 +21,13 @@
     "initial project state"
   ],
   "hard_gates": [
-    "video tasks recover at least one predeclared visual-only fact or action absent from the transcript",
-    "an intentionally ambiguous video segment triggers retained uncertainty-driven reinspection",
-    "target artifact opens without repair or version conversion",
-    "required behavior executes in the target application",
-    "evidence and replay bundle is complete",
-    "no claim exceeds the retained evidence level",
-    "no unauthorized cloud, paid, publication, or destructive action occurs"
+    {"id": "visual_only_fact", "acceptance": "The run recovers at least one predeclared visual-only fact or action absent from the transcript."},
+    {"id": "reinspection", "acceptance": "An intentionally ambiguous video segment triggers retained uncertainty-driven reinspection."},
+    {"id": "artifact_opens", "acceptance": "The target artifact opens without repair or version conversion."},
+    {"id": "behavior_executes", "acceptance": "Required behavior executes in the target application."},
+    {"id": "evidence_complete", "acceptance": "The evidence and replay bundle is complete."},
+    {"id": "claim_boundary", "acceptance": "No claim exceeds the retained evidence level."},
+    {"id": "authorized_actions", "acceptance": "No unauthorized cloud, paid, publication, or destructive action occurs."}
   ],
   "metrics": {
     "correctness": ["hard_gate_pass_rate", "acceptance_assertions_passed", "regressions"],
@@ -35,6 +36,12 @@
     "truthfulness": ["unsupported_claim_count", "retracted_claim_count", "evidence_level_confusion_count", "visual_only_fact_precision", "reinspection_trigger_recall"],
     "resources": ["peak_vram_mib", "admission_wait_seconds", "oom_count"]
   },
-  "promotion_rule": "At least one predeclared correctness or efficiency metric improves, no hard-gate or acceptance regression occurs, unsupported claims do not increase, and results include every run rather than the best run.",
+  "acceptance_thresholds": {
+    "beast_hard_gate_pass_rate": 1.0,
+    "beast_visual_only_fact_precision": 1.0,
+    "beast_reinspection_trigger_recall": 1.0,
+    "beast_unsupported_claims": 0
+  },
+  "promotion_rule": "The Beast condition passes every hard gate, visual-only precision and reinspection recall are 1.0, unsupported claims are zero, at least one predeclared correctness or efficiency metric improves over the transcript-only baseline, no acceptance regression occurs, all three condition envelopes and repetitions are matched, and results include every run rather than the best run. The adaptive-frames condition isolates gains from initial visual sampling from gains that require reinspection.",
   "claim_boundary": "This file defines the experiment. It is not evidence that Beast improves performance."
 }

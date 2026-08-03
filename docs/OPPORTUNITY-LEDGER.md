@@ -346,4 +346,18 @@ another capability. “Later” is not a trigger.
   `docs/decisions/BR-006-APPROVAL-20260803.md`.
 - Decision: integrate the contract and measurement machinery; keep the system-level
   improvement hypothesis explicitly unproven until the matched benchmark runs.
-- Revisit trigger: first complete non-pilot Beast-loop benchmark report.
+- Pilot update 2026-08-03: a three-domain, one-task-per-domain ablation measured
+  transcript-only, initial adaptive frames, and full Beast. Frames recovered
+  visual-only state in Blender, Audacity, and a silent Inkscape tutorial;
+  reinspection resolved an Audacity `-3` transient versus the applied `-5` value.
+  The run did not promote: an SVG color was mistranscribed during compilation and
+  a prose UI label was not normalized to the typed SVG value. A typed evidence
+  manifest repaired the artifact byte-for-byte, but that same-task repair is not
+  held-out evidence. See `bench/concern-proof/PROOF.md`.
+- Newly opened implementation value: the compiler should emit typed,
+  target-schema-aware intermediate state (units, enums, transient/final state,
+  source frame, confidence) before prose `SKILL.md`. This could reduce semantic
+  loss across GUI-to-CLI/MCP translation beyond the current project, but is only
+  an observed repair hypothesis until a held-out task passes.
+- Revisit trigger: held-out validation of the typed compiler, then the first
+  complete non-pilot Beast-loop benchmark report.
