@@ -14,6 +14,8 @@ import uuid
 from contextlib import contextmanager
 from pathlib import Path
 
+import resource_guard
+
 DB_PATH = Path(__file__).resolve().parent / "jobs.db"
 _LOCAL = threading.local()
 _WRITE_LOCK = threading.Lock()
@@ -26,6 +28,7 @@ GPU_RESOURCE = "rtx5090"
 LIGHT_CONCURRENCY = 2      # fixed default per design review §1 (not VRAM-probed)
 LEASE_STALE_S = 30         # heartbeat older than this = crashed holder, reclaim
 LEASE_POLL_S = 0.5
+EXTERNAL_GPU_GUARD = True
 
 # server-enforced per-job deadlines (seconds, from creation — includes queue
 # wait). Exceeding one fails the job with E_TIMEOUT at the next checkpoint or
@@ -313,6 +316,10 @@ def _try_acquire_gpu(holder: str, jid: str, kind: str,
     "resource free" from a WAL snapshot while we are granting, and grant a
     conflicting lease. On lock contention we return False and let the caller's
     poll loop retry."""
+    if EXTERNAL_GPU_GUARD:
+        workload = "studio_heavy" if kind == "heavy" else "studio_light"
+        if not resource_guard.admission(workload)["admitted"]:
+            return False
     now = time.time()
     with _WRITE_LOCK:
         con = _db()

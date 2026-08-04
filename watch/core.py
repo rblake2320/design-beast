@@ -17,7 +17,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
-SCHEMA_VERSION = "beast.watch.timeline/v2"
+SCHEMA_VERSION = "beast.watch.timeline/v3"
 
 
 class WatchError(RuntimeError):

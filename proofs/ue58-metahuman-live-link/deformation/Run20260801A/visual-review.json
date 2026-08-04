@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "state": "VISUAL_REVIEW_COMPLETE_PROMOTION_BLOCKED",
+  "reviewed_utc": "2026-08-02T02:00:00Z",
+  "run_id": "Run20260801A",
+  "curve": "CTRL_expressions_jawOpen",
+  "region": "mouth and jaw",
+  "images": {
+    "neutral_a": {
+      "path": "neutral-a.png",
+      "sha256": "977ea3edc82160e44dd4e1ab730eccfccef1e8043fc75d0093c93af476c15fb5"
+    },
+    "neutral_b": {
+      "path": "neutral-b.png",
+      "sha256": "ccabe6696334d2ef019370fb46a47c2b303239c8519235d073496066f072c347"
+    },
+    "expression": {
+      "path": "expression.png",
+      "sha256": "ad6d74834cf61862156dd9b585f72537b09947d8ab464fb1a8aae48de01c386f"
+    }
+  },
+  "observed": "The expression image shows a wide-open mouth and displaced jaw on the bound MetaHuman; both neutral images show a closed mouth.",
+  "independent_signal": "The expression receipt contains 10 distinct source frames and a jawOpen median of 0.8075177372 versus a combined neutral median of 0.1300153881.",
+  "promotion_allowed": false,
+  "promotion_blocker": "measurement.json is MEASUREMENT_REJECTED because neutral crop RMSE 0.03789118 exceeds the predeclared 0.01 stability threshold. The v1 gate is not changed retroactively."
+}

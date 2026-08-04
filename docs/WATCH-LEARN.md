@@ -133,6 +133,22 @@ the reasoning model.
 Perceptual hashes handle exact/near duplicates. OpenCLIP handles semantic similarity.
 They solve different problems and both are retained.
 
+## Watching gate: evidence a transcript cannot supply
+
+A procedure may not use “watched” as evidence merely because its transcript was
+parsed. `procedure.template.json.watching_evidence` separates:
+
+- visual-only facts or actions, each tied to retained frame IDs;
+- exact transcript terms checked when asserting that evidence was absent from
+  narration; and
+- ambiguous segments that must reference a real `timeline.json.evidence_requests`
+  reinspection before they can be marked resolved.
+
+`python scripts/validate_watch_procedure.py PROCEDURE TIMELINE` verifies those
+machine-checkable links. It does not decide whether a model interpreted pixels
+correctly; that remains a visual review and execution question. It does prevent a
+transcript-only artifact from satisfying the Beast watching benchmark.
+
 ## Safety and epistemic rules
 
 - Watching is evidence collection, not proof of understanding.

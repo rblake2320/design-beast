@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .core import (extract_frame, format_time, frame_name, hamming_hash,
-                   perceptual_hash)
+                   perceptual_hash, sha256)
 
 
 class SeekError(RuntimeError):
@@ -111,10 +111,28 @@ def reinspect(bundle: Path, ffmpeg: str, *, center: float, level: int = 2,
     height = int(timeline.get("sampling", {}).get("height", 900))
     for source_seconds in requested:
         if source_seconds in existing:
-            reasons = existing[source_seconds].setdefault("reasons", [])
+            existing_row = existing[source_seconds]
+            reasons = existing_row.setdefault("reasons", [])
             tag = f"seek_l{level}"
             if tag not in reasons:
                 reasons.append(tag)
+            # Timeline v3 promises an ingestion hash for every retained frame.
+            # Early v3 seek rows lacked one. Re-extract and compare before
+            # backfilling so a changed local JPEG cannot acquire fresh trust.
+            if timeline.get("schema") == "beast.watch.timeline/v3" and \
+                    not existing_row.get("sha256"):
+                destination = bundle / existing_row["file"]
+                verify_path = destination.with_name(destination.stem + ".verify.jpg")
+                clip_seconds = source_seconds - source_start
+                if not extract_frame(ffmpeg, video, clip_seconds, verify_path, height):
+                    raise SeekError(f"could not re-extract frame for hash verification: {source_seconds}")
+                try:
+                    if sha256(verify_path) != sha256(destination):
+                        raise SeekError(
+                            f"frame differs from source re-extraction: {source_seconds}")
+                    existing_row["sha256"] = sha256(destination)
+                finally:
+                    verify_path.unlink(missing_ok=True)
             continue
         destination = frames_dir / frame_name(source_seconds)
         clip_seconds = source_seconds - source_start
@@ -126,6 +144,7 @@ def reinspect(bundle: Path, ffmpeg: str, *, center: float, level: int = 2,
             "clip_seconds": round(clip_seconds, 3),
             "reasons": ["targeted_dense", f"seek_l{level}"],
             "perceptual_hash": perceptual_hash(destination),
+            "sha256": sha256(destination),
             "change_from_previous": None, "near_duplicate": False,
         }
         frames.append(row)

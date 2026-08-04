@@ -1,0 +1,29 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "0.1.0",
+  "FriendlyName": "Beast Evidence Collector",
+  "Description": "Captures run-scoped Live Link curve samples and synchronized Unreal viewport evidence.",
+  "Category": "AI",
+  "CreatedBy": "Design Beast",
+  "CanContainContent": false,
+  "IsBetaVersion": true,
+  "Installed": false,
+  "Plugins": [
+    {
+      "Name": "MetaHumanLiveLink",
+      "Enabled": true
+    },
+    {
+      "Name": "PlatformCrypto",
+      "Enabled": true
+    }
+  ],
+  "Modules": [
+    {
+      "Name": "BeastEvidenceCollector",
+      "Type": "Editor",
+      "LoadingPhase": "Default"
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "schema": "beast.unreal-agent-benchmark-candidate.v1",
+  "status": "candidate_unvalidated",
+  "target_engine": "Unreal Engine 5.8",
+  "purpose": "Evaluate agent-built interactive Unreal artifacts without allowing static visual quality to hide behavioral defects.",
+  "comparability_envelope": {
+    "required": [
+      "frozen task specification and acceptance tests",
+      "model and provider",
+      "agent harness and version",
+      "allowed tools and skills",
+      "reasoning or effort setting",
+      "Unreal Engine version and enabled plugins",
+      "hardware and operating system",
+      "time and spending limits",
+      "human intervention policy",
+      "random seed where controllable"
+    ],
+    "classification": "workflow comparison unless the complete envelope is identical"
+  },
+  "hard_gates": [
+    {
+      "id": "G1",
+      "name": "artifact_opens",
+      "acceptance": "The retained UE 5.8 project opens without repair or version conversion."
+    },
+    {
+      "id": "G2",
+      "name": "builds_and_runs",
+      "acceptance": "The target map builds and enters a playable or executable state without fatal errors."
+    },
+    {
+      "id": "G3",
+      "name": "core_interaction_replays",
+      "acceptance": "A retained deterministic input sequence reaches the task's required observable outcome."
+    },
+    {
+      "id": "G4",
+      "name": "evidence_complete",
+      "acceptance": "Prompt, manifest, logs, replay inputs, captures, elapsed time, and cost basis are retained."
+    }
+  ],
+  "validation_passes": [
+    {
+      "id": "V1",
+      "name": "multi_angle_geometry",
+      "required_views": ["front", "rear", "left", "right", "top", "interior_or_first_person_when_applicable"],
+      "checks": ["missing parts", "detached parts", "intersections", "occlusion", "camera obstruction", "scale inconsistency"]
+    },
+    {
+      "id": "V2",
+      "name": "temporal_transitions",
+      "required_phases": ["before", "during", "after"],
+      "checks": ["animation continuity", "orientation", "flicker", "state transition", "visual feedback"]
+    },
+    {
+      "id": "V3",
+      "name": "behavioral_replay",
+      "checks": ["controls", "camera modes", "collision", "locomotion", "core loop", "failure and recovery path"]
+    },
+    {
+      "id": "V4",
+      "name": "off_nominal_stress",
+      "checks": ["rapid input", "boundary collision", "restart", "invalid action", "sustained runtime"]
+    }
+  ],
+  "quality_dimensions": [
+    {
+      "name": "artifact_integrity",
+      "points": 10
+    },
+    {
+      "name": "interactive_behavior",
+      "points": 10
+    },
+    {
+      "name": "visual_and_audio_coherence",
+      "points": 10
+    },
+    {
+      "name": "evidence_and_reproducibility",
+      "points": 10
+    }
+  ],
+  "efficiency_metrics_not_folded_into_quality": [
+    "wall_clock_seconds",
+    "active_agent_seconds_if_available",
+    "input_tokens",
+    "cached_input_tokens",
+    "output_tokens",
+    "subagent_tokens_by_category",
+    "tool_or_cloud charges",
+    "estimated_total_cost_usd",
+    "cost_completeness"
+  ],
+  "reliability_rule": {
+    "minimum_runs": 3,
+    "report": ["all run outcomes", "hard-gate pass rate", "median quality by dimension", "range", "median elapsed time", "median qualified cost"],
+    "prohibited": "Do not present a best run or one recorded attempt as reliability."
+  },
+  "judge_policy": {
+    "deterministic_checks_first": true,
+    "subjective_review": "blind and separated by dimension",
+    "llm_judge": "advisory unless rubric, inputs, model version, output, and scoring trace are retained",
+    "human_review": "required for disputed visual preference claims"
+  },
+  "claim_boundary": "This protocol is derived from inspected video evidence and prior Beast proof discipline. It has not yet been validated across repeated UE 5.8 builds."
+}

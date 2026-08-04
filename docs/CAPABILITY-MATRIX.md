@@ -87,7 +87,7 @@ COSTS-BASELINE.md (pricing sources), WIN-PLAN.md (what we build next).
 | Capability | Beast | Cost | Who else / their model |
 |---|---|---|---|
 | Job DB: cancel/retry/timeout/idempotency | **Beast Studio (tested)** | free | cloud platforms internally; not agent-exposed |
-| GPU lease scheduler (heavy/light classes) | **Beast Studio (tested)** | free | nobody local |
+| GPU admission + lease scheduler | **Beast Studio durable heavy/light leases + live external VRAM budget/reserve guard (tested; one live Unreal-active pair measured 2026-08-03)** | free | local workflow tools generally rely on application-local queues |
 | **Exact-replay provenance** (env+graph+model hashes) | **env_snapshot + beast replay (19 tests, 2026-07-31)** | free | **nobody — ComfyUI's defining pain** |
 | **Tamper-evident chained run ledger** | **studio/ledger.py + beast ledger (from vigil, 2026-07-31)** | free | **nobody** — audit/compliance-grade |
 | Backend registry: local-first, BYOK cloud parity | **registry.py + GET /api/registry (2026-07-31)** | free | Krea routes cloud-only; nobody does local-default+BYOK |

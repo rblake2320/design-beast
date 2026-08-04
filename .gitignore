@@ -27,6 +27,10 @@ renders/
 candidates/
 *.blend1
 node_modules/
+
+# Private, local cross-session reflection evidence (may contain conversation excerpts)
+.beast/reflection/
+.beast/recovery/
 beast.config.json
 watched/
 studio/.beast_model_hashes.json

@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "state": "VISUAL_REVIEW_COMPLETE_PROMOTION_BLOCKED",
+  "reviewed_utc": "2026-08-02T16:48:57Z",
+  "run_id": "Run20260802MaleB",
+  "curve": "CTRL_expressions_jawOpen",
+  "region": "mouth and jaw",
+  "images": {
+    "neutral_a": {
+      "path": "neutral-a.png",
+      "sha256": "e608a50c5586782227cf30cd89a510c4d229e287c53af878143c5fb64fd45038"
+    },
+    "neutral_b": {
+      "path": "neutral-b.png",
+      "sha256": "652a44706cdaa26d37b6d738c9d8bd06bf0a07feea43dd40481471a3db8a5eca"
+    },
+    "expression": {
+      "path": "expression.png",
+      "sha256": "d3e5de53b23a25be89edd09569e3d6d526fee763970f626eaa95f0006d206f57"
+    }
+  },
+  "observed": "The expression image shows MarcusProof with a wide-open mouth and displaced jaw; both neutral images show a closed mouth. The changed region is the intended face, not UI or camera motion.",
+  "independent_signal": "The expression receipt contains 10 distinct source frames and a jaw-open median of 0.8174888790 versus a combined neutral median of 0.0783184059.",
+  "promotion_allowed": false,
+  "promotion_blocker": "measurement.json is MEASUREMENT_REJECTED because neutral crop RMSE 0.06486526 exceeds the predeclared 0.01 stability threshold. This is the same evidence boundary recorded for AdaProof; the gate is not changed retroactively."
+}

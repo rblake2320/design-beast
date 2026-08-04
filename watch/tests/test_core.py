@@ -6,7 +6,8 @@ import pytest
 
 from watch.core import (SCHEMA_VERSION, build_sampling_plan, clean_vtt, format_time,
                         frame_name, hamming_hash, parse_dense_window, parse_timecode)
-from scripts.watch_video import _select_downloaded_video, _slug
+from scripts.watch_video import (_procedure_template, _select_downloaded_video, _slug,
+                                 _typed_observations_template, _typed_target_template)
 
 
 @pytest.mark.parametrize(("raw", "expected"), [
@@ -46,7 +47,7 @@ def test_helpers():
     assert format_time(3723.456) == "01:02:03.456"
     assert frame_name(1.5) == "f_000000001500.jpg"
     assert hamming_hash("0000000000000000", "000000000000000f") == 4
-    assert SCHEMA_VERSION.endswith("/v2")
+    assert SCHEMA_VERSION.endswith("/v3")
 
 
 def test_slug_uses_youtube_video_id_without_collisions():
@@ -79,3 +80,21 @@ def test_download_selector_rejects_audio_only_adaptive_stream(tmp_path, monkeypa
 
     monkeypatch.setattr("scripts.watch_video.probe_video", fake_probe)
     assert _select_downloaded_video(tmp_path, "ffprobe") == visual
+
+
+def test_procedure_template_cannot_conflate_transcript_with_watching():
+    template = _procedure_template({})
+    watching = template["watching_evidence"]
+    assert "visual_only_facts" in watching
+    assert "ambiguous_segments" in watching
+    assert template["publication_gate"]["visual_only_evidence_validated"] is False
+    assert template["publication_gate"]["typed_state_validated"] is False
+
+
+def test_typed_templates_start_unvalidated_and_bind_timeline():
+    target = _typed_target_template()
+    observations = _typed_observations_template({"bundle_fingerprint": "abc"})
+    assert target["schema"] == "beast.watch.typed-target/v1"
+    assert target["application"] == ""
+    assert observations["target_fingerprint"] == ""
+    assert observations["timeline_fingerprint"] == "abc"

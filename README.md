@@ -1,7 +1,11 @@
 # Design Beast 🦬
 
-**One hub for every design capability on this machine** — image, video, 3D, game, web —
-wired for AI agents (Claude Code, Codex, mesh peers) via skills, CLIs, and MCP.
+**Other agents answer. Beast watches how, proves it can, and keeps the capability.**
+
+Design Beast is a verified capability engine for demonstrated work—especially
+visual information in tutorial video that transcripts cannot contain. It connects
+image, video, audio, 3D, game, and web tools to agents through skills, CLIs, MCP,
+evidence gates, recovery checkpoints, and live resource admission.
 
 The point is not "can generate an image." Every tool here can. The point is closing the
 gap between *AI output* and *the showcase-quality work people actually post*. That gap is
@@ -24,6 +28,8 @@ workflow, not model — and this repo encodes the workflow.
 
 | Path | What |
 |---|---|
+| `BEAST.md` | Canonical Beast loop, evidence contract, anatomy, and operational invariants |
+| `beast/` | Machine-readable capability graph, resource policy, pack schema, and active packs |
 | `design-system/` | QUALITY-LOOP.md + recipe cards (incl. motion-graphic-video, game-look-pass — the anti-Roblox loop) |
 | `skills/game-content-pipeline/` | Full 2D/3D/game pipeline skill (Blender ⇄ UE ⇄ Higgsfield) |
 | `docs/STACK.md` | Complete tool inventory: what's installed, verify dates |
@@ -34,8 +40,8 @@ workflow, not model — and this repo encodes the workflow.
 | `docs/PIPELINES.md` | End-to-end recipes: image → 3D → UE, sprites, sites, video |
 | `docs/OPPORTUNITY-LEDGER.md` | Evidence-first discovery protocol + parked openings |
 | `studio/` | The API: jobs, GPU leases, judge loop, provenance manifests, env snapshots, chained ledger, backend registry |
-| `scripts/` | doctor.py (25-check stack verify) · judge_image.py · replay_diff.py · ledger_verify.py · watch_video.py · watch_index.py |
-| `bin/beast.ps1` | CLI: `beast doctor · sync · judge · replay · ledger · watch · watch-index · recipes` |
+| `scripts/` | doctor · validation/operator status · resource admission · recovery · Watch and evidence gates |
+| `bin/beast.ps1` | CLI: `beast doctor · validate · status · resource-check · checkpoint · recover · watch · watch-validate` |
 | `requirements*.txt` | Reproducible Studio runtime and test dependencies |
 | `repos.yml` | Linked project repos (incl. vigil, hyperframes, ai-content-engine) |
 | `mcp/mcp.template.json` | MCP wiring template (Blender :9876, UE :8000/mcp, magic) |
@@ -55,6 +61,10 @@ gets badged and auto-graded. Runs land in `studio/runs/<id>/` (final.png = deliv
 ```powershell
 # 1. Verify the whole stack (Blender bridge, UE, Higgsfield auth, ffmpeg, rembg, disk)
 .\bin\beast.ps1 doctor
+
+# Validate capability claims/packs and inspect current VRAM admission
+.\bin\beast.ps1 validate
+.\bin\beast.ps1 status
 
 # 2. Pull the sibling repos this hub orchestrates
 powershell -File scripts/sync_repos.ps1
@@ -78,6 +88,10 @@ reinspection, source-aligned transcripts, perceptual deduplication, and optional
 OpenCLIP/Faiss semantic search. Its evidence and validation contract is designed to
 compile tutorials into practiced Unreal/Python/MCP skills rather than summaries.
 See [`docs/WATCH-LEARN.md`](docs/WATCH-LEARN.md).
+
+The Watch publication contract now requires frame-linked visual-only facts and
+real reinspection references for ambiguous segments. Parsing captions alone cannot
+pass the watching gate.
 
 ## Domains this covers
 

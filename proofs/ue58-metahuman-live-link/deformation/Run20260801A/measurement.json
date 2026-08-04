@@ -1,0 +1,92 @@
+{
+  "crop": {
+    "height": 240,
+    "left": 900,
+    "top": 1080,
+    "width": 240
+  },
+  "gates": {
+    "continuity": true,
+    "neutral_stability": false,
+    "rendered_deformation": false,
+    "source_delta": true
+  },
+  "identity": {
+    "actor": {
+      "location_x": 0,
+      "location_y": 0,
+      "location_z": 0,
+      "path": "/Game/MetaHumanLiveLinkProof.MetaHumanLiveLinkProof:PersistentLevel.BP_AdaProof_C_UAID_10FFE0B701E3DDF302_1554157999",
+      "rotation_pitch": 0,
+      "rotation_roll": 0,
+      "rotation_yaw": 0,
+      "scale_x": 1,
+      "scale_y": 1,
+      "scale_z": 1
+    },
+    "curve": "CTRL_expressions_jawOpen",
+    "editor_view": {
+      "fov": 90,
+      "location_x": 0.18446198568043587,
+      "location_y": 56.88775461083629,
+      "location_z": 165.87924853696384,
+      "rotation_pitch": 0.9844764583392368,
+      "rotation_roll": 0,
+      "rotation_yaw": -90
+    },
+    "engine_version": "5.8.1-56057345+++UE5+Release-5.8",
+    "project": "C:/Users/techai/Unreal Projects/MoodBuddyUE58Proof/MoodBuddyUE58Proof.uproject",
+    "run_id": "Run20260801A",
+    "subject": "me"
+  },
+  "metrics": {
+    "continuity_samples": 10,
+    "curve_delta": 0.6775023490190506,
+    "expression_curve_median": 0.8075177371501923,
+    "expression_rmse": 0.11791251483124988,
+    "neutral_curve_median": 0.13001538813114166,
+    "neutral_rmse": 0.03789118096751526,
+    "render_threshold": 0.1894559048375763
+  },
+  "pending_gate": "visual-region review tied to the three image hashes",
+  "promotion_allowed": false,
+  "schema": 1,
+  "source_images": [
+    {
+      "byte_count": 4642627,
+      "height": 1936,
+      "path": "C:/Users/techai/Unreal Projects/MoodBuddyUE58Proof/Saved/BeastProof/Run20260801A/deformation/neutral-a.png",
+      "sha256": "977ea3edc82160e44dd4e1ab730eccfccef1e8043fc75d0093c93af476c15fb5",
+      "width": 2033
+    },
+    {
+      "byte_count": 4589515,
+      "height": 1936,
+      "path": "C:/Users/techai/Unreal Projects/MoodBuddyUE58Proof/Saved/BeastProof/Run20260801A/deformation/neutral-b.png",
+      "sha256": "ccabe6696334d2ef019370fb46a47c2b303239c8519235d073496066f072c347",
+      "width": 2033
+    },
+    {
+      "byte_count": 4598322,
+      "height": 1936,
+      "path": "C:/Users/techai/Unreal Projects/MoodBuddyUE58Proof/Saved/BeastProof/Run20260801A/deformation/expression.png",
+      "sha256": "ad6d74834cf61862156dd9b585f72537b09947d8ab464fb1a8aae48de01c386f",
+      "width": 2033
+    }
+  ],
+  "source_receipts": [
+    {
+      "path": "C:\\Users\\techai\\Unreal Projects\\MoodBuddyUE58Proof\\Saved\\BeastProof\\Run20260801A\\deformation\\neutral-a.json",
+      "sha256": "4b560e4f833170d659156f01c972b302b4926ad16a783d17e5b33a69c4c6fd04"
+    },
+    {
+      "path": "C:\\Users\\techai\\Unreal Projects\\MoodBuddyUE58Proof\\Saved\\BeastProof\\Run20260801A\\deformation\\neutral-b.json",
+      "sha256": "087ecea7a7651ba5899452352ace8f2a01ca1913bb2aeb7d9fb68f24ce69cc10"
+    },
+    {
+      "path": "C:\\Users\\techai\\Unreal Projects\\MoodBuddyUE58Proof\\Saved\\BeastProof\\Run20260801A\\deformation\\expression.json",
+      "sha256": "e5ca7325f704c1e531e66df1fd00fad2ece1627274d7aea2bb28e67792f96f84"
+    }
+  ],
+  "state": "MEASUREMENT_REJECTED"
+}

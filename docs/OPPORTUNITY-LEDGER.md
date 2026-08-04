@@ -216,7 +216,176 @@ another capability. “Later” is not a trigger.
   claims until C passes, no combined-workflow claims until A–D pass independently.
 - Revisit trigger: first Beast Docs ingestion manifest produced from the Epic page.
 
-### OPP-20260803-01 — Graph-first consolidation of learned procedures and agent memory
+### OPP-20260801-02 — Unreal tutorial dependency-graph compilation
+<!-- renumbered from -01 at merge: ID collided with Beast Docs entry above -->
+
+- Status: observed
+- Trigger: Watch proof 004 recovered a named Unreal movement procedure from a
+  75-minute course: assets, prerequisites, ordered Blueprint actions, and
+  compile/play checks are separable from the narration.
+- New capability hypothesis: Beast can compile instructional chapters into a
+  dependency graph before emitting a skill, then schedule reinspection whenever
+  a prerequisite, property, or node is uncertain.
+- Potential beneficiaries: Unreal/Unity tooling, Blender workflows, CAD, and
+  any visual application with named objects and ordered state transitions.
+- Falsifiable claim: a graph-first compiler produces fewer missing-precondition
+  and wrong-target failures than direct transcript-to-skill compilation on a
+  matched tutorial set.
+- Smallest real experiment: compile the movement slice in proof 004 twice—once
+  directly and once through an explicit asset/prerequisite graph—then run both
+  in disposable UE5.8 projects with identical movement assertions.
+- Measures and acceptance threshold: all referenced assets resolve, every action
+  has source-time evidence, no compile errors, and W/A/S/D movement plus rotation
+  checks pass with retained logs/screenshots.
+- Evidence: `proofs/watch-004-ue58-first-game/`; currently a hypothesis with
+  source evidence, not a demonstrated advantage.
+- Evidence update (2026-08-01, execution session; landed 2026-08-03): the
+  original revisit trigger has FIRED. The proof-004 skill was executed
+  end-to-end against live UE 5.8 (headless BeastLab via MCP): clean compile,
+  mapping context runtime-verified via UE log, W/A/S/D signed-axis movement,
+  and orient-rotation ±90/180/0 after the step-7 settings — see
+  `proofs/watch-004-ue58-first-game/EXECUTION-PROOF.md`. This supplies the
+  DIRECT-compilation arm of the matched comparison (measured: ~50 tool calls
+  / ~1.5 h blind; ~20 calls / ~15 min with
+  `docs/runbooks/UE58-MCP-BLUEPRINT-PATHBOOK.md`). The graph-first arm remains
+  unbuilt; no reliability advantage is claimed until the matched comparison
+  runs. Boundary: behavioral evidence is positions/velocities/yaw + UE log
+  under nullrhi — no screenshots (headless).
+- Decision: retain for the next UE execution experiment; do not claim improved
+  reliability until the matched comparison is run.
+- Revisit trigger (updated 2026-08-03): the graph-first compiler arm exists
+  and can be run against the same movement assertions in a disposable project.
+
+### OPP-20260803-01 — Evidence-gated cross-session operational learning
+
+- Status: observed
+- Trigger: a Claude Code “dreaming” tutorial demonstrated cross-session memory
+  reconciliation, while the local Codex install exposed readable JSONL sessions,
+  reusable skills, noninteractive execution, and scheduled Codex Automations.
+  A 24-hour Beast collector streamed a 292.9 MB active session plus a second
+  session into a 52 KB private evidence bundle in 7.2 seconds including tests and
+  skill validation: 9,571 JSONL records, 51 retained conversation messages, 11
+  recent repository artifacts, zero parse errors, and zero truncations.
+- New capability hypothesis: combining cross-session conversation with git,
+  proof manifests, replay receipts, tests, and opportunity state can produce
+  better evidence-gated knowledge and recovery proposals than transcript-only
+  memory consolidation.
+- Current-project value: detect repeated Unreal/Watch failure paths, stale or
+  conflicting skills, claim debt, reusable procedures, missed opportunities, and
+  verified resume points without feeding raw tool/image payloads back to a model.
+- Outside-project value: the same proposal-and-approval pattern could support
+  auditable operational memory for long-running engineering and creative agents.
+- Prior art and current product evidence: the category is occupied. OpenAI Codex
+  officially supports reusable Skills and scheduled Automations with results
+  returned for review; community skills include `memory-reflect`,
+  `session-reflection`, `dream`, and `openclaw-auto-dream`. The tutorial itself
+  reports an Anthropic enterprise “dreaming” process. Sources:
+  https://openai.com/index/introducing-the-codex-app/ ·
+  https://openai.com/academy/codex-automations/ ·
+  https://skills.sh/basicmachines-co/basic-memory-skills/memory-reflect ·
+  https://skills.sh/jwilger/agent-skills/session-reflection ·
+  https://skills.sh/boshu2/agentops/dream ·
+  https://skills.sh/leoyeai/openclaw-auto-dream/openclaw-auto-dream
+- Differentiation hypothesis, not novelty claim: Beast’s useful distinction may
+  be cross-modal evidence and proof-state reconciliation plus strict authority
+  gates, not the general idea of agent reflection or memory consolidation.
+- Falsifiable claim: after approved reflection proposals update a bounded skill
+  or instruction set, repeated matched tasks show higher correctness or lower
+  retries/tool calls/elapsed time without new regressions than the pre-reflection
+  baseline.
+- Smallest real experiment: run `beast-reflection` manually on one 24-hour window,
+  approve at most three evidence-backed proposals, then replay five matched tasks
+  before and after the changes.
+- Measures and acceptance threshold: every proposal has source pointers and a
+  validation step; no unattended authority-file edits; no leaked secret fixture;
+  at least one predeclared performance or correctness measure improves, none of
+  the matched acceptance tests regress, and rejected proposals do not recur
+  without new evidence.
+- Risks, constraints, and rights/privacy implications: session logs may contain
+  private conversation and credentials; raw evidence stays gitignored, common
+  secret forms are redacted, reasoning/tool payloads are excluded, and substantive
+  changes remain user-approved. “Learning” here means durable instruction/skill
+  updates, not model-weight training.
+- Evidence: `skills/beast-reflection/`,
+  `tests/test_collect_reflection_evidence.py`, and local gitignored bundle
+  `.beast/reflection/evidence-20260803T171233Z.json`.
+- Decision: retain and manually forward-test before scheduling. No community
+  reflection skill was installed because none found was an official trusted
+  OpenAI package and the Beast evidence boundary is project-specific.
+- Revisit trigger: first reviewed report with accepted/rejected proposal outcomes
+  and a matched before/after replay.
+
+### OPP-20260803-02 — Video-grounded verified capability engine
+
+- Status: experiment
+- Trigger: Watch retained visual facts absent from tutorial transcripts, sought
+  denser source windows when evidence was ambiguous, and two Unreal proof paths
+  reached retained execution evidence. MetaHuman work independently demonstrated
+  executable evidence-state gates and crash-resumable recovery.
+- New capability: the existing eyes, hands, proof, recovery, resource, and
+  reflection mechanisms can be governed as one explicit Beast loop rather than a
+  collection of creative tools. A procedure cannot satisfy the new watching gate
+  without frame-linked visual-only evidence; transcript parsing alone fails.
+- Potential beneficiaries: agents operating visual applications, tutorial
+  learners, creative-production teams, engine/tool vendors, and regulated
+  workflows needing auditable procedure provenance.
+- Current-project value: one claim graph, immutable versioned Beast Packs, VRAM
+  admission, recovery verification, and a matched benchmark make unsupported
+  scope expansion mechanically visible.
+- Outside-project value: if controlled tests succeed, demonstrated human work may
+  be compiled into cheaper replayable execution without losing provenance or
+  increasing unsupported claims.
+- Prior art and primary sources: not researched in this implementation pass; no
+  novelty or category-ownership claim is made. Video procedure learning, learning
+  from demonstration, workflow capture, agent skills, and resource schedulers all
+  have established prior art. The experiment concerns their local composition and
+  measured effect.
+- Falsifiable claim: on a frozen matched task set, the Beast condition improves at
+  least one correctness or efficiency measure, does not regress a hard gate, does
+  not increase unsupported claims, recovers predeclared visual-only facts, and
+  triggers reinspection for intentionally ambiguous video evidence.
+- Smallest real experiment: one pilot task followed by three tasks in each of three
+  materially different domains, with baseline and Beast conditions repeated three
+  times under an identical model/tool/version/hardware envelope.
+- Measures and acceptance threshold: `bench/beast-loop-protocol.json`; report all
+  runs, hard-gate pass rate, time, tool calls, retries, interventions, recovery,
+  peak VRAM, visual-only precision, reinspection recall, and claim errors.
+- Risks, constraints, and rights/privacy implications: tutorial rights and site
+  terms remain source-specific; recorded UI may contain private data; a point-in-
+  time resource admission cannot control later allocations by unrelated programs;
+  reflection remains proposal-only until human approval.
+- Evidence: `BEAST.md`, `beast/capabilities.json`, `beast/pack.schema.json`,
+  `bench/beast-loop-protocol.json`, `scripts/validate_watch_procedure.py`, and
+  `docs/decisions/BR-006-APPROVAL-20260803.md`.
+- Decision: integrate the contract and measurement machinery; keep the system-level
+  improvement hypothesis explicitly unproven until the matched benchmark runs.
+- Pilot update 2026-08-03: a three-domain, one-task-per-domain ablation measured
+  transcript-only, initial adaptive frames, and full Beast. Frames recovered
+  visual-only state in Blender, Audacity, and a silent Inkscape tutorial;
+  reinspection resolved an Audacity `-3` transient versus the applied `-5` value.
+  The run did not promote: an SVG color was mistranscribed during compilation and
+  a prose UI label was not normalized to the typed SVG value. A typed evidence
+  manifest repaired the artifact byte-for-byte, but that same-task repair is not
+  held-out evidence. See `bench/concern-proof/PROOF.md`.
+- Newly opened implementation value: the compiler should emit typed,
+  target-schema-aware intermediate state (units, enums, transient/final state,
+  source frame, confidence) before prose `SKILL.md`. This could reduce semantic
+  loss across GUI-to-CLI/MCP translation beyond the current project, but is only
+  an observed repair hypothesis until a held-out task passes.
+- Revisit trigger: held-out validation of the typed compiler, then the first
+  complete non-pilot Beast-loop benchmark report.
+- Held-out update 2026-08-03: the compiler was frozen in `24a4c38` before a
+  transcript-absent Inkscape MetaBalls tutorial was selected. The first execution
+  failed because the target contract captured filter parameters but omitted the
+  visual action “enter the group and move one circle closer.” Adding only fixed
+  source geometry failed again. Reinspection recovered the feedback action; a
+  post-failure repair then moved closer until an unchanged pixel gate measured
+  one component and center alpha `255`. This is a measured repair on the same
+  tutorial, not held-out validation. Both failures and the passing repair are
+  retained in `bench/heldout-typed-compiler/PROOF.md`. The next trigger remains a
+  new unseen tutorial under the repaired frozen contract.
+
+### OPP-20260803-02 — Graph-first consolidation of learned procedures and agent memory
 
 - Status: observed
 - Trigger: 2026-08-03 session. Three converging observations: (1) discussion of the
