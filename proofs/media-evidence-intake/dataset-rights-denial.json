@@ -1,0 +1,8 @@
+{
+  "errors": [
+    "fair_use_research source is not eligible for dataset training",
+    "source lacks dataset_training authorization"
+  ],
+  "ready": false,
+  "source_count": 1
+}
