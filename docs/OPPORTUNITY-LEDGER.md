@@ -511,3 +511,38 @@ another capability. “Later” is not a trigger.
   the acceptance spec exist.
 - Revisit trigger: NVIDIA publishes a compatible NvPanoptix3D checkpoint/sample,
   or an authorized supported dataset subset is prepared for the two-node smoke.
+
+### OPP-20260804-01 — DeepStream MV3DT as the multi-camera 3D tracking substrate
+
+- Status: researching
+- Trigger: 2026-08-04 council review (GPT-5.6 arm) surfaced DeepStream 9.1's
+  Multi-View 3D Tracking (multi-camera fusion into one 3D coordinate system with
+  stable object IDs) + AutoMagicCalib auto-calibration + 10 shipped agent skills.
+- New capability hypothesis: Hawk-Eye-grade world-space tracking on our own
+  cameras/Sparks — the missing foundation any credible force/motion analysis
+  needs; wrap NVIDIA's skills rather than rebuild.
+- Hard constraint (single-model claim, verify first): bare-metal DeepStream is
+  NOT supported on SBSA/DGX Spark — must run in NVIDIA's SBSA container.
+- Prior art and primary sources: NVIDIA DeepStream 9.1 docs/repo (to be verified
+  directly — this entry rests on ONE model's research; Gemini returned nothing).
+- Falsifiable claim: two calibrated views of one moving object produce a single
+  stable 3D track with consistent IDs in the SBSA container on Spark hardware.
+- Smallest real experiment: SBSA container on Spark 1, sample multi-view data,
+  one MV3DT run, retained track output + calibration receipts.
+- Decision: verify NVIDIA docs before any hardware time; then smallest experiment.
+- Revisit trigger: primary-source verification of MV3DT + SBSA constraints.
+
+### OPP-20260804-02 — Transformation ledger for media evidence (C2PA/ExifTool)
+
+- Status: observed
+- Trigger: same council review; enhancement-vs-recovered-fact boundary needs
+  mechanical enforcement once enhancement enters evidence flows.
+- New capability hypothesis: every media artifact carries a hash-chained record
+  separating original / deterministically-transformed / generatively-enhanced,
+  extending studio/ledger.py's custody chain to media transformations.
+- Prior art: C2PA standard, ExifTool; our own chained ledger is the native fit.
+- Falsifiable claim: given an original frame and an enhanced derivative, the
+  ledger proves lineage and transformation class, and the watching gate refuses
+  generatively-enhanced pixels as visual-only evidence.
+- Decision: park until enhancement is actually used in an evidence path;
+  revisit trigger: first enhancement step proposed inside Watch.
