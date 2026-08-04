@@ -239,9 +239,22 @@ another capability. “Later” is not a trigger.
   checks pass with retained logs/screenshots.
 - Evidence: `proofs/watch-004-ue58-first-game/`; currently a hypothesis with
   source evidence, not a demonstrated advantage.
+- Evidence update (2026-08-01, execution session; landed 2026-08-03): the
+  original revisit trigger has FIRED. The proof-004 skill was executed
+  end-to-end against live UE 5.8 (headless BeastLab via MCP): clean compile,
+  mapping context runtime-verified via UE log, W/A/S/D signed-axis movement,
+  and orient-rotation ±90/180/0 after the step-7 settings — see
+  `proofs/watch-004-ue58-first-game/EXECUTION-PROOF.md`. This supplies the
+  DIRECT-compilation arm of the matched comparison (measured: ~50 tool calls
+  / ~1.5 h blind; ~20 calls / ~15 min with
+  `docs/runbooks/UE58-MCP-BLUEPRINT-PATHBOOK.md`). The graph-first arm remains
+  unbuilt; no reliability advantage is claimed until the matched comparison
+  runs. Boundary: behavioral evidence is positions/velocities/yaw + UE log
+  under nullrhi — no screenshots (headless).
 - Decision: retain for the next UE execution experiment; do not claim improved
   reliability until the matched comparison is run.
-- Revisit trigger: first disposable UE5.8 execution of the proof-004 skill.
+- Revisit trigger (updated 2026-08-03): the graph-first compiler arm exists
+  and can be run against the same movement assertions in a disposable project.
 
 ### OPP-20260803-01 — Evidence-gated cross-session operational learning
 
