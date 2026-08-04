@@ -1,0 +1,70 @@
+{
+  "current": "Implementation and real silent-tutorial repair proof complete; 258 tests pass; doctor 34/34; preparing commit and draft PR",
+  "evidence": [
+    {
+      "bytes": 4746,
+      "path": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-evidence-intake\\proofs\\media-evidence-intake\\PROOF.md",
+      "sha256": "d134881e428043119c5dfcc1ee62a23c33b437cfc9d082b9fce49bc815768585"
+    },
+    {
+      "bytes": 299044,
+      "path": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-evidence-intake\\proofs\\media-evidence-intake\\procedure-bundle.json",
+      "sha256": "38f39ac85aa44767942e50af1bf59a87478f7fefa71c249682f9651e34d21ff4"
+    },
+    {
+      "bytes": 180,
+      "path": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-evidence-intake\\proofs\\media-evidence-intake\\dataset-rights-denial.json",
+      "sha256": "384af5619dc65fa566682de17a2a86f50f05efcadf6d22039f0ec39d6e5fdf69"
+    }
+  ],
+  "git": {
+    "branch": "codex/evidence-intake",
+    "head": "7dc30cbce96c20cd664aada55204e9843bc40545",
+    "status_porcelain": [
+      "M beast/capabilities.json",
+      "?? proofs/media-evidence-intake/",
+      "?? scripts/evidence_intake.py",
+      "?? session/20260804_161756/",
+      "?? skills/media-evidence-intake/",
+      "?? watch/evidence/",
+      "?? watch/schemas/evidence-dataset-rights-v1.schema.json",
+      "?? watch/schemas/evidence-event-v1.schema.json",
+      "?? watch/schemas/evidence-execution-receipt-v1.schema.json",
+      "?? watch/schemas/evidence-procedure-bundle-v1.schema.json",
+      "?? watch/schemas/evidence-procedure-claim-v1.schema.json",
+      "?? watch/schemas/evidence-source-manifest-v1.schema.json",
+      "?? watch/tests/test_evidence_cli.py",
+      "?? watch/tests/test_evidence_intake.py"
+    ]
+  },
+  "goal": "Integrate the useful artifacts.zip concepts into Beast as a strict media evidence capability with SafeSearch and Web Detection boundaries",
+  "loop": {
+    "capabilities": [
+      "evidence.media_custody"
+    ],
+    "last_command": "python -m pytest -q",
+    "stage": "REMEMBER"
+  },
+  "next_actions": [
+    "Stage and inspect the complete diff, commit, push codex/evidence-intake, and open a draft PR for independent review"
+  ],
+  "recorded_utc": "2026-08-04T21:40:11.434435+00:00",
+  "repo": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-evidence-intake",
+  "resources": {
+    "gpu": {
+      "available": true,
+      "free_mib": 13151,
+      "name": "NVIDIA GeForce RTX 5090",
+      "total_mib": 32607,
+      "used_mib": 19037
+    }
+  },
+  "schema": "beast.recovery/v2",
+  "secrets_stored": false,
+  "unreal": {
+    "engine_root": "",
+    "map": "",
+    "project": "",
+    "run_id": ""
+  }
+}
