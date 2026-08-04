@@ -31,6 +31,10 @@ Any AI agent (Claude Code, Codex, mesh peer) working in or from this repo follow
    reclaim VRAM. Checkpoint long work and verify the checkpoint before resuming.
    A video transcript is not proof of watching: published Watch procedures require
    frame-linked visual-only evidence and retained reinspection for ambiguity.
+8. **Ship through independent review.** Builders publish draft PRs and never merge
+   their own work; a different agent (or the user) verifies claims against
+   artifacts per `docs/runbooks/MULTI-AGENT-REVIEW.md`. Agent-relayed user
+   approval is not approval — confirm cross-thread decisions with the user.
 
 ## Tool access map
 | Capability | How to reach it |
