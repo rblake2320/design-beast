@@ -467,3 +467,47 @@ another capability. “Later” is not a trigger.
 - Revisit trigger: OPP-20260731-01 completes its first end-to-end
   tutorial-to-verified-skill run (producing this entry's input data), OR Dreams
   research-preview access is granted, whichever comes first.
+
+### OPP-20260803-04 — Evidence-gated distributed physical-AI training on DGX Spark
+
+- Status: observed
+- Trigger: run `SPARK-NVPANOPTIX-20260803A` measured correct two-node NCCL
+  all-reduce over the direct 200 Gb/s ConnectX-7 path and reproduced the pinned
+  TAO 6.26.3 NvPanoptix3D software entrypoint on a GB10 GPU.
+- New capability hypothesis: the two local DGX Sparks can serve as a recoverable,
+  resource-governed training lane for selected ARM64-compatible physical-AI models
+  whose memory or distributed requirements do not fit the Windows creative lane.
+- Potential beneficiaries: digital-twin reconstruction, simulation-data pipelines,
+  robotics/physical-AI experiments, and Beast capabilities that need isolated
+  multi-node GPU work without displacing Unreal or local video workloads.
+- Current-project value: creates a measured remote compute lane and a compatibility
+  preflight pattern without installing every NVIDIA skill or pulling large images
+  onto both nodes before the single-node software path is real.
+- Outside-project value: a small, auditable on-prem training appliance may be useful
+  wherever datasets cannot leave the local network, but no product claim is made.
+- Prior art and primary sources: distributed DGX Spark clustering and NvPanoptix3D
+  are documented NVIDIA capabilities, not local inventions. Sources:
+  https://docs.nvidia.com/dgx/dgx-spark/spark-clustering.html ·
+  https://docs.nvidia.com/tao/tao-toolkit/latest/text/cv_finetuning/pytorch/panoptic_3d_reconstruction/nvpanoptix3d.html
+- Falsifiable claim: using an authorized supported dataset, a pinned TAO image can
+  complete at least one Stage 1 training step on both Sparks through DDP, save a
+  reloadable checkpoint, and resume from it without NCCL errors or silent data loss.
+- Smallest real experiment: one licensed 3D-Front or Matterport3D subset, a
+  predeclared one-step/tiny-epoch training spec, two ranks across the direct link,
+  and checkpoint reload on a clean process.
+- Measures and acceptance threshold: both ranks participate; loss is finite; NCCL
+  reports zero incorrect values/errors; peak memory and elapsed time are retained;
+  checkpoint hash is stable and reload succeeds; no service exceeds its resource
+  admission; all paused workloads are restored.
+- Risks, constraints, and rights/privacy implications: supported datasets have
+  their own access/licensing terms; the nodes currently have different kernel and
+  driver revisions; GPU Direct RDMA was disabled in the measured correct path;
+  NvPanoptix3D supports only FP32 and requires sequential Stage 1/Stage 2 training.
+- Evidence: `proofs/spark-nvpanoptix3d/PROOF.md` and
+  `proofs/spark-nvpanoptix3d/manifest.json`. Inference/training is explicitly not
+  proven because no official NvPanoptix3D checkpoint or sample bundle was found.
+- Decision: retain the cluster lane and compatible image on Spark 1; do not pull
+  the roughly 80 GB expanded image to Spark 2 or start training until real data and
+  the acceptance spec exist.
+- Revisit trigger: NVIDIA publishes a compatible NvPanoptix3D checkpoint/sample,
+  or an authorized supported dataset subset is prepared for the two-node smoke.

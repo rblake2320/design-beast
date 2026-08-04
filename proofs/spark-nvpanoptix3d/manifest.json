@@ -1,0 +1,61 @@
+{
+  "schema": "beast.proof/v1",
+  "run_id": "SPARK-NVPANOPTIX-20260803A",
+  "recorded_utc": "2026-08-04T03:05:00Z",
+  "target": "nvidia-tao-nvpanoptix3d-on-two-dgx-sparks",
+  "state": "preflight_pass_inference_not_run",
+  "nodes": [
+    {
+      "host": "spark-3cdf",
+      "address": "10.0.0.1",
+      "architecture": "aarch64",
+      "gpu": "NVIDIA GB10",
+      "kernel": "6.17.0-1021-nvidia",
+      "driver": "580.159.03"
+    },
+    {
+      "host": "spark-3173",
+      "address": "10.0.0.2",
+      "architecture": "aarch64",
+      "gpu": "NVIDIA GB10",
+      "kernel": "6.17.0-1008-nvidia",
+      "driver": "580.126.09"
+    }
+  ],
+  "network": {
+    "device": "rocep1s0f0",
+    "reported_speed_mbps": 200000,
+    "mtu": 9000,
+    "mpi_two_node": "pass",
+    "nccl_two_node": "pass",
+    "nccl_wrong_values": 0,
+    "observed_64m_bus_bandwidth_gbps": 9.26,
+    "gpu_direct_rdma": false
+  },
+  "tao": {
+    "version": "6.26.3",
+    "image_digest": "sha256:25e38610893454b09bc402f56647f873b0e1e28e7bfd949fb5e3a5f6fbdc8b81",
+    "local_image_id": "sha256:eceddd8329cfbe687c264ec7d04e832a2333db78a86d631cfb78ee2263478bee",
+    "architecture": "arm64",
+    "cuda": "13.0",
+    "torch": "2.9.0a0+50eac811a6.nv25.09",
+    "gpu_visible": true,
+    "nvpanoptix_import": true,
+    "entrypoint_actions": ["evaluate", "export", "inference", "train", "default_specs"]
+  },
+  "claim_boundary": {
+    "cluster_readiness": "measured",
+    "tao_software_compatibility": "reproduced",
+    "nvpanoptix3d_inference": "not_run",
+    "nvpanoptix3d_training": "not_run",
+    "generalized_performance": "not_claimed"
+  },
+  "blockers": [
+    "No official NvPanoptix3D checkpoint or ready-to-run sample bundle was found",
+    "Real training requires an authorized supported dataset and sequential Stage 1 and Stage 2 training",
+    "Node kernel and driver versions differ",
+    "GPU Direct RDMA is disabled in the measured NCCL path"
+  ],
+  "services_restored": true,
+  "secrets_stored": false
+}
