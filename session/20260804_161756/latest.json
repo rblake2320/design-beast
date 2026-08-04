@@ -1,43 +1,42 @@
 {
-  "current": "Implementation and real silent-tutorial repair proof complete; 258 tests pass; doctor 34/34; preparing commit and draft PR",
+  "current": "Rebased on origin/main ab1caf8; merged R2 extractors are wired to one explicit-authorization REST client; 287 tests pass; doctor 34/34; draft PR preparation",
   "evidence": [
     {
-      "bytes": 4746,
+      "bytes": 5383,
       "path": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-evidence-intake\\proofs\\media-evidence-intake\\PROOF.md",
-      "sha256": "d134881e428043119c5dfcc1ee62a23c33b437cfc9d082b9fce49bc815768585"
+      "sha256": "cf8dcb3282ca97e02c1a73a51501962f1a4c70c17007eda652037768465433df"
     },
     {
-      "bytes": 299044,
+      "bytes": 305848,
       "path": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-evidence-intake\\proofs\\media-evidence-intake\\procedure-bundle.json",
-      "sha256": "38f39ac85aa44767942e50af1bf59a87478f7fefa71c249682f9651e34d21ff4"
+      "sha256": "c0ea9d12af311c160656e620df05bd6e14f167afd41314cf43a90578e24a61ab"
     },
     {
-      "bytes": 180,
+      "bytes": 188,
       "path": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-evidence-intake\\proofs\\media-evidence-intake\\dataset-rights-denial.json",
-      "sha256": "384af5619dc65fa566682de17a2a86f50f05efcadf6d22039f0ec39d6e5fdf69"
+      "sha256": "6a08817b7eddb20a22ac62c6cb0ac2da4aea65a1b7a503a500c3af2fe110826f"
     }
   ],
   "git": {
     "branch": "codex/evidence-intake",
-    "head": "7dc30cbce96c20cd664aada55204e9843bc40545",
+    "head": "5c4ac3fdc4e205da7dbd1cc5782a86b2371faa96",
     "status_porcelain": [
-      "M beast/capabilities.json",
-      "?? proofs/media-evidence-intake/",
-      "?? scripts/evidence_intake.py",
-      "?? session/20260804_161756/",
-      "?? skills/media-evidence-intake/",
-      "?? watch/evidence/",
-      "?? watch/schemas/evidence-dataset-rights-v1.schema.json",
-      "?? watch/schemas/evidence-event-v1.schema.json",
-      "?? watch/schemas/evidence-execution-receipt-v1.schema.json",
-      "?? watch/schemas/evidence-procedure-bundle-v1.schema.json",
-      "?? watch/schemas/evidence-procedure-claim-v1.schema.json",
-      "?? watch/schemas/evidence-source-manifest-v1.schema.json",
-      "?? watch/tests/test_evidence_cli.py",
-      "?? watch/tests/test_evidence_intake.py"
+      "M docs/decisions/EVIDENCE-R2-GAP-CLOSURE-20260804.md",
+      " M proofs/media-evidence-intake/PROOF.md",
+      " M scripts/evidence_intake.py",
+      " M skills/media-evidence-intake/SKILL.md",
+      " M skills/media-evidence-intake/references/contracts.md",
+      " M watch/evidence/extractors/safe_search.py",
+      " M watch/evidence/extractors/web_entities.py",
+      " M watch/evidence/google_vision.py",
+      " M watch/evidence/schema/evidence_event.schema.json",
+      " M watch/evidence/tests/test_safety_extractors.py",
+      " M watch/tests/test_evidence_intake.py",
+      "?? watch/evidence/google_vision_client.py",
+      "?? watch/evidence/tests/test_google_vision_transport.py"
     ]
   },
-  "goal": "Integrate the useful artifacts.zip concepts into Beast as a strict media evidence capability with SafeSearch and Web Detection boundaries",
+  "goal": "Integrate artifacts.zip into Beast as strict media evidence custody and close the SafeSearch/Web Detection operational gap",
   "loop": {
     "capabilities": [
       "evidence.media_custody"
@@ -46,17 +45,17 @@
     "stage": "REMEMBER"
   },
   "next_actions": [
-    "Stage and inspect the complete diff, commit, push codex/evidence-intake, and open a draft PR for independent review"
+    "Commit the post-rebase R2 integration, push codex/evidence-intake, and open a draft PR for independent review"
   ],
-  "recorded_utc": "2026-08-04T21:40:11.434435+00:00",
+  "recorded_utc": "2026-08-04T21:51:07.174939+00:00",
   "repo": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-evidence-intake",
   "resources": {
     "gpu": {
       "available": true,
-      "free_mib": 13151,
+      "free_mib": 13330,
       "name": "NVIDIA GeForce RTX 5090",
       "total_mib": 32607,
-      "used_mib": 19037
+      "used_mib": 18858
     }
   },
   "schema": "beast.recovery/v2",

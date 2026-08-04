@@ -78,14 +78,23 @@ The optional Google Cloud Vision adapter implements two separate features:
    returned URL.
 
 Cloud use requires `cloud_analysis` authorization, an explicit per-call flag,
-and a configured credential. Web results remain hypothesis-only and cannot
+an explicit prior person-free screening confirmation, and a configured
+credential. Web results remain hypothesis-only and cannot
 alone verify identity, location, ownership, or wrongdoing.
 
 The cloud adapter is proven here by adversarial tests with an injected
 transport: authorization is required before network use, a blocked SafeSearch
 result prevents Web Detection, a safe result permits it, returned URLs are not
-fetched, and web-only evidence cannot promote an identity claim. **No live
+fetched, unscreened/person-bearing images cannot enter Web Detection, and
+web-only evidence cannot promote an identity claim. **No live
 Google request was made**, so live service integration remains unproven.
+
+After the R2 extractor package landed on main, this branch also wired its
+canonical `SafeSearchExtractor` and `WebDetectionExtractor` stubs to the same
+shared REST client. Injected-transport tests prove those actual extractor entry
+points parse responses and fail closed without permission. The raw extractor
+event schema remains canonical; this proof's stricter records are the separate
+promotion-custody layer.
 
 Official interfaces checked 2026-08-04:
 

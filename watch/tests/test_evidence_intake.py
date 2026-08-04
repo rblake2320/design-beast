@@ -386,7 +386,8 @@ def test_web_detection_records_matches_without_fetching_or_promoting_claim(tmp_p
         }}
 
     result = GoogleVisionExtractor(api_key="test", requester=requester).analyze(
-        image, manifest, parent, authorize_cloud_call=True)
+        image, manifest, parent, authorize_cloud_call=True,
+        confirm_person_free=True)
     assert calls == ["SAFE_SEARCH_DETECTION", "WEB_DETECTION"]
     assert result["gate"] == {"blocked": False, "reasons": [],
                               "web_detection_ran": True}
@@ -402,3 +403,26 @@ def test_web_detection_records_matches_without_fetching_or_promoting_claim(tmp_p
     )
     with pytest.raises(EvidenceContractError, match="hypothesis-only"):
         compile_procedure_bundle(manifest, [parent, safe_event, web_event], [claim], [])
+
+
+def test_web_detection_requires_person_screening_after_safe_search(tmp_path):
+    image, manifest = _manifest(
+        tmp_path, allowed_uses=["procedure_learning", "cloud_analysis"])
+    parent = _image_parent_event(manifest, image)
+    calls = []
+
+    def requester(feature, _content):
+        calls.append(feature)
+        return {"safeSearchAnnotation": {
+            "adult": "VERY_UNLIKELY", "violence": "VERY_UNLIKELY",
+            "racy": "VERY_UNLIKELY", "medical": "UNKNOWN", "spoof": "UNKNOWN",
+        }}
+
+    result = GoogleVisionExtractor(api_key="test", requester=requester).analyze(
+        image, manifest, parent, authorize_cloud_call=True)
+    assert calls == ["SAFE_SEARCH_DETECTION"]
+    assert result["gate"] == {
+        "blocked": True,
+        "reasons": ["person_screening_required"],
+        "web_detection_ran": False,
+    }

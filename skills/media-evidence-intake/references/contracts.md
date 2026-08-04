@@ -1,5 +1,14 @@
 # Evidence contracts
 
+## Two deliberate layers
+
+`watch/evidence/schema/evidence_event.schema.json` is the canonical raw event
+shape every extractor emits. The stricter records under `watch/schemas/` are
+promotion-custody envelopes: they bind raw/Watch observations to an admitted
+source hash, exact artifacts, parent events, claims, and execution receipts.
+They do not replace the extractor schema; they are the boundary crossed before
+a claim can be promoted or exported.
+
 ## Contract layers
 
 | Layer | Schema | Gate |
@@ -59,6 +68,15 @@ image bytes:
 It calls `POST https://vision.googleapis.com/v1/images:annotate`, caps returned
 rows, and never follows returned URLs. Authentication is optional at install
 time and required only for a live cloud call.
+
+`watch/evidence/google_vision_client.py` is the one shared REST transport. The
+canonical SafeSearch and Web Detection extractors and this custody adapter use
+that client, so the previously stubbed `_call_vision_api` methods are now
+operational. Direct extractor use still requires explicit cloud-call approval;
+the custody CLI additionally requires a source manifest authorized for
+`cloud_analysis`.
+Web Detection also requires an explicit person-free confirmation from a prior
+screening gate. SafeSearch can run without it; Web Detection cannot.
 
 Primary documentation (checked 2026-08-04):
 

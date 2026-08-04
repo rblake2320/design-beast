@@ -18,3 +18,13 @@
   passed; research-only dataset export was denied.
 - Verified 258 tests pass, Doctor 34/34, Ruff clean, Beast core valid, and skill
   validation successful.
+
+## 2026-08-04 18:02:00 -05:00
+
+- Fetched remote main and found the R2 evidence package had landed in the same
+  lane with SafeSearch/Web extractor classes but stubbed live API methods.
+- Rebased cleanly onto `ab1caf8`, replaced both stubs with one authenticated,
+  explicit-authorization REST transport, retained person-screening gates, and
+  corrected Web Detection results from observed to inferred.
+- Corrected the canonical schema so its safety/web events validate, added
+  operational transport/schema tests, and verified 287 tests pass.

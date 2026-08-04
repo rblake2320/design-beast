@@ -50,12 +50,14 @@ SafeSearch runs first. Adult, violent, or racy results at the configured
 threshold stop Web Detection unless sensitive review is separately authorized.
 
 ```powershell
-python scripts/evidence_intake.py google-vision manifest.json parent-event.json image.png result.json --authorize-cloud-call
+python scripts/evidence_intake.py google-vision manifest.json parent-event.json image.png result.json --authorize-cloud-call --confirm-person-free
 ```
 
 Do not fetch returned URLs automatically. Web entities, matching pages/images,
 and visually similar images are hypothesis-only evidence; they cannot alone
 verify identity, location, ownership, or wrongdoing.
+Do not pass `--confirm-person-free` until a prior person-screening gate has
+actually passed; without it, SafeSearch may run but Web Detection stays blocked.
 
 ## Derivatives and reporting
 

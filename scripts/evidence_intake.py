@@ -185,6 +185,7 @@ def _google_vision(args: argparse.Namespace) -> int:
         parent,
         authorize_cloud_call=args.authorize_cloud_call,
         allow_sensitive_review=args.allow_sensitive_review,
+        confirm_person_free=args.confirm_person_free,
     )
     _write_json(args.output, result)
     print(json.dumps({"ok": not result["gate"]["blocked"],
@@ -262,6 +263,10 @@ def parser() -> argparse.ArgumentParser:
     vision.add_argument("output", type=Path)
     vision.add_argument("--authorize-cloud-call", action="store_true")
     vision.add_argument("--allow-sensitive-review", action="store_true")
+    vision.add_argument(
+        "--confirm-person-free", action="store_true",
+        help="confirm a prior person-screening gate passed before Web Detection",
+    )
     vision.add_argument("--safe-search-threshold", default="LIKELY",
                         choices=["UNKNOWN", "VERY_UNLIKELY", "UNLIKELY",
                                  "POSSIBLE", "LIKELY", "VERY_LIKELY"])

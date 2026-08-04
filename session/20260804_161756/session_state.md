@@ -4,7 +4,7 @@
 - Repo: C:\Users\techai\brain\.worktrees\design-beast-evidence-intake
 - Branch: codex/evidence-intake
 - Started: 2026-08-04 16:17:56 -05:00
-- Updated: 2026-08-04 17:24:00 -05:00
+- Updated: 2026-08-04 18:02:00 -05:00
 
 ## Goal
 
@@ -27,12 +27,12 @@ independent reviewer. Do not merge the builder's own branch.
 ## Current Status
 
 The native evidence layer, CLI, strict schemas, concise skill, capability graph
-entry, and real retained-media proof are complete. The silent tutorial produced
-208 visual events and zero transcript events; a fresh Inkscape repair run passed
-all eight measured gates. Dataset export correctly failed for the research-only
-source. The full suite passes (258 passed, 7 deselected), Doctor is 34/34, Beast
-core validates, Ruff passes, and the skill validates. No paid cloud request was
-made.
+entry, and real retained-media proof are complete. After `origin/main` added R2
+extractor stubs, the branch was rebased and those canonical SafeSearch/Web
+extractors were wired to the same real REST client. Web results are inferred,
+person screening is required, and returned URLs are never fetched. The full
+suite passes (287 passed, 7 deselected), Doctor is 34/34, Beast core validates,
+Ruff passes, and the skill validates. No paid cloud request was made.
 
 ## Plan
 

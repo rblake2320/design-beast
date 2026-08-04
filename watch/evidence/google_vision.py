@@ -6,13 +6,10 @@ explicit authorization flag and a source manifest that allows cloud analysis.
 
 from __future__ import annotations
 
-import base64
 import json
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
-
-import requests
 
 from .contracts import (
     EvidenceContractError,
@@ -23,8 +20,8 @@ from .contracts import (
     make_evidence_event,
     validate_evidence_event,
 )
+from .google_vision_client import VISION_ENDPOINT, GoogleVisionClient
 
-VISION_ENDPOINT = "https://vision.googleapis.com/v1/images:annotate"
 LIKELIHOODS = {
     "UNKNOWN": 0,
     "VERY_UNLIKELY": 1,
@@ -52,43 +49,14 @@ class GoogleVisionExtractor:
         _require(safe_search_threshold in LIKELIHOODS,
                  "invalid SafeSearch threshold")
         _require(1 <= max_results <= 50, "Google Vision max_results must be 1..50")
-        self.api_key = api_key
-        self.timeout_seconds = timeout_seconds
         self.safe_search_threshold = safe_search_threshold
         self.max_results = max_results
-        self._requester = requester or self._request_live
-
-    def _request_live(self, feature: str, content: bytes) -> dict[str, Any]:
-        _require(bool(self.api_key),
-                 "Google Cloud Vision API key is required for a live call")
-        payload = {
-            "requests": [{
-                "image": {"content": base64.b64encode(content).decode("ascii")},
-                "features": [{"type": feature, "maxResults": self.max_results}],
-            }],
-        }
-        try:
-            response = requests.post(
-                VISION_ENDPOINT,
-                params={"key": self.api_key},
-                headers={"Content-Type": "application/json; charset=utf-8"},
-                json=payload,
-                timeout=self.timeout_seconds,
-            )
-            response.raise_for_status()
-            body = response.json()
-        except (requests.RequestException, ValueError) as exc:
-            raise EvidenceContractError(
-                f"Google Vision request failed: {type(exc).__name__}") from exc
-        _require(isinstance(body, dict), "Google Vision response must be an object")
-        responses = body.get("responses")
-        _require(isinstance(responses, list) and len(responses) == 1,
-                 "Google Vision response must contain exactly one image result")
-        result = responses[0]
-        if isinstance(result.get("error"), dict):
-            raise EvidenceContractError(
-                f"Google Vision error: {result['error'].get('message', 'unknown error')}")
-        return result
+        self._client = GoogleVisionClient(
+            api_key=api_key,
+            requester=requester,
+            timeout_seconds=timeout_seconds,
+            max_results=max_results,
+        )
 
     def analyze(
         self,
@@ -98,6 +66,7 @@ class GoogleVisionExtractor:
         *,
         authorize_cloud_call: bool,
         allow_sensitive_review: bool = False,
+        confirm_person_free: bool = False,
     ) -> dict[str, Any]:
         _require_authorized_use(manifest, "cloud_analysis")
         _require(authorize_cloud_call,
@@ -118,7 +87,8 @@ class GoogleVisionExtractor:
             "max_results": self.max_results,
         })
 
-        safe_result = self._requester("SAFE_SEARCH_DETECTION", content)
+        safe_result = self._client.request(
+            "SAFE_SEARCH_DETECTION", content, authorize_cloud_call=True)
         if isinstance(safe_result.get("error"), dict):
             raise EvidenceContractError(
                 f"Google Vision error: {safe_result['error'].get('message', 'unknown error')}")
@@ -157,8 +127,16 @@ class GoogleVisionExtractor:
                 "gate": {"blocked": True, "reasons": reasons,
                          "web_detection_ran": False},
             }
+        if not confirm_person_free:
+            return {
+                "events": [safe_event],
+                "gate": {"blocked": True,
+                         "reasons": ["person_screening_required"],
+                         "web_detection_ran": False},
+            }
 
-        web_result = self._requester("WEB_DETECTION", content)
+        web_result = self._client.request(
+            "WEB_DETECTION", content, authorize_cloud_call=True)
         if isinstance(web_result.get("error"), dict):
             raise EvidenceContractError(
                 f"Google Vision error: {web_result['error'].get('message', 'unknown error')}")
