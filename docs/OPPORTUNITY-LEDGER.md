@@ -384,3 +384,86 @@ another capability. “Later” is not a trigger.
   tutorial, not held-out validation. Both failures and the passing repair are
   retained in `bench/heldout-typed-compiler/PROOF.md`. The next trigger remains a
   new unseen tutorial under the repaired frozen contract.
+
+### OPP-20260803-02 — Graph-first consolidation of learned procedures and agent memory
+
+- Status: observed
+- Trigger: 2026-08-03 session. Three converging observations: (1) discussion of the
+  "Claude Dreaming" video (YouTube jI4ZVB_MPhU — NOT inspected; transcript-only cap
+  applies; no claim below is sourced from it) led to first-party verification that
+  Anthropic ships Dreams, an async memory-consolidation job for Managed Agents:
+  reads one memory store + 1–100 session transcripts, merges duplicates, resolves
+  contradictions, surfaces patterns, emits a NEW store with inputs immutable
+  (research preview, beta header `dreaming-2026-04-21`). (2) Watch v2 and the
+  in-flight beast-reflection skill both consolidate into flat prose files
+  (SKILL.md, report markdown) — merge/contradiction/dedup operations there are
+  rewrites of prose, not queryable operations. (3) Cross-agent smoke run
+  (2026-08-03, retained): the in-flight Codex reflection collector pointed at
+  Claude Code's session root found 11 session files but parsed **0 messages** —
+  the two agents' transcript schemas are disjoint (Codex `event_msg` envelope vs
+  Claude `type: user/assistant` + nested `message.content`), so today each agent
+  can only consolidate its own memory.
+- New capability hypothesis (graph-first): represent learned procedures and session
+  learnings as a graph — nodes = states/steps/settings/assets/claims, each carrying
+  a source-evidence pointer; edges = ordering/dependency/duplicate-of/contradicts —
+  instead of flat markdown. Then Dreams-style consolidation (merge, contradiction
+  resolution, pattern surfacing) becomes a deterministic graph operation with
+  per-step provenance preserved, independently watched tutorials can compose into
+  larger procedures, and agent-specific transcripts (Codex, Claude) become thin
+  adapters feeding one shared substrate rather than parallel memory silos.
+- Potential beneficiaries: OPP-20260731-01 (its compiled procedures are this
+  entry's input), OPP-20260731-02 (a shared substrate is the natural home for
+  cross-agent skills), beast-reflection (adapter model gives it Claude coverage),
+  brain repo memory, any multi-agent fleet with per-agent transcript formats.
+- Current-project value: Watch/Docs proofs gain lossless merge + drift detection
+  across tutorials (e.g. the 5.6→5.8 Avalanche drift in OPP-20260801-01 is exactly
+  a "contradicts" edge between two evidence-backed nodes).
+- Outside-project value: an open, evidence-first consolidation substrate that is
+  agent-agnostic — Anthropic's Dreams store is managed and closed; nothing
+  retrieved so far does this over executable, validated procedures.
+- Prior art and primary sources (searched 2026-08-03; sweep NOT yet exhaustive —
+  no novelty wording until it is): extends OPP-20260731-01 — read that entry
+  first; it owns video→procedure, this entry owns only the
+  consolidation/representation layer. Anthropic Dreams (first-party, fetched
+  2026-08-03): https://platform.claude.com/docs/en/managed-agents/dreams —
+  consolidation over a managed store; store format closed, single-vendor.
+  Secondary sources describe a Claude Code "Auto Dream" CLI face (observed,
+  secondary only; absent from a direct check of Claude Code 2.1.220).
+  Watch-and-Learn (arXiv 2510.04673): video→executable trajectories, no graph
+  memory or cross-source consolidation. GOAL (tdcommons 10260): demonstrations→
+  callable skills, no consolidation layer described. GraphRAG-family systems do
+  graph-first consolidation for *documents*; none retrieved so far target
+  *procedures with executable validation and source-time evidence chains* — that
+  gap is the differentiation hypothesis, stated as hypothesis only.
+- Falsifiable claim: for the two existing Watch proofs (watch-001, watch-002), a
+  graph representation can be generated such that (a) every node's evidence
+  pointer resolves to a retained artifact, (b) a deterministic query reconstructs
+  each original compiled SKILL.md losslessly (empty or whitespace-only diff), and
+  (c) merging the two graphs deduplicates genuinely shared steps/settings and
+  flags at least one real contradiction or version-drift pair with zero human
+  editing.
+- Smallest real experiment: one script; inputs = the two existing proof
+  directories; outputs = two graphs + one merged graph + round-trip diffs,
+  retained under `proofs/`. No new video ingestion required.
+- Measures and acceptance threshold: round-trip diff empty/whitespace-only for
+  both proofs; 100% of evidence pointers resolve; dedup and contradiction output
+  spot-checked against the source artifacts and recorded.
+- Risks, constraints, and rights/privacy implications: graph schema churn could
+  strand early proofs (mitigate: SKILL.md stays the compiled artifact of record;
+  the graph is derived until proven); session transcripts contain user content —
+  the beast-reflection redaction/local-only rules apply to any transcript-fed
+  node; source attribution must survive graph transforms.
+- Evidence: Dreams API — verified (first-party doc fetched 2026-08-03; corrected
+  same day from an earlier over-confident "does not exist in Claude Code" via
+  direct re-verification). CLI Auto Dream — observed, secondary sources only.
+  Codex↔Claude schema disjointness — reproduced + measured (collector run
+  2026-08-03: 11 files / 0 messages parsed). Graph substrate itself — no evidence;
+  hypothesis only, nothing built.
+- Decision: log as observed; run the round-trip experiment before any build-out;
+  no novelty claim without a documented exhaustive prior-art sweep (agent-memory
+  graphs are an active area — assume occupied until shown otherwise). Requesting
+  Dreams research-preview access is independently worthwhile as a first-party
+  consolidation baseline to compare against.
+- Revisit trigger: OPP-20260731-01 completes its first end-to-end
+  tutorial-to-verified-skill run (producing this entry's input data), OR Dreams
+  research-preview access is granted, whichever comes first.
