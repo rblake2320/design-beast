@@ -385,7 +385,7 @@ another capability. “Later” is not a trigger.
   retained in `bench/heldout-typed-compiler/PROOF.md`. The next trigger remains a
   new unseen tutorial under the repaired frozen contract.
 
-### OPP-20260803-02 — Graph-first consolidation of learned procedures and agent memory
+### OPP-20260803-03 — Graph-first consolidation of learned procedures and agent memory
 
 - Status: observed
 - Trigger: 2026-08-03 session. Three converging observations: (1) discussion of the
