@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EvidenceEvent",
+  "description": "Canonical shape for EVERY extractor in Beast's Watch pipeline: OCR, transcript, pose, object, landmark, UI-state, force. Prevents each new capability from inventing its own JSON.",
+  "type": "object",
+  "required": ["event_id", "source_id", "source_time_start_ms", "source_time_end_ms", "modality", "confidence", "extractor", "review_state"],
+  "properties": {
+    "event_id": {"type": "string"},
+    "source_id": {"type": "string", "description": "sha256 of source media, ties back to source_manifest"},
+    "source_time_start_ms": {"type": "integer"},
+    "source_time_end_ms": {"type": "integer"},
+    "modality": {
+      "type": "string",
+      "enum": ["screen_text", "transcript", "ui_state", "object", "pose", "landmark",
+               "reflection_clue", "scene_change", "force_estimate", "document"]
+    },
+    "kind": {"type": "string", "description": "free-text subtype e.g. terminal_output, code_editor, error_message"},
+    "content": {"type": "string"},
+    "bbox": {
+      "type": "object",
+      "properties": {
+        "x": {"type": "number"}, "y": {"type": "number"},
+        "w": {"type": "number"}, "h": {"type": "number"}
+      }
+    },
+    "geo": {
+      "type": "object",
+      "properties": {"lat": {"type": ["number", "null"]}, "lng": {"type": ["number", "null"]}}
+    },
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "uncertainty": {
+      "type": "object",
+      "description": "REQUIRED for any derived/computed modality like force_estimate",
+      "properties": {
+        "interval_95_percent": {"type": "array", "items": {"type": "number"}},
+        "method": {"type": "string"}
+      }
+    },
+    "extractor": {
+      "type": "object",
+      "required": ["name", "version"],
+      "properties": {
+        "name": {"type": "string"},
+        "version": {"type": "string"},
+        "config_hash": {"type": "string"}
+      }
+    },
+    "frame_refs": {"type": "array", "items": {"type": "string"}},
+    "review_state": {
+      "type": "string",
+      "enum": ["observed", "inferred", "uncertain", "verified_by_execution", "rejected"]
+    },
+    "reviewer": {"type": ["string", "null"]}
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ProcedureClaim",
+  "description": "One compiled, auditable step of a learned skill. Every claim must trace back to EvidenceEvent ids and carry an explicit review_state. Never emit a procedure step with review_state='inferred' as if it were verified.",
+  "type": "object",
+  "required": ["step_id", "description", "evidence_event_ids", "review_state"],
+  "properties": {
+    "step_id": {"type": "string"},
+    "description": {"type": "string"},
+    "evidence_event_ids": {"type": "array", "items": {"type": "string"}},
+    "review_state": {
+      "type": "string",
+      "enum": ["observed", "inferred", "uncertain", "verified_by_execution", "rejected"]
+    },
+    "requires_human_approval": {"type": "boolean"},
+    "replay_result": {
+      "type": ["object", "null"],
+      "properties": {
+        "success": {"type": "boolean"},
+        "environment": {"type": "string"},
+        "timestamp": {"type": "string", "format": "date-time"}
+      }
+    }
+  }
+}

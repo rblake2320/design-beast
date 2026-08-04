@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SourceManifest",
+  "description": "Provenance record for the source video/image/document Beast learns from. Required before any evidence extraction runs.",
+  "type": "object",
+  "required": ["source_id", "sha256", "authorization_status", "ingested_at"],
+  "properties": {
+    "source_id": {"type": "string"},
+    "sha256": {"type": "string"},
+    "original_filename": {"type": "string"},
+    "duration_ms": {"type": "integer"},
+    "authorization_status": {
+      "type": "string",
+      "enum": ["authorized_owned", "authorized_licensed", "authorized_public_domain",
+               "authorized_fair_use_research", "unverified_do_not_use"]
+    },
+    "c2pa_manifest_present": {"type": "boolean"},
+    "exif_metadata": {"type": "object"},
+    "ingested_at": {"type": "string", "format": "date-time"},
+    "chain_of_custody": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "step": {"type": "string"},
+          "actor": {"type": "string"},
+          "timestamp": {"type": "string", "format": "date-time"},
+          "artifact_hash": {"type": "string"}
+        }
+      }
+    }
+  }
+}
