@@ -1,0 +1,3071 @@
+{
+  "schema": "beast.watch.typed-state/v1",
+  "status": "answered",
+  "application": "Inkscape / SVG Filter Effects",
+  "version": "source UI unreported; execution target Inkscape 1.4.4",
+  "target_fingerprint": "f586ec2c2165503bd87e4e565ca22d35de759bcddff4ecb39b347f716f46761b",
+  "timeline_fingerprint": "c1e69c60cb87cff3b43c60d5deb517eddcdee70981630e71eab045737ceaaa88",
+  "values": [
+    {
+      "name": "a00",
+      "type": "number",
+      "value": 1.0,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "a01",
+      "type": "number",
+      "value": 0.0,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "a02",
+      "type": "number",
+      "value": 0.0,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "a03",
+      "type": "number",
+      "value": 0.0,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "a04",
+      "type": "number",
+      "value": 0.0,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "a10",
+      "type": "number",
+      "value": 0.0,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "a11",
+      "type": "number",
+      "value": 1.0,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "a12",
+      "type": "number",
+      "value": 0.0,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "a13",
+      "type": "number",
+      "value": 0.0,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "a14",
+      "type": "number",
+      "value": 0.0,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "a20",
+      "type": "number",
+      "value": 0.0,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "a21",
+      "type": "number",
+      "value": 0.0,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "a22",
+      "type": "number",
+      "value": 1.0,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "a23",
+      "type": "number",
+      "value": 0.0,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "a24",
+      "type": "number",
+      "value": 0.0,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "a30",
+      "type": "number",
+      "value": 0.0,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "a31",
+      "type": "number",
+      "value": 0.0,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "a32",
+      "type": "number",
+      "value": 0.0,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "a33",
+      "type": "number",
+      "value": 20.0,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "a34",
+      "type": "number",
+      "value": -10.0,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "circle_diameter",
+      "type": "number",
+      "value": 248.922,
+      "unit": "px",
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0065",
+          "source_seconds": 84.75,
+          "source_time": "00:01:24.750",
+          "frame_sha256": "bb8cf2d4b11c29eb87607ece426be616110d6de2ce8cb914e1d2d76f3083886b",
+          "ingest_hash_verified": true,
+          "region": [
+            520,
+            0,
+            750,
+            90
+          ],
+          "region_rgba_sha256": "d630becd17e3a2ab9bb55fd61521b9f1cbadb4a3eeb9cacce10562267b948cda",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0070",
+          "source_seconds": 90.424,
+          "source_time": "00:01:30.424",
+          "frame_sha256": "869139379d916a53ee2adeb4ce8a03f0b791d219fbf8d0df299c7b175a28475c",
+          "ingest_hash_verified": true,
+          "region": [
+            520,
+            0,
+            750,
+            90
+          ],
+          "region_rgba_sha256": "edb1b8f5ef121440fad82dfcc3da2e00bd599a0eff2c63a3d81f6683bbe389f2",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "color_matrix_type",
+      "type": "enum",
+      "value": "matrix",
+      "confidence": 1.0,
+      "source_ui_labels": [
+        "Matrix"
+      ],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            680,
+            650,
+            320
+          ],
+          "region_rgba_sha256": "f2bf520cc12be5f87064639c7d551b2033501dcc451d15e0e35f9a7274aada79",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            680,
+            650,
+            320
+          ],
+          "region_rgba_sha256": "610ee3f245539084efe4159ee2c09f24b0e412f04d2c776c7acd619e2c342447",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "grouped",
+      "type": "boolean",
+      "value": true,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0065",
+          "source_seconds": 84.75,
+          "source_time": "00:01:24.750",
+          "frame_sha256": "bb8cf2d4b11c29eb87607ece426be616110d6de2ce8cb914e1d2d76f3083886b",
+          "ingest_hash_verified": true,
+          "region": [
+            0,
+            1000,
+            1500,
+            80
+          ],
+          "region_rgba_sha256": "61fa64f735457cb153929c986c61ba9ea0e6f637e23cd1f04af0a30cf4d2a6a6",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0070",
+          "source_seconds": 90.424,
+          "source_time": "00:01:30.424",
+          "frame_sha256": "869139379d916a53ee2adeb4ce8a03f0b791d219fbf8d0df299c7b175a28475c",
+          "ingest_hash_verified": true,
+          "region": [
+            0,
+            1000,
+            1500,
+            80
+          ],
+          "region_rgba_sha256": "df9074e456eb9449891b33c7ceb5819b46a087f52554202eeae15c0cc02a37f0",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "initial_group_height",
+      "type": "number",
+      "value": 248.922,
+      "unit": "px",
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0065",
+          "source_seconds": 84.75,
+          "source_time": "00:01:24.750",
+          "frame_sha256": "bb8cf2d4b11c29eb87607ece426be616110d6de2ce8cb914e1d2d76f3083886b",
+          "ingest_hash_verified": true,
+          "region": [
+            520,
+            0,
+            750,
+            90
+          ],
+          "region_rgba_sha256": "d630becd17e3a2ab9bb55fd61521b9f1cbadb4a3eeb9cacce10562267b948cda",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0070",
+          "source_seconds": 90.424,
+          "source_time": "00:01:30.424",
+          "frame_sha256": "869139379d916a53ee2adeb4ce8a03f0b791d219fbf8d0df299c7b175a28475c",
+          "ingest_hash_verified": true,
+          "region": [
+            520,
+            0,
+            750,
+            90
+          ],
+          "region_rgba_sha256": "edb1b8f5ef121440fad82dfcc3da2e00bd599a0eff2c63a3d81f6683bbe389f2",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "initial_group_width",
+      "type": "number",
+      "value": 602.857,
+      "unit": "px",
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0065",
+          "source_seconds": 84.75,
+          "source_time": "00:01:24.750",
+          "frame_sha256": "bb8cf2d4b11c29eb87607ece426be616110d6de2ce8cb914e1d2d76f3083886b",
+          "ingest_hash_verified": true,
+          "region": [
+            520,
+            0,
+            750,
+            90
+          ],
+          "region_rgba_sha256": "d630becd17e3a2ab9bb55fd61521b9f1cbadb4a3eeb9cacce10562267b948cda",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0070",
+          "source_seconds": 90.424,
+          "source_time": "00:01:30.424",
+          "frame_sha256": "869139379d916a53ee2adeb4ce8a03f0b791d219fbf8d0df299c7b175a28475c",
+          "ingest_hash_verified": true,
+          "region": [
+            520,
+            0,
+            750,
+            90
+          ],
+          "region_rgba_sha256": "edb1b8f5ef121440fad82dfcc3da2e00bd599a0eff2c63a3d81f6683bbe389f2",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "layout_axis",
+      "type": "enum",
+      "value": "horizontal",
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0065",
+          "source_seconds": 84.75,
+          "source_time": "00:01:24.750",
+          "frame_sha256": "bb8cf2d4b11c29eb87607ece426be616110d6de2ce8cb914e1d2d76f3083886b",
+          "ingest_hash_verified": true,
+          "region": [
+            430,
+            330,
+            650,
+            350
+          ],
+          "region_rgba_sha256": "f0fca3467a04158beddf1ee21edc9bca17cd76a21f903c272225479da7b08564",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0070",
+          "source_seconds": 90.424,
+          "source_time": "00:01:30.424",
+          "frame_sha256": "869139379d916a53ee2adeb4ce8a03f0b791d219fbf8d0df299c7b175a28475c",
+          "ingest_hash_verified": true,
+          "region": [
+            430,
+            330,
+            650,
+            350
+          ],
+          "region_rgba_sha256": "df28b83baa74947ea28adce9887ca7c669deb096379bb3ce1ce89ac7230b3106",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "object_count",
+      "type": "integer",
+      "value": 2,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0065",
+          "source_seconds": 84.75,
+          "source_time": "00:01:24.750",
+          "frame_sha256": "bb8cf2d4b11c29eb87607ece426be616110d6de2ce8cb914e1d2d76f3083886b",
+          "ingest_hash_verified": true,
+          "region": [
+            430,
+            330,
+            650,
+            350
+          ],
+          "region_rgba_sha256": "f0fca3467a04158beddf1ee21edc9bca17cd76a21f903c272225479da7b08564",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0070",
+          "source_seconds": 90.424,
+          "source_time": "00:01:30.424",
+          "frame_sha256": "869139379d916a53ee2adeb4ce8a03f0b791d219fbf8d0df299c7b175a28475c",
+          "ingest_hash_verified": true,
+          "region": [
+            430,
+            330,
+            650,
+            350
+          ],
+          "region_rgba_sha256": "df28b83baa74947ea28adce9887ca7c669deb096379bb3ce1ce89ac7230b3106",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "primitive_1",
+      "type": "enum",
+      "value": "feGaussianBlur",
+      "confidence": 1.0,
+      "source_ui_labels": [
+        "Gaussian Blur"
+      ],
+      "evidence": [
+        {
+          "frame_id": "frame-0129",
+          "source_seconds": 148.8,
+          "source_time": "00:02:28.800",
+          "frame_sha256": "b496bfd535b6e30f28988faeb0891d09d5925110a5956668d029464029476765",
+          "ingest_hash_verified": true,
+          "region": [
+            960,
+            30,
+            760,
+            260
+          ],
+          "region_rgba_sha256": "922a0239bd68bc5915e05c17ca56c9fdf758be7928a92439f213a933bbd95d17",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0138",
+          "source_seconds": 149.6,
+          "source_time": "00:02:29.600",
+          "frame_sha256": "2e810add08d7e3c179039d91ebdd97288207ad1794a436ab2ba8466b06631ad1",
+          "ingest_hash_verified": true,
+          "region": [
+            960,
+            30,
+            760,
+            260
+          ],
+          "region_rgba_sha256": "19290a356bad31a1f5c234bcd3ef5013c3bb4c5a6d6e181deb9e6a0013551bc5",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "primitive_2",
+      "type": "enum",
+      "value": "feColorMatrix",
+      "confidence": 1.0,
+      "source_ui_labels": [
+        "Color Matrix"
+      ],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1200,
+            25,
+            550,
+            300
+          ],
+          "region_rgba_sha256": "bf9e8ff7b6224d19af46bbc28cd2823507209cf100d623ee0e08a0287a133211",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1200,
+            25,
+            550,
+            300
+          ],
+          "region_rgba_sha256": "4f7f619937e5950fc48c966034fd8906bef3233c490dc08c0bb8e1cb0eb89fdb",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "primitive_3",
+      "type": "enum",
+      "value": "feColorMatrix",
+      "confidence": 1.0,
+      "source_ui_labels": [
+        "Color Matrix"
+      ],
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1200,
+            25,
+            550,
+            300
+          ],
+          "region_rgba_sha256": "bf9e8ff7b6224d19af46bbc28cd2823507209cf100d623ee0e08a0287a133211",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1200,
+            25,
+            550,
+            300
+          ],
+          "region_rgba_sha256": "4f7f619937e5950fc48c966034fd8906bef3233c490dc08c0bb8e1cb0eb89fdb",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "shape_kind",
+      "type": "enum",
+      "value": "circle",
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0065",
+          "source_seconds": 84.75,
+          "source_time": "00:01:24.750",
+          "frame_sha256": "bb8cf2d4b11c29eb87607ece426be616110d6de2ce8cb914e1d2d76f3083886b",
+          "ingest_hash_verified": true,
+          "region": [
+            430,
+            330,
+            650,
+            350
+          ],
+          "region_rgba_sha256": "f0fca3467a04158beddf1ee21edc9bca17cd76a21f903c272225479da7b08564",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0070",
+          "source_seconds": 90.424,
+          "source_time": "00:01:30.424",
+          "frame_sha256": "869139379d916a53ee2adeb4ce8a03f0b791d219fbf8d0df299c7b175a28475c",
+          "ingest_hash_verified": true,
+          "region": [
+            430,
+            330,
+            650,
+            350
+          ],
+          "region_rgba_sha256": "df28b83baa74947ea28adce9887ca7c669deb096379bb3ce1ce89ac7230b3106",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "spacing_strategy",
+      "type": "enum",
+      "value": "move_closer",
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0103",
+          "source_seconds": 137.25,
+          "source_time": "00:02:17.250",
+          "frame_sha256": "3bbdd7389cc0895989c8c030d909f1cf9eab071dc445adfa1f1cf44b77fc6b82",
+          "ingest_hash_verified": true,
+          "region": [
+            0,
+            250,
+            1280,
+            700
+          ],
+          "region_rgba_sha256": "5c86411c7c4165709fd003fb947c0e08e96ff79810b60519be4c0f40954e1ba2",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0107",
+          "source_seconds": 143.25,
+          "source_time": "00:02:23.250",
+          "frame_sha256": "a3010af818188d9e7189a4d5209c6c11dbc4d11f17bdb09bbddbb42513a12e81",
+          "ingest_hash_verified": true,
+          "region": [
+            0,
+            250,
+            1280,
+            700
+          ],
+          "region_rgba_sha256": "3b231a885a049a2c210e8370751ef5ba2a3195de725a1404169702c918b5a0ca",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "std_deviation_x",
+      "type": "number",
+      "value": 34.79,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0129",
+          "source_seconds": 148.8,
+          "source_time": "00:02:28.800",
+          "frame_sha256": "b496bfd535b6e30f28988faeb0891d09d5925110a5956668d029464029476765",
+          "ingest_hash_verified": true,
+          "region": [
+            1200,
+            780,
+            700,
+            210
+          ],
+          "region_rgba_sha256": "d12236d7abf327b4a48090dbeeb97d717612a2554ae6b31075fbef1909f090ea",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0138",
+          "source_seconds": 149.6,
+          "source_time": "00:02:29.600",
+          "frame_sha256": "2e810add08d7e3c179039d91ebdd97288207ad1794a436ab2ba8466b06631ad1",
+          "ingest_hash_verified": true,
+          "region": [
+            1200,
+            780,
+            700,
+            210
+          ],
+          "region_rgba_sha256": "3557d8fdcada586aa2958a418e2e3a6d4efc400f69aa23061fff821e6492e801",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "std_deviation_y",
+      "type": "number",
+      "value": 34.79,
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0129",
+          "source_seconds": 148.8,
+          "source_time": "00:02:28.800",
+          "frame_sha256": "b496bfd535b6e30f28988faeb0891d09d5925110a5956668d029464029476765",
+          "ingest_hash_verified": true,
+          "region": [
+            1200,
+            780,
+            700,
+            210
+          ],
+          "region_rgba_sha256": "d12236d7abf327b4a48090dbeeb97d717612a2554ae6b31075fbef1909f090ea",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0138",
+          "source_seconds": 149.6,
+          "source_time": "00:02:29.600",
+          "frame_sha256": "2e810add08d7e3c179039d91ebdd97288207ad1794a436ab2ba8466b06631ad1",
+          "ingest_hash_verified": true,
+          "region": [
+            1200,
+            780,
+            700,
+            210
+          ],
+          "region_rgba_sha256": "3557d8fdcada586aa2958a418e2e3a6d4efc400f69aa23061fff821e6492e801",
+          "method": "manual_review"
+        }
+      ]
+    },
+    {
+      "name": "success_condition",
+      "type": "enum",
+      "value": "single_connected_component",
+      "confidence": 1.0,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0107",
+          "source_seconds": 143.25,
+          "source_time": "00:02:23.250",
+          "frame_sha256": "a3010af818188d9e7189a4d5209c6c11dbc4d11f17bdb09bbddbb42513a12e81",
+          "ingest_hash_verified": true,
+          "region": [
+            0,
+            250,
+            1280,
+            700
+          ],
+          "region_rgba_sha256": "3b231a885a049a2c210e8370751ef5ba2a3195de725a1404169702c918b5a0ca",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0108",
+          "source_seconds": 144.75,
+          "source_time": "00:02:24.750",
+          "frame_sha256": "3c7d0350bfaa3b8f82fff50c661a3501336071cf13bda19af12d239a7391ebee",
+          "ingest_hash_verified": true,
+          "region": [
+            0,
+            250,
+            1280,
+            700
+          ],
+          "region_rgba_sha256": "cf423ebe7e2addef0dfb9bea2dede9f9923651abeb186ac32ac2b2f9e4c7e248",
+          "method": "manual_review"
+        }
+      ]
+    }
+  ],
+  "unresolved": [],
+  "errors": [],
+  "history": [
+    {
+      "field": "object_count",
+      "raw_value": 2,
+      "value": 2,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0065",
+          "source_seconds": 84.75,
+          "source_time": "00:01:24.750",
+          "frame_sha256": "bb8cf2d4b11c29eb87607ece426be616110d6de2ce8cb914e1d2d76f3083886b",
+          "ingest_hash_verified": true,
+          "region": [
+            430,
+            330,
+            650,
+            350
+          ],
+          "region_rgba_sha256": "f0fca3467a04158beddf1ee21edc9bca17cd76a21f903c272225479da7b08564",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0070",
+          "source_seconds": 90.424,
+          "source_time": "00:01:30.424",
+          "frame_sha256": "869139379d916a53ee2adeb4ce8a03f0b791d219fbf8d0df299c7b175a28475c",
+          "ingest_hash_verified": true,
+          "region": [
+            430,
+            330,
+            650,
+            350
+          ],
+          "region_rgba_sha256": "df28b83baa74947ea28adce9887ca7c669deb096379bb3ce1ce89ac7230b3106",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0065",
+        "frame-0070"
+      ],
+      "times": [
+        84.75,
+        90.424
+      ]
+    },
+    {
+      "field": "shape_kind",
+      "raw_value": "circle",
+      "value": "circle",
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0065",
+          "source_seconds": 84.75,
+          "source_time": "00:01:24.750",
+          "frame_sha256": "bb8cf2d4b11c29eb87607ece426be616110d6de2ce8cb914e1d2d76f3083886b",
+          "ingest_hash_verified": true,
+          "region": [
+            430,
+            330,
+            650,
+            350
+          ],
+          "region_rgba_sha256": "f0fca3467a04158beddf1ee21edc9bca17cd76a21f903c272225479da7b08564",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0070",
+          "source_seconds": 90.424,
+          "source_time": "00:01:30.424",
+          "frame_sha256": "869139379d916a53ee2adeb4ce8a03f0b791d219fbf8d0df299c7b175a28475c",
+          "ingest_hash_verified": true,
+          "region": [
+            430,
+            330,
+            650,
+            350
+          ],
+          "region_rgba_sha256": "df28b83baa74947ea28adce9887ca7c669deb096379bb3ce1ce89ac7230b3106",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0065",
+        "frame-0070"
+      ],
+      "times": [
+        84.75,
+        90.424
+      ]
+    },
+    {
+      "field": "layout_axis",
+      "raw_value": "horizontal",
+      "value": "horizontal",
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0065",
+          "source_seconds": 84.75,
+          "source_time": "00:01:24.750",
+          "frame_sha256": "bb8cf2d4b11c29eb87607ece426be616110d6de2ce8cb914e1d2d76f3083886b",
+          "ingest_hash_verified": true,
+          "region": [
+            430,
+            330,
+            650,
+            350
+          ],
+          "region_rgba_sha256": "f0fca3467a04158beddf1ee21edc9bca17cd76a21f903c272225479da7b08564",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0070",
+          "source_seconds": 90.424,
+          "source_time": "00:01:30.424",
+          "frame_sha256": "869139379d916a53ee2adeb4ce8a03f0b791d219fbf8d0df299c7b175a28475c",
+          "ingest_hash_verified": true,
+          "region": [
+            430,
+            330,
+            650,
+            350
+          ],
+          "region_rgba_sha256": "df28b83baa74947ea28adce9887ca7c669deb096379bb3ce1ce89ac7230b3106",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0065",
+        "frame-0070"
+      ],
+      "times": [
+        84.75,
+        90.424
+      ]
+    },
+    {
+      "field": "grouped",
+      "raw_value": true,
+      "value": true,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0065",
+          "source_seconds": 84.75,
+          "source_time": "00:01:24.750",
+          "frame_sha256": "bb8cf2d4b11c29eb87607ece426be616110d6de2ce8cb914e1d2d76f3083886b",
+          "ingest_hash_verified": true,
+          "region": [
+            0,
+            1000,
+            1500,
+            80
+          ],
+          "region_rgba_sha256": "61fa64f735457cb153929c986c61ba9ea0e6f637e23cd1f04af0a30cf4d2a6a6",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0070",
+          "source_seconds": 90.424,
+          "source_time": "00:01:30.424",
+          "frame_sha256": "869139379d916a53ee2adeb4ce8a03f0b791d219fbf8d0df299c7b175a28475c",
+          "ingest_hash_verified": true,
+          "region": [
+            0,
+            1000,
+            1500,
+            80
+          ],
+          "region_rgba_sha256": "df9074e456eb9449891b33c7ceb5819b46a087f52554202eeae15c0cc02a37f0",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0065",
+        "frame-0070"
+      ],
+      "times": [
+        84.75,
+        90.424
+      ]
+    },
+    {
+      "field": "circle_diameter",
+      "raw_value": 248.922,
+      "value": 248.922,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0065",
+          "source_seconds": 84.75,
+          "source_time": "00:01:24.750",
+          "frame_sha256": "bb8cf2d4b11c29eb87607ece426be616110d6de2ce8cb914e1d2d76f3083886b",
+          "ingest_hash_verified": true,
+          "region": [
+            520,
+            0,
+            750,
+            90
+          ],
+          "region_rgba_sha256": "d630becd17e3a2ab9bb55fd61521b9f1cbadb4a3eeb9cacce10562267b948cda",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0070",
+          "source_seconds": 90.424,
+          "source_time": "00:01:30.424",
+          "frame_sha256": "869139379d916a53ee2adeb4ce8a03f0b791d219fbf8d0df299c7b175a28475c",
+          "ingest_hash_verified": true,
+          "region": [
+            520,
+            0,
+            750,
+            90
+          ],
+          "region_rgba_sha256": "edb1b8f5ef121440fad82dfcc3da2e00bd599a0eff2c63a3d81f6683bbe389f2",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0065",
+        "frame-0070"
+      ],
+      "times": [
+        84.75,
+        90.424
+      ]
+    },
+    {
+      "field": "initial_group_width",
+      "raw_value": 602.857,
+      "value": 602.857,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0065",
+          "source_seconds": 84.75,
+          "source_time": "00:01:24.750",
+          "frame_sha256": "bb8cf2d4b11c29eb87607ece426be616110d6de2ce8cb914e1d2d76f3083886b",
+          "ingest_hash_verified": true,
+          "region": [
+            520,
+            0,
+            750,
+            90
+          ],
+          "region_rgba_sha256": "d630becd17e3a2ab9bb55fd61521b9f1cbadb4a3eeb9cacce10562267b948cda",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0070",
+          "source_seconds": 90.424,
+          "source_time": "00:01:30.424",
+          "frame_sha256": "869139379d916a53ee2adeb4ce8a03f0b791d219fbf8d0df299c7b175a28475c",
+          "ingest_hash_verified": true,
+          "region": [
+            520,
+            0,
+            750,
+            90
+          ],
+          "region_rgba_sha256": "edb1b8f5ef121440fad82dfcc3da2e00bd599a0eff2c63a3d81f6683bbe389f2",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0065",
+        "frame-0070"
+      ],
+      "times": [
+        84.75,
+        90.424
+      ]
+    },
+    {
+      "field": "initial_group_height",
+      "raw_value": 248.922,
+      "value": 248.922,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0065",
+          "source_seconds": 84.75,
+          "source_time": "00:01:24.750",
+          "frame_sha256": "bb8cf2d4b11c29eb87607ece426be616110d6de2ce8cb914e1d2d76f3083886b",
+          "ingest_hash_verified": true,
+          "region": [
+            520,
+            0,
+            750,
+            90
+          ],
+          "region_rgba_sha256": "d630becd17e3a2ab9bb55fd61521b9f1cbadb4a3eeb9cacce10562267b948cda",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0070",
+          "source_seconds": 90.424,
+          "source_time": "00:01:30.424",
+          "frame_sha256": "869139379d916a53ee2adeb4ce8a03f0b791d219fbf8d0df299c7b175a28475c",
+          "ingest_hash_verified": true,
+          "region": [
+            520,
+            0,
+            750,
+            90
+          ],
+          "region_rgba_sha256": "edb1b8f5ef121440fad82dfcc3da2e00bd599a0eff2c63a3d81f6683bbe389f2",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0065",
+        "frame-0070"
+      ],
+      "times": [
+        84.75,
+        90.424
+      ]
+    },
+    {
+      "field": "spacing_strategy",
+      "raw_value": "move_closer",
+      "value": "move_closer",
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0103",
+          "source_seconds": 137.25,
+          "source_time": "00:02:17.250",
+          "frame_sha256": "3bbdd7389cc0895989c8c030d909f1cf9eab071dc445adfa1f1cf44b77fc6b82",
+          "ingest_hash_verified": true,
+          "region": [
+            0,
+            250,
+            1280,
+            700
+          ],
+          "region_rgba_sha256": "5c86411c7c4165709fd003fb947c0e08e96ff79810b60519be4c0f40954e1ba2",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0107",
+          "source_seconds": 143.25,
+          "source_time": "00:02:23.250",
+          "frame_sha256": "a3010af818188d9e7189a4d5209c6c11dbc4d11f17bdb09bbddbb42513a12e81",
+          "ingest_hash_verified": true,
+          "region": [
+            0,
+            250,
+            1280,
+            700
+          ],
+          "region_rgba_sha256": "3b231a885a049a2c210e8370751ef5ba2a3195de725a1404169702c918b5a0ca",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0103",
+        "frame-0107"
+      ],
+      "times": [
+        137.25,
+        143.25
+      ]
+    },
+    {
+      "field": "success_condition",
+      "raw_value": "single_connected_component",
+      "value": "single_connected_component",
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0107",
+          "source_seconds": 143.25,
+          "source_time": "00:02:23.250",
+          "frame_sha256": "a3010af818188d9e7189a4d5209c6c11dbc4d11f17bdb09bbddbb42513a12e81",
+          "ingest_hash_verified": true,
+          "region": [
+            0,
+            250,
+            1280,
+            700
+          ],
+          "region_rgba_sha256": "3b231a885a049a2c210e8370751ef5ba2a3195de725a1404169702c918b5a0ca",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0108",
+          "source_seconds": 144.75,
+          "source_time": "00:02:24.750",
+          "frame_sha256": "3c7d0350bfaa3b8f82fff50c661a3501336071cf13bda19af12d239a7391ebee",
+          "ingest_hash_verified": true,
+          "region": [
+            0,
+            250,
+            1280,
+            700
+          ],
+          "region_rgba_sha256": "cf423ebe7e2addef0dfb9bea2dede9f9923651abeb186ac32ac2b2f9e4c7e248",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0107",
+        "frame-0108"
+      ],
+      "times": [
+        143.25,
+        144.75
+      ]
+    },
+    {
+      "field": "primitive_1",
+      "raw_value": "Gaussian Blur",
+      "value": "feGaussianBlur",
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": "Gaussian Blur",
+      "evidence": [
+        {
+          "frame_id": "frame-0129",
+          "source_seconds": 148.8,
+          "source_time": "00:02:28.800",
+          "frame_sha256": "b496bfd535b6e30f28988faeb0891d09d5925110a5956668d029464029476765",
+          "ingest_hash_verified": true,
+          "region": [
+            960,
+            30,
+            760,
+            260
+          ],
+          "region_rgba_sha256": "922a0239bd68bc5915e05c17ca56c9fdf758be7928a92439f213a933bbd95d17",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0138",
+          "source_seconds": 149.6,
+          "source_time": "00:02:29.600",
+          "frame_sha256": "2e810add08d7e3c179039d91ebdd97288207ad1794a436ab2ba8466b06631ad1",
+          "ingest_hash_verified": true,
+          "region": [
+            960,
+            30,
+            760,
+            260
+          ],
+          "region_rgba_sha256": "19290a356bad31a1f5c234bcd3ef5013c3bb4c5a6d6e181deb9e6a0013551bc5",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0129",
+        "frame-0138"
+      ],
+      "times": [
+        148.8,
+        149.6
+      ]
+    },
+    {
+      "field": "std_deviation_x",
+      "raw_value": 34.79,
+      "value": 34.79,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0129",
+          "source_seconds": 148.8,
+          "source_time": "00:02:28.800",
+          "frame_sha256": "b496bfd535b6e30f28988faeb0891d09d5925110a5956668d029464029476765",
+          "ingest_hash_verified": true,
+          "region": [
+            1200,
+            780,
+            700,
+            210
+          ],
+          "region_rgba_sha256": "d12236d7abf327b4a48090dbeeb97d717612a2554ae6b31075fbef1909f090ea",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0138",
+          "source_seconds": 149.6,
+          "source_time": "00:02:29.600",
+          "frame_sha256": "2e810add08d7e3c179039d91ebdd97288207ad1794a436ab2ba8466b06631ad1",
+          "ingest_hash_verified": true,
+          "region": [
+            1200,
+            780,
+            700,
+            210
+          ],
+          "region_rgba_sha256": "3557d8fdcada586aa2958a418e2e3a6d4efc400f69aa23061fff821e6492e801",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0129",
+        "frame-0138"
+      ],
+      "times": [
+        148.8,
+        149.6
+      ]
+    },
+    {
+      "field": "std_deviation_y",
+      "raw_value": 34.79,
+      "value": 34.79,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0129",
+          "source_seconds": 148.8,
+          "source_time": "00:02:28.800",
+          "frame_sha256": "b496bfd535b6e30f28988faeb0891d09d5925110a5956668d029464029476765",
+          "ingest_hash_verified": true,
+          "region": [
+            1200,
+            780,
+            700,
+            210
+          ],
+          "region_rgba_sha256": "d12236d7abf327b4a48090dbeeb97d717612a2554ae6b31075fbef1909f090ea",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0138",
+          "source_seconds": 149.6,
+          "source_time": "00:02:29.600",
+          "frame_sha256": "2e810add08d7e3c179039d91ebdd97288207ad1794a436ab2ba8466b06631ad1",
+          "ingest_hash_verified": true,
+          "region": [
+            1200,
+            780,
+            700,
+            210
+          ],
+          "region_rgba_sha256": "3557d8fdcada586aa2958a418e2e3a6d4efc400f69aa23061fff821e6492e801",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0129",
+        "frame-0138"
+      ],
+      "times": [
+        148.8,
+        149.6
+      ]
+    },
+    {
+      "field": "primitive_2",
+      "raw_value": "Color Matrix",
+      "value": "feColorMatrix",
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": "Color Matrix",
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1200,
+            25,
+            550,
+            300
+          ],
+          "region_rgba_sha256": "bf9e8ff7b6224d19af46bbc28cd2823507209cf100d623ee0e08a0287a133211",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1200,
+            25,
+            550,
+            300
+          ],
+          "region_rgba_sha256": "4f7f619937e5950fc48c966034fd8906bef3233c490dc08c0bb8e1cb0eb89fdb",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "primitive_3",
+      "raw_value": "Color Matrix",
+      "value": "feColorMatrix",
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": "Color Matrix",
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1200,
+            25,
+            550,
+            300
+          ],
+          "region_rgba_sha256": "bf9e8ff7b6224d19af46bbc28cd2823507209cf100d623ee0e08a0287a133211",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1200,
+            25,
+            550,
+            300
+          ],
+          "region_rgba_sha256": "4f7f619937e5950fc48c966034fd8906bef3233c490dc08c0bb8e1cb0eb89fdb",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "color_matrix_type",
+      "raw_value": "Matrix",
+      "value": "matrix",
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": "Matrix",
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            680,
+            650,
+            320
+          ],
+          "region_rgba_sha256": "f2bf520cc12be5f87064639c7d551b2033501dcc451d15e0e35f9a7274aada79",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            680,
+            650,
+            320
+          ],
+          "region_rgba_sha256": "610ee3f245539084efe4159ee2c09f24b0e412f04d2c776c7acd619e2c342447",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "a00",
+      "raw_value": 1.0,
+      "value": 1.0,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "a01",
+      "raw_value": 0.0,
+      "value": 0.0,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "a02",
+      "raw_value": 0.0,
+      "value": 0.0,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "a03",
+      "raw_value": 0.0,
+      "value": 0.0,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "a04",
+      "raw_value": 0.0,
+      "value": 0.0,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "a10",
+      "raw_value": 0.0,
+      "value": 0.0,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "a11",
+      "raw_value": 1.0,
+      "value": 1.0,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "a12",
+      "raw_value": 0.0,
+      "value": 0.0,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "a13",
+      "raw_value": 0.0,
+      "value": 0.0,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "a14",
+      "raw_value": 0.0,
+      "value": 0.0,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "a20",
+      "raw_value": 0.0,
+      "value": 0.0,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "a21",
+      "raw_value": 0.0,
+      "value": 0.0,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "a22",
+      "raw_value": 1.0,
+      "value": 1.0,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "a23",
+      "raw_value": 0.0,
+      "value": 0.0,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "a24",
+      "raw_value": 0.0,
+      "value": 0.0,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "a30",
+      "raw_value": 0.0,
+      "value": 0.0,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "a31",
+      "raw_value": 0.0,
+      "value": 0.0,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "a32",
+      "raw_value": 0.0,
+      "value": 0.0,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "a33",
+      "raw_value": 20.0,
+      "value": 20.0,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    },
+    {
+      "field": "a34",
+      "raw_value": -10.0,
+      "value": -10.0,
+      "phase": "final",
+      "confidence": 1.0,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0164",
+          "source_seconds": 153.8,
+          "source_time": "00:02:33.800",
+          "frame_sha256": "256ade9a69c94619dbfea777a4638ce7ee295c90355195e4f52a96f277cc9c57",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "d7f3c1951c9e1260eaa99ad2a0ede5403bd81bf525d4f89edd5cea4a5187698c",
+          "method": "manual_review"
+        },
+        {
+          "frame_id": "frame-0171",
+          "source_seconds": 154.4,
+          "source_time": "00:02:34.400",
+          "frame_sha256": "3a6bcd26b304061fe6e380fcb4aeb4cf941f737391ea3c0a8f9e50016ea5e104",
+          "ingest_hash_verified": true,
+          "region": [
+            1250,
+            760,
+            650,
+            240
+          ],
+          "region_rgba_sha256": "258485da89f44c1ac8b72db00c5630c22bd74b9d6d4b639e01adb1ab3288226d",
+          "method": "manual_review"
+        }
+      ],
+      "frame_ids": [
+        "frame-0164",
+        "frame-0171"
+      ],
+      "times": [
+        153.8,
+        154.4
+      ]
+    }
+  ],
+  "compilation_fingerprint": "6d7141bf526a137cc5382822c317502abc26c9f822499ab566cfa9cc0325636e"
+}

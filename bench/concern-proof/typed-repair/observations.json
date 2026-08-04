@@ -1,0 +1,45 @@
+{
+  "schema": "beast.watch.typed-observations/v1",
+  "target_fingerprint": "50e6e37ec517c4709f79727680ddd139ac4fb8ef85b40bd2a7de427fa7e238c4",
+  "timeline_fingerprint": "1d5f58a4bd8f83e7971d8b08694bd48e24ebf8b4c52c133b0876eb38f791c15f",
+  "observations": [
+    {
+      "field": "spread_method",
+      "raw_value": "Direct",
+      "source_ui_label": "Direct",
+      "phase": "final",
+      "confidence": 0.99,
+      "evidence": [
+        {"frame_id": "frame-0131", "region": [525, 20, 120, 45], "method": "manual_review"}
+      ]
+    },
+    {
+      "field": "spread_method",
+      "raw_value": "Direct",
+      "source_ui_label": "Direct",
+      "phase": "final",
+      "confidence": 0.99,
+      "evidence": [
+        {"frame_id": "frame-0132", "region": [525, 20, 120, 45], "method": "manual_review"}
+      ]
+    },
+    {
+      "field": "pink_rgba",
+      "raw_value": "ec146eff",
+      "phase": "final",
+      "confidence": 0.99,
+      "evidence": [
+        {"frame_id": "frame-0123", "region": [1450, 370, 125, 45], "method": "manual_review"}
+      ]
+    },
+    {
+      "field": "pink_rgba",
+      "raw_value": "ec146eff",
+      "phase": "final",
+      "confidence": 0.99,
+      "evidence": [
+        {"frame_id": "frame-0124", "region": [1450, 370, 125, 45], "method": "manual_review"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "beast.watch.typed-target/v1",
+  "application": "Inkscape",
+  "version": "1.4.4",
+  "fields": [
+    {
+      "name": "spread_method",
+      "type": "enum",
+      "required": true,
+      "enum_values": ["pad", "reflect", "repeat"],
+      "aliases": {
+        "Direct": {
+          "canonical": "repeat",
+          "basis": "source_artifact",
+          "evidence": "source frames frame-0131/frame-0132 show UI label Direct while the demonstrated same-order radial pattern repeats; canonical enum constrained by SVG 2 spreadMethod"
+        }
+      },
+      "finality": {
+        "confidence_threshold": 0.99,
+        "min_confirmations": 2,
+        "min_span_seconds": 0.5
+      }
+    },
+    {
+      "name": "pink_rgba",
+      "type": "color_rgba",
+      "required": true,
+      "finality": {
+        "confidence_threshold": 0.99,
+        "min_confirmations": 2,
+        "min_span_seconds": 0.2
+      }
+    }
+  ]
+}

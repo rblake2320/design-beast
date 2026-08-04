@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://design-beast.local/schemas/typed-observations-v1.json",
+  "title": "Beast Watch typed visual observations",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "target_fingerprint", "timeline_fingerprint", "observations"],
+  "properties": {
+    "schema": {"const": "beast.watch.typed-observations/v1"},
+    "target_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "timeline_fingerprint": {"type": "string", "minLength": 1},
+    "observations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["field", "raw_value", "phase", "confidence", "evidence"],
+        "properties": {
+          "field": {"type": "string", "minLength": 1},
+          "raw_value": {"type": ["string", "number", "boolean"]},
+          "source_unit": {"type": "string"},
+          "source_ui_label": {"type": "string"},
+          "phase": {"enum": ["transient", "final"]},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["frame_id", "region", "method"],
+              "properties": {
+                "frame_id": {"type": "string", "minLength": 1},
+                "region": {
+                  "type": "array", "minItems": 4, "maxItems": 4,
+                  "items": {"type": "integer"}
+                },
+                "method": {"enum": ["vision", "ocr", "manual_review", "application_probe"]},
+                "ocr_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+                "observed_text": {"type": "string"}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
