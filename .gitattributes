@@ -1,0 +1,2 @@
+# Proof receipts sign exact file bytes. Never rewrite those bytes by platform.
+proofs/experience-forge/** -text
