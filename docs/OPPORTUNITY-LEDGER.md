@@ -557,7 +557,8 @@ another capability. “Later” is not a trigger.
   API with on-page roll/pool receipts) on a localhost decision page, and its
   live mode does element-picked 1–4-variation iteration with per-variation
   tuners, a Detect pass, and a DESIGN.md token panel — the terminal session
-  polls live-mode events. Local install is 2026-04-28-era, pre-worlds.
+  polls live-mode events. Before this approved upgrade, the local install was
+  2026-04-28-era, pre-worlds.
 - Potential beneficiaries: every website/landing-page build routed through
   CLAUDE.md rule 4; any future design-direction selection step in Beast.
 - Current-project value: convergent prior art for our multi-candidate → judge
