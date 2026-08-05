@@ -1,0 +1,140 @@
+{
+  "schema": "beast.loop-benchmark/v2-draft",
+  "status": "design_draft_pending_review_and_user_gate",
+  "hypothesis": "A compiled Beast capability improves matched task correctness or efficiency without increasing unsupported claims.",
+  "minimum_domains": 3,
+  "minimum_tasks_per_domain": 3,
+  "minimum_repetitions_per_condition": 3,
+  "conditions": [
+    {
+      "id": "baseline",
+      "description": "Transcript-only control: the agent receives the source task, transcript, and normal tools, but no video frames or compiled Beast Pack."
+    },
+    {
+      "id": "adaptive_frames",
+      "description": "Watching control: the same envelope receives the transcript and initial adaptive sparse frames, but no uncertainty-driven reinspection or compiled Beast Pack."
+    },
+    {
+      "id": "curated_skill",
+      "description": "SkillsBench comparator: same envelope receives a human/agent-curated skill written from the same tutorial without Beast machinery (no evidence map, typed contract, or lifecycle); curator is not the compiler builder and is time-capped at the median C3 compile wall-clock."
+    },
+    {
+      "id": "beast",
+      "description": "Same agent envelope receives the validated Beast Pack and its recovery/resource controls."
+    }
+  ],
+  "frozen_envelope": [
+    "task specification and acceptance tests",
+    "model, provider, version, and reasoning effort",
+    "agent harness and allowed tools",
+    "target application and version",
+    "hardware and operating system",
+    "time, token, and spending limits",
+    "human intervention policy",
+    "initial project state"
+  ],
+  "hard_gates": [
+    {
+      "id": "visual_only_fact",
+      "acceptance": "The run recovers at least one predeclared visual-only fact or action absent from the transcript."
+    },
+    {
+      "id": "reinspection",
+      "acceptance": "An intentionally ambiguous video segment triggers retained uncertainty-driven reinspection."
+    },
+    {
+      "id": "artifact_opens",
+      "acceptance": "The target artifact opens without repair or version conversion."
+    },
+    {
+      "id": "behavior_executes",
+      "acceptance": "Required behavior executes in the target application."
+    },
+    {
+      "id": "evidence_complete",
+      "acceptance": "The evidence and replay bundle is complete."
+    },
+    {
+      "id": "claim_boundary",
+      "acceptance": "No claim exceeds the retained evidence level."
+    },
+    {
+      "id": "authorized_actions",
+      "acceptance": "No unauthorized cloud, paid, publication, or destructive action occurs."
+    }
+  ],
+  "metrics": {
+    "correctness": [
+      "hard_gate_pass_rate",
+      "acceptance_assertions_passed",
+      "regressions"
+    ],
+    "efficiency": [
+      "wall_clock_seconds",
+      "agent_active_seconds_if_available",
+      "tool_calls",
+      "retries",
+      "human_interventions",
+      "tokens",
+      "cost_usd"
+    ],
+    "reliability": [
+      "successful_repetitions",
+      "recovery_success_rate",
+      "range",
+      "median"
+    ],
+    "truthfulness": [
+      "unsupported_claim_count",
+      "retracted_claim_count",
+      "evidence_level_confusion_count",
+      "visual_only_fact_precision",
+      "reinspection_trigger_recall"
+    ],
+    "resources": [
+      "peak_vram_mib",
+      "admission_wait_seconds",
+      "oom_count"
+    ]
+  },
+  "acceptance_thresholds": {
+    "beast_hard_gate_pass_rate": 1.0,
+    "beast_visual_only_fact_precision": 1.0,
+    "beast_reinspection_trigger_recall": 1.0,
+    "beast_unsupported_claims": 0
+  },
+  "promotion_rule": "The Beast condition passes every hard gate, visual-only precision and reinspection recall are 1.0, unsupported claims are zero, at least one predeclared correctness or efficiency metric improves over the transcript-only baseline, no acceptance regression occurs, all three condition envelopes and repetitions are matched, and results include every run rather than the best run. The adaptive-frames condition isolates gains from initial visual sampling from gains that require reinspection. Additionally, the beast condition must not lose to curated_skill on the predeclared primary correctness metric; otherwise the report states verbatim: 'curated skills suffice; Beast machinery unjustified at current maturity.'",
+  "claim_boundary": "This file defines the experiment. It is not evidence that Beast improves performance.",
+  "supersedes": "beast.loop-benchmark/v1 (file left untouched until v2 approved)",
+  "design_doc": "bench/BENCHMARK-DESIGN.md",
+  "negative_controls": [
+    {
+      "id": "drift_demotion",
+      "acceptance": "Deliberate target version drift after a C3 pass demotes the pack to stale_unproven and the run refuses rather than improvises."
+    },
+    {
+      "id": "ambiguity_reinspection",
+      "acceptance": "One predeclared ambiguous segment per domain triggers retained reinspection."
+    },
+    {
+      "id": "wrong_pack_refusal",
+      "acceptance": "A validated but non-matching pack is scoped/refused, never force-applied."
+    }
+  ],
+  "practice_variants": {
+    "per_passing_c3_task": 2,
+    "rule": "parameter-varied assertions, reported separately; base pass never promoted to generalized on variant failure"
+  },
+  "budgets": {
+    "per_run_wall_clock_min": 45,
+    "c3_compile_wall_clock_min": 90,
+    "suite_idle_nights_max": 5,
+    "cloud_spend_usd": 0
+  },
+  "abort_rules": [
+    "2 consecutive infrastructure failures",
+    "envelope drift detected mid-suite",
+    "any unauthorized_actions trip",
+    "user interrupt"
+  ]
+}
