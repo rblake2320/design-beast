@@ -547,9 +547,9 @@ another capability. “Later” is not a trigger.
 - Decision: park until enhancement is actually used in an evidence path;
   revisit trigger: first enhancement step proposed inside Watch.
 
-### OPP-20260804-01 — Impeccable 4.0: dealt worlds + live decision surfaces
+### OPP-20260804-10 — Impeccable 4.0: dealt worlds + live decision surfaces
 
-- Status: observed; skill upgrade routed to owner (adoption gate in intake doc)
+- Status: observed; skill upgraded to 4.0.4 with owner approval (runtime gate pending)
 - Trigger: full beast watch of youtube RVeCbPg0liw (bundle `watched/RVeCbPg0liw`,
   fingerprint `e4655135…f400e01`) plus live release/npm verification 2026-08-04.
 - New capability: our adopted website-lane skill now deals human-reviewed design
@@ -581,9 +581,11 @@ another capability. “Later” is not a trigger.
   (observed and reverted 2026-08-04); Higgsfield's own MCP page says Claude
   Code/Codex should prefer the CLI, which matches our existing lane.
 - Evidence: `docs/references/IMPECCABLE-4-INTAKE-20260804.md` (frame-cited).
-- Decision: upgrade the global Claude skill via
-  `npx impeccable skills install -y --providers=claude --scope=global` (owner
-  action; agent write to `~/.claude/skills` is permission-blocked), then run the
-  verification; no design-beast pipeline changes until that passes.
+- Decision: upgrade executed 2026-08-04 after owner approval via /permissions
+  (`npx impeccable skills install -y --providers=claude --scope=global` reported
+  "Updated 1 skill(s) to v4.0.4"); file-level verification done (see intake
+  doc). The runtime verification (worlds decision page + live round-trip,
+  attended) remains the open gate; no design-beast pipeline changes until it
+  passes.
 - Revisit trigger: post-upgrade verification result, or the next time we design
   a direction-selection step (cite worlds as prior art).
