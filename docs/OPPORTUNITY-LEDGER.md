@@ -546,3 +546,47 @@ another capability. “Later” is not a trigger.
   generatively-enhanced pixels as visual-only evidence.
 - Decision: park until enhancement is actually used in an evidence path;
   revisit trigger: first enhancement step proposed inside Watch.
+
+### OPP-20260804-10 — Impeccable 4.0: dealt worlds + live decision surfaces
+
+- Status: observed; skill upgraded to 4.0.4 with owner approval (runtime gate pending)
+- Trigger: full beast watch of youtube RVeCbPg0liw (bundle `watched/RVeCbPg0liw`,
+  fingerprint `e4655135…f400e01`) plus live release/npm verification 2026-08-04.
+- New capability: our adopted website-lane skill now deals human-reviewed design
+  "worlds" (188 in deck, hand dealt from the 177 highest-rated by a seeded roll
+  API with on-page roll/pool receipts) on a localhost decision page, and its
+  live mode does element-picked 1–4-variation iteration with per-variation
+  tuners, a Detect pass, and a DESIGN.md token panel — the terminal session
+  polls live-mode events. Before this approved upgrade, the local install was
+  2026-04-28-era, pre-worlds.
+- Potential beneficiaries: every website/landing-page build routed through
+  CLAUDE.md rule 4; any future design-direction selection step in Beast.
+- Current-project value: convergent prior art for our multi-candidate → judge
+  quality loop, with deterministic deal receipts that echo our provenance
+  culture; upgrade closes a two-generation gap in an already-adopted tool.
+- Outside-project value: the challenger-deal pattern (reviewed catalog + seeded
+  roll + human pick + committed build) generalizes to any generative direction
+  choice, not just web design.
+- Prior art and primary sources: `github.com/pbakaus/impeccable` (Apache-2.0,
+  skill 4.0.4 / CLI 3.5.0, releases read 2026-08-04); impeccable.style worlds
+  and slop pages (frames f_000000095000, f_000000235000). No novelty claim —
+  this is an upstream feature intake.
+- Falsifiable claim: after upgrade, `/impeccable init` on a throwaway project
+  opens the worlds decision page locally and live mode round-trips one accepted
+  element variation back to the terminal session.
+- Smallest real experiment: the post-upgrade verification steps in
+  `docs/references/IMPECCABLE-4-INTAKE-20260804.md`.
+- Risks and constraints: live mode runs a localhost server (per-session ports
+  observed 4750/51905) — loopback-boundary caveats apply as elsewhere; bare
+  `npx impeccable install` inside a repo writes a project `.github` install
+  (observed and reverted 2026-08-04); Higgsfield's own MCP page says Claude
+  Code/Codex should prefer the CLI, which matches our existing lane.
+- Evidence: `docs/references/IMPECCABLE-4-INTAKE-20260804.md` (frame-cited).
+- Decision: upgrade executed 2026-08-04 after owner approval via /permissions
+  (`npx impeccable skills install -y --providers=claude --scope=global` reported
+  "Updated 1 skill(s) to v4.0.4"); file-level verification done (see intake
+  doc). The runtime verification (worlds decision page + live round-trip,
+  attended) remains the open gate; no design-beast pipeline changes until it
+  passes.
+- Revisit trigger: post-upgrade verification result, or the next time we design
+  a direction-selection step (cite worlds as prior art).
