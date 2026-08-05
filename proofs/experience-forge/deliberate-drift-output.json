@@ -1,0 +1,12 @@
+{
+  "blueprint_dsl_doc_characters": 8665,
+  "blueprint_dsl_documented": true,
+  "current_level": "/Game/MetaHumanLiveLinkProof",
+  "endpoint": "http://127.0.0.1:8000/mcp",
+  "meta_tools": ["list_toolsets", "describe_toolset", "call_tool"],
+  "native_skill_count": 20,
+  "protocol_version": "2025-06-18",
+  "schema": 1,
+  "server_info": {"name": "", "title": "", "version": ""},
+  "toolset_count": 55
+}

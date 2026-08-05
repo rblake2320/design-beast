@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Capability Lifecycle"
+  short_description: "Fitness-test, revalidate, practice, and retire Beast Packs"
+  default_prompt: "Evaluate a Beast Pack through matched fitness, drift, practice, and proposal-only curriculum gates."

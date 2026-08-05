@@ -64,3 +64,36 @@ def test_recover_subcommand_uses_existing_verifier(monkeypatch, capsys, tmp_path
     result = __import__("json").loads(capsys.readouterr().out)
     assert result["ok"] is True
     assert result["head_drift_allowed"] is False
+
+
+def test_active_pack_has_fail_closed_lifecycle_policy():
+    pack = beast_core.read_json(
+        ROOT / "beast" / "packs" / "ue58-enhanced-input-movement" / "pack.json"
+    )
+    assert pack["lifecycle_policy"].endswith("lifecycle.json")
+    assert beast_core.validate_all()["ok"] is True
+
+
+def test_trusted_pack_selection_excludes_drift(monkeypatch):
+    good = {
+        "protocol_version": "2025-06-18",
+        "toolset_count": 56,
+        "blueprint_dsl_documented": True,
+        "endpoint": "http://127.0.0.1:8000/mcp",
+    }
+    monkeypatch.setattr(beast_core.lifecycle_gate, "run_json_probe", lambda *args, **kwargs: good)
+    assert "ue58-enhanced-input-movement" in beast_core.trusted_packs()["eligible"]
+    drifted = {**good, "toolset_count": 55}
+    monkeypatch.setattr(beast_core.lifecycle_gate, "run_json_probe", lambda *args, **kwargs: drifted)
+    result = beast_core.trusted_packs()
+    assert "ue58-enhanced-input-movement" not in result["eligible"]
+    assert result["excluded"][0]["reason"] == "stale_unproven"
+
+
+def test_trusted_pack_selection_fails_closed_on_probe_error(monkeypatch):
+    def fail(*args, **kwargs):
+        raise RuntimeError("offline")
+    monkeypatch.setattr(beast_core.lifecycle_gate, "run_json_probe", fail)
+    result = beast_core.trusted_packs()
+    assert result["eligible"] == []
+    assert result["excluded"][0]["reason"] == "probe_error"

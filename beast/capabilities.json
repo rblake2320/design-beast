@@ -124,6 +124,19 @@
       "evidence": ["docs/decisions/BR-EXECUTION-20260803.md", "tests/test_collect_reflection_evidence.py"],
       "breadth_count": 1,
       "next_test": "Run the predeclared five-task before/after replay after approved proposals."
+    },
+    {
+      "id": "lifecycle.skill_governance",
+      "name": "Fitness-tested and drift-aware skill lifecycle",
+      "domain": "immune_system_evolution",
+      "level": "reproduced",
+      "claim": "A Beast Pack can be revalidated against an enrolled live probe, fail closed to stale-unproven after fingerprint drift or expiration, and be screened by matched fitness and bounded-practice contracts.",
+      "boundary": "The deliberate drift is a labeled fixture, not real UE version drift; no candidate skill has yet earned promotion or generalized through this machinery.",
+      "depends_on": ["memory.recovery"],
+      "targets": ["Beast Packs", "Unreal Engine 5.8 MCP"],
+      "evidence": ["proofs/experience-forge/PROOF.md", "proofs/experience-forge/ue58-live-assessment.json", "proofs/experience-forge/ue58-deliberate-drift-assessment.json", "tests/test_lifecycle.py"],
+      "breadth_count": 1,
+      "next_test": "Run a real dependency-change event and a matched baseline-versus-skill trial with retained execution artifacts."
     }
   ]
 }

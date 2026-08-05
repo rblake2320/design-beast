@@ -1,0 +1,8 @@
+{
+  "claim_boundary": "Eligibility is current probe status, not generalized competence or authority to execute.",
+  "eligible": [
+    "ue58-enhanced-input-movement"
+  ],
+  "excluded": [],
+  "schema": "beast.trusted-packs/v1"
+}

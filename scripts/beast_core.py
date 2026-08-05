@@ -24,6 +24,8 @@ sys.path.insert(0, str(REPO / "studio"))
 import resource_guard  # noqa: E402
 sys.path.insert(0, str(REPO / "scripts"))
 import verify_recovery_checkpoint as recovery_verifier  # noqa: E402
+sys.path.insert(0, str(REPO))
+from beast import lifecycle as lifecycle_gate  # noqa: E402
 
 
 def read_json(path: Path) -> Any:
@@ -124,6 +126,19 @@ def validate_pack(pack: dict[str, Any], graph_ids: set[str], path: Path) -> list
             errors.append(f"{path}: {exc}")
     if pack["lifecycle"] in {"superseded", "deprecated"} and not pack.get("supersession_reason"):
         errors.append(f"{path}: inactive pack requires supersession_reason")
+    lifecycle_policy = pack.get("lifecycle_policy")
+    if lifecycle_policy:
+        try:
+            lifecycle_path = repo_path(lifecycle_policy)
+            lifecycle = read_json(lifecycle_path)
+            if lifecycle.get("schema") != "beast.pack-lifecycle/v1":
+                errors.append(f"{path}: lifecycle policy has unsupported schema")
+            if lifecycle.get("pack_id") != pack["id"]:
+                errors.append(f"{path}: lifecycle policy pack_id mismatch")
+            if lifecycle.get("demotion", {}).get("status") != "stale_unproven":
+                errors.append(f"{path}: lifecycle policy must fail closed to stale_unproven")
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            errors.append(f"{path}: invalid lifecycle policy: {exc}")
     return errors
 
 
@@ -175,11 +190,45 @@ def status() -> dict[str, Any]:
     }
 
 
+def trusted_packs() -> dict[str, Any]:
+    """Return only active packs whose current lifecycle probe passes."""
+    eligible: list[str] = []
+    excluded: list[dict[str, Any]] = []
+    for path in sorted(PACKS.glob("*/pack.json")):
+        pack = read_json(path)
+        if pack.get("lifecycle") != "active":
+            excluded.append({"pack_id": pack.get("id"), "reason": "historically_inactive"})
+            continue
+        policy_path = pack.get("lifecycle_policy")
+        if not policy_path:
+            excluded.append({"pack_id": pack.get("id"), "reason": "unmanaged_lifecycle"})
+            continue
+        try:
+            policy = read_json(repo_path(policy_path))
+            output = lifecycle_gate.run_json_probe(policy["probe"], repo=REPO)
+            assessment = lifecycle_gate.assess(policy, output)
+        except (OSError, ValueError, KeyError, RuntimeError, subprocess.SubprocessError,
+                subprocess.TimeoutExpired, json.JSONDecodeError) as exc:
+            excluded.append({"pack_id": pack.get("id"), "reason": "probe_error", "detail": str(exc)})
+            continue
+        if assessment["trusted_retrieval"]:
+            eligible.append(pack["id"])
+        else:
+            excluded.append({"pack_id": pack["id"], "reason": "stale_unproven", "failures": assessment["failures"]})
+    return {
+        "schema": "beast.trusted-packs/v1",
+        "eligible": eligible,
+        "excluded": excluded,
+        "claim_boundary": "Eligibility is current probe status, not generalized competence or authority to execute.",
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("validate", help="validate capability graph, packs, benchmark, and policy")
     sub.add_parser("status", help="show capability and live resource state")
+    sub.add_parser("trusted-packs", help="list only currently probe-eligible active packs")
     resource = sub.add_parser("resource-check", help="test one workload against live VRAM")
     resource.add_argument("workload")
     recover = sub.add_parser("recover", help="verify a recovery checkpoint before resuming")
@@ -200,6 +249,8 @@ def main(argv: list[str] | None = None) -> int:
                 json.JSONDecodeError) as exc:
             print(json.dumps({"ok": False, "error": str(exc)}))
             return 2
+    elif args.command == "trusted-packs":
+        result = trusted_packs()
     else:
         try:
             result = resource_guard.admission(args.workload, use_cache=False)
@@ -213,6 +264,8 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if result["admitted"] else 3
     if args.command == "recover":
         return 0 if result["ok"] else 1
+    if args.command == "trusted-packs":
+        return 0
     return 0 if result["validation"]["ok"] else 1
 
 

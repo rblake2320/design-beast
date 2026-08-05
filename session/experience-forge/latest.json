@@ -1,0 +1,75 @@
+{
+  "current": "Implementation and proof complete; preparing independent-review PR",
+  "evidence": [
+    {
+      "bytes": 2972,
+      "path": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-experience-forge\\proofs\\experience-forge\\PROOF.md",
+      "sha256": "8871576de9db4971626593f1d5d50308fc2f895ea9bb11f217104b5686a7e778"
+    },
+    {
+      "bytes": 1775,
+      "path": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-experience-forge\\proofs\\experience-forge\\signed-evidence.jsonl",
+      "sha256": "ff62f03463f815f4b7e4a67a97dcd8a448851c8e12d6e26691421752ab84bbb2"
+    },
+    {
+      "bytes": 661,
+      "path": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-experience-forge\\proofs\\experience-forge\\ue58-live-assessment.json",
+      "sha256": "f328cfb2c85ceff355d3cf02515d9bd9c0a8807a55ec790e6a80658ba1c8330d"
+    }
+  ],
+  "git": {
+    "branch": "codex/experience-forge",
+    "head": "c630363ab9f078a772b10fdc21f7c71d6f064ddf",
+    "status_porcelain": [
+      "M beast/capabilities.json",
+      " M beast/packs/ue58-enhanced-input-movement/pack.json",
+      " M docs/OPPORTUNITY-LEDGER.md",
+      " M requirements.txt",
+      " M scripts/beast_core.py",
+      " M tests/test_beast_core.py",
+      "?? beast/lifecycle.py",
+      "?? beast/packs/ue58-enhanced-input-movement/lifecycle.json",
+      "?? beast/signed_chain.py",
+      "?? proofs/experience-forge/",
+      "?? scripts/beast_lifecycle.py",
+      "?? scripts/signed_evidence.py",
+      "?? scripts/verify_signed_evidence.py",
+      "?? session/experience-forge/",
+      "?? skills/manage-capability-lifecycle/",
+      "?? tests/test_lifecycle.py",
+      "?? tests/test_signed_evidence.py"
+    ]
+  },
+  "goal": "Build and prove Beast capability lifecycle, fitness, anti-drift, practice, and signed evidence foundation",
+  "loop": {
+    "capabilities": [
+      "lifecycle.skill_governance"
+    ],
+    "last_command": "python -m pytest -q",
+    "stage": "REMEMBER"
+  },
+  "next_actions": [
+    "Verify signed evidence with --evidence-root .",
+    "Run full suite and Beast Core validation",
+    "Independent reviewer inspects draft PR; builder must not merge"
+  ],
+  "recorded_utc": "2026-08-05T00:08:58.626534+00:00",
+  "repo": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-experience-forge",
+  "resources": {
+    "gpu": {
+      "available": true,
+      "free_mib": 12976,
+      "name": "NVIDIA GeForce RTX 5090",
+      "total_mib": 32607,
+      "used_mib": 19212
+    }
+  },
+  "schema": "beast.recovery/v2",
+  "secrets_stored": false,
+  "unreal": {
+    "engine_root": "",
+    "map": "",
+    "project": "",
+    "run_id": ""
+  }
+}
