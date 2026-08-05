@@ -591,7 +591,7 @@ another capability. “Later” is not a trigger.
 - Revisit trigger: post-upgrade verification result, or the next time we design
   a direction-selection step (cite worlds as prior art).
 
-### OPP-20260804-11 — Official Unity CLI as a deterministic agent control plane
+### OPP-20260804-11 — Unity CLI + Pipeline package as an agent control plane
 
 - Status: observed
 - Trigger: Beast Watch proof 006 inspected SpeedTutor's Unity 7 roadmap video;
@@ -599,9 +599,11 @@ another capability. “Later” is not a trigger.
   Browser, Editor, and Custom participants. Current Unity primary sources then
   verified that the standalone CLI and experimental Pipeline package are public.
 - New capability hypothesis: Beast may be able to control and verify Unity
-  projects through a structured, self-describing CLI, reserving MCP as an
-  interoperability adapter instead of making individual node calls its only
-  control surface.
+  projects through a two-part local stack: the standalone CLI plus the separately
+  installed in-project `com.unity.pipeline` package. Direct CLI commands could be
+  the primary surface while the CLI's MCP mode remains an interoperability
+  adapter; neither Editor nor Player control comes from the standalone binary
+  alone.
 - Potential beneficiaries: Beast's game-production lane, coding agents, Unity
   CI/test automation, runtime debugging, and tutorial-to-executable-skill work.
 - Current-project value: supplies an official comparison target for the existing
@@ -611,23 +613,27 @@ another capability. “Later” is not a trigger.
   agent builders choose a control plane based on latency, recoverability, and
   evidence quality rather than fashion.
 - Prior art and primary sources: this is upstream Unity capability intake, not a
-  novelty claim. Unity documents the CLI as experimental, the Pipeline package as
-  the requirement for Editor control, local Editor/development-Player access,
-  structured output, live C# evaluation, custom commands, and MCP mode:
+  novelty claim. Unity documents the standalone CLI as experimental and capable
+  of Editor/module/project/auth management with structured output. It separately
+  requires the in-project `com.unity.pipeline` package for Editor/development-
+  Player control, command discovery, custom commands, live C# evaluation, and
+  Editor-facing MCP operations:
   https://docs.unity.com/en-us/unity-cli ·
   https://docs.unity.com/en-us/unity-cli/release-notes ·
   https://unity.com/blog/meet-the-unity-cli ·
   https://discussions.unity.com/t/announcing-the-unity-cli-a-new-way-to-connect-your-tools-and-agents/1731104 .
   Unity's separate cloud Production Pipeline remains closed beta:
   https://unity.com/features/unity-production-pipeline .
-- Falsifiable claim: on one disposable supported Unity project, direct CLI and
-  CLI-hosted MCP can each perform the same scene mutation and verification; one
-  path may then be shown to require less elapsed time or fewer agent round trips
-  without losing structural, behavioral, visual, or recovery evidence.
+- Falsifiable claim: on one disposable supported Unity project with
+  `com.unity.pipeline` separately installed and configured, direct CLI commands
+  and CLI-hosted MCP can each perform the same scene mutation and verification;
+  one path may then be shown to require less elapsed time or fewer agent round
+  trips without losing structural, behavioral, visual, or recovery evidence.
 - Smallest real experiment: after an explicit dependency decision, install only
   the official standalone CLI, verify provenance/version/doctor/MCP help and
-  removal. A later experiment installs a disposable supported Editor plus the
-  Pipeline package and runs the matched mutation under both interfaces.
+  removal; this does not test Editor control. A later experiment installs a
+  disposable supported Editor and separately adds/configures the Pipeline package
+  before running the matched mutation under both interfaces.
 - Measures and acceptance threshold: both conditions must produce the same
   asserted scene state, passing test, retained screenshot, machine-readable log,
   and successful crash/resume or clean rollback. Any superiority claim requires
