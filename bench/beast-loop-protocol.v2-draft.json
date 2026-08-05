@@ -1,6 +1,6 @@
 {
   "schema": "beast.loop-benchmark/v2-draft",
-  "status": "design_draft_pending_review_and_user_gate",
+  "status": "design_draft_BLOCKED_pending_sequestration_repair_review_and_user_gate",
   "hypothesis": "A compiled Beast capability improves matched task correctness or efficiency without increasing unsupported claims.",
   "minimum_domains": 3,
   "minimum_tasks_per_domain": 3,
@@ -164,5 +164,29 @@
     "user interrupt"
   ],
   "curated_skill_isolation": "Curator seat has no access to C3 packs, typed evidence, or watch bundles; curated skills written before any C3 compile exists; timestamped attestation with curator seat+birth_id in the selection commit; a curator who saw any C3 artifact is burned for that task.",
-  "sealed_acceptance": "Per-task acceptance criteria, hard-gate parameters, and predeclared visual-only facts are committed at selection time before any C3 compile; selection commit records selector and curator seat+birth_id; post-seal changes void the task."
+  "sealed_acceptance": "Per-task acceptance criteria, hard-gate parameters, and predeclared visual-only facts are committed at selection time before any C3 compile; selection commit records selector and curator seat+birth_id; post-seal changes void the task.",
+  "sequestration": {
+    "burned_pools": [
+      "pilot: Blender/Audacity/Inkscape (bench/concern-proof)",
+      "MetaBalls held-out tutorial",
+      "superseded candidate pool disclosed in BENCHMARK-DESIGN.md: UE 5.8, Blender, DaVinci/OBS-class AV, spreadsheet/office, GIMP/Krita"
+    ],
+    "burned_rule": "pilot/training reporting only; never held-out generalization evidence",
+    "selector_rule": "No current seat (claude 1/2/3, codex 1) may select or curate; all presumed contaminated until audited.",
+    "trust_root_options": [
+      "user-supplied previously undisclosed tutorial/task URLs provided AFTER the compiler+scorer freeze commit (preferred)",
+      "deterministic selection over a predeclared external corpus seeded by post-freeze public entropy, source and derivation declared before it exists"
+    ],
+    "freeze_order": [
+      "freeze compiler+scorer at exact commit",
+      "declare selection mechanism",
+      "trust root selects after freeze",
+      "seal task IDs, source hashes, acceptance criteria, method+seed, timestamp in one commit",
+      "verify absent from watched/ proofs/ prior bench artifacts",
+      "only then C3 compile",
+      "fleet audits only after seal"
+    ],
+    "curator": "new context-isolated seat, not a fork; briefed only with selected tutorial + sealed criteria; barred from packs, evidence, watch bundles, mesh transcript, design file, candidate lists; attests birth_id, spawn timestamp, verbatim briefing, explicit no-prior-access declaration",
+    "residual_risk": "One GitHub identity and one host: attestation is a procedural control, not cryptographic. The published result must name the enforcement mechanism and state that isolation rests on process discipline and commit ordering; distrusting readers should treat C2 as a weak comparator, not a clean control."
+  }
 }

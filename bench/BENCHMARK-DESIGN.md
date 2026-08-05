@@ -30,11 +30,25 @@ C2 authorship rule: the curator may watch the tutorial as a human viewer would
 and write the best skill they can in ≤ the median wall-clock of the C3 compile,
 but may not use Watch tooling, typed evidence, or pack validation. The curator
 must not be the agent that built the Beast compiler (builder ≠ comparator).
-**Isolation (review amendment A2):** the curator seat must have NO access to C3
-packs, typed evidence, or watch bundles for any benchmark tutorial — enforced by
-writing the curated skills BEFORE any C3 compile exists for those tutorials, and
-attested with a timestamped statement (curator seat + birth_id) recorded in the
-selection commit. A curator who has seen any C3 artifact is burned for that task.
+**Isolation (A2, strengthened 2026-08-05):** the curator is a **new,
+context-isolated seat** — not a fork of a current seat — given only the selected
+tutorial and the sealed acceptance criteria. It must have no access to Beast
+packs, typed evidence, watch bundles, the mesh transcript, this design file, or
+any protocol candidate list, and it writes its skill before any C3 compile
+exists for that tutorial. Attestation recorded in the selection commit states:
+curator birth_id, spawn timestamp, the briefing it received verbatim, and an
+explicit declaration of no prior access to each of those categories. A curator
+with any such exposure is burned for that task.
+
+**Enforcement mechanism and residual risk (stated in the result, not hidden):**
+every fleet seat operates under one GitHub identity and one host, so
+attestation is a *procedural* control, not a cryptographic one — an
+attestation cannot prove non-exposure the way a signature proves authorship.
+The published result must name the mechanism actually used (fresh spawn +
+briefing capture + commit-order evidence) and state the residual risk plainly:
+isolation rests on process discipline and commit ordering, and a reader who
+distrusts that should treat C2 as a weak comparator rather than a clean
+control. Mesh-relayed claims of isolation are not evidence of isolation.
 
 ## Task selection (sealed, unseen)
 
@@ -47,15 +61,37 @@ selection commit. A curator who has seen any C3 artifact is burned for that task
   changed after sealing void the task.
 - Pilot domains (Blender, Audacity, Inkscape — bench/concern-proof) and the
   MetaBalls held-out tutorial are **burned**: they are SEEN and excluded.
-- Freeze order (enforced by commit history): (1) compiler + packs frozen at a
-  named commit; (2) selection performed by an agent who did not build the
-  compiler; (3) selected tutorials verified absent from `watched/`, `proofs/`,
-  and prior bench artifacts; (4) selection committed before any C3 compile.
-- Domain candidate pool (final pick sealed at selection time, not here):
-  UE 5.8 (disposable GUI project, per the 2026-08-01 engine-version rule),
-  Blender 5.1 with an unseen workflow class, DaVinci/OBS-class desktop AV,
-  spreadsheet/office automation, GIMP/Krita. At most one UE domain, so the
-  suite is not engine-weighted.
+### Sequestration repair (2026-08-05, blocking — supersedes the original rules)
+
+The original design listed a domain candidate pool in this file and the fleet
+discussed candidates over the mesh. **That disclosure burns them.** A pool
+named by the seats that built the compiler is not held-out, and "the selector
+did not build the compiler" is too weak when every current seat has read the
+design, the packs, or the mesh transcript.
+
+- **BURNED — pilot/training only, never held-out evidence:** the pilot domains
+  (Blender, Audacity, Inkscape — `bench/concern-proof`), the MetaBalls held-out
+  tutorial, and **every domain named in the superseded candidate pool of this
+  file** (UE 5.8, Blender, DaVinci/OBS-class AV, spreadsheet/office, GIMP/Krita).
+  Results on them may be reported as pilot or training data and never as
+  held-out generalization.
+- **No current seat may select.** claude 1/2/3 and codex 1 are all presumed
+  contaminated for selection and curation until an audit proves otherwise.
+- **Trust-root selection — one of two mechanisms, declared before the freeze:**
+  1. **User-supplied (preferred):** the user provides previously undisclosed
+     tutorial/task URLs *after* the compiler+scorer freeze commit. The user is
+     the only trust root not derivable from fleet state.
+  2. **Deterministic external-pool:** a predeclared external corpus plus
+     post-freeze public entropy (a named future public value, e.g. a
+     scheduled index close or block hash) seeds a deterministic selector.
+     The entropy source and derivation are declared before it exists.
+- **Freeze order (enforced by commit history):** (1) compiler + scorer frozen
+  at an exact named commit; (2) selection mechanism declared; (3) tasks
+  selected by the trust root *after* that commit; (4) task IDs, source hashes,
+  acceptance criteria, selection method + seed, and timestamp sealed
+  immediately in one commit; (5) selected tutorials verified absent from
+  `watched/`, `proofs/`, and prior bench artifacts; (6) only then may any C3
+  compile begin. The current fleet may audit only *after* the seal.
 
 ## Repetitions and scale
 
