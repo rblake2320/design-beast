@@ -1,0 +1,48 @@
+{
+  "schema": "beast.watch.proof/v1",
+  "proof_id": "watch-006-unity7-roadmap",
+  "created_at": "2026-08-04",
+  "source": {
+    "url": "https://www.youtube.com/watch?v=Zd7Qv4SdRxU",
+    "title": "Unity 7 Roadmap: Everything Coming Next!",
+    "channel": "SpeedTutor",
+    "video_sha256": "c21ec769a2f4ee44c04fb958d06e637c40f0a51b9146f514d10a5c118e0255b6",
+    "duration_seconds": 1987.516667,
+    "width": 1920,
+    "height": 1080,
+    "fps": "60/1",
+    "video_codec": "av1"
+  },
+  "bundle": {
+    "schema": "beast.watch.timeline/v3",
+    "fingerprint": "f62a2b14ff12dc4f582307c109a86e44e2ffd975b1849c6aad34c2abf7ea7b19",
+    "frames": 260,
+    "scene_samples": 124,
+    "dense_samples": 0,
+    "near_duplicates": 58,
+    "transcript_segments": 1705,
+    "local_path": "watched/unity7-roadmap-Zd7Qv4SdRxU"
+  },
+  "claim": {
+    "level": "observed",
+    "supported": "Beast watched the source pixels and recovered a frame-linked Unity pipeline topology not encoded by the narration; current Unity primary sources independently verify that an experimental agent-facing CLI and Pipeline package exist.",
+    "boundary": "No Unity software is installed or controlled by this proof, no Unity skill is compiled, and no CLI-versus-MCP performance claim is established.",
+    "held_out_eligible": false
+  },
+  "key_frames": [
+    {
+      "source_time": "00:17:03.667",
+      "file": "frames/f_000001023667.jpg",
+      "sha256": "943760335599f7e8ca42a176109e1e966854298a1e15abdf346a4ad8ccc7f7e1",
+      "visual_only_fact": true
+    },
+    {
+      "source_time": "00:17:25.000",
+      "file": "frames/f_000001045000.jpg",
+      "sha256": "fd311994f9411307cf3107afa6a338057658d856efe0e4cea1cbbad59418b597",
+      "visual_only_fact": false
+    }
+  ],
+  "primary_sources_verified_at": "2026-08-04",
+  "next_test_requires_user_decision": true
+}
