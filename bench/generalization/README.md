@@ -22,6 +22,15 @@ are every candidate domain and task pool discussed in their repository or mesh
 traffic. Those candidates remain useful for pilots only and cannot support a
 held-out claim.
 
+**The coordination channel is a disclosure channel.** Before the seal, candidate
+URLs, task descriptions, domains, pool contents, oracle facts, and acceptance
+details must never be sent over fleet mesh, placed in a committed design file, or
+written into a shared agent workspace. They go directly from the user/trust-root
+selector into the sequestered selection workspace. Only hashes and the minimum
+post-selection custody receipts may enter the repository after sealing. If any
+candidate content leaks into coordination traffic, burn it immediately; do not
+attempt to repair its held-out status with an attestation.
+
 After the frozen commit, tasks enter through one of two recorded paths:
 
 1. the user supplies previously undisclosed task/tutorial sources as the trust-root
