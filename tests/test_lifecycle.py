@@ -1,8 +1,25 @@
 import copy
+import importlib.util
 import json
 from datetime import datetime, timezone
+from pathlib import Path
 
 from beast import lifecycle
+
+
+ROOT = Path(__file__).resolve().parents[1]
+CLI_SPEC = importlib.util.spec_from_file_location("beast_lifecycle_cli", ROOT / "scripts" / "beast_lifecycle.py")
+assert CLI_SPEC and CLI_SPEC.loader
+cli = importlib.util.module_from_spec(CLI_SPEC)
+CLI_SPEC.loader.exec_module(cli)
+
+
+def test_cli_evidence_writer_uses_platform_independent_lf_bytes(tmp_path, capsys):
+    output = tmp_path / "receipt.json"
+    cli.write({"status": "active"}, output)
+    assert b"\r\n" not in output.read_bytes()
+    assert output.read_bytes().endswith(b"\n")
+    assert capsys.readouterr().out.endswith("\n")
 
 
 def manifest(output):

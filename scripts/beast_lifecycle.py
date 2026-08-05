@@ -20,7 +20,7 @@ def write(value, path: Path | None) -> None:
     payload = json.dumps(value, indent=2, sort_keys=True) + "\n"
     if path:
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(payload, encoding="utf-8")
+        path.write_text(payload, encoding="utf-8", newline="\n")
     print(payload, end="")
 
 
