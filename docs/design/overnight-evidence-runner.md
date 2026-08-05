@@ -140,17 +140,27 @@ receipt    -> signed start/finish/fail/skip receipt appended to the
 
 ### OS-enforced envelopes (the watchdog observes; the OS enforces)
 
-Each job runs in a **dedicated systemd transient scope** (`systemd-run
---scope/--unit` with properties), so limits are kernel-enforced and
-fail-closed rather than watchdog-promised:
+Each job runs in a **dedicated systemd transient SERVICE unit**
+(`systemd-run --unit=beast-job-<id> --property=...` — NOT `--scope`: scope
+units cannot carry `Type=`, and the proven timeout contract requires
+`Type=exec`), so limits are kernel-enforced and fail-closed rather than
+watchdog-promised:
 
 - `DeviceAllow=` default-deny for GPU device nodes (`/dev/nvidia*`) —
   zero GPU use is *enforced*, not asserted; a nonzero GPU budget whitelists
   devices for that job's scope only.
 - `IPAddressDeny=any` (plus `RestrictNetworkInterfaces=` where available)
   when `network: false` — downloads are impossible, not just forbidden.
-- Isolated write directory per job with a quota/size ceiling; the job's
-  scope gets no write path outside it.
+- Isolated write directory per job; the unit gets no write path outside
+  it (`ReadWritePaths=` allowlist + `ProtectSystem=strict`).
+  **Disk-size ceiling: primitive NOT yet pinned or tested** — candidates
+  are a per-job loopback image mount (`size` fixed at creation), tmpfs
+  `size=` for small jobs, or xfs/ext4 project quotas; whichever is chosen
+  must pass a hardware test (same standard as the unit contract) before
+  the ceiling may be described as enforced. Until then the ceiling is
+  WATCHDOG-MONITORED with threshold kill — observed, not enforced — and
+  receipts must label it that way. Pinning this primitive is added to the
+  smallest experiment's Night A checklist.
 - `RuntimeMaxSec=` for wall-clock timeout — **with the proven unit
   contract, which is load-bearing**: hardware tests on both Sparks
   (codex-beast-primary-1, 2026-08-05) showed `Type=oneshot` silently
