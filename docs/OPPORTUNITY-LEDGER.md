@@ -590,3 +590,58 @@ another capability. “Later” is not a trigger.
   passes.
 - Revisit trigger: post-upgrade verification result, or the next time we design
   a direction-selection step (cite worlds as prior art).
+
+### OPP-20260804-11 — Official Unity CLI as a deterministic agent control plane
+
+- Status: observed
+- Trigger: Beast Watch proof 006 inspected SpeedTutor's Unity 7 roadmap video;
+  frame 00:17:03.667 shows a Unity-pipeline hub connected to Agent, Player, CLI,
+  Browser, Editor, and Custom participants. Current Unity primary sources then
+  verified that the standalone CLI and experimental Pipeline package are public.
+- New capability hypothesis: Beast may be able to control and verify Unity
+  projects through a structured, self-describing CLI, reserving MCP as an
+  interoperability adapter instead of making individual node calls its only
+  control surface.
+- Potential beneficiaries: Beast's game-production lane, coding agents, Unity
+  CI/test automation, runtime debugging, and tutorial-to-executable-skill work.
+- Current-project value: supplies an official comparison target for the existing
+  MCP-versus-CLI question and may reduce slow GUI/node-by-node automation through
+  live C# evaluation and project-specific `[CliCommand]` operations.
+- Outside-project value: a measured CLI-versus-MCP study could help other Unity
+  agent builders choose a control plane based on latency, recoverability, and
+  evidence quality rather than fashion.
+- Prior art and primary sources: this is upstream Unity capability intake, not a
+  novelty claim. Unity documents the CLI as experimental, the Pipeline package as
+  the requirement for Editor control, local Editor/development-Player access,
+  structured output, live C# evaluation, custom commands, and MCP mode:
+  https://docs.unity.com/en-us/unity-cli ·
+  https://docs.unity.com/en-us/unity-cli/release-notes ·
+  https://unity.com/blog/meet-the-unity-cli ·
+  https://discussions.unity.com/t/announcing-the-unity-cli-a-new-way-to-connect-your-tools-and-agents/1731104 .
+  Unity's separate cloud Production Pipeline remains closed beta:
+  https://unity.com/features/unity-production-pipeline .
+- Falsifiable claim: on one disposable supported Unity project, direct CLI and
+  CLI-hosted MCP can each perform the same scene mutation and verification; one
+  path may then be shown to require less elapsed time or fewer agent round trips
+  without losing structural, behavioral, visual, or recovery evidence.
+- Smallest real experiment: after an explicit dependency decision, install only
+  the official standalone CLI, verify provenance/version/doctor/MCP help and
+  removal. A later experiment installs a disposable supported Editor plus the
+  Pipeline package and runs the matched mutation under both interfaces.
+- Measures and acceptance threshold: both conditions must produce the same
+  asserted scene state, passing test, retained screenshot, machine-readable log,
+  and successful crash/resume or clean rollback. Any superiority claim requires
+  at least five repetitions per condition, median and tail latency, agent
+  round-trip count, failure count, and identical acceptance gates.
+- Risks, constraints, and rights/privacy implications: the CLI and Pipeline
+  package are experimental and may drift; installation can download large Editor
+  payloads; authentication/cloud actions remain separately gated; the cloud
+  Production Pipeline has beta terms and is not production-supported during the
+  beta. Do not conflate local package availability with cloud-beta access.
+- Evidence: `proofs/watch-006-unity7-roadmap/`; local `unity` executable and
+  standard-path Editor installation were not found during this proof.
+- Decision: preserve the opportunity and proof; do not install, authenticate,
+  compile a skill, or promote a capability until the user accepts the scoped
+  dependency experiment.
+- Revisit trigger: user approves the standalone-CLI preflight, or a supported
+  Unity Editor is independently found on this machine.
