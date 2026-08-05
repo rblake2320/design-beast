@@ -43,6 +43,9 @@
       "id": 2,
       "result": "pass",
       "scope": "gpu_and_network_denial_both_nodes",
+      "unit_type": "oneshot",
+      "runtime_max_sec_effective": false,
+      "runtime_note": "Spark 1 journal confirmed RuntimeMaxSec was ignored for this oneshot unit; this attempt supports denial claims only",
       "properties": {
         "DevicePolicy": "closed",
         "IPAddressDeny": "any",

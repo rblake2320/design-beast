@@ -73,6 +73,8 @@ TasksMax=32
 
 On both hosts, `nvidia-smi -L` returned 255, AF_INET socket creation returned 1, outbound access returned 1, and the enclosing `systemd-run` completed successfully. This is the retained basis for the GPU/network-denial claim.
 
+This attempt used `Type=oneshot`. Spark 1's journal independently confirmed that systemd ignored `RuntimeMaxSec=20` for that unit, so the listed runtime property is **inert and supplies no timeout evidence**. Attempt 2 supports only the denial claims; timeout evidence rests on Attempt 4's `Type=exec` units.
+
 ### Attempt 3 — `Type=oneshot` timeout falsified
 
 `Type=oneshot` with `RuntimeMaxSec=2` did **not** stop a 30-second workload at the declared limit on Spark 1. It completed in roughly 30 seconds and returned zero. The client-side parallel command timed out before a usable Spark 2 result was retained. This configuration is rejected for the proposed runner.
