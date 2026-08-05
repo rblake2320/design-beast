@@ -17,16 +17,22 @@ topology. The exact frame is bound in `evidence-map.md` by source time and
 SHA-256.
 
 The video also exposed a current, useful opportunity for Beast: Unity now has
-an official terminal-native control surface designed for automation and agents.
-Unity's current documentation independently confirms that:
+an official two-part, terminal-native control stack designed for automation and
+agents. Unity's current documentation independently confirms that:
 
-- the Unity CLI is experimental;
-- Editor control requires the experimental Unity Pipeline package;
-- the package can drive a running Editor or development Player over a local API;
-- `unity command eval` executes C# without a project recompile or domain reload;
-- commands support structured output and predictable exit behavior; and
-- Unity recommends the CLI as the more robust, extensible, terminal-native path
-  while retaining an MCP mode for MCP clients.
+- the standalone Unity CLI binary is experimental and manages Editors, modules,
+  projects, authentication, and automation with structured output and defined
+  exit behavior;
+- Editor or development-Player control is **not supplied by that binary alone**:
+  the project must separately install and configure the experimental
+  `com.unity.pipeline` package;
+- with that package connected, CLI commands can discover/execute built-in or
+  custom `[CliCommand]` operations and `unity command eval` can execute live C#
+  without a project recompile or domain reload; and
+- the CLI includes an MCP mode, but MCP-based Editor/Player operations still
+  depend on the separately installed Pipeline package. Unity recommends direct
+  CLI use as the more robust, extensible, terminal-native path while retaining
+  MCP mode for compatible clients.
 
 The public local CLI/Pipeline package and Unity's separate cloud Production
 Pipeline are not the same availability claim. The cloud services remain a
@@ -38,11 +44,13 @@ closed beta and are not supported for production use during that beta.
 
 - **observed:** Beast inspected real video pixels and retained a visual-only
   architecture fact with a transcript-absence check;
-- **observed:** the video presents Unity CLI as an agent-facing Editor/runtime
-  automation surface;
+- **observed:** the video presents the combined Unity CLI + Pipeline package as
+  an agent-facing Editor/runtime automation surface;
 - **verified from current primary sources (2026-08-04):** Unity publicly
-  documents an experimental CLI and Pipeline package with Editor/Player control,
-  structured output, custom commands, live C# evaluation, and MCP mode;
+  documents the experimental standalone CLI and separately installed Pipeline
+  package. Base CLI automation has structured output; Editor/Player control,
+  custom commands, live C# evaluation, and the Editor-facing MCP tools require
+  the Pipeline package;
 - **observed locally:** no `unity` executable was found on `PATH`, and no Unity
   installation was found in the standard Windows locations checked.
 
@@ -64,18 +72,20 @@ pilot work, never represented as unseen evaluation material.
 
 Do not install an Editor or authenticate as part of this proof. With an explicit
 user decision to add the tool, first install only Unity's official standalone
-CLI and retain receipts for:
+CLI—without the separate Pipeline package—and retain receipts for:
 
 1. binary provenance, version, checksum/signature, and install location;
-2. `unity --version`, `unity doctor`, and `unity mcp --help`;
+2. `unity --version`, `unity doctor`, and `unity mcp --help` (command-surface
+   discovery only, not proof of Editor control);
 3. supported machine-readable formats and exit-code behavior; and
 4. clean removal or restoration instructions.
 
 A later, separately approved experiment can install a disposable supported
-Unity Editor/project plus the Pipeline package, then compare direct CLI and MCP
-on the same scene mutation, test, screenshot, timing, and recovery gates. A
-performance claim requires repeated measurements; a successful mutation alone
-does not establish superiority.
+Unity Editor/project and separately add/configure `com.unity.pipeline`. Only
+then can it compare direct CLI commands and the CLI's MCP mode over the same
+Pipeline connection on the same scene mutation, test, screenshot, timing, and
+recovery gates. A performance claim requires repeated measurements; a
+successful mutation alone does not establish superiority.
 
 ## Current primary sources
 
@@ -87,4 +97,3 @@ does not establish superiority.
 - Unity Production Pipeline availability:
   https://unity.com/features/unity-production-pipeline
 - Unity 7 release status: https://unity.com/releases/unity-7
-

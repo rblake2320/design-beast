@@ -25,8 +25,8 @@
   },
   "claim": {
     "level": "observed",
-    "supported": "Beast watched the source pixels and recovered a frame-linked Unity pipeline topology not encoded by the narration; current Unity primary sources independently verify that an experimental agent-facing CLI and Pipeline package exist.",
-    "boundary": "No Unity software is installed or controlled by this proof, no Unity skill is compiled, and no CLI-versus-MCP performance claim is established.",
+    "supported": "Beast watched the source pixels and recovered a frame-linked Unity pipeline topology not encoded by the narration; current Unity primary sources independently verify that an experimental standalone CLI exists and that Editor/Player control requires the separately installed com.unity.pipeline package.",
+    "boundary": "The standalone CLI does not itself establish Editor/Player control: that requires a supported project with the separate Pipeline package. No Unity software is installed or controlled by this proof, no Unity skill is compiled, and no direct-CLI-versus-CLI-MCP performance claim is established.",
     "held_out_eligible": false
   },
   "key_frames": [
