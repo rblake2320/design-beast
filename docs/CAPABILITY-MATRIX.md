@@ -56,7 +56,7 @@ COSTS-BASELINE.md (pricing sources), WIN-PLAN.md (what we build next).
 | Image→3D textured mesh | Tripo API / Hunyuan3D-2.1 / TRELLIS.2 (fit 5090) | free local / API | **Meshy/Tripo SaaS** — per-seat credits |
 | Full Blender control by agents | **Blender 5.1 MCP, ~50 tools** | free | nobody commercial |
 | **Full Unreal control by agents** | **UE 5.8 first-party MCP (BeastLab, verified)** | free | nobody — Epic's MCP is new; we're already on it |
-| Asset delivery INTO engine | /api/to_ue → RouteRush (UE 5.6) | free | **nobody** — Meshy/Scenario stop at file export |
+| Asset delivery INTO engine | /api/to_ue → RouteRush (UE 5.6) | free | no commercial asset SaaS — Meshy/Scenario stop at file export; MS Resource2Skill (research) executes into UE5 via MCP (RESEARCH-LANDSCAPE.md) |
 | Sprites→flipbooks (Paper2D/PaperZD) | game-content-pipeline skill | free | Scenario 2D — credits |
 | Game packaging | RunUAT via skill | free | manual everywhere |
 | Screenshot→judge→fix-list look enforcement | **game-look-pass recipe (new 2026-07-31)** | free | **nobody has this** |
@@ -89,7 +89,7 @@ COSTS-BASELINE.md (pricing sources), WIN-PLAN.md (what we build next).
 | Job DB: cancel/retry/timeout/idempotency | **Beast Studio (tested)** | free | cloud platforms internally; not agent-exposed |
 | GPU admission + lease scheduler | **Beast Studio durable heavy/light leases + live external VRAM budget/reserve guard (tested; one live Unreal-active pair measured 2026-08-03)** | free | local workflow tools generally rely on application-local queues |
 | **Exact-replay provenance** (env+graph+model hashes) | **env_snapshot + beast replay (19 tests, 2026-07-31)** | free | **nobody — ComfyUI's defining pain** |
-| **Tamper-evident chained run ledger** | **studio/ledger.py + beast ledger (from vigil, 2026-07-31)** | free | **nobody** — audit/compliance-grade |
+| **Tamper-evident chained run ledger** | **studio/ledger.py + beast ledger (from vigil, 2026-07-31)** | free | no creative-generation product ships one; adjacent fields DO — NVIDIA Verified Agent Skills signs skill packages pre-publication (per its stated workflow-entry scope, not per-run), enterprise agent-audit platforms sign action logs (RESEARCH-LANDSCAPE.md) |
 | Backend registry: local-first, BYOK cloud parity | **registry.py + GET /api/registry (2026-07-31)** | free | Krea routes cloud-only; nobody does local-default+BYOK |
 | Content-class policy routing (operator-owned) | **registry content_classes + named skip reasons** | free | Civitai bolted on mid-crisis; others hardcode |
 | Python + TypeScript SDKs, OpenAPI | shipped (45 SDK tests) | free | cloud APIs only |
@@ -113,7 +113,7 @@ COSTS-BASELINE.md (pricing sources), WIN-PLAN.md (what we build next).
 | Any video → frames+transcript bundle an agent can "watch" | **beast watch (verified 2026-07-31: recovered visual facts absent from transcript)** | free (captions) / Whisper fallback | Gemini video-in ($, metered); transcript-only tools miss all visuals |
 | Timestamp-correlated visual Q&A ("what graph appeared at 12:30?") | frames named f_MMSS + [MM:SS] transcript lines | free | same |
 | Section-only processing (--start/--end) | shipped | free | rare |
-| Competitor video analysis (score shots, pacing, judge frames) | watch bundle + judge/YOLO/SAM over frames | free | nobody |
+| Competitor video analysis (score shots, pacing, judge frames) | watch bundle + judge/YOLO/SAM over frames | free | none in creative tooling; large-scale video-understanding platforms exist (NVIDIA VSS-class — RESEARCH-LANDSCAPE.md) |
 
 ## Knowledge & Automation (the surround)
 
@@ -122,6 +122,11 @@ COSTS-BASELINE.md (pricing sources), WIN-PLAN.md (what we build next).
 - Gmail/AOL/GitHub/Hostinger/DNS/VPS via CLI+MCP — content can be *published*, not just made
 
 ## Scorecard
+
+Scope note (2026-08-05): "ONLY one" means only one **in the surveyed commercial
+creative-production field**. Adjacent-field prior art (research systems, agent
+infrastructure, standards) is tracked in RESEARCH-LANDSCAPE.md; each claim below
+falls to the first verified counterexample.
 
 - **Capabilities where we're the ONLY one:** agent-driven brief→judged-asset→inside-Unreal;
   exact-replay provenance; tamper-evident run ledger; enforced judge loop; single-pass
@@ -132,3 +137,26 @@ COSTS-BASELINE.md (pricing sources), WIN-PLAN.md (what we build next).
   camera control / Act-One / Aleph-class video editing, canvas inpainting, video
   upscale (SeedVR2), SAM 3 (gated), MCP server (week 2), validation breadth vs
   months of paid production traffic.
+
+## Amendments (2026-08-05, truth-maintenance pass — claims superseded, not erased)
+
+Rebaselined against primary sources (fetched 2026-08-05, cites in
+RESEARCH-LANDSCAPE.md). Superseded wordings preserved here:
+
+- "Tamper-evident chained run ledger — **nobody** — audit/compliance-grade"
+  → scoped to creative-generation products. NVIDIA Verified Agent Skills ships
+  signed skill governance (pre-publication; per-run is outside its stated
+  workflow-entry scope); enterprise
+  agent-audit platforms sign action logs. Beast's per-run execution-side chain
+  remains unmatched in the surveyed creative field.
+- "Asset delivery INTO engine — **nobody**" → scoped to commercial asset SaaS.
+  Microsoft Resource2Skill (research) executes skills into UE5 and other real
+  backends via MCP, without result verification.
+- "Competitor video analysis — nobody" → scoped to creative tooling; large-scale
+  video-understanding platforms exist.
+- Scorecard "ONLY one" list → now explicitly field-scoped (see scope note above).
+
+Survived with documented search, no counterexample found as of 2026-08-05:
+enforced multi-candidate judge loop, vision-QA-as-a-tool, exact-replay provenance
+for creative runs, brief→judged-asset→inside-Unreal as a shipped pipeline,
+screenshot-judged game-look enforcement.
