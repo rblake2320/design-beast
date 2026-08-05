@@ -61,3 +61,13 @@ Design-beast is what Krea/Higgsfield would be if they ran on your own GPU with n
 credit meter, what ComfyUI would be if environments reproduced exactly, what Scenario
 would be if style-lock were local, and what none of them are: agent-operable end to end
 — brief to judged asset to Unreal — under a content policy the operator owns.
+
+## Amendments (2026-08-05, truth-maintenance)
+
+The combined-moat claim above compares commercial creative products and stands.
+Adjacent fields are converging on individual pieces — skill signing (NVIDIA
+Verified Agent Skills), tutorial→skill compilation with real-app execution
+(Google Watch and Learn; Microsoft Resource2Skill/CUA-Skill) — none with Beast's
+per-run evidence custody or lifecycle. Prior-art detail and verification dates:
+RESEARCH-LANDSCAPE.md. Categorical "nobody" claims in the capability matrix were
+scoped the same day; superseded wordings preserved in its amendment block.
