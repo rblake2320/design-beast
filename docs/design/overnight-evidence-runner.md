@@ -85,8 +85,15 @@ in a file an agent can write proves nothing. Therefore:
 - **Human trust root:** the user generates a dedicated Ed25519 keypair
   interactively (private key stays user-controlled — passphrase-protected,
   never readable by agent sessions; NOT any agent session key, NOT the
-  PR #15 proof keys). The public key is pinned in the repo once, by the
-  user.
+  PR #15 proof keys).
+- **The authoritative public key lives OUTSIDE the repo** at root-owned
+  `/etc/beast-runner/trusted_user.pub` (installed by the user with sudo at
+  Gate 1). The runner verifies file owner (root), mode (0644, root-writable
+  only), and key fingerprint at every start, and refuses on any mismatch.
+  A repo copy may exist for reference but is NEVER authoritative and can
+  never override /etc — agents can push commits, so a repo-pinned key
+  would let an agent swap the trust root and sign its own manifests
+  (amendment from codex hardware review, 2026-08-05).
 - **Manifest approval = a signature over the canonical-JSON SHA-256 of the
   exact manifest**, carrying scope (host, date window) and expiry. The
   runner verifies signature + scope + expiry against the pinned public key
@@ -144,8 +151,21 @@ fail-closed rather than watchdog-promised:
   when `network: false` — downloads are impossible, not just forbidden.
 - Isolated write directory per job with a quota/size ceiling; the job's
   scope gets no write path outside it.
-- `RuntimeMaxSec=` for wall-clock timeout; `MemoryMax=`, `TasksMax=` per
-  profile.
+- `RuntimeMaxSec=` for wall-clock timeout — **with the proven unit
+  contract, which is load-bearing**: hardware tests on both Sparks
+  (codex-beast-primary-1, 2026-08-05) showed `Type=oneshot` silently
+  defeats `RuntimeMaxSec` (a 2s cap ran 30s); the enforced-and-verified
+  combination is:
+  `Type=exec` + `KillMode=control-group` + `TimeoutStopSec=3` +
+  `RuntimeMaxSec=<cap>` + `DevicePolicy=closed` (with `DeviceAllow=`
+  whitelist only when a GPU budget is approved). This exact contract is
+  pinned; deviations are a design change requiring re-review.
+- **Startup property probe:** before launching the job payload, the runner
+  reads the live unit's effective properties (`systemctl show`) and
+  verifies they match the pinned contract — a unit that lost its limits
+  (wrong Type, missing DevicePolicy, unset RuntimeMaxSec) refuses to run.
+  Enforcement is verified per job, not assumed from the unit file.
+- `MemoryMax=`, `TasksMax=` per profile.
 - Termination is **cgroup-scoped** (`systemctl kill --kill-whom=all` on the
   unit) — never raw process-tree walking, which is vulnerable to PID reuse
   and breaks the "never anything else" promise.
