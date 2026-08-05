@@ -25,5 +25,6 @@
     "checkpoint_command": "beast checkpoint",
     "resume_rule": "Verify checkpoint hashes and UE 5.8 project identity before continuing."
   },
-  "resource_profile": "unreal_incremental"
+  "resource_profile": "unreal_incremental",
+  "lifecycle_policy": "beast/packs/ue58-enhanced-input-movement/lifecycle.json"
 }

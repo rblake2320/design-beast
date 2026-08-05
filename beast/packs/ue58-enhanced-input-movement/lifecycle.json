@@ -1,0 +1,29 @@
+{
+  "schema": "beast.pack-lifecycle/v1",
+  "pack_id": "ue58-enhanced-input-movement",
+  "probe": {
+    "argv": ["python", "scripts/probe_ue58_mcp.py"],
+    "timeout_seconds": 30,
+    "assertions": [
+      {"path": "endpoint", "op": "eq", "value": "http://127.0.0.1:8000/mcp"},
+      {"path": "protocol_version", "op": "eq", "value": "2025-06-18"},
+      {"path": "blueprint_dsl_documented", "op": "eq", "value": true},
+      {"path": "toolset_count", "op": "gte", "value": 1}
+    ]
+  },
+  "fingerprint_fields": [
+    "protocol_version",
+    "toolset_count",
+    "blueprint_dsl_documented"
+  ],
+  "baseline": {
+    "fingerprint": "61683607d60472879abf32244565b2771b0b94918d846a1b1ce66bc5e80a851b",
+    "verified_at": "2026-08-04T23:55:00+00:00",
+    "max_age_days": 30
+  },
+  "demotion": {
+    "status": "stale_unproven",
+    "effect": "block trusted retrieval until a passing probe is independently reviewed and re-enrolled"
+  },
+  "claim_boundary": "This probe checks the official UE MCP control surface, not the movement behavior itself."
+}

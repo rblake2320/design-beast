@@ -546,3 +546,174 @@ another capability. “Later” is not a trigger.
   generatively-enhanced pixels as visual-only evidence.
 - Decision: park until enhancement is actually used in an evidence path;
   revisit trigger: first enhancement step proposed inside Watch.
+
+### OPP-20260804-03 — Capability lifecycle and anti-drift sentinel
+
+- Status: experiment
+- Trigger: Beast had verified birth machinery but no current-status gate after a
+  pack's dependencies changed or its proof aged.
+- New capability: a pack can be fitness-tested at admission, revalidated against
+  an enrolled environment fingerprint, demoted to `stale_unproven`, practiced over
+  named variants, and excluded from trusted retrieval without deleting history.
+- Potential beneficiaries: every Beast Pack and any accumulating agent skill library.
+- Current-project value: prevents UE, driver, API, model, and tool drift from silently
+  injecting stale instructions.
+- Outside-project value: portable governance for long-lived agent skill registries.
+- Prior art and primary sources: Library Drift reports failure from unbounded skill
+  accumulation and outcome-free lifecycle management; Dynamic Agent Skills surveys
+  124 papers around evidence, admission, maintenance, repair, retirement, and
+  governance; SkillsBench reports curated skills +16.2pp on average while
+  self-generated skills provide no average benefit; OpenAI recommends captured
+  traces, deterministic checks, negative controls, and regression tracking.
+  https://arxiv.org/abs/2605.19576 · https://arxiv.org/abs/2607.10113 ·
+  https://arxiv.org/abs/2602.12670 · https://developers.openai.com/blog/eval-skills
+- Falsifiable claim: a passing enrolled probe remains eligible, while a changed
+  fingerprint or expired proof blocks retrieval; matched fitness cannot pass with
+  missing controls, regressions, or unsupported claims.
+- Smallest real experiment: run the live UE 5.8 MCP probe, then replay a copied
+  response with one fingerprinted fact deliberately changed.
+- Measures and acceptance threshold: exact baseline hash match for active; every
+  drift/expiry path yields `stale_unproven` and `trusted_retrieval=false`; all
+  adversarial tests pass.
+- Risks, constraints, and rights/privacy implications: an overly broad fingerprint
+  causes noise; an overly narrow one misses drift. Reactivation remains independently
+  reviewed rather than automatically accepting the new environment.
+- Evidence: `proofs/experience-forge/` and `tests/test_lifecycle.py`.
+- Decision: implement the fail-closed foundation now; do not activate scheduled or
+  autonomous curriculum execution.
+- Revisit trigger: independent review of the first live and deliberate-drift receipts.
+
+### OPP-20260804-04 — Surgical judge-directed image repair
+
+- Status: researching
+- Trigger: whole-image improvement can destroy parts of an already-winning candidate.
+- New capability: convert a judge's localized fix note into a segmentation mask,
+  inpaint only that region, and re-judge the unchanged and changed regions separately.
+- Prior art and primary sources: Meta's SAM 3 model card describes promptable concept
+  segmentation over text/image exemplars and all matching instances; this is enabling
+  prior art, not a Beast novelty claim. https://huggingface.co/facebook/sam3 ·
+  https://arxiv.org/abs/2511.16719
+- Falsifiable claim: on a frozen defect set, targeted repair improves the named region
+  without regressing protected regions more often than whole-image refinement.
+- Smallest real experiment: ten retained judge fix-notes, SAM 3 masks, targeted and
+  whole-image matched repairs, blind region-level comparison.
+- Measures and acceptance threshold: 100% mask review before inpaint; no protected-
+  region regression on accepted outputs; higher accepted-repair rate than control.
+- Risks, constraints, and rights/privacy implications: gated model access, VRAM cost,
+  ambiguous language-to-region grounding, and inpaint license/rights boundaries.
+- Evidence: research only; no model downloaded or run.
+- Decision: park behind lifecycle/fitness and a GPU admission profile.
+- Revisit trigger: approved ten-case dataset and measured VRAM budget.
+
+### OPP-20260804-05 — Governed preference exhaust and reward prefilter
+
+- Status: researching
+- Trigger: candidate scores, winners, seeds, and manifests already form potential
+  pairwise preferences but are not normalized, consent-scoped, or evaluated.
+- New capability: create a rights-aware preference dataset and test cheap reward
+  scorers before the expensive vision judge; later, train only if held-out agreement
+  demonstrates value.
+- Prior art and primary sources: HPSv3++ uses a 212K human-supervised dual-dimension
+  preference dataset; SpectraReward shows pretrained MLLMs can act as training-free
+  reward functions. https://arxiv.org/abs/2606.14657 · https://arxiv.org/abs/2607.11886
+- Falsifiable claim: a prefilter reduces expensive judge calls without lowering the
+  final accepted-winner rate or hiding judge/human disagreement.
+- Smallest real experiment: export only authorized historical pairs, freeze a held-
+  out human-reviewed set, and compare full-judge versus prefiltered selection.
+- Measures and acceptance threshold: zero unauthorized samples; no decrease in hard-
+  gate pass rate; latency reduction measured; disagreement retained, not overwritten.
+- Risks, constraints, and rights/privacy implications: judge history is not
+  automatically training consent; systematic judge bias can compound; model licenses
+  and dataset lineage must be recorded.
+- Evidence: research only; no reward model installed or trained.
+- Decision: build the governance/export contract before any training or download.
+- Revisit trigger: explicit dataset authorization and a held-out human preference set.
+
+### OPP-20260804-06 — Video candidate quality loop
+
+- Status: observed
+- Trigger: Beast's candidate/judge/improve loop evaluates images but not generated
+  video's temporal behavior.
+- New capability: score frame-level quality, subject consistency, motion smoothness,
+  flicker, prompt adherence, and intrinsic failures before accepting video.
+- Prior art and primary sources: VBench decomposes video quality into 16 dimensions;
+  VBench-2.0 adds human fidelity, controllability, creativity, physics, and commonsense.
+  https://arxiv.org/abs/2311.17982 · https://arxiv.org/abs/2503.21755
+- Falsifiable claim: a frame-strip VLM judge plus deterministic temporal metrics catches
+  predeclared failures more accurately than judging one representative frame.
+- Smallest real experiment: the existing 15 i2v bench tasks, frozen failure labels,
+  one-frame control versus multi-frame/temporal condition.
+- Measures and acceptance threshold: higher failure recall with no hard-gate false
+  acceptance; latency and VRAM retained.
+- Risks, constraints, and rights/privacy implications: metric gaming, VLM bias, and
+  expensive decoding; source and generated-media rights remain attached.
+- Evidence: gap observed in current bench; experiment unrun.
+- Decision: design CPU-cheap temporal metrics first; no GPU install yet.
+- Revisit trigger: lifecycle foundation independently reviewed.
+
+### OPP-20260804-07 — Photo-to-animated-character auto-rigging
+
+- Status: researching
+- Trigger: the current 3D lane produces static assets, leaving the prop/character
+  boundary manual.
+- New capability: route a generated or reconstructed mesh through skeleton prediction,
+  skinning, Blender validation, retargeting, and Unreal import.
+- Prior art and primary sources: UniRig's official repository provides skeleton and
+  skinning inference for OBJ/FBX/GLB/VRM and warns skin quality degrades when the
+  skeleton is wrong; SkinTokens and AniGen are newer related work. This is integration
+  opportunity, not novelty. https://github.com/VAST-AI-Research/UniRig
+- Falsifiable claim: an authorized input mesh becomes a deforming, retargetable UE 5.8
+  character with no catastrophic skinning artifacts under a frozen motion set.
+- Smallest real experiment: one permissively licensed mesh, one UniRig inference,
+  one Blender deformation suite, one UE 5.8 retarget/import.
+- Measures and acceptance threshold: skeleton validity, normalized weights, no
+  unweighted vertices, deformation thresholds, and visual review all pass.
+- Risks, constraints, and rights/privacy implications: model/dataset licenses,
+  topology failures, identity rights, and GPU memory. Do not install until admitted.
+- Evidence: research only; no repository or checkpoint downloaded.
+- Decision: park behind a licensed test asset and resource estimate.
+- Revisit trigger: one approved character asset and lifecycle-reviewed GPU profile.
+
+### OPP-20260804-08 — Signed proof-chain custody
+
+- Status: experiment
+- Trigger: SHA-256 manifests and an unsigned hash chain detect edits only when the
+  verifier has an independently trusted head; an attacker could rewrite both content
+  and hashes.
+- New capability: Ed25519-sign each canonical evidence entry while chaining previous
+  hashes, and verify using a separate implementation and public key.
+- Prior art and primary sources: Ed25519 is established public-key signature
+  technology; the opportunity is its integration into Beast custody, not cryptographic
+  novelty. https://www.rfc-editor.org/rfc/rfc8032
+- Falsifiable claim: the independent verifier accepts the intact chain and rejects
+  content modification, deletion/reordering, and a wrong public key.
+- Smallest real experiment: two real lifecycle receipts signed by an ephemeral proof
+  key kept outside Git; commit only the public key and chain.
+- Measures and acceptance threshold: intact chain passes; every adversarial mutation
+  fails; no private key or secret is committed.
+- Risks, constraints, and rights/privacy implications: signature proves custody, not
+  semantic truth; production key backup, rotation, and revocation remain unresolved.
+- Evidence: `tests/test_signed_evidence.py` and `proofs/experience-forge/`.
+- Decision: implement verification foundation now; production signing activation
+  requires an explicit key-custody decision.
+- Revisit trigger: independent review and production key-management approval.
+
+### OPP-20260804-09 — Budgeted overnight evidence runner
+
+- Status: observed
+- Trigger: matched benchmarks remain unrun while two DGX Sparks may be idle overnight.
+- New capability: execute preapproved, checkpointed, resource-admitted experiments
+  inside time/energy/cost budgets and publish freshness receipts.
+- Prior art and primary sources: ordinary schedulers provide execution, but Beast must
+  add resource admission, exact envelopes, freshness, and human authorization.
+- Falsifiable claim: a scheduled job completes or fails visibly, restores paused
+  services, and never exceeds its declared resource/time boundary.
+- Smallest real experiment: one CPU-only lifecycle probe on Spark 2 under a systemd
+  timer, including a forced failure and stale-job alarm.
+- Measures and acceptance threshold: 100% start/finish/failure receipts; zero silent
+  stale schedules; resources restored; no unapproved downloads or GPU jobs.
+- Risks, constraints, and rights/privacy implications: unattended actions amplify
+  mistakes; electricity and hardware wear are real costs; remote data stays scoped.
+- Evidence: concept only; no timer installed by this work.
+- Decision: keep proposal-only until nightly automation is separately approved.
+- Revisit trigger: lifecycle foundation passes review and user approves one bounded run.

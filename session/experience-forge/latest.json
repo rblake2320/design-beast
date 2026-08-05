@@ -1,0 +1,57 @@
+{
+  "current": "Implementation and proof committed; preparing independent-review PR",
+  "evidence": [
+    {
+      "bytes": 2972,
+      "path": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-experience-forge\\proofs\\experience-forge\\PROOF.md",
+      "sha256": "8871576de9db4971626593f1d5d50308fc2f895ea9bb11f217104b5686a7e778"
+    },
+    {
+      "bytes": 1775,
+      "path": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-experience-forge\\proofs\\experience-forge\\signed-evidence.jsonl",
+      "sha256": "ff62f03463f815f4b7e4a67a97dcd8a448851c8e12d6e26691421752ab84bbb2"
+    },
+    {
+      "bytes": 661,
+      "path": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-experience-forge\\proofs\\experience-forge\\ue58-live-assessment.json",
+      "sha256": "f328cfb2c85ceff355d3cf02515d9bd9c0a8807a55ec790e6a80658ba1c8330d"
+    }
+  ],
+  "git": {
+    "branch": "codex/experience-forge",
+    "head": "ce7a94d6b1fabf6a38673ef79e3ae6e34070988b",
+    "status_porcelain": []
+  },
+  "goal": "Build and prove Beast capability lifecycle, fitness, anti-drift, practice, and signed evidence foundation",
+  "loop": {
+    "capabilities": [
+      "lifecycle.skill_governance"
+    ],
+    "last_command": "git commit ce7a94d",
+    "stage": "REMEMBER"
+  },
+  "next_actions": [
+    "Verify signed evidence with --evidence-root .",
+    "Independent reviewer runs full suite and Beast Core validation",
+    "Independent reviewer inspects draft PR; builder must not merge"
+  ],
+  "recorded_utc": "2026-08-05T00:10:19.828370+00:00",
+  "repo": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-experience-forge",
+  "resources": {
+    "gpu": {
+      "available": true,
+      "free_mib": 13026,
+      "name": "NVIDIA GeForce RTX 5090",
+      "total_mib": 32607,
+      "used_mib": 19162
+    }
+  },
+  "schema": "beast.recovery/v2",
+  "secrets_stored": false,
+  "unreal": {
+    "engine_root": "",
+    "map": "",
+    "project": "",
+    "run_id": ""
+  }
+}

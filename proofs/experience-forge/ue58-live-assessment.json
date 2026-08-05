@@ -1,0 +1,16 @@
+{
+  "actual_fingerprint": "61683607d60472879abf32244565b2771b0b94918d846a1b1ce66bc5e80a851b",
+  "assessed_at": "2026-08-04T23:59:29.905059+00:00",
+  "claim_boundary": "Active means this smoke probe still matches its enrolled environment; it does not generalize the pack.",
+  "expected_fingerprint": "61683607d60472879abf32244565b2771b0b94918d846a1b1ce66bc5e80a851b",
+  "facts": {
+    "blueprint_dsl_documented": true,
+    "protocol_version": "2025-06-18",
+    "toolset_count": 56
+  },
+  "failures": [],
+  "pack_id": "ue58-enhanced-input-movement",
+  "schema": "beast.lifecycle-assessment/v1",
+  "status": "active",
+  "trusted_retrieval": true
+}
