@@ -186,9 +186,11 @@ Watchdog (separate CPU-only unit): on stale heartbeat past
 
 ## 3. Budgets are envelopes, not suggestions
 
-- Wall-clock, GPU, network, memory, and disk budgets are enforced by the
-  job's cgroup/scope properties above; the watchdog is a second layer, not
-  the enforcement. Breach = cgroup kill + restoration + receipt + halt.
+- Wall-clock, GPU, network, and memory budgets are enforced by the job's
+  unit properties above; the watchdog is a second layer, not the
+  enforcement. **Disk is the exception: monitored, not enforced, pending
+  the Night A hardware test of a ceiling primitive (section 2).** Breach
+  of any budget = cgroup kill + restoration + receipt + halt.
 - Electricity/wear is acknowledged as a real cost: the receipt records
   wall-clock and (where available) energy counters, so the morning digest
   shows what the night cost, not just what it produced.
