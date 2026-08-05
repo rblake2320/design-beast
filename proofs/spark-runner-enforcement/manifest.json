@@ -1,0 +1,108 @@
+{
+  "schema": "beast.proof/v1",
+  "run_id": "SPARK-RUNNER-ENFORCEMENT-20260804A",
+  "recorded_utc": "2026-08-05T01:08:16Z",
+  "target": "systemd-transient-unit-enforcement-on-two-dgx-sparks",
+  "state": "os_enforcement_reproduced_runner_not_built",
+  "nodes": [
+    {
+      "ssh_alias": "spark1",
+      "host": "spark-3cdf",
+      "architecture": "aarch64",
+      "systemd": "255.4-1ubuntu8.16",
+      "cgroup": "v2",
+      "kernel": "6.17.0-1021-nvidia",
+      "driver": "580.159.03",
+      "preexisting_workload": "UltraRAG gunicorn workers",
+      "post_test_workload_alive": true
+    },
+    {
+      "ssh_alias": "spark2",
+      "host": "spark-3173",
+      "architecture": "aarch64",
+      "systemd": "255.4-1ubuntu8.12",
+      "cgroup": "v2",
+      "kernel": "6.17.0-1008-nvidia",
+      "driver": "580.126.09",
+      "preexisting_workload": "llama.cpp RPC and run_live.py",
+      "post_test_workload_alive": true
+    }
+  ],
+  "attempts": [
+    {
+      "id": 0,
+      "result": "invalid_no_remote_action",
+      "reason": "wrong SSH aliases and local PowerShell interpolation"
+    },
+    {
+      "id": 1,
+      "result": "invalid_evidence",
+      "reason": "quoting placed checks outside the transient unit"
+    },
+    {
+      "id": 2,
+      "result": "pass",
+      "scope": "gpu_and_network_denial_both_nodes",
+      "properties": {
+        "DevicePolicy": "closed",
+        "IPAddressDeny": "any",
+        "RestrictAddressFamilies": "AF_UNIX",
+        "RuntimeMaxSec": 20,
+        "MemoryMax": "128M",
+        "TasksMax": 32
+      },
+      "observations": {
+        "nvidia_smi_rc": 255,
+        "af_inet_socket_rc": 1,
+        "egress_rc": 1,
+        "systemd_run_rc": 0
+      }
+    },
+    {
+      "id": 3,
+      "result": "fail",
+      "scope": "oneshot_runtime_limit",
+      "spark1_elapsed_seconds": 30,
+      "spark1_systemd_run_rc": 0,
+      "spark2_result": "not_retained_client_timeout"
+    },
+    {
+      "id": 4,
+      "result": "pass",
+      "scope": "exec_runtime_and_cgroup_termination_both_nodes",
+      "properties": {
+        "Type": "exec",
+        "RuntimeMaxSec": 2,
+        "TimeoutStopSec": 3,
+        "KillMode": "control-group",
+        "MemoryMax": "128M",
+        "TasksMax": 32
+      },
+      "observations": {
+        "spark1_elapsed_seconds": 2,
+        "spark1_systemd_run_rc": 1,
+        "spark1_child_alive_after": false,
+        "spark2_elapsed_seconds": 3,
+        "spark2_systemd_run_rc": 1,
+        "spark2_child_alive_after": false
+      }
+    }
+  ],
+  "claim_boundary": {
+    "gpu_denial": "reproduced_both_nodes",
+    "network_denial": "reproduced_both_nodes",
+    "type_exec_runtime_termination": "reproduced_both_nodes",
+    "type_oneshot_runtime_termination": "failed_retained_spark1",
+    "preexisting_workload_preservation": "observed_both_nodes",
+    "disk_quota_enforcement": "not_run",
+    "runner_implementation": "not_built",
+    "signed_human_authorization": "not_run",
+    "restoration_state_machine": "not_run",
+    "lifecycle_freshness": "not_run",
+    "multi_night_reliability": "not_run",
+    "generalized_host_support": "not_claimed"
+  },
+  "secrets_stored": false,
+  "timers_installed": false,
+  "existing_workloads_stopped": false
+}
