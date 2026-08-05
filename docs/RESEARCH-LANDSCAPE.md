@@ -27,8 +27,8 @@ generation provenance ledgers, tamper-evident logs during operation,
 post-deployment monitoring — inferred, not itemized by the article.
 **Implication:** any Beast claim of the form "nobody has verified/signed skills"
 is false and retired. Beast's surviving distinction is **per-run, execution-side**
-signed evidence (run ledger, proof chains, lifecycle demotion) — the layer NVIDIA's
-offering explicitly excludes. Interop with OpenSSF Model Signing is an open
+signed evidence (run ledger, proof chains, lifecycle demotion) — a layer outside
+the stated scope of NVIDIA's offering. Interop with OpenSSF Model Signing is an open
 opportunity, not a rivalry.
 
 ## Demonstrations and resources compiled into skills
