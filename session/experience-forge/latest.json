@@ -1,5 +1,5 @@
 {
-  "current": "Implementation and proof complete; preparing independent-review PR",
+  "current": "Implementation and proof committed; preparing independent-review PR",
   "evidence": [
     {
       "bytes": 2972,
@@ -19,49 +19,31 @@
   ],
   "git": {
     "branch": "codex/experience-forge",
-    "head": "c630363ab9f078a772b10fdc21f7c71d6f064ddf",
-    "status_porcelain": [
-      "M beast/capabilities.json",
-      " M beast/packs/ue58-enhanced-input-movement/pack.json",
-      " M docs/OPPORTUNITY-LEDGER.md",
-      " M requirements.txt",
-      " M scripts/beast_core.py",
-      " M tests/test_beast_core.py",
-      "?? beast/lifecycle.py",
-      "?? beast/packs/ue58-enhanced-input-movement/lifecycle.json",
-      "?? beast/signed_chain.py",
-      "?? proofs/experience-forge/",
-      "?? scripts/beast_lifecycle.py",
-      "?? scripts/signed_evidence.py",
-      "?? scripts/verify_signed_evidence.py",
-      "?? session/experience-forge/",
-      "?? skills/manage-capability-lifecycle/",
-      "?? tests/test_lifecycle.py",
-      "?? tests/test_signed_evidence.py"
-    ]
+    "head": "ce7a94d6b1fabf6a38673ef79e3ae6e34070988b",
+    "status_porcelain": []
   },
   "goal": "Build and prove Beast capability lifecycle, fitness, anti-drift, practice, and signed evidence foundation",
   "loop": {
     "capabilities": [
       "lifecycle.skill_governance"
     ],
-    "last_command": "python -m pytest -q",
+    "last_command": "git commit ce7a94d",
     "stage": "REMEMBER"
   },
   "next_actions": [
     "Verify signed evidence with --evidence-root .",
-    "Run full suite and Beast Core validation",
+    "Independent reviewer runs full suite and Beast Core validation",
     "Independent reviewer inspects draft PR; builder must not merge"
   ],
-  "recorded_utc": "2026-08-05T00:08:58.626534+00:00",
+  "recorded_utc": "2026-08-05T00:10:19.828370+00:00",
   "repo": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-experience-forge",
   "resources": {
     "gpu": {
       "available": true,
-      "free_mib": 12976,
+      "free_mib": 13026,
       "name": "NVIDIA GeForce RTX 5090",
       "total_mib": 32607,
-      "used_mib": 19212
+      "used_mib": 19162
     }
   },
   "schema": "beast.recovery/v2",
