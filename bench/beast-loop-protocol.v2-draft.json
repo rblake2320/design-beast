@@ -129,12 +129,40 @@
     "per_run_wall_clock_min": 45,
     "c3_compile_wall_clock_min": 90,
     "suite_idle_nights_max": 5,
-    "cloud_spend_usd": 0
+    "cloud_spend_usd": 0,
+    "arithmetic": {
+      "scored_runs": {
+        "count": 108,
+        "expected_hours": 36,
+        "worst_hours": 81
+      },
+      "c3_compiles": {
+        "count": 9,
+        "expected_hours": 6.8,
+        "worst_hours": 13.5
+      },
+      "negative_controls": {
+        "count": 9,
+        "expected_hours": 2,
+        "worst_hours": 6.8
+      },
+      "practice_variants": {
+        "count": 18,
+        "expected_hours": 6,
+        "worst_hours": 13.5
+      },
+      "total_expected_hours": 51,
+      "total_worst_hours": 115,
+      "tranche_hours": 40,
+      "tranche_rule": "On tranche exhaustion: HALT, publish partial results (labeled partial, every completed run), fresh explicit user gate required to resume. No silent extension."
+    }
   },
   "abort_rules": [
     "2 consecutive infrastructure failures",
     "envelope drift detected mid-suite",
     "any unauthorized_actions trip",
     "user interrupt"
-  ]
+  ],
+  "curated_skill_isolation": "Curator seat has no access to C3 packs, typed evidence, or watch bundles; curated skills written before any C3 compile exists; timestamped attestation with curator seat+birth_id in the selection commit; a curator who saw any C3 artifact is burned for that task.",
+  "sealed_acceptance": "Per-task acceptance criteria, hard-gate parameters, and predeclared visual-only facts are committed at selection time before any C3 compile; selection commit records selector and curator seat+birth_id; post-seal changes void the task."
 }

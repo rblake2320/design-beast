@@ -30,11 +30,21 @@ C2 authorship rule: the curator may watch the tutorial as a human viewer would
 and write the best skill they can in ≤ the median wall-clock of the C3 compile,
 but may not use Watch tooling, typed evidence, or pack validation. The curator
 must not be the agent that built the Beast compiler (builder ≠ comparator).
+**Isolation (review amendment A2):** the curator seat must have NO access to C3
+packs, typed evidence, or watch bundles for any benchmark tutorial — enforced by
+writing the curated skills BEFORE any C3 compile exists for those tutorials, and
+attested with a timestamped statement (curator seat + birth_id) recorded in the
+selection commit. A curator who has seen any C3 artifact is burned for that task.
 
 ## Task selection (sealed, unseen)
 
 - 3 materially different domains × 3 tasks, all driven by instructional videos
   that contain **predeclared visual-only facts** absent from their transcripts.
+- **Sealed acceptance (review amendment A3):** per-task acceptance criteria,
+  hard-gate parameters, and the predeclared visual-only facts are written and
+  committed at selection time, BEFORE any C3 compile begins. The selection
+  commit records selector seat + birth_id and curator seat + birth_id. Criteria
+  changed after sealing void the task.
 - Pilot domains (Blender, Audacity, Inkscape — bench/concern-proof) and the
   MetaBalls held-out tutorial are **burned**: they are SEEN and excluded.
 - Freeze order (enforced by commit history): (1) compiler + packs frozen at a
@@ -82,7 +92,23 @@ reproduction pass (below) is the only cross-machine step.
 ## Budgets, costs, abort rules (frozen numbers — change requires re-review)
 
 - Per-run wall-clock cap: 45 min (C3 compile amortized separately, capped 90 min
-  per tutorial). Suite cap: 5 nights of otherwise-idle time.
+  per tutorial).
+- **Budget arithmetic (review amendment A1)** — stated, not assumed:
+
+  | Component | Count | Expected (est.) | Worst case (caps) |
+  |---|---|---|---|
+  | Scored runs | 108 | ~20 min avg → 36 h | 45 min → 81 h |
+  | C3 compiles | 9 | ~45 min → 6.8 h | 90 min → 13.5 h |
+  | Negative controls | ~9 runs | ~2 h | 45 min → 6.8 h |
+  | Practice variants | ≤18 runs | ~6 h | 45 min → 13.5 h |
+  | **Total** | | **~51 h** | **~115 h** |
+
+  One tranche = 5 idle nights ≈ 40 h, which does NOT cover even the expected
+  case. The suite therefore runs in **tranches**: when a tranche's time is
+  exhausted, the suite HALTS, partial results are published (labeled partial,
+  every completed run reported), and resuming the next tranche requires a
+  **fresh explicit user gate**. Expected tranche count: 2 (expected case) to 3
+  (worst case). No tranche may silently extend itself.
 - Cloud spend: $0 — local models only; any cloud/paid call trips the
   `authorized_actions` gate and halts the suite.
 - VRAM: every run behind `beast resource-check`; a denial reschedules, never
