@@ -74,15 +74,22 @@ our stack.
 - Installed skill at `~/.claude/skills/impeccable` is dated 2026-04-28 and has
   no worlds references — pre-4.0 by roughly two skill generations.
 - Pre-upgrade backup taken: `C:\Users\techai\claude-skills-backups\impeccable-pre4-20260804`.
-- Upgrade command (owner to run; agent-blocked from writing `~/.claude/skills`):
-  `npx impeccable skills install -y --providers=claude --scope=global`,
-  from a non-repo directory. Warning, observed 2026-08-04: bare
-  `npx impeccable install` run inside a repo defaults to a *project* `.github`
-  install — it wrote `.github/{agents,hooks,skills}` into design-beast and was
-  removed the same session.
-- Post-upgrade verification (pending): new SKILL.md mentions worlds; run
-  `/impeccable init` on a throwaway project and confirm the decision page and
-  live bar appear locally; confirm the 23 command references survived.
+- Upgrade executed 2026-08-04 after owner approval:
+  `npx impeccable skills install -y --providers=claude --scope=global` from a
+  non-repo directory reported "Updated 1 skill(s) to v4.0.4". Warning, observed
+  2026-08-04: bare `npx impeccable install` run inside a repo defaults to a
+  *project* `.github` install — it wrote `.github/{agents,hooks,skills}` into
+  design-beast and was removed the same session.
+- File-level verification (done 2026-08-04): SKILL.md carries `version: 4.0.4`
+  and references worlds; `reference/` grew to 36 files including `live.md` and
+  `live-setup.md`. The installer's "hooks" are scripts inside the skill
+  directory (`scripts/hook*.mjs`), not edits to `~/.claude/settings.json` —
+  no global harness behavior changed without project opt-in.
+- Runtime verification (pending, attended): run `/impeccable init` on a
+  throwaway project and confirm the worlds decision page opens locally and one
+  accepted live-mode element variation round-trips to the terminal session.
+  This needs a human in the browser; the ledger claim stays unproven until it
+  passes.
 
 ## Routing
 
