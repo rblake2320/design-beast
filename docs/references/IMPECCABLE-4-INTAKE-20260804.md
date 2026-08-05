@@ -81,8 +81,9 @@ our stack.
   *project* `.github` install — it wrote `.github/{agents,hooks,skills}` into
   design-beast and was removed the same session.
 - File-level verification (done 2026-08-04): SKILL.md carries `version: 4.0.4`
-  and references worlds; `reference/` grew to 36 files including `live.md` and
-  `live-setup.md`. The installer's "hooks" are scripts inside the skill
+  and references worlds; `reference/` now holds 35 command/topic files
+  (including `live.md` and `live-setup.md`) plus a `degraded/` subagent
+  directory — 36 directory entries, 35 files. The installer's "hooks" are scripts inside the skill
   directory (`scripts/hook*.mjs`), not edits to `~/.claude/settings.json` —
   no global harness behavior changed without project opt-in.
 - Runtime verification (pending, attended): run `/impeccable init` on a
@@ -98,4 +99,5 @@ website lane owner per CLAUDE.md rule 4; design-beast's quality loop and
 Higgsfield lane are unchanged. The worlds mechanism is convergent with our
 multi-candidate → judge philosophy and its roll/pool receipts echo our
 provenance culture — worth citing as prior art next time we design a
-direction-selection step. See ledger OPP-20260804-01.
+direction-selection step. See ledger OPP-20260804-10 (renumbered from -01,
+which collided with main's DeepStream entry).
