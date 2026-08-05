@@ -51,12 +51,24 @@ def make_registry(tmp_path: Path, freeze: dict) -> Path:
             "ambiguous_segment_count": 1,
         })
     registry = tmp_path / "registry.json"
+    authority_receipt = tmp_path / "user-selection.json"
+    authority_receipt.write_text(json.dumps({"selected_after_freeze": True}), encoding="utf-8")
     registry.write_text(json.dumps({
-        "schema": "beast.loop-task-registry/v1",
+        "schema": "beast.loop-task-registry/v2",
         "experiment_id": "test-experiment",
         "freeze_fingerprint": freeze["freeze_fingerprint"],
-        "selection_role": "independent_reviewer",
-        "selected_by": "reviewer-a",
+        "selection_role": "user_trust_root",
+        "selected_by": "test-user",
+        "selection_method": "user_supplied_undisclosed_after_freeze",
+        "user_selection_receipt_path": str(authority_receipt),
+        "selector_attestation": {
+            "identity_kind": "user",
+            "selected_after_freeze": True,
+            "candidate_pool_not_discussed_with_current_fleet": True,
+            "no_prior_access_to_frozen_beast_packs": True,
+            "no_prior_access_to_watch_evidence": True,
+            "no_prior_access_to_mesh_candidate_discussion": True,
+        },
         "tasks": tasks,
     }), encoding="utf-8")
     return registry
@@ -122,16 +134,58 @@ def test_freeze_rejects_dirty_worktree_and_placeholders(tmp_path):
         raise AssertionError("placeholder freeze should fail")
 
 
-def test_seal_requires_independent_selector(tmp_path):
+def test_seal_rejects_current_fleet_or_generic_reviewer_selector(tmp_path):
     repo, envelope, implementation = init_repo(tmp_path)
     freeze = custody.create_freeze(repo, envelope, implementation)
     registry = make_registry(tmp_path, freeze)
     payload = json.loads(registry.read_text(encoding="utf-8"))
-    payload["selection_role"] = "builder"
+    payload["selection_role"] = "independent_reviewer"
     registry.write_text(json.dumps(payload), encoding="utf-8")
     try:
         custody.create_seal(repo, freeze, registry, PROTOCOL, seed="fixed")
     except custody.CustodyError as exc:
-        assert "independent reviewer" in str(exc)
+        assert "user trust root or external sequestered selector" in str(exc)
     else:
         raise AssertionError("self-selected task registry should fail")
+
+
+def test_seal_rejects_selector_with_prior_beast_or_mesh_access(tmp_path):
+    repo, envelope, implementation = init_repo(tmp_path)
+    freeze = custody.create_freeze(repo, envelope, implementation)
+    registry = make_registry(tmp_path, freeze)
+    payload = json.loads(registry.read_text(encoding="utf-8"))
+    payload["selector_attestation"]["no_prior_access_to_mesh_candidate_discussion"] = False
+    registry.write_text(json.dumps(payload), encoding="utf-8")
+    try:
+        custody.create_seal(repo, freeze, registry, PROTOCOL, seed="fixed")
+    except custody.CustodyError as exc:
+        assert "does not establish task sequestration" in str(exc)
+    else:
+        raise AssertionError("contaminated selector should fail")
+
+
+def test_fresh_agent_selector_requires_birth_id_and_entropy_receipt(tmp_path):
+    repo, envelope, implementation = init_repo(tmp_path)
+    freeze = custody.create_freeze(repo, envelope, implementation)
+    registry = make_registry(tmp_path, freeze)
+    payload = json.loads(registry.read_text(encoding="utf-8"))
+    payload["selection_role"] = "external_sequestered_selector"
+    payload["selection_method"] = "deterministic_external_pool_postfreeze_entropy"
+    payload["external_pool_receipt_path"] = payload.pop("user_selection_receipt_path")
+    payload["selector_attestation"]["identity_kind"] = "fresh_agent"
+    registry.write_text(json.dumps(payload), encoding="utf-8")
+    try:
+        custody.create_seal(repo, freeze, registry, PROTOCOL, seed="fixed")
+    except custody.CustodyError as exc:
+        assert "birth_id" in str(exc)
+    else:
+        raise AssertionError("fresh agent without birth ID should fail")
+
+    payload["selector_attestation"]["birth_id"] = "fresh-selector-test-001"
+    registry.write_text(json.dumps(payload), encoding="utf-8")
+    try:
+        custody.create_seal(repo, freeze, registry, PROTOCOL, seed="fixed")
+    except custody.CustodyError as exc:
+        assert "required file does not exist" in str(exc)
+    else:
+        raise AssertionError("deterministic selection without entropy receipt should fail")

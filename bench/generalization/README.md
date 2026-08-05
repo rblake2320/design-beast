@@ -17,13 +17,34 @@ seeing the hidden tasks and still be called held out.
 
 ## Phase 2 — sequestered task selection and sealed schedule
 
-An independent reviewer selects unseen tasks after the frozen commit. Each task
+The agents that built or reviewed this machinery are **burned as selectors**, as
+are every candidate domain and task pool discussed in their repository or mesh
+traffic. Those candidates remain useful for pilots only and cannot support a
+held-out claim.
+
+After the frozen commit, tasks enter through one of two recorded paths:
+
+1. the user supplies previously undisclosed task/tutorial sources as the trust-root
+   selector; or
+2. a context-isolated external selector deterministically samples a predeclared
+   external pool using entropy that did not exist until after the freeze.
+
+A fresh agent selector records its birth ID and attests that it has never read the
+frozen Beast packs, Watch evidence, candidate-task mesh discussion, or burned pool.
+Because the fleet shares one OS and GitHub identity, this attestation is a residual
+trust boundary rather than hard access control; every resulting claim must say so.
+The current fleet audits only after the registry is sealed.
+
+Each selected task
 must have a real source, a private oracle, a selection receipt, at least one
 predeclared transcript-absent visual fact, and at least one predeclared ambiguous
 segment. The oracle remains outside executor workspaces; the public seal contains
 only its hash.
 
-`seal` requires at least three domains, three tasks per domain, and the protocol's
+`seal` rejects the former generic `independent_reviewer` role. Registry schema v2
+requires the selection method, authority receipt, selector identity/attestation,
+and (for deterministic sampling) the post-freeze entropy receipt. It also requires
+at least three domains, three tasks per domain, and the protocol's
 three repetitions for all three conditions. It creates a randomized 81-run schedule.
 
 ## Execution and custody

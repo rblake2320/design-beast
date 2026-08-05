@@ -5,6 +5,16 @@
   "minimum_domains": 3,
   "minimum_tasks_per_domain": 3,
   "minimum_repetitions_per_condition": 3,
+  "task_sequestration": {
+    "burned_pool_rule": "Any task, candidate domain, or source pool discussed with the compiler builders/reviewers before selection is pilot-only and cannot support a held-out claim.",
+    "selection_after_freeze": true,
+    "allowed_methods": [
+      "user_supplied_undisclosed_after_freeze",
+      "deterministic_external_pool_postfreeze_entropy"
+    ],
+    "current_fleet_may_select": false,
+    "shared_identity_residual_risk": "Attestation is not hard access isolation when agents share one OS and GitHub identity; report this limitation with results."
+  },
   "conditions": [
     {"id": "baseline", "description": "Transcript-only control: the agent receives the source task, transcript, and normal tools, but no video frames or compiled Beast Pack."},
     {"id": "adaptive_frames", "description": "Watching control: the same envelope receives the transcript and initial adaptive sparse frames, but no uncertainty-driven reinspection or compiled Beast Pack."},

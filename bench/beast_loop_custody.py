@@ -20,6 +20,11 @@ from typing import Any
 
 ZERO_HASH = "0" * 64
 CONDITIONS = ("baseline", "adaptive_frames", "beast")
+SELECTION_METHODS = {
+    "user_supplied_undisclosed_after_freeze",
+    "deterministic_external_pool_postfreeze_entropy",
+}
+SEQUESTERED_SELECTION_ROLES = {"user_trust_root", "external_sequestered_selector"}
 
 
 class CustodyError(ValueError):
@@ -145,12 +150,42 @@ def create_seal(repo: Path, freeze: dict, registry_path: Path, protocol: dict, s
     if freeze_errors:
         raise CustodyError("; ".join(freeze_errors))
     registry = json.loads(registry_path.read_text(encoding="utf-8"))
-    if registry.get("schema") != "beast.loop-task-registry/v1":
+    if registry.get("schema") != "beast.loop-task-registry/v2":
         raise CustodyError("unsupported task registry schema")
     if registry.get("freeze_fingerprint") != freeze.get("freeze_fingerprint"):
         raise CustodyError("task registry does not reference this implementation freeze")
-    if registry.get("selection_role") != "independent_reviewer" or not str(registry.get("selected_by", "")).strip():
-        raise CustodyError("tasks must be selected by a named independent reviewer")
+    if registry.get("selection_role") not in SEQUESTERED_SELECTION_ROLES or not str(registry.get("selected_by", "")).strip():
+        raise CustodyError("tasks require a named user trust root or external sequestered selector")
+    method = registry.get("selection_method")
+    if method not in SELECTION_METHODS:
+        raise CustodyError("unsupported or missing sequestered selection method")
+    attestation = registry.get("selector_attestation", {})
+    required_attestations = (
+        "selected_after_freeze",
+        "candidate_pool_not_discussed_with_current_fleet",
+        "no_prior_access_to_frozen_beast_packs",
+        "no_prior_access_to_watch_evidence",
+        "no_prior_access_to_mesh_candidate_discussion",
+    )
+    if any(attestation.get(field) is not True for field in required_attestations):
+        raise CustodyError("selector attestation does not establish task sequestration")
+    identity_kind = attestation.get("identity_kind")
+    if identity_kind not in {"user", "fresh_agent"}:
+        raise CustodyError("selector identity_kind must be user or fresh_agent")
+    if identity_kind == "fresh_agent" and not str(attestation.get("birth_id", "")).strip():
+        raise CustodyError("fresh selector must record a birth_id")
+    receipt_field = (
+        "user_selection_receipt_path"
+        if method == "user_supplied_undisclosed_after_freeze"
+        else "external_pool_receipt_path"
+    )
+    selection_authority_receipt = _file_receipt(Path(registry.get(receipt_field, "")), label=receipt_field)
+    entropy_receipt = None
+    if method == "deterministic_external_pool_postfreeze_entropy":
+        entropy_receipt = _file_receipt(
+            Path(registry.get("postfreeze_entropy_receipt_path", "")),
+            label="postfreeze_entropy_receipt_path",
+        )
 
     tasks = []
     task_ids = set()
@@ -213,11 +248,15 @@ def create_seal(repo: Path, freeze: dict, registry_path: Path, protocol: dict, s
         "task_registry_sha256": digest_file(registry_path),
         "selected_by": registry["selected_by"],
         "selection_role": registry["selection_role"],
+        "selection_method": method,
+        "selector_attestation": attestation,
+        "selection_authority_receipt": selection_authority_receipt,
+        "postfreeze_entropy_receipt": entropy_receipt,
         "tasks": sorted(tasks, key=lambda item: item["task_id"]),
         "schedule_seed": schedule_seed,
         "schedule": schedule,
         "expected_runs": len(schedule),
-        "claim_boundary": "The seal proves custody and balance, not task success. Oracle contents remain sequestered from executor contexts; only their hashes appear here.",
+        "claim_boundary": "The seal proves recorded custody and balance, not task success or perfect isolation. Current fleet candidate pools are burned. Selector attestations remain a residual trust boundary when agents share one OS and GitHub identity. Oracle contents remain outside executor contexts; only their hashes appear here.",
     }
     payload["seal_fingerprint"] = digest_value(payload)
     return payload
