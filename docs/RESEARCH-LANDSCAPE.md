@@ -20,10 +20,11 @@ Provides: security scanning (SkillSpector — dependency risks, prompt injection
 trigger abuse, excessive agency, tool poisoning), detached cryptographic signatures
 (OpenSSF Model Signing), machine-readable skill cards (ownership, dependencies,
 limitations, verification status), a reviewed catalog with distribution.
-Does NOT cover (explicitly): runtime execution tracking, per-run generation
-provenance ledgers, tamper-evident logs during operation, post-deployment
-monitoring. It governs which capabilities enter a workflow, not how they behave
-during execution.
+Stated boundary (the article's own framing): it governs which capabilities
+enter a workflow, not how they behave during execution. From that boundary the
+following are inferred as out of scope — runtime execution tracking, per-run
+generation provenance ledgers, tamper-evident logs during operation,
+post-deployment monitoring — inferred, not itemized by the article.
 **Implication:** any Beast claim of the form "nobody has verified/signed skills"
 is false and retired. Beast's surviving distinction is **per-run, execution-side**
 signed evidence (run ledger, proof chains, lifecycle demotion) — the layer NVIDIA's

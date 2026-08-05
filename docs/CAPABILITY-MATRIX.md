@@ -89,7 +89,7 @@ COSTS-BASELINE.md (pricing sources), WIN-PLAN.md (what we build next).
 | Job DB: cancel/retry/timeout/idempotency | **Beast Studio (tested)** | free | cloud platforms internally; not agent-exposed |
 | GPU admission + lease scheduler | **Beast Studio durable heavy/light leases + live external VRAM budget/reserve guard (tested; one live Unreal-active pair measured 2026-08-03)** | free | local workflow tools generally rely on application-local queues |
 | **Exact-replay provenance** (env+graph+model hashes) | **env_snapshot + beast replay (19 tests, 2026-07-31)** | free | **nobody — ComfyUI's defining pain** |
-| **Tamper-evident chained run ledger** | **studio/ledger.py + beast ledger (from vigil, 2026-07-31)** | free | no creative-generation product ships one; adjacent fields DO — NVIDIA Verified Agent Skills signs skill packages pre-publication (explicitly not per-run), enterprise agent-audit platforms sign action logs (RESEARCH-LANDSCAPE.md) |
+| **Tamper-evident chained run ledger** | **studio/ledger.py + beast ledger (from vigil, 2026-07-31)** | free | no creative-generation product ships one; adjacent fields DO — NVIDIA Verified Agent Skills signs skill packages pre-publication (per its stated workflow-entry scope, not per-run), enterprise agent-audit platforms sign action logs (RESEARCH-LANDSCAPE.md) |
 | Backend registry: local-first, BYOK cloud parity | **registry.py + GET /api/registry (2026-07-31)** | free | Krea routes cloud-only; nobody does local-default+BYOK |
 | Content-class policy routing (operator-owned) | **registry content_classes + named skip reasons** | free | Civitai bolted on mid-crisis; others hardcode |
 | Python + TypeScript SDKs, OpenAPI | shipped (45 SDK tests) | free | cloud APIs only |
@@ -145,7 +145,8 @@ RESEARCH-LANDSCAPE.md). Superseded wordings preserved here:
 
 - "Tamper-evident chained run ledger — **nobody** — audit/compliance-grade"
   → scoped to creative-generation products. NVIDIA Verified Agent Skills ships
-  signed skill governance (pre-publication, explicitly not per-run); enterprise
+  signed skill governance (pre-publication; per-run is outside its stated
+  workflow-entry scope); enterprise
   agent-audit platforms sign action logs. Beast's per-run execution-side chain
   remains unmatched in the surveyed creative field.
 - "Asset delivery INTO engine — **nobody**" → scoped to commercial asset SaaS.
