@@ -14,14 +14,26 @@ compete with interactive work for GPU and attention. But unattended
 execution amplifies mistakes: a hung job burns hardware for hours, a
 crashed run leaves services paused, a silent failure reads as "ran clean."
 
+## Prerequisites (this design is CONDITIONAL on all of these)
+
+1. **PR #15 (Experience Forge lifecycle + signed evidence) merged to main.**
+   As of this revision it is OPEN, not landed — every reference below to
+   lifecycle probes, demotion, checkpoint-verify, or the signed chain means
+   "the machinery PR #15 proposes, once merged." If PR #15 changes under
+   review, this design re-reviews against what actually lands.
+2. **OPP-20260804-09 present in the main ledger** (currently only on the
+   PR #15 branch). This document must not merge with a dangling ledger
+   reference — rebase/re-link after the prerequisite lands.
+3. A user-controlled trust root exists (see Authorization) — created by the
+   user interactively, before the first manifest can be approved.
+
 ## Design principle
 
 **The runner executes approvals; it never makes them.** Every night's work
 is a user-approved manifest. The runner adds four things schedulers don't
-have: resource admission, hard budget envelopes, freshness receipts, and
-guaranteed service restoration. It inherits — not reimplements — the
-machinery PR #15 landed: lifecycle probes, checkpoint-verify-resume, signed
-evidence chains, and the VRAM governor.
+have: resource admission, OS-enforced budget envelopes, freshness receipts
+scoped to what the host can actually prove, and crash-recoverable service
+restoration with an explicit unresolved state.
 
 ## 1. Authorization: the Run Manifest
 
@@ -42,18 +54,51 @@ recurring window, explicitly scoped, e.g. "Mon–Fri until 2026-09-01"):
     "max_concurrent": 1
   },
   "jobs": [
-    {"id": "probe-ue58-movement", "kind": "lifecycle_probe",
-     "pack": "ue58-enhanced-input-movement", "timeout_minutes": 10,
-     "resource_profile": "cpu_light"}
+    {"id": "verify-signed-chains", "kind": "evidence_chain_verify",
+     "target": "proofs/**/signed-evidence.jsonl", "timeout_minutes": 10,
+     "resource_profile": "cpu_light",
+     "host_requirements": {"platform": "linux-arm64", "gpu": false,
+                            "apps": [], "network": false}}
   ],
-  "on_breach": "kill_job, restore_services, receipt, halt_night",
-  "manifest_sha256": "<computed>", "signature": "<user-session Ed25519>"
+  "on_breach": "cgroup_kill_job, run_restoration, receipt, halt_night",
+  "manifest_sha256": "<canonical-json sha256>",
+  "signature": "<HUMAN TRUST ROOT signature over manifest_sha256>"
 }
 ```
 
+**Host/platform compatibility is an admission AND a promotion rule.** Every
+job declares `host_requirements`; admission refuses jobs whose requirements
+the host cannot meet. Freshness is scoped to what the host actually proved:
+a Spark-2 CPU run can refresh *schema/chain/manifest* evidence for a pack,
+but can NEVER refresh a UE 5.8 *capability* claim — UE runs only on the
+Windows/5090 host (arm64 UE confirmed impossible 2026-07-26). A probe
+receipt names exactly which evidence class it refreshes; the lifecycle
+engine must reject a freshness promotion whose evidence class does not
+match the claim. The earlier draft's example (UE pack probed from Spark-2)
+was a false-freshness path — retracted.
+
+### Authorization trust root (two distinct gates, neither implies the other)
+
+Agents share the user's git and GitHub credentials, so `approved_by: "user"`
+in a file an agent can write proves nothing. Therefore:
+
+- **Human trust root:** the user generates a dedicated Ed25519 keypair
+  interactively (private key stays user-controlled — passphrase-protected,
+  never readable by agent sessions; NOT any agent session key, NOT the
+  PR #15 proof keys). The public key is pinned in the repo once, by the
+  user.
+- **Manifest approval = a signature over the canonical-JSON SHA-256 of the
+  exact manifest**, carrying scope (host, date window) and expiry. The
+  runner verifies signature + scope + expiry against the pinned public key
+  before every night — an unsigned, expired, out-of-scope, or modified
+  manifest is a `no_manifest` night.
+- **Gate 1 (standing): timer installation** — approves the runner existing
+  on a host. **Gate 2 (per-manifest): the signature above** — approves one
+  concrete night's work. Neither implies the other; both are required.
+
 Hard rules:
-- No manifest → the timer wakes, finds nothing approved, writes a
-  `no_manifest` receipt, exits. Silence is never scheduled.
+- No valid signed manifest → the timer wakes, writes a `no_manifest`
+  receipt, exits. Silence is never scheduled.
 - Jobs not enumerated in the manifest cannot run. The runner has no
   "while I'm here" authority — curriculum stays proposal-only.
 - `downloads: "none"` is the default and requires explicit allowlisting to
@@ -74,20 +119,46 @@ pause      -> services paused ONLY if the job's profile requires it; each
 checkpoint -> beast checkpoint before first mutation; verified.
 run        -> job under its own timeout; heartbeat file every 60s.
 verify     -> job's own acceptance check (probe result, test exit, etc.).
-restore    -> every recorded obligation restored + verified; failure to
-               restore = loud receipt + morning alarm, never silent.
+restore    -> CRASH-RECOVERABLE, not guaranteed: obligations are recorded
+               before the pause, reconciled on every runner start (including
+               after power loss / crash). Each obligation ends in exactly one
+               state: restored_verified | unresolved_requires_human. The
+               unresolved state is loud (digest top-line + alarm) and never
+               auto-cleared — host power loss, disk corruption, or a missing
+               dependency can defeat restoration, and the design says so
+               rather than promising otherwise.
 receipt    -> signed start/finish/fail/skip receipt appended to the
                evidence chain (Ed25519, hash-linked, PR #15 verifier).
 ```
 
-Watchdog (separate process, CPU-only): if a job's heartbeat goes stale
-past `timeout + grace`, kill the job's process tree (never anything else),
-run the restore list, write a `stale_killed` receipt, halt the night.
+### OS-enforced envelopes (the watchdog observes; the OS enforces)
+
+Each job runs in a **dedicated systemd transient scope** (`systemd-run
+--scope/--unit` with properties), so limits are kernel-enforced and
+fail-closed rather than watchdog-promised:
+
+- `DeviceAllow=` default-deny for GPU device nodes (`/dev/nvidia*`) —
+  zero GPU use is *enforced*, not asserted; a nonzero GPU budget whitelists
+  devices for that job's scope only.
+- `IPAddressDeny=any` (plus `RestrictNetworkInterfaces=` where available)
+  when `network: false` — downloads are impossible, not just forbidden.
+- Isolated write directory per job with a quota/size ceiling; the job's
+  scope gets no write path outside it.
+- `RuntimeMaxSec=` for wall-clock timeout; `MemoryMax=`, `TasksMax=` per
+  profile.
+- Termination is **cgroup-scoped** (`systemctl kill --kill-whom=all` on the
+  unit) — never raw process-tree walking, which is vulnerable to PID reuse
+  and breaks the "never anything else" promise.
+
+Watchdog (separate CPU-only unit): on stale heartbeat past
+`timeout + grace`, cgroup-kill the job's unit, run restoration, write a
+`stale_killed` receipt, halt the night.
 
 ## 3. Budgets are envelopes, not suggestions
 
-- Wall-clock, GPU-minutes, disk, and download budgets are enforced by the
-  watchdog, not by job goodwill. Breach = kill + restore + receipt + halt.
+- Wall-clock, GPU, network, memory, and disk budgets are enforced by the
+  job's cgroup/scope properties above; the watchdog is a second layer, not
+  the enforcement. Breach = cgroup kill + restoration + receipt + halt.
 - Electricity/wear is acknowledged as a real cost: the receipt records
   wall-clock and (where available) energy counters, so the morning digest
   shows what the night cost, not just what it produced.
@@ -109,16 +180,23 @@ Per the ledger entry's falsifiable claim, the acceptance test is about
 *visible* failure, not success:
 
 1. Install a systemd timer on Spark-2 (CPU-only, `gpu_minutes: 0`) — THIS
-   STEP IS THE USER GATE; nothing before it is scheduled anywhere.
-2. Night A: one real CPU lifecycle probe → morning digest shows completion
-   receipt + refreshed verify date.
+   STEP IS USER GATE 1; the night's manifest signature is GATE 2; nothing
+   runs without both.
+2. Night A: one **Spark-compatible** CPU job (signed-evidence chain
+   verification across `proofs/`, `host_requirements: linux-arm64, no GPU,
+   no network`) → morning digest shows completion receipt refreshing
+   *chain-integrity evidence only* — explicitly NOT any UE capability
+   claim (those can only be probed from the Windows/5090 host, later
+   phase, separately gated).
 3. Night B: a deliberately broken job (bad probe target) → digest shows
    fail receipt, restoration verified, night halted per policy.
 4. Night C: kill the runner mid-job (simulated crash) → watchdog/next-wake
    restores obligations from the receipt DB; stale-job alarm fires.
 5. Acceptance: 100% of starts have finish/fail/skip receipts; zero silent
-   staleness; services restored in all three nights; zero unapproved
-   downloads or GPU seconds (verified from receipts + system logs).
+   staleness; every restoration obligation ends in restored_verified or a
+   loud unresolved_requires_human (no third state, no silence); zero GPU
+   device opens and zero egress (verified from cgroup accounting + system
+   logs, not just receipts).
 
 ## 6. Explicit non-goals
 
@@ -133,9 +211,9 @@ Per the ledger entry's falsifiable claim, the acceptance test is about
 
 ## Open questions for review
 
-1. Manifest signature: user-session Ed25519 (matches PR #15 chain) vs
-   simple approved-by field in a user-committed file — is committed-to-main
-   approval sufficient, given commits are already the user's authority?
+1. RESOLVED per review (codex-beast-primary-1): dedicated human trust
+   root, distinct from all agent keys, signing the canonical manifest hash
+   with scope + expiry. See Authorization section.
 2. Should `skipped_busy` jobs retry within the night's window or only
    reappear in the next manifest? (Proposed: one retry at night's end.)
 3. Windows host variant: Task Scheduler + the same receipt DB, or keep the
@@ -144,9 +222,9 @@ Per the ledger entry's falsifiable claim, the acceptance test is about
 
 ## Relationship to existing machinery
 
-Uses as-is: `beast resource-check`, lifecycle probes + demotion
-(beast/lifecycle.py), checkpoint verify, signed evidence chain +
-`verify_signed_evidence.py`. New surface: manifest schema, watchdog,
+Uses (CONDITIONAL on PR #15 merging — see Prerequisites): `beast
+resource-check`, lifecycle probes + demotion (beast/lifecycle.py),
+checkpoint verify, signed evidence chain + `verify_signed_evidence.py`. New surface: manifest schema, watchdog,
 restoration-obligation DB, digest writer. Estimated build: 2–3 agent-days
 after design approval — but the *decision* this document requests is only:
 approve the design direction and the smallest experiment's user gate.
