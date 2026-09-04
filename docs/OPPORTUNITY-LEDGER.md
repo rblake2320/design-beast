@@ -590,3 +590,52 @@ another capability. “Later” is not a trigger.
   passes.
 - Revisit trigger: post-upgrade verification result, or the next time we design
   a direction-selection step (cite worlds as prior art).
+
+### OPP-20260904-01 — Unprivileged live FPS + GPU telemetry via the PresentMon service API
+
+- Status: integrated (`scripts/perf_monitor.py`, `studio/presentmon_api.py`,
+  `docs/runbooks/PERF-MONITOR.md`; branch `agent/perf-monitor`, pending review)
+- Trigger: `PresentMon-2.5.1-x64.exe` refused `failed to start trace session:
+  access denied` from a non-elevated shell (user not in Performance Log Users,
+  2026-09-04). Inspecting the winget install found `SDK/PresentMonAPI.h` +
+  `PresentMonAPI2Loader.dll` and `PresentMonSharedService` already RUNNING.
+- New capability: any Beast agent can read per-frame events (CPU frame time,
+  displayed time, dropped flag) and windowed stats (presented/displayed FPS,
+  display latency, GPU busy) for any process, plus GPU temperature / power /
+  clocks / utilisation / VRAM from the service, from plain Python with **no
+  elevation and no group membership** — the console app's privilege wall does
+  not apply. Fan speed still comes from `nvidia-smi` (not served for NVIDIA).
+- Potential beneficiaries: rule-5 game look passes (FPS next to the screenshot
+  judge), UE 5.8 proofs, Studio resource guard (thermal/throttle admission),
+  any benchmark that must run unattended under a normal user account.
+- Current-project value: closes the "FPS + temp + fan" gap for design-beast;
+  gives the judge loop a quantitative performance receipt per session.
+- Outside-project value: the ctypes client is a self-contained, header-driven
+  binding to PresentMonAPI2 usable by any Windows tool that needs frame timing
+  without admin.
+- Prior art and primary sources: Intel PresentMon 2.x README + SDK header
+  (github.com/GameTechDev/PresentMon, tag v2.5.1); the official C++
+  `PresentMonAPIWrapper`; CapFrameX-style "1 % low". No novelty claim — this is
+  a local Python binding to a documented API.
+- Falsifiable claim: from a non-elevated Python, `pmOpenSession` succeeds and
+  a frame query on `dwm.exe` yields ≥ 20 frame events within 6 s with a
+  plausible FPS.
+- Smallest real experiment: `pytest tests/test_perf_monitor.py -k service`.
+- Measures and acceptance threshold: measured 2026-09-04 — dwm.exe 164–165
+  presented fps (165 Hz panel), 1 % low 104–144, p99 8.0 ms, display latency
+  11.1–11.3 ms; GPU 53 °C / 73.8 W / 1663 MHz via service vs nvidia-smi 53 °C /
+  72–74 W in the same second. Threshold: ≥ 20 frames in 6 s, 10 < fps < 1000.
+- Risks, constraints, and rights/privacy implications: the service echoes the
+  last real process's windowed averages for pids that never presented
+  (observed: idle chrome pids reported the terminal's 19.85 fps) — the lane
+  gates stats on frame events. First window after `track()` is empty (warm-up).
+  Metric set is vendor-dependent (NVIDIA rejects fan/voltage/limited/CPU
+  telemetry); registration drops rejected elements and records them. Depends
+  on the winget package layout under `C:\Program Files\Intel\PresentMon`.
+- Evidence: `tests/test_perf_monitor.py` (live service tests), runbook
+  evidence section, this session's probe transcripts.
+- Decision: integrated as the preferred fps backend; console app kept as the
+  fallback for nodes without the service.
+- Revisit trigger: PresentMon major bump (enums are parsed from the header, but
+  API export names could change), or the first Intel/AMD-adapter node where
+  the rejected-metric set differs.
