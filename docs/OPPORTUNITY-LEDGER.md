@@ -639,3 +639,54 @@ another capability. “Later” is not a trigger.
 - Revisit trigger: PresentMon major bump (enums are parsed from the header, but
   API export names could change), or the first Intel/AMD-adapter node where
   the rejected-metric set differs.
+
+### OPP-20260904-02 — Screen "semantic codec" from OS-native change streams (four-stream probe)
+
+- Status: experiment (branch `agent/event-probe`, stacked on `agent/perf-monitor`)
+- Trigger: owner's two-model no-NLP SelfConnect test (~16 % faster) plus the
+  "flipbook" question, reviewed by three frontier models (Perplexity synthesis,
+  2026-09-04) into a "semantic video codec" blueprint whose Software Event
+  Camera section rebuilds frame diffing. Session finding: Windows already emits
+  the primitives — WGC/DXGI dirty + move rectangles, UI Automation events with
+  process identity, and PresentMon frame timestamps (OPP-20260904-01).
+- New capability (claimed, unproven): reconstruct a scripted six-step desktop
+  task (open folder → menu → destructive click → confirmation dialog → type →
+  cancel) from native event streams + a bounded raw replay ring, with zero VLM
+  calls, and measure native payload bytes vs raw frames ("semantic FPS").
+- Potential beneficiaries: Watch lane (procedure learning with proof boundary),
+  rule-5 game look passes, SelfConnect mesh observation, Vigil (ledger consumer),
+  Visional Trainer (`WindowsStateSource` becomes event-driven instead of polled).
+- Current-project value: replaces "60 screenshots/s through a VLM" with an
+  evidence-linked state stream; VLM/OCR become exception handlers.
+- Outside-project value: the governed fusion contract (same normalized events
+  from OS-native UI streams or compressed-video motion evidence) is the piece no
+  existing repo has.
+- Prior art and primary sources: RDP/VNC dirty-region transmission, Windows
+  Graphics Capture `DirtyRegions` (Win11 24H2+), UI Automation event model,
+  PresentMon 2.x API, Interlat (ACL 2026), DroidSpeak (NSDI '26), compressed-
+  domain tracking on codec motion vectors, Prophesee event cameras. NO novelty
+  claim on any stream; candidate claim = integrated governed state codec with
+  evidence classes and active replay. Prior-art sweep NOT yet done.
+- Falsifiable claim: all six scripted actions recover from UIA + dirty rects +
+  present timestamps alone, each with a replay frame handle, ordered correctly,
+  with native payload ≤ 5 % of retained raw-frame bytes and ≤ 250 ms
+  source→emit latency; any gap is recorded as a coverage gap, not inferred.
+- Smallest real experiment: `python watch/event_probe.py --duration 90` while a
+  human performs the six steps; report in Owner's Inbox.
+- Measures and acceptance threshold: see falsifiable claim; plus per-stream
+  clock-domain offsets recorded, not assumed.
+- Risks, constraints, and rights/privacy implications: observe-only (no
+  clicks/typing/invokes); bounded ring retention; raw frames of the owner's
+  desktop are sensitive → runs stay local and gitignored; `mss` cannot reach
+  60 fps at 5120×2160 in Python (measure, report actual); WGC `dirty_regions`
+  needs the `winrt-Windows.Foundation.Collections` binding (NOT installed —
+  owner decision pending; fallback = labelled tile-diff). UIA callbacks arrive
+  on foreign threads (MTA). Vigil's ledger cryptography is NOT duplicated —
+  probe writes a Vigil-shaped local manifest.
+- Evidence: this ledger row; session probes 2026-09-04 (UIA 178 events/7 s incl.
+  WindowOpened/Closed/Focus/Name-changed with pid; WGC 31 fps at 5K; PresentMon
+  API 3.3.0).
+- Decision: build the probe first (design-beast owns sampling/replay/timing);
+  Vigil remains the canonical tamper-evident ledger; keep IP framing private.
+- Revisit trigger: probe report pass/fail; first game/video-lane run
+  (`export_mvs`) to test the shared normalized-event contract.

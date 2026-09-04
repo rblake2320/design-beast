@@ -90,11 +90,17 @@ class _Version(Structure):
 
 
 class Element(NamedTuple):
-    """One query column: record key, PM_METRIC_* name, PM_STAT_* name, device id."""
+    """One query column: record key, PM_METRIC_* name, PM_STAT_* name, device id.
+
+    ``dtype`` disambiguates 8-byte blobs: "f64" (default) or "u64" (the *_QPC metrics,
+    which are raw QueryPerformanceCounter ticks - on Windows ``time.perf_counter_ns()``
+    is exactly QPC x 100, so ``qpc * 100`` lands in the same clock domain).
+    """
     key: str
     metric: str
     stat: str = "PM_STAT_NONE"
     device: int = 0
+    dtype: str = "f64"
 
 
 class PresentMonError(RuntimeError):
@@ -143,6 +149,11 @@ class Session:
         self._call("pmOpenSession", byref(self._handle))
         self._call("pmSetTelemetryPollingPeriod", self._handle, c_uint32(0), c_uint32(telemetry_ms))
         return self
+
+    def set_etw_flush_period(self, ms: int) -> None:
+        """8..1000 ms; lower = frame events reach consumers sooner (PresentMon API doc: 'affecting the
+        delay of frame data reported by PresentMon')."""
+        self._call("pmSetEtwFlushPeriod", self._handle, c_uint32(ms))
 
     def close(self) -> None:
         if self._handle.value:
@@ -258,7 +269,7 @@ def _decode(buf: Any, base: int, accepted: list[Element], arr: Any) -> dict[str,
         if ce.dataSize == 260:
             out[e.key] = raw.split(b"\0")[0].decode(errors="replace")
         elif ce.dataSize == 8:
-            out[e.key] = struct.unpack("<d", raw)[0]
+            out[e.key] = struct.unpack("<Q" if e.dtype == "u64" else "<d", raw)[0]
         elif ce.dataSize == 4:
             out[e.key] = struct.unpack("<I", raw)[0]
         elif ce.dataSize == 1:
@@ -274,11 +285,15 @@ class DynamicQuery:
     def __init__(self, session: Session, handle: Any, accepted: list[Element],
                  rejected: list[Element], arr: Any) -> None:
         self.session, self._handle, self.accepted, self.rejected, self._arr = session, handle, accepted, rejected, arr
-        self.blob_size = sum(int(e.dataSize) for e in arr)
-        self._buf = (c_uint8 * (self.blob_size * 8))()
+        # Stride = last.dataOffset + last.dataSize (PresentMonAPIWrapper/DynamicQuery.cpp) - the service pads
+        # fields to alignment, so sum(dataSize) under-sizes the buffer and multi-swapchain polls overrun it.
+        last = arr[len(arr) - 1]
+        self.blob_size = int(last.dataOffset + last.dataSize)
+        self.max_swapchains = 8
+        self._buf = (c_uint8 * (self.blob_size * self.max_swapchains))()
 
     def poll(self, pid: int) -> list[dict[str, Any]]:
-        n = c_uint32(8)
+        n = c_uint32(self.max_swapchains)
         self.session._call("pmPollDynamicQuery", self._handle, c_uint32(pid), self._buf, byref(n))
         return [_decode(self._buf, i * self.blob_size, self.accepted, self._arr) for i in range(n.value)]
 

@@ -38,3 +38,5 @@ node_modules/
 
 # perf monitor run logs (scripts/perf_monitor.py) - local measurements, not product source
 session/perf/
+# event probe runs (watch/event_probe.py) - contain raw frames of the owner's desktop
+watch/runs/
