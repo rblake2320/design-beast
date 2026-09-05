@@ -690,3 +690,37 @@ another capability. “Later” is not a trigger.
   Vigil remains the canonical tamper-evident ledger; keep IP framing private.
 - Revisit trigger: probe report pass/fail; first game/video-lane run
   (`export_mvs`) to test the shared normalized-event contract.
+
+### OPP-20260904-03 — Full-watching capture: real footage at 60 fps, semantic-gated, hardware-encoded
+
+- Status: integrated (`watch/full_capture.py`, branch `agent/full-capture` on event-probe, draft PR pending)
+- Trigger: owner reframed the north star — the real goal is a training VIDEO whose visuals
+  match the true requirements; event_probe's replay ring (mss, ~7.7 fps at 5K) is a provable
+  slideshow, not footage. Owner picked "real-footage-first" + "build full-watching capture first".
+- New capability: capture the REAL desktop continuously at the source frame rate and encode it
+  with the GPU's hardware H.264/H.265 encoder, so the video step has actual footage that is, by
+  construction, the true UI. dxcam (DXGI Desktop Duplication) ceiling measured 59.8 fps at
+  5120×2160 (vs mss 7.7). Semantic gating: poll ~58 fps, encode only changed frames — idle keeps
+  0.85 %, motion keeps the changes. Frame ledger maps frame_idx→pts_ms→t_obs_ns (QPC domain, same
+  as event_probe) → a semantic event resolves to an exact video PTS (the assembler bridge).
+- Potential beneficiaries: the training-video generator (real-footage assembly + narration),
+  Watch lane, Vigil evidence clips, any "prove the UI did X" workflow.
+- Prior art and primary sources: dxcam / BetterCam (DDA, 240 fps), windows-capture / wincam (WGC
+  + HW H264), PyAV/NVENC. No novelty on capture; the claim stays the integrated governed codec.
+- Falsifiable claim: a dxcam capture encodes a decodable mp4 whose decoded duration matches the
+  ms-PTS ledger (±0.3 s) and whose every frame is retrievable by capture time.
+- Smallest real experiment: `pytest tests/test_full_capture.py` (incl. live_desktop dxcam run).
+- Measures/threshold: measured 2026-09-04 — mp4 verified by PyAV + ffprobe (160 frames, 2560×1080
+  h264_nvenc, decoded 0.03..8.00 s matching ledger), sha256'd; compression ~0.0002 of raw BGRA;
+  event→frame bridge exact (0.0 ms).
+- Risks/constraints: H.264 NVENC caps at 4096 wide → native 5120 auto-falls back to HEVC (or
+  downscale, default 0.5). Continuous mode is encode-bound (~20 fps at 2560×1080) due to NVENC +
+  CPU colorspace-convert under the Python GIL; semantic mode is the intended path. dxcam (DDA)
+  cannot capture DRM/HDCP-protected windows; `wgc` backend (windows-capture, install-gated) is a
+  declared follow-up behind `--backend`. Bounded queue drops oldest under backpressure (recorded
+  as `dropped_backpressure`). mp4 time_base gotcha: must set `codec_context.time_base`, not just
+  `stream.time_base`, or an 8 s clip decodes as 133 s.
+- Evidence: this row, runbook `docs/runbooks/FULL-CAPTURE.md`, tests, run manifests.
+- Decision: dxcam is the built backend; windows-capture behind --backend is the follow-up.
+- Revisit trigger: the assembler milestone (events + narration synced to this footage), or the
+  first need for protected-content capture (→ build the wgc backend).
