@@ -1,0 +1,69 @@
+{
+  "schema": "beast.campaign-challenge/v1",
+  "id": "nora-six-shot-revision-001",
+  "protocol_revision": 2,
+  "scope": "One demanding workflow case study, not a universal market ranking",
+  "competitor": "Runway Agent with its documented built-in model routing and timeline",
+  "beast_condition": "Design Beast at cc28b346002293f46ba41ec20aa0364238035c8d, agent-operated documented tools; log all orchestration and manual work",
+  "reference": "reference.png",
+  "reference_role": "Shared original product-design reference, not a generated campaign output",
+  "reference_specs": {
+    "product": "Cobalt-blue cylindrical ceramic tea canister, copper slip-on lid, cream rectangular label",
+    "label_lines": ["NORA", "NIGHT TEA"],
+    "mark": "single small copper crescent below the label text",
+    "geometry": "approximately 120 mm tall and 80 mm in diameter"
+  },
+  "deliverables": ["original-16x9.mp4", "original-9x16.mp4", "revised-16x9.mp4", "revised-9x16.mp4"],
+  "export": {"landscape": [1920, 1080], "portrait": [1080, 1920], "fps": 24, "duration_seconds": 30, "tolerance_frames": 2, "codec": "h264", "audio": "aac"},
+  "shots": [
+    {"id": 1, "seconds": [0, 5], "scene": "Moody kitchen at blue hour, closed canister on dark stone, slow dolly toward label"},
+    {"id": 2, "seconds": [5, 10], "scene": "Same kitchen and closed canister, macro rack focus from copper lid edge to cream label"},
+    {"id": 3, "seconds": [10, 15], "scene": "Warmly lit cafe table, hand lifts the same copper lid without changing the vessel, label remains on front"},
+    {"id": 4, "seconds": [15, 20], "scene": "Same cafe, hand pours tea from a separate teapot into a cup; intact canister beside cup; plausible hand contact and tea flow"},
+    {"id": 5, "seconds": [20, 25], "scene": "Moonlit terrace, closed canister beside steaming cup; 30-degree clockwise camera orbit; identity preserved"},
+    {"id": 6, "seconds": [25, 30], "scene": "Stable hero on terrace, front label legible, tasteful end-card typography in negative space"}
+  ],
+  "narration": "When the day gets loud, make room for quiet. NORA Night Tea. Your evening, unhurried.",
+  "audio": "Original restrained instrumental bed; lid-lift and pour foley aligned within 200 ms; voice clearly intelligible",
+  "initial_cta": "MAKE ROOM FOR QUIET",
+  "revision": {
+    "apply_after": "Both original exports have been retained and hashed",
+    "visibility": "Both operators receive the entire protocol and exact revision upfront; this is a planned controlled revision, not a surprise test",
+    "request": "Change only shot 3 from warm amber cafe lighting to cool blue evening lighting, keeping its camera, hand action, canister geometry and label. Replace the end-card CTA with YOUR EVENING, UNHURRIED. Preserve all other shots, shot timings, narration and music. Export both aspect ratios again.",
+    "new_cta": "YOUR EVENING, UNHURRIED"
+  },
+  "limits_per_arm": {
+    "wall_minutes": 90,
+    "initial_minutes": 60,
+    "revision_minutes": 30,
+    "clock": "Start when the operator receives the complete input bundle; include uploads, planning, generation, retries and download/export. Stop initial clock when both original exports are locally retained and hashed. Start revision clock immediately after initial retention; stop when both revised exports are retained and hashed. Record setup time before input delivery separately.",
+    "initial_still_outputs": 24,
+    "revision_still_outputs": 4,
+    "initial_generated_video_seconds": 120,
+    "revision_generated_video_seconds": 20,
+    "counting": "Count all generated candidates, discarded media, failed billed jobs and revisions; normalize multi-shot batches by generated duration, not request count. Debit failed billed video jobs by requested duration; record non-billed failures and time separately.",
+    "spend_usd": null,
+    "spend_state": "Paid execution prohibited until owner budget is recorded in an execution manifest"
+  },
+  "hard_gates": [
+    "All four exports exist, decode fully, have the declared dimensions, fps, duration and audible audio",
+    "All six requested narrative actions are present; no still-image slideshow substituted for generated physical action",
+    "Product geometry, blue body, copper lid, cream label and crescent persist across shots",
+    "NORA and NIGHT TEA are legible and correct in hero shots 1 and 6; CTA and narration match exactly",
+    "Revision changes only specified content; compare unchanged source/timeline assets and decoded segments rather than requiring identical compressed bytes",
+    "Declared time, generated-media and approved money limits are respected; full attempts retained"
+  ],
+  "blind_quality_weights": {"identity": 20, "physical_motion": 15, "story_continuity": 5, "text": 10, "audio": 10, "export_and_reframe": 10, "revision_fidelity": 15, "cinematography": 15},
+  "rating": "At least three independent humans including the owner, randomized unlabeled pairs; each dimension 1-5 with reason; report all raters and agreement. Local judge is diagnostic only, never final authority.",
+  "fairness": [
+    "Identical reference.png bytes, initial brief and revision for both arms",
+    "Allow each system's documented tool ecosystem; log model identifiers, seeds where available, prompts, retries, elapsed time, cost and human intervention",
+    "No new product features or unplanned rescue tools during a scored run; repaired runs get separate identities",
+    "No competitor score from marketing claims. No creative score when output is absent. No winner without both completed arms and independent ratings"
+  ],
+  "sources": [
+    "https://help.runwayml.com/hc/en-us/articles/51601639579667-Creating-with-Runway-Agent",
+    "https://help.runwayml.com/hc/en-us/articles/40042718905875-Creating-with-Gen-4-Image-References",
+    "https://help.runwayml.com/hc/en-us/articles/51200254894483-Multi-Shot-Video"
+  ]
+}
