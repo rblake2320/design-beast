@@ -7,6 +7,7 @@ owned process. This is a preflight, never a creative-output benchmark.
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 import hashlib
 import json
 from pathlib import Path
@@ -21,6 +22,29 @@ import requests
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "studio"))
 import resource_guard
+
+
+def stop_owned(process, record):
+    try:
+        if process.poll() is None:
+            process.terminate()
+            process.wait(timeout=10)
+        record["owned_server_stopped"] = process.poll() is not None
+    except (OSError, subprocess.SubprocessError) as exc:
+        record.setdefault("cleanup_errors", []).append(f"{type(exc).__name__}: {exc}")
+        record["owned_server_stopped"] = False
+        record["outcome"] = "preflight_error"
+
+
+@contextmanager
+def owned_server(command, log, record):
+    process = subprocess.Popen(command, cwd=REPO, stdout=log, stderr=subprocess.STDOUT)
+    record["owned_server_pid"] = process.pid
+    try:
+        yield process
+    finally:
+        # Must happen before Windows attempts to delete the temporary database.
+        stop_owned(process, record)
 
 
 def main() -> int:
@@ -53,11 +77,9 @@ def main() -> int:
                 "jobs.DB_PATH=Path(sys.argv[2])/'jobs.db'; "
                 "import server,uvicorn; "
                 "uvicorn.run(server.app,host='127.0.0.1',port=int(sys.argv[3]))")
-            with (folder / "studio.log").open("w", encoding="utf-8") as log:
-                process = subprocess.Popen(
+            with (folder / "studio.log").open("w", encoding="utf-8") as log, owned_server(
                     [sys.executable, "-c", bootstrap, str(REPO / "studio"), tmp, str(port)],
-                    cwd=REPO, stdout=log, stderr=subprocess.STDOUT)
-                record["owned_server_pid"] = process.pid
+                    log, record) as process:
                 base = f"http://127.0.0.1:{port}"
                 deadline = time.monotonic() + 20
                 while time.monotonic() < deadline:
@@ -78,17 +100,12 @@ def main() -> int:
                 record["outcome"] = ("resource_blocked" if not all(
                     record["admission"][name]["admitted"]
                     for name in ("studio_light", "video_generation")) else "preflight_only_ready")
-                process.terminate()
-                process.wait(timeout=10)
-                record["owned_server_stopped"] = process.poll() is not None
     except Exception as exc:
         record["outcome"] = "preflight_error"
         record["error"] = f"{type(exc).__name__}: {exc}"
     finally:
         if process is not None and process.poll() is None:
-            process.terminate()
-            process.wait(timeout=10)
-            record["owned_server_stopped"] = True
+            stop_owned(process, record)
         (folder / "receipt.json").write_text(json.dumps(record, indent=2), encoding="utf-8")
         print(folder / "receipt.json")
         print(record.get("outcome"))

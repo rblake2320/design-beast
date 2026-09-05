@@ -1,6 +1,7 @@
 {
   "schema": "beast.campaign-challenge/v1",
   "id": "nora-six-shot-revision-001",
+  "protocol_revision": 2,
   "scope": "One demanding workflow case study, not a universal market ranking",
   "competitor": "Runway Agent with its documented built-in model routing and timeline",
   "beast_condition": "Design Beast at cc28b346002293f46ba41ec20aa0364238035c8d, agent-operated documented tools; log all orchestration and manual work",
@@ -26,7 +27,8 @@
   "audio": "Original restrained instrumental bed; lid-lift and pour foley aligned within 200 ms; voice clearly intelligible",
   "initial_cta": "MAKE ROOM FOR QUIET",
   "revision": {
-    "reveal_after": "Both original exports have been retained and hashed",
+    "apply_after": "Both original exports have been retained and hashed",
+    "visibility": "Both operators receive the entire protocol and exact revision upfront; this is a planned controlled revision, not a surprise test",
     "request": "Change only shot 3 from warm amber cafe lighting to cool blue evening lighting, keeping its camera, hand action, canister geometry and label. Replace the end-card CTA with YOUR EVENING, UNHURRIED. Preserve all other shots, shot timings, narration and music. Export both aspect ratios again.",
     "new_cta": "YOUR EVENING, UNHURRIED"
   },
@@ -34,11 +36,12 @@
     "wall_minutes": 90,
     "initial_minutes": 60,
     "revision_minutes": 30,
+    "clock": "Start when the operator receives the complete input bundle; include uploads, planning, generation, retries and download/export. Stop initial clock when both original exports are locally retained and hashed. Start revision clock immediately after initial retention; stop when both revised exports are retained and hashed. Record setup time before input delivery separately.",
     "initial_still_outputs": 24,
     "revision_still_outputs": 4,
     "initial_generated_video_seconds": 120,
     "revision_generated_video_seconds": 20,
-    "counting": "Count all generated candidates, discarded media, failed billed jobs and revisions; normalize multi-shot batches by generated duration, not request count",
+    "counting": "Count all generated candidates, discarded media, failed billed jobs and revisions; normalize multi-shot batches by generated duration, not request count. Debit failed billed video jobs by requested duration; record non-billed failures and time separately.",
     "spend_usd": null,
     "spend_state": "Paid execution prohibited until owner budget is recorded in an execution manifest"
   },

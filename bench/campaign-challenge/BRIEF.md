@@ -21,7 +21,8 @@ assets. The initial phase gets 60 minutes, at most 24 generated stills and 120
 generated video seconds, counting discarded and billed failed attempts. Approved
 spend is supplied separately; no paid calls without it.
 
-After both original exports are frozen, a controlled revision will test whether
+Both operators receive the complete protocol and exact revision upfront. After
+both original exports are frozen, a planned controlled revision will test whether
 one lighting change and one copy change can be made without damaging other work.
 The revision gets 30 minutes, four still outputs and 20 generated video seconds.
 
