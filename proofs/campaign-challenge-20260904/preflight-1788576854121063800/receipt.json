@@ -1,0 +1,115 @@
+{
+  "schema": "beast.campaign-preflight/v1",
+  "phase": "preflight",
+  "creative_score": null,
+  "competitive_winner": null,
+  "generation_attempts": 0,
+  "paid_calls": 0,
+  "model_calls": 0,
+  "test_inputs": {
+    "protocol.json": "a676e69f36c5cabf99db2ccc5baca55008cc41735844c86cf2b65ecb3183b50c",
+    "BRIEF.md": "a8241adc5f16409d850c999efef1bc58752debd0bc39ce7028e7e275005b0cf1",
+    "reference.png": "590813afc3ac61a3b832694fd7002cc3c6b2031f384a4225648e803b0c7d1938"
+  },
+  "git_head": "b806da7ae362b01e6466b167d12f443f6d1a9be7",
+  "admission": {
+    "studio_light": {
+      "schema": "beast.resource-admission/v1",
+      "workload": "studio_light",
+      "class": "light",
+      "requested_mib": 12288,
+      "protected_reserve_mib": 4096,
+      "required_free_mib": 16384,
+      "admitted": false,
+      "reasons": [
+        "need 16384 MiB free (12288 workload + 4096 reserve); measured 15044 MiB"
+      ],
+      "snapshot": {
+        "available": true,
+        "name": "NVIDIA GeForce RTX 5090",
+        "total_mib": 32607,
+        "used_mib": 17144,
+        "free_mib": 15044,
+        "utilization_percent": 9,
+        "measured_unix": 1788576854.180974
+      },
+      "automatic_process_termination": false
+    },
+    "video_generation": {
+      "schema": "beast.resource-admission/v1",
+      "workload": "video_generation",
+      "class": "heavy",
+      "requested_mib": 24576,
+      "protected_reserve_mib": 4096,
+      "required_free_mib": 28672,
+      "admitted": false,
+      "reasons": [
+        "need 28672 MiB free (24576 workload + 4096 reserve); measured 15044 MiB"
+      ],
+      "snapshot": {
+        "available": true,
+        "name": "NVIDIA GeForce RTX 5090",
+        "total_mib": 32607,
+        "used_mib": 17144,
+        "free_mib": 15044,
+        "utilization_percent": 9,
+        "measured_unix": 1788576854.180974
+      },
+      "automatic_process_termination": false
+    },
+    "judge": {
+      "schema": "beast.resource-admission/v1",
+      "workload": "judge",
+      "class": "light",
+      "requested_mib": 6144,
+      "protected_reserve_mib": 4096,
+      "required_free_mib": 10240,
+      "admitted": true,
+      "reasons": [
+        "live free VRAM satisfies workload budget and protected reserve"
+      ],
+      "snapshot": {
+        "available": true,
+        "name": "NVIDIA GeForce RTX 5090",
+        "total_mib": 32607,
+        "used_mib": 17144,
+        "free_mib": 15044,
+        "utilization_percent": 9,
+        "measured_unix": 1788576854.180974
+      },
+      "automatic_process_termination": false
+    }
+  },
+  "owned_server_pid": 36292,
+  "http_health": {
+    "ok": true,
+    "db": true,
+    "disk_free_gb": 1712,
+    "active_jobs": []
+  },
+  "api_paths": [
+    "/",
+    "/api/animate",
+    "/api/backend",
+    "/api/backends",
+    "/api/events/{run_id}",
+    "/api/expand",
+    "/api/health",
+    "/api/job/{run_id}/cancel",
+    "/api/job/{run_id}/retry",
+    "/api/judge",
+    "/api/ledger/verify",
+    "/api/recipes",
+    "/api/refine",
+    "/api/registry",
+    "/api/run",
+    "/api/run/{run_id}",
+    "/api/runs",
+    "/api/to3d",
+    "/api/to_ue",
+    "/api/tts",
+    "/api/upload"
+  ],
+  "outcome": "resource_blocked",
+  "owned_server_stopped": true
+}
