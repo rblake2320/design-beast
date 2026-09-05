@@ -1,0 +1,448 @@
+{
+  "schema": "beast.optimization-proof/v1",
+  "ok": true,
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "clock": {
+    "implementation": "QueryPerformanceCounter()",
+    "monotonic": true,
+    "adjustable": false,
+    "resolution": 1e-07
+  },
+  "commands": [
+    {
+      "command": [
+        "C:\\Users\\techai\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0-full_build\\bin\\ffmpeg.exe",
+        "-version"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.02088400000002366,
+      "stdout": "ffmpeg version 9.0-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers\nbuilt with gcc 16.1.0 (Rev2, Built by MSYS2 project)\nconfiguration: --enable-gpl --enable-version3 --enable-static --disable-w32threads --disable-autodetect --enable-cairo --enable-fontconfig --enable-iconv --enable-gnutls --enable-lcms2 --enable-libxml2 --enable-gmp --enable-bzlib --enable-lzma --enable-libsnappy --enable-zlib --enable-librist --enable-libsrt --enable-libssh --enable-libzmq --enable-avisynth --enable-libbluray --enable-libcaca --enable-libdvdnav --enable-libdvdread --enable-sdl2 --enable-libaribb24 --enable-libaribcaption --enable-libdav1d --enable-libdavs2 --enable-libopenjpeg --enable-libquirc --enable-libuavs3d --enable-libxevd --enable-libzvbi --enable-liboapv --enable-libqrencode --enable-librav1e --enable-libsvtav1 --enable-libvvenc --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxeve --enable-libxvid --enable-libaom --enable-libjxl --enable-libsvtjpegxs --enable-libvpx --enable-mediafoundation --enable-libass --enable-frei0r --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-liblensfun --enable-libvidstab --enable-libvmaf --enable-libzimg --enable-amf --enable-cuda-llvm --enable-cuvid --enable-dxva2 --enable-d3d11va --enable-d3d12va --enable-ffnvcodec --enable-libvpl --enable-nvdec --enable-nvenc --enable-vaapi --enable-vulkan --enable-libplacebo --enable-opencl --enable-libcdio --enable-openal --enable-libgme --enable-libmodplug --enable-libopenmpt --enable-libopencore-amrwb --enable-libmp3lame --enable-libshine --enable-libtheora --enable-libtwolame --enable-libvo-amrwbenc --enable-libcodec2 --enable-libilbc --enable-libgsm --enable-liblc3 --enable-libopencore-amrnb --enable-libopus --enable-libspeex --enable-libvorbis --enable-ladspa --enable-libbs2b --enable-libflite --enable-libmysofa --enable-librubberband --enable-libsoxr --enable-chromaprint --enable-whisper\nlibavutil      61.  1.100 / 61.  1.100\nlibavcodec     63.  1.100 / 63.  1.100\nlibavformat    63.  1.100 / 63.  1.100\nlibavdevice    63.  1.100 / 63.  1.100\nlibavfilter    12.  1.100 / 12.  1.100\nlibswscale     10.  1.100 / 10.  1.100\nlibswresample   7.  1.100 /  7.  1.100\n\nExiting with exit code 0\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\techai\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0-full_build\\bin\\ffprobe.exe",
+        "-version"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.019870699999955832,
+      "stdout": "ffprobe version 9.0-full_build-www.gyan.dev Copyright (c) 2007-2026 the FFmpeg developers\nbuilt with gcc 16.1.0 (Rev2, Built by MSYS2 project)\nconfiguration: --enable-gpl --enable-version3 --enable-static --disable-w32threads --disable-autodetect --enable-cairo --enable-fontconfig --enable-iconv --enable-gnutls --enable-lcms2 --enable-libxml2 --enable-gmp --enable-bzlib --enable-lzma --enable-libsnappy --enable-zlib --enable-librist --enable-libsrt --enable-libssh --enable-libzmq --enable-avisynth --enable-libbluray --enable-libcaca --enable-libdvdnav --enable-libdvdread --enable-sdl2 --enable-libaribb24 --enable-libaribcaption --enable-libdav1d --enable-libdavs2 --enable-libopenjpeg --enable-libquirc --enable-libuavs3d --enable-libxevd --enable-libzvbi --enable-liboapv --enable-libqrencode --enable-librav1e --enable-libsvtav1 --enable-libvvenc --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxeve --enable-libxvid --enable-libaom --enable-libjxl --enable-libsvtjpegxs --enable-libvpx --enable-mediafoundation --enable-libass --enable-frei0r --enable-libfreetype --enable-libfribidi --enable-libharfbuzz --enable-liblensfun --enable-libvidstab --enable-libvmaf --enable-libzimg --enable-amf --enable-cuda-llvm --enable-cuvid --enable-dxva2 --enable-d3d11va --enable-d3d12va --enable-ffnvcodec --enable-libvpl --enable-nvdec --enable-nvenc --enable-vaapi --enable-vulkan --enable-libplacebo --enable-opencl --enable-libcdio --enable-openal --enable-libgme --enable-libmodplug --enable-libopenmpt --enable-libopencore-amrwb --enable-libmp3lame --enable-libshine --enable-libtheora --enable-libtwolame --enable-libvo-amrwbenc --enable-libcodec2 --enable-libilbc --enable-libgsm --enable-liblc3 --enable-libopencore-amrnb --enable-libopus --enable-libspeex --enable-libvorbis --enable-ladspa --enable-libbs2b --enable-libflite --enable-libmysofa --enable-librubberband --enable-libsoxr --enable-chromaprint --enable-whisper\nlibavutil      61.  1.100 / 61.  1.100\nlibavcodec     63.  1.100 / 63.  1.100\nlibavformat    63.  1.100 / 63.  1.100\nlibavdevice    63.  1.100 / 63.  1.100\nlibavfilter    12.  1.100 / 12.  1.100\nlibswscale     10.  1.100 / 10.  1.100\nlibswresample   7.  1.100 /  7.  1.100\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\techai\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0-full_build\\bin\\ffmpeg.exe",
+        "-v",
+        "error",
+        "-f",
+        "lavfi",
+        "-i",
+        "testsrc2=size=320x180:rate=12:duration=3",
+        "-c:v",
+        "libx264",
+        "-threads",
+        "1",
+        "D:\\content\\design-beast\\.worktrees\\codex-optimize\\proofs\\optimization-20260904\\run-1788574358745586600\\synthetic.mp4"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.0867262000001574,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Python312\\python.exe",
+        "scripts/watch_video.py",
+        "D:\\content\\design-beast\\.worktrees\\codex-optimize\\proofs\\optimization-20260904\\run-1788574358745586600\\synthetic.mp4",
+        "--out",
+        "D:\\content\\design-beast\\.worktrees\\codex-optimize\\proofs\\optimization-20260904\\run-1788574358745586600\\watched",
+        "--periodic",
+        "1",
+        "--height",
+        "240",
+        "--no-transcribe"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.32388200000013967,
+      "stdout": "evidence ready: D:\\content\\design-beast\\.worktrees\\codex-optimize\\proofs\\optimization-20260904\\run-1788574358745586600\\watched\n  3 frames | 0 transcript segments | schema beast.watch.timeline/v3\n  next: inspect timeline.json, then densify uncertain moments with --dense-window START-END@FPS\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Python312\\python.exe",
+        "scripts/watch_seek.py",
+        "D:\\content\\design-beast\\.worktrees\\codex-optimize\\proofs\\optimization-20260904\\run-1788574358745586600\\watched",
+        "--at",
+        "1",
+        "--level",
+        "2",
+        "--before",
+        "0.5",
+        "--after",
+        "0.5",
+        "--fps",
+        "2",
+        "--reason",
+        "synthetic verification"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.13947379999990517,
+      "stdout": "{\n  \"id\": \"seek-0001\",\n  \"created_unix\": 1788574359.86323,\n  \"center_seconds\": 1.0,\n  \"center_time\": \"00:00:01.000\",\n  \"level\": 2,\n  \"level_name\": \"action\",\n  \"direction\": \"both\",\n  \"before_seconds\": 0.5,\n  \"after_seconds\": 0.5,\n  \"fps\": 2.0,\n  \"reason\": \"synthetic verification\",\n  \"requested_frames\": 3,\n  \"new_frames\": 1\n}\n",
+      "stderr": ""
+    }
+  ],
+  "baseline": "1a7f7ab",
+  "scope": "synthetic CPU media and local SQLite; no creative quality claim",
+  "before": {
+    "history_rows": 20000,
+    "queries": 100,
+    "timings_ms": [
+      3.1408,
+      3.1221,
+      3.3227,
+      3.1537,
+      3.1358,
+      3.1214,
+      3.1424,
+      3.8266,
+      3.1124,
+      3.1165,
+      3.0911,
+      3.0911,
+      3.3164,
+      3.1378,
+      3.1435,
+      3.1327,
+      3.8077,
+      3.1527,
+      3.1088,
+      3.0937,
+      3.1064,
+      3.2825,
+      3.1786,
+      3.1681,
+      3.1573,
+      3.1692,
+      3.3053,
+      3.1197,
+      3.104,
+      3.1068,
+      3.1203,
+      3.4497,
+      3.1126,
+      3.0968,
+      3.0897,
+      3.0863,
+      3.928,
+      3.1597,
+      3.3075,
+      3.135,
+      3.1113,
+      3.4771,
+      3.1199,
+      3.1105,
+      3.1081,
+      3.2126,
+      3.2299,
+      3.178,
+      3.1513,
+      3.1575,
+      3.1451,
+      3.6111,
+      3.1679,
+      3.1883,
+      3.1799,
+      3.1716,
+      3.704,
+      3.1344,
+      3.0955,
+      3.0992,
+      3.8683,
+      3.1579,
+      3.1266,
+      3.1187,
+      3.1075,
+      3.3088,
+      3.2497,
+      3.2006,
+      3.2032,
+      3.201,
+      3.4949,
+      3.1278,
+      3.1106,
+      3.1139,
+      3.1279,
+      3.3825,
+      3.1907,
+      3.1599,
+      3.1587,
+      3.1725,
+      3.3288,
+      3.1622,
+      3.2323,
+      3.6839,
+      3.3634,
+      3.2259,
+      3.1671,
+      3.1439,
+      3.1719,
+      3.4823,
+      3.1692,
+      3.1658,
+      3.143,
+      3.1532,
+      3.2756,
+      3.1578,
+      3.1365,
+      3.1599,
+      3.1247,
+      3.3929
+    ],
+    "p50_ms": 3.15785,
+    "p95_ms": 3.6839,
+    "concurrent_requests": [
+      {
+        "error": "IntegrityError",
+        "message": "UNIQUE constraint failed: jobs.idempotency_key"
+      },
+      {
+        "error": "IntegrityError",
+        "message": "UNIQUE constraint failed: jobs.idempotency_key"
+      },
+      {
+        "id": "20260904_211239_dd0c",
+        "created": true
+      },
+      {
+        "error": "IntegrityError",
+        "message": "UNIQUE constraint failed: jobs.idempotency_key"
+      },
+      {
+        "error": "IntegrityError",
+        "message": "UNIQUE constraint failed: jobs.idempotency_key"
+      },
+      {
+        "error": "IntegrityError",
+        "message": "UNIQUE constraint failed: jobs.idempotency_key"
+      },
+      {
+        "error": "IntegrityError",
+        "message": "UNIQUE constraint failed: jobs.idempotency_key"
+      },
+      {
+        "id": "20260904_211239_dd0c",
+        "created": false
+      },
+      {
+        "error": "IntegrityError",
+        "message": "UNIQUE constraint failed: jobs.idempotency_key"
+      },
+      {
+        "id": "20260904_211239_dd0c",
+        "created": false
+      },
+      {
+        "error": "IntegrityError",
+        "message": "UNIQUE constraint failed: jobs.idempotency_key"
+      },
+      {
+        "error": "IntegrityError",
+        "message": "UNIQUE constraint failed: jobs.idempotency_key"
+      },
+      {
+        "error": "IntegrityError",
+        "message": "UNIQUE constraint failed: jobs.idempotency_key"
+      },
+      {
+        "id": "20260904_211239_dd0c",
+        "created": false
+      },
+      {
+        "error": "IntegrityError",
+        "message": "UNIQUE constraint failed: jobs.idempotency_key"
+      },
+      {
+        "error": "IntegrityError",
+        "message": "UNIQUE constraint failed: jobs.idempotency_key"
+      }
+    ],
+    "terminal_preserved": false
+  },
+  "after": {
+    "history_rows": 20000,
+    "queries": 100,
+    "timings_ms": [
+      0.0487,
+      0.0505,
+      0.0434,
+      0.0436,
+      0.0431,
+      0.0438,
+      0.0423,
+      0.0426,
+      0.0429,
+      0.0424,
+      0.0428,
+      0.0432,
+      0.0426,
+      0.0426,
+      0.0424,
+      0.0427,
+      0.043,
+      0.0428,
+      0.0427,
+      0.0423,
+      0.0423,
+      0.0426,
+      0.0424,
+      0.0424,
+      0.043,
+      0.0422,
+      0.0422,
+      0.0426,
+      0.0425,
+      0.0426,
+      0.0426,
+      0.0425,
+      0.0426,
+      0.0424,
+      0.0424,
+      0.0476,
+      0.0424,
+      0.0425,
+      0.0424,
+      0.0424,
+      0.0422,
+      0.0423,
+      0.0424,
+      0.0423,
+      0.0427,
+      0.0427,
+      0.0423,
+      0.0426,
+      0.0425,
+      0.0422,
+      0.0421,
+      0.0421,
+      0.0424,
+      0.0423,
+      0.0422,
+      0.0423,
+      0.043,
+      0.0422,
+      0.0423,
+      0.0423,
+      0.0423,
+      0.0426,
+      0.0421,
+      0.0422,
+      0.0474,
+      0.043,
+      0.0424,
+      0.0422,
+      0.0435,
+      0.0427,
+      0.0421,
+      0.0423,
+      0.0422,
+      0.0472,
+      0.0499,
+      0.0597,
+      0.0682,
+      0.0459,
+      0.0429,
+      0.0556,
+      0.0426,
+      0.0426,
+      0.0426,
+      0.0424,
+      0.0429,
+      0.0424,
+      0.0421,
+      0.0426,
+      0.0425,
+      0.0427,
+      0.043,
+      0.0432,
+      0.0427,
+      0.0426,
+      0.0422,
+      0.0517,
+      0.0624,
+      0.0639,
+      0.0651,
+      0.0635
+    ],
+    "p50_ms": 0.0426,
+    "p95_ms": 0.0597,
+    "concurrent_requests": [
+      {
+        "id": "20260904_211239_c8663b931231",
+        "created": false
+      },
+      {
+        "id": "20260904_211239_c8663b931231",
+        "created": false
+      },
+      {
+        "id": "20260904_211239_c8663b931231",
+        "created": false
+      },
+      {
+        "id": "20260904_211239_c8663b931231",
+        "created": false
+      },
+      {
+        "id": "20260904_211239_c8663b931231",
+        "created": false
+      },
+      {
+        "id": "20260904_211239_c8663b931231",
+        "created": false
+      },
+      {
+        "id": "20260904_211239_c8663b931231",
+        "created": false
+      },
+      {
+        "id": "20260904_211239_c8663b931231",
+        "created": false
+      },
+      {
+        "id": "20260904_211239_c8663b931231",
+        "created": false
+      },
+      {
+        "id": "20260904_211239_c8663b931231",
+        "created": false
+      },
+      {
+        "id": "20260904_211239_c8663b931231",
+        "created": false
+      },
+      {
+        "id": "20260904_211239_c8663b931231",
+        "created": false
+      },
+      {
+        "id": "20260904_211239_c8663b931231",
+        "created": false
+      },
+      {
+        "id": "20260904_211239_c8663b931231",
+        "created": false
+      },
+      {
+        "id": "20260904_211239_c8663b931231",
+        "created": false
+      },
+      {
+        "id": "20260904_211239_c8663b931231",
+        "created": true
+      }
+    ],
+    "terminal_preserved": true
+  },
+  "watch_frames": 3
+}

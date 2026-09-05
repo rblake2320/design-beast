@@ -1,0 +1,133 @@
+{
+  "schema": "beast.watch.timeline/v3",
+  "source": {
+    "input": "D:\\content\\design-beast\\.worktrees\\codex-optimize\\proofs\\optimization-20260904\\run-1788574358745586600\\synthetic.mp4",
+    "is_url": false,
+    "local_video": "video.mp4",
+    "sha256": "9c0afffe9c503217e31ea1d67b2aabcd82f7ede174ef2755b573d88f1764ee2f",
+    "range": {
+      "start_seconds": 0.0,
+      "end_seconds": 3.0,
+      "start": "00:00:00.000",
+      "end": "00:00:03.000"
+    },
+    "media": {
+      "duration_seconds": 3.0,
+      "width": 320,
+      "height": 180,
+      "fps": "12/1",
+      "video_codec": "h264",
+      "audio_present": false
+    }
+  },
+  "sampling": {
+    "strategy": "scene+periodic+targeted-dense",
+    "periodic_seconds": 1.0,
+    "scene_threshold": 0.28,
+    "dense_windows": [],
+    "max_frames": 240,
+    "height": 240
+  },
+  "coverage": {
+    "planned_frames": 3,
+    "extracted_frames": 4,
+    "scene_samples": 0,
+    "dense_samples": 1,
+    "near_duplicates": 0
+  },
+  "frames": [
+    {
+      "id": "frame-0001",
+      "file": "frames/f_000000000500.jpg",
+      "source_seconds": 0.5,
+      "source_time": "00:00:00.500",
+      "clip_seconds": 0.5,
+      "reasons": [
+        "periodic",
+        "seek_l2"
+      ],
+      "perceptual_hash": "cccc8ccccecfcccc",
+      "sha256": "a1eeb855beef51fdcf854adab4232402e1820d1b4bbcb86811a9f67388fcf73b",
+      "change_from_previous": null,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0002",
+      "file": "frames/f_000000001000.jpg",
+      "source_seconds": 1.0,
+      "source_time": "00:00:01.000",
+      "clip_seconds": 1.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "0ccccecfcccccccc",
+      "sha256": "54853ac283b4f3b615b632a25fd700c8140b2f4e88743bca800cec74b518f2a0",
+      "change_from_previous": 9,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0003",
+      "file": "frames/f_000000001500.jpg",
+      "source_seconds": 1.5,
+      "source_time": "00:00:01.500",
+      "clip_seconds": 1.5,
+      "reasons": [
+        "periodic",
+        "seek_l2"
+      ],
+      "perceptual_hash": "cc8fcccccccecccc",
+      "sha256": "68894677be345063007de14824b82cdd2e2af35c9a480dba62f910efce111ad7",
+      "change_from_previous": 9,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0004",
+      "file": "frames/f_000000002500.jpg",
+      "source_seconds": 2.5,
+      "source_time": "00:00:02.500",
+      "clip_seconds": 2.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "cccccfcecc8ecccc",
+      "sha256": "d262aa1da2d691f0a21c6b87389c8efff638c572fadbb3a461cb589edbbb1a53",
+      "change_from_previous": 7,
+      "near_duplicate": false
+    }
+  ],
+  "transcript": {
+    "method": "disabled",
+    "file": "transcript.txt",
+    "segments": []
+  },
+  "bundle_fingerprint": "96089248234021f73ec2a8d1307503184dec0772952a81fd37fda199bdcb565f",
+  "learning_contract": {
+    "unit": "precondition -> action -> observed_postcondition",
+    "requires_source_evidence": true,
+    "requires_sandbox_execution": true,
+    "requires_validation": [
+      "structural",
+      "behavioral",
+      "visual"
+    ]
+  },
+  "evidence_requests": [
+    {
+      "id": "seek-0001",
+      "created_unix": 1788574359.86323,
+      "center_seconds": 1.0,
+      "center_time": "00:00:01.000",
+      "level": 2,
+      "level_name": "action",
+      "direction": "both",
+      "before_seconds": 0.5,
+      "after_seconds": 0.5,
+      "fps": 2.0,
+      "reason": "synthetic verification",
+      "requested_frames": 3,
+      "new_frames": 1
+    }
+  ],
+  "visual_index_stale": false
+}

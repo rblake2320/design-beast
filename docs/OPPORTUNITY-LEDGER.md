@@ -590,3 +590,34 @@ another capability. “Later” is not a trigger.
   passes.
 - Revisit trigger: post-upgrade verification result, or the next time we design
   a direction-selection step (cite worlds as prior art).
+
+### OPP-20260904-01 — Repeatable operational optimization proof
+
+- Status: measured; implementation prepared for independent review
+- Trigger: real before/after SQLite replay found 10 errors in 16 simultaneous
+  same-key requests on baseline main, versus zero with unique-conflict arbitration;
+  20,000-row recent-history median dropped from 3.15925 ms to 0.0426 ms.
+- New capability: one reproducible verification command exercises real synthetic
+  media ingestion/reinspection, frame hashes, storage contention and history
+  lookup, with an optional resource-admitted local judge call and retained failures.
+- Potential beneficiaries: Beast operators and maintainers; other local creative
+  systems with asynchronous jobs and externally installed media/model tools.
+- Current-project value: measurable reliability and operator feedback improvements
+  support the existing creative quality loop. No artistic superiority is inferred.
+- Outside-project value: the same real-adapter verification pattern can detect
+  post-upgrade tool and structured-output incompatibilities in other applications.
+- Prior art: ordinary database indexing, unique constraints and schema validation;
+  no novelty claim. Current primary checks: https://docs.comfy.org/registry/overview,
+  https://www.scenario.com/features/API,
+  https://docs.ollama.com/capabilities/structured-outputs.
+- Falsifiable claim: the retained verifier returns one created job for simultaneous
+  retries, preserves terminal state, returns the correct latest 30 rows, and retains
+  hash-valid Watch and reinspection frames from real FFmpeg subprocesses.
+- Smallest real experiment: `python scripts/verify_optimization.py --output
+  .beast/optimization-proof`; optional `--judge` proves local model integration.
+- Evidence: `proofs/optimization-20260904/PROOF.md` and versioned per-run receipts.
+- Constraints: warm local SQLite microbenchmark, synthetic media, one model probe;
+  no multi-tenant load, complete creative generation or competitor quality comparison.
+- Decision: submit draft PR with independent review; leave existing competitive
+  benchmark/evidence PRs for their own artifact-level review.
+- Revisit trigger: merged implementation or a tool/model upgrade fails this verifier.

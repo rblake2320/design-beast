@@ -29,20 +29,15 @@ from watch.core import (SCHEMA_VERSION, WatchError, build_sampling_plan, clean_v
                         hamming_hash, parse_dense_window, parse_timecode,
                         perceptual_hash, probe_video, sha256, transcribe_local)
 
-FFMPEG_HINT = (Path.home() / "AppData/Local/Microsoft/WinGet/Packages"
-               / "Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe"
-               / "ffmpeg-8.1.2-full_build/bin")
+from scripts.tool_paths import find_tool, missing_tool_message
 
 
 def _tool(name: str, required: bool = True) -> str | None:
-    found = shutil.which(name)
+    found = find_tool(name)
     if found:
         return found
-    hinted = FFMPEG_HINT / f"{name}.exe"
-    if hinted.exists():
-        return str(hinted)
     if required:
-        raise WatchError(f"{name} not found on PATH (checked {hinted})")
+        raise WatchError(missing_tool_message(name))
     return None
 
 
