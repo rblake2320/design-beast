@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+ <defs>
+  <linearGradient id="body"><stop stop-color="#102a59"/><stop offset=".4" stop-color="#245bb5"/><stop offset="1" stop-color="#112954"/></linearGradient>
+  <linearGradient id="lid"><stop stop-color="#71422a"/><stop offset=".4" stop-color="#dcad7a"/><stop offset="1" stop-color="#905d3a"/></linearGradient>
+ </defs>
+ <rect width="800" height="800" fill="#ece8df"/>
+ <ellipse cx="400" cy="663" rx="185" ry="27" fill="#d1cbc0"/>
+ <path d="M240 227 Q400 175 560 227 L560 604 Q560 665 400 665 Q240 665 240 604Z" fill="url(#body)"/>
+ <ellipse cx="400" cy="227" rx="160" ry="48" fill="#254c82"/>
+ <path d="M228 196 L228 229 Q228 273 400 273 Q572 273 572 229 L572 196Z" fill="url(#lid)"/>
+ <ellipse cx="400" cy="196" rx="172" ry="48" fill="#c28b58"/>
+ <ellipse cx="400" cy="194" rx="150" ry="34" fill="none" stroke="#e4bc91" stroke-width="3"/>
+ <rect x="281" y="339" width="238" height="200" rx="5" fill="#f5efdb"/>
+ <text x="400" y="413" text-anchor="middle" font-family="Arial,sans-serif" font-size="48" letter-spacing="5" fill="#17376c">NORA</text>
+ <text x="400" y="459" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" letter-spacing="3" fill="#17376c">NIGHT TEA</text>
+ <path d="M414 482 A18 18 0 1 0 414 514 A16 16 0 0 1 414 482" fill="#a66d42"/>
+</svg>
