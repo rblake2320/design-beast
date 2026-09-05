@@ -17,10 +17,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "studio"))
 import config  # noqa: E402
-
-FFMPEG_HINT = (Path.home() / "AppData/Local/Microsoft/WinGet/Packages"
-               / "Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe"
-               / "ffmpeg-8.1.2-full_build/bin")
+from tool_paths import find_tool, missing_tool_message  # noqa: E402
 
 results: list[tuple[str, str, str]] = []  # (level, name, note)
 
@@ -40,18 +37,22 @@ def _http_ok(url: str, timeout: float = 3) -> bool:
 
 
 def _tool(name: str) -> str | None:
-    if shutil.which(name):
-        return name
-    hinted = FFMPEG_HINT / f"{name}.exe"
-    return str(hinted) if hinted.exists() else None
+    return find_tool(name)
 
 
 # ---- core tools ----
 check("python 3.12+", sys.version_info >= (3, 12), sys.version.split()[0],
       "install Python 3.12")
-check("ffmpeg", _tool("ffmpeg") is not None,
-      "on PATH or winget location", "winget install Gyan.FFmpeg; add bin to PATH")
-check("ffprobe", _tool("ffprobe") is not None, "", "comes with ffmpeg")
+for media_tool in ("ffmpeg", "ffprobe"):
+    executable = _tool(media_tool)
+    try:
+        probe = subprocess.run([executable, "-version"], capture_output=True,
+                               text=True, timeout=10) if executable else None
+        works = probe is not None and probe.returncode == 0
+        note = probe.stdout.splitlines()[0] if works and probe.stdout else str(executable or "")
+    except (OSError, subprocess.SubprocessError) as exc:
+        works, note = False, str(exc)
+    check(media_tool, works, note, missing_tool_message(media_tool))
 check("yt-dlp", shutil.which("yt-dlp") is not None,
       "needed by beast watch", "pip install yt-dlp")
 check("node >= 22", shutil.which("node") is not None,

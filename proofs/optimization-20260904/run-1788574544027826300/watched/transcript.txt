@@ -1,0 +1,1 @@
+No captions or local Whisper-compatible CLI were available. Visual evidence is still indexed; install whisper-ctranslate2 or openai-whisper and rerun.

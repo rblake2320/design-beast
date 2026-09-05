@@ -1,0 +1,26 @@
+{
+  "schema": "beast.watch.typed-observations/v1",
+  "target_fingerprint": "",
+  "timeline_fingerprint": "db5549a7fb37d9a2b97837148423df665b27a6323c6c083808667959abd03035",
+  "observations": [
+    {
+      "field": "",
+      "raw_value": "",
+      "phase": "final",
+      "confidence": 0.0,
+      "source_ui_label": "",
+      "evidence": [
+        {
+          "frame_id": "",
+          "region": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "method": "vision"
+        }
+      ]
+    }
+  ]
+}

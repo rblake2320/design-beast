@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import shutil
 import sys
 from pathlib import Path
 
@@ -13,9 +12,7 @@ sys.path.insert(0, str(REPO))
 from watch.core import parse_timecode
 from watch.seek import SEEK_LEVELS, SeekError, reinspect, resolve_center
 
-FFMPEG_HINT = (Path.home() / "AppData/Local/Microsoft/WinGet/Packages"
-               / "Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe"
-               / "ffmpeg-8.1.2-full_build/bin/ffmpeg.exe")
+from scripts.tool_paths import find_tool, missing_tool_message
 
 
 def main() -> int:
@@ -36,9 +33,9 @@ def main() -> int:
         timeline = json.loads((bundle / "timeline.json").read_text(encoding="utf-8"))
         at = parse_timecode(args.at) if args.at else None
         selected = resolve_center(timeline, at=at, frame_id=args.frame_id)
-        ffmpeg = shutil.which("ffmpeg") or (str(FFMPEG_HINT) if FFMPEG_HINT.exists() else None)
+        ffmpeg = find_tool("ffmpeg")
         if not ffmpeg:
-            raise SeekError("ffmpeg not found")
+            raise SeekError(missing_tool_message("ffmpeg"))
         result = reinspect(bundle, ffmpeg, center=selected, level=args.level,
                            direction=args.direction, before=args.before, after=args.after,
                            fps=args.fps, reason=args.reason)

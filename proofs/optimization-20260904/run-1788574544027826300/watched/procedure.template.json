@@ -1,0 +1,78 @@
+{
+  "schema": "beast.watch.procedure/v1",
+  "source_timeline": "timeline.json",
+  "goal": "",
+  "application": "",
+  "version_context": [],
+  "typed_state": {
+    "target": "typed-target.json",
+    "observations": "typed-observations.json",
+    "compiled": "typed-state.json",
+    "validated": false
+  },
+  "prerequisites": [],
+  "watching_evidence": {
+    "visual_only_facts": [
+      {
+        "claim": "",
+        "frame_ids": [],
+        "transcript_search_terms": [],
+        "transcript_absence_checked": false
+      }
+    ],
+    "ambiguous_segments": [
+      {
+        "description": "",
+        "source_seconds": null,
+        "requires_reinspection": true,
+        "evidence_request_index": null,
+        "resolved": false
+      }
+    ],
+    "transcript_only_limitations": []
+  },
+  "steps": [
+    {
+      "id": "step-001",
+      "intent": "",
+      "preconditions": [],
+      "action": {
+        "type": "unknown",
+        "target": "",
+        "operation": "",
+        "value": null
+      },
+      "observed_postconditions": [],
+      "evidence": [
+        {
+          "start_seconds": null,
+          "end_seconds": null,
+          "frame_ids": [],
+          "transcript_segment_ids": []
+        }
+      ],
+      "implementation": {
+        "preferred": "api_or_mcp",
+        "code": null,
+        "fallback": "gui",
+        "confidence": 0.0
+      },
+      "validation": {
+        "structural": [],
+        "behavioral": [],
+        "visual": []
+      },
+      "uncertainties": []
+    }
+  ],
+  "publication_gate": {
+    "executed_in_sandbox": false,
+    "structural_validation_passed": false,
+    "behavioral_validation_passed": false,
+    "visual_validation_passed": false,
+    "visual_only_evidence_validated": false,
+    "required_reinspection_completed": false,
+    "typed_state_validated": false,
+    "human_approved": false
+  }
+}

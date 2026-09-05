@@ -77,6 +77,7 @@ def init():
             created REAL, started REAL, finished REAL
         );
         CREATE INDEX IF NOT EXISTS idx_jobs_phase ON jobs(phase);
+        CREATE INDEX IF NOT EXISTS idx_jobs_created ON jobs(created DESC);
         CREATE TABLE IF NOT EXISTS gpu_leases (
             resource TEXT NOT NULL,
             holder TEXT NOT NULL,        -- job_id or job_id:slot
@@ -119,20 +120,22 @@ def create(kind: str, model: str, brief: str, params: dict,
            idempotency_key: str = None) -> tuple[str, bool]:
     """Returns (job_id, created). If the idempotency key exists, returns the
     existing job id with created=False."""
-    if idempotency_key:
-        row = _db().execute("SELECT id FROM jobs WHERE idempotency_key=?",
-                            (idempotency_key,)).fetchone()
-        if row:
-            return row["id"], False
-    jid = f"{time.strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:4]}"
+    jid = f"{time.strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:12]}"
     now = time.time()
     with _WRITE_LOCK:
-        _db().execute(
+        # The unique constraint arbitrates concurrent requests, including
+        # separate processes. A pre-insert SELECT races with another writer.
+        cur = _db().execute(
             "INSERT INTO jobs (id, kind, model, brief, params, idempotency_key, "
-            "created, deadline) VALUES (?,?,?,?,?,?,?,?)",
+            "created, deadline) VALUES (?,?,?,?,?,?,?,?) "
+            "ON CONFLICT(idempotency_key) DO NOTHING",
             (jid, kind, model, brief[:500], json.dumps(params), idempotency_key,
              now, now + DEADLINES.get(kind, DEFAULT_DEADLINE_S)))
         _db().commit()
+        if cur.rowcount == 0:
+            row = _db().execute("SELECT id FROM jobs WHERE idempotency_key=?",
+                                (idempotency_key,)).fetchone()
+            return row["id"], False
     return jid, True
 
 
@@ -150,8 +153,7 @@ def set_phase(jid: str, phase: str, error: str = None, error_code: str = None,
             cols.append("result=?"); vals.append(json.dumps(result))
         vals.append(jid)
         # terminal monotonicity: a terminal row's outcome is immutable
-        guard = " AND phase NOT IN ('done','failed','cancelled')" \
-            if phase in TERMINAL else ""
+        guard = " AND phase NOT IN ('done','failed','cancelled')"
         _db().execute(f"UPDATE jobs SET {', '.join(cols)} WHERE id=?{guard}", vals)
         _db().commit()
 

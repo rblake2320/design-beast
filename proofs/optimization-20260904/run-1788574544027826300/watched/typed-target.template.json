@@ -1,0 +1,19 @@
+{
+  "schema": "beast.watch.typed-target/v1",
+  "application": "",
+  "version": "",
+  "fields": [
+    {
+      "name": "",
+      "type": "enum",
+      "required": true,
+      "enum_values": [],
+      "aliases": {},
+      "finality": {
+        "confidence_threshold": 0.9,
+        "min_confirmations": 2,
+        "min_span_seconds": 0.5
+      }
+    }
+  ]
+}

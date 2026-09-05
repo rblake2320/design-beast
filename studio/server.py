@@ -891,8 +891,12 @@ def _run_loop_inner(run_dir: Path, req: RunReq):
             return
     jobs.checkpoint(run_dir.name)
     base = req.prompt.strip() or req.brief
-    n = max(len(req.variations), 1) if req.variations else 4
-    prompts = [f"{base}; {v}" if v else base for v in (req.variations or [""] * n)]
+    variations = req.variations or [""]
+    # Repeat supplied directions with fresh backend seeds to preserve the
+    # minimum comparison population even when the caller supplies 1-3 variants.
+    prompts = [f"{base}; {v}" if v else base
+               for v in (variations[i % len(variations)]
+                         for i in range(max(4, len(variations))))]
     _status(run_dir, phase="generating", candidates=[])
     # short-timeout wait loop (NOT pool.map / as_completed): a cancel request is
     # observed within ~1s even while every candidate is blocked inside a long
@@ -905,6 +909,10 @@ def _run_loop_inner(run_dir: Path, req: RunReq):
         done_now, pending = futures_wait(pending, timeout=1.0,
                                          return_when=FIRST_COMPLETED)
         done_futs |= done_now
+        if done_now:
+            _status(run_dir, phase="generating",
+                    candidates=sorted((f.result() for f in done_futs),
+                                      key=lambda c: c["i"]))
         if jobs.cancelled(run_dir.name) or jobs.deadline_exceeded(run_dir.name):
             cancelled_early = True  # checkpoint below raises the precise reason
             break
