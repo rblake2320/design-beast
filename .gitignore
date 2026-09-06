@@ -35,3 +35,7 @@ beast.config.json
 watched/
 studio/.beast_model_hashes.json
 node_modules/
+.mobile-evidence/
+mobile-evidence/
+sdk/python/build/
+sdk/python/*.egg-info/
