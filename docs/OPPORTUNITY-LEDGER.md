@@ -1,5 +1,22 @@
 # Opportunity Ledger
 
+## OPP-20260906-01 — Shared Android observations and guarded actions for Beast and Vigil
+
+- Status: experiment
+- Trigger: owner requested useful PhoneClaw concepts in both owned projects, with no upstream edits; research reproduced false completion in both projects.
+- New capability: one original Python SDK provides local ADB UI/screenshot bundles, exact UI predicates and explicitly authorized taps; Vigil consumes the observation/check path.
+- Potential beneficiaries: Design Beast, Vigil, creative mobile QA and other owner projects using the SDK.
+- Current-project value: an Android target with device/package identity and outcome receipts.
+- Outside-project value: shared mobile observations for human coaching and acceptance checks.
+- Prior art and primary sources: https://github.com/rohanarun/phoneclaw ; https://developer.android.com/training/testing/other-components/ui-automator ; https://docs.maestro.dev/maestro-flows . No novelty claim or third-party code copied.
+- Falsifiable claim: on a named authorized device, an exact postcondition is observed after a guarded action while stale, ambiguous and wrong-package actions refuse.
+- Smallest real experiment: open Settings on a dedicated test phone, capture a checkpoint, perform one approved harmless navigation and verify a new label.
+- Measures and acceptance threshold: retained fresh XML/PNG and action receipt; zero false passes in wrong-target/ambiguity/disconnect controls.
+- Risks and constraints: ADB/device not available in this session; unsigned local custody, capture/input race, private screenshots, OEM differences and secure-screen behavior remain explicit limits.
+- Evidence: `proofs/mobile-evidence-20260906/PROOF.md`; CPU/package and missing-ADB denial verified, physical-device execution unverified.
+- Decision: implement shared SDK plus Vigil consumer; keep legacy false-completion paths contained; no PhoneClaw repository changes.
+- Revisit trigger: authorized named device and platform-tools available for real acceptance run.
+
 Design Beast treats unexpected capability as a first-class output of engineering and
 research. A discovery must not be discarded merely because it falls outside the
 current task, and it must not be promoted merely because it sounds novel.
