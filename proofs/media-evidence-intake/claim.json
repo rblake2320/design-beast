@@ -1,0 +1,20 @@
+{
+  "claim_fingerprint": "d767b97b0cf5b6cb1717b26021efb02c5be3d36143f6f7bbfaba9b482e88274e",
+  "claim_id": "claim-b39ce9c9df6c1fe601fa5365",
+  "description": "The repaired typed procedure constructs two circles with Gaussian blur 34.79 34.79 followed by two identical 20-value color matrices, then deterministically closes the gap until the rendered alpha mask is one connected component",
+  "evidence_event_ids": [
+    "event-092f46a9962740bdb1cc0c5c",
+    "event-44803c3ceada65da74769431",
+    "event-58a03a1c8857f5547114a65e",
+    "event-700b597151f84c5f2fad803e",
+    "event-7551715daad89593d5ac3fd6",
+    "event-89ac1c014c72432734c273b3",
+    "event-91d55d17f3f42199673300e1",
+    "event-9a8aad7213223de58ef3a9c2",
+    "event-e3407003bd064a593e0dfcf1"
+  ],
+  "execution_receipt_id": "receipt-metaballs-feedback-repair-20260804",
+  "requires_human_review": false,
+  "review_state": "verified_by_execution",
+  "schema": "beast.evidence.procedure-claim/v1"
+}

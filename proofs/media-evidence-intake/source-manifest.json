@@ -1,0 +1,21 @@
+{
+  "authorization": {
+    "allowed_uses": [
+      "evidence_analysis",
+      "procedure_learning"
+    ],
+    "approved_at": "2026-08-04T22:05:00Z",
+    "approved_by": "user:directed-local-research",
+    "basis": "User-directed local tutorial analysis; workflow authorization only, with no training or redistribution rights claimed",
+    "status": "fair_use_research"
+  },
+  "manifest_fingerprint": "485329be69374efaca16ab2c989366b644b19492384bc7e011a5dc1187469687",
+  "schema": "beast.evidence.source-manifest/v1",
+  "source": {
+    "bytes": 17423650,
+    "original_name": "video.f137.mp4",
+    "sha256": "7385741a8bea4e02b97d3e5f68f743acf9e92ea1f2c7eed54c56b0c833549627",
+    "source_uri": "https://www.youtube.com/watch?v=cT41th-pIJc"
+  },
+  "source_id": "sha256:7385741a8bea4e02b97d3e5f68f743acf9e92ea1f2c7eed54c56b0c833549627"
+}

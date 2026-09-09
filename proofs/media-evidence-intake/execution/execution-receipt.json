@@ -1,0 +1,88 @@
+{
+  "schema": "beast.heldout.metaballs-execution/v1",
+  "ok": true,
+  "typed_state_fingerprint": "6d7141bf526a137cc5382822c317502abc26c9f822499ab566cfa9cc0325636e",
+  "inkscape_version": "Inkscape 1.4.4 (dcaf3e7, 2026-05-05)",
+  "structure": {
+    "primitive_order": [
+      "feGaussianBlur",
+      "feColorMatrix",
+      "feColorMatrix"
+    ],
+    "std_deviation": "34.79 34.79",
+    "matrix_count": 2,
+    "matrix_values_equal": true,
+    "matrix_value_count": 20
+  },
+  "search": [
+    {
+      "index": 0,
+      "center_distance": 353.93499999999995,
+      "components": 2,
+      "center_alpha": 0,
+      "svg_sha256": "fce55fca31bd801642cbe027410bc97925d3ead01a08b2436b4cd61f98079e28",
+      "png_sha256": "f6d8ff1efd243dcb93b7ab1da8e925272a54d8f3af9f0dba1ad17546f4d417b5"
+    },
+    {
+      "index": 1,
+      "center_distance": 329.04279999999994,
+      "components": 2,
+      "center_alpha": 0,
+      "svg_sha256": "ccf7f421a884fd5f098aa7c813d4f0cbcbd0a0c4545d2935aed899f2c55cab14",
+      "png_sha256": "1056451a40a68393dac8941446f14a958efdf84dbf583b21a858f88a5e715c9b"
+    },
+    {
+      "index": 2,
+      "center_distance": 304.15059999999994,
+      "components": 2,
+      "center_alpha": 0,
+      "svg_sha256": "3648acc1de00795fb21a52df6675b5045234bc2ea47fdcdaa4d6904af61855f2",
+      "png_sha256": "8e185d0ce70e705198845f106d8c52fb03681ea994ae3d069e37092d32224920"
+    },
+    {
+      "index": 3,
+      "center_distance": 279.25839999999994,
+      "components": 1,
+      "center_alpha": 255,
+      "svg_sha256": "5cfd880715e38555f11037b0759899ab92cce78ab04b1ac1ddf70d07e2733ea6",
+      "png_sha256": "3a4112e82833c4dc2b304559c1bce17898038e3e8ee867c227d7b71255f27608"
+    }
+  ],
+  "measured": {
+    "control_components": 2,
+    "filtered_components": 1,
+    "control_center_alpha": 0,
+    "filtered_center_alpha": 255,
+    "width": 800,
+    "height": 480,
+    "selected_center_distance": 279.25839999999994
+  },
+  "gates": {
+    "typed_state_answered": true,
+    "primitive_order_exact": true,
+    "blur_exact": true,
+    "two_identical_20_value_matrices": true,
+    "control_is_two_objects": true,
+    "filter_fuses_to_one_object": true,
+    "gap_changes_from_empty_to_filled": true,
+    "render_size_exact": true
+  },
+  "artifacts": {
+    "control.svg": {
+      "bytes": 203,
+      "sha256": "eea527028cee98d8a2bee63aae620acacddc35f7b4a3043fc6392f5424ebd197"
+    },
+    "metaballs.svg": {
+      "bytes": 639,
+      "sha256": "5cfd880715e38555f11037b0759899ab92cce78ab04b1ac1ddf70d07e2733ea6"
+    },
+    "control.png": {
+      "bytes": 12738,
+      "sha256": "267dc16dc535a799dc1899de83102415ed10f257bb8b04cd30407cd27ae022f6"
+    },
+    "metaballs.png": {
+      "bytes": 45505,
+      "sha256": "3a4112e82833c4dc2b304559c1bce17898038e3e8ee867c227d7b71255f27608"
+    }
+  }
+}

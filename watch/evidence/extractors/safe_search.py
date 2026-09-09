@@ -10,10 +10,14 @@ review layer can see WHAT was excluded and WHY (silent truncation reads as
 FAIL-CLOSED: if the Vision call errors, the frame is quarantined as
 unscreened, not passed through. Screening that fails open is not screening.
 
-Piggybacks on the same images.annotate request as LANDMARK_DETECTION — add
-SAFE_SEARCH_DETECTION to the feature list; it does not cost an extra call.
+The shared REST client supports batching at a higher orchestration layer. This
+standalone extractor makes one explicit SAFE_SEARCH_DETECTION request.
 """
+import os
+from pathlib import Path
+
 from base import BaseExtractor
+from watch.evidence.google_vision_client import GoogleVisionClient
 
 LIKELIHOOD_ORDER = [
     "UNKNOWN", "VERY_UNLIKELY", "UNLIKELY", "POSSIBLE", "LIKELY", "VERY_LIKELY",
@@ -33,7 +37,14 @@ class SafeSearchExtractor(BaseExtractor):
     name = "safe_search_detection"
     version = "1.0.0"
 
-    def __init__(self, quarantine_thresholds: dict | None = None):
+    def __init__(
+        self,
+        quarantine_thresholds: dict | None = None,
+        *,
+        api_key: str | None = None,
+        authorize_cloud_call: bool = False,
+        vision_client: GoogleVisionClient | None = None,
+    ):
         # Default: quarantine on LIKELY+ adult/violence, POSSIBLE+ racy.
         # medical/spoof are recorded in the verdict but do not quarantine.
         self.quarantine_thresholds = quarantine_thresholds or {
@@ -41,6 +52,11 @@ class SafeSearchExtractor(BaseExtractor):
             "violence": "LIKELY",
             "racy": "POSSIBLE",
         }
+        self.authorize_cloud_call = authorize_cloud_call
+        self.vision_client = vision_client or GoogleVisionClient(
+            api_key=api_key or os.environ.get("GOOGLE_CLOUD_VISION_API_KEY"),
+            max_results=1,
+        )
 
     def extract(self, frame, source_id: str) -> list[dict]:
         """frame: dict with keys {timestamp_ms, image_path}."""
@@ -93,7 +109,13 @@ class SafeSearchExtractor(BaseExtractor):
 
     def _call_vision_api(self, image_path: str) -> dict:
         """Return {category: LIKELIHOOD_STRING} for adult/violence/racy/medical/spoof."""
-        raise NotImplementedError(
-            "Wire Google Cloud Vision safeSearchAnnotation here "
-            "(share the images.annotate request with LANDMARK_DETECTION)"
+        result = self.vision_client.request(
+            "SAFE_SEARCH_DETECTION",
+            Path(image_path).read_bytes(),
+            authorize_cloud_call=self.authorize_cloud_call,
         )
+        annotations = result.get("safeSearchAnnotation")
+        if not isinstance(annotations, dict):
+            raise ValueError("Google Vision SafeSearch annotation is missing")
+        return {category: str(annotations.get(category, "UNKNOWN"))
+                for category in _CATEGORIES}

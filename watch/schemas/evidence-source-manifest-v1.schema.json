@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://design-beast.local/schemas/evidence-source-manifest-v1.json",
+  "title": "Beast media source manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "source_id", "source", "authorization", "manifest_fingerprint"],
+  "properties": {
+    "schema": {"const": "beast.evidence.source-manifest/v1"},
+    "source_id": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sha256", "bytes", "original_name"],
+      "properties": {
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "bytes": {"type": "integer", "minimum": 0},
+        "original_name": {"type": "string", "minLength": 1},
+        "source_uri": {"type": "string", "minLength": 1}
+      }
+    },
+    "authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "approved_by", "approved_at", "basis", "allowed_uses"],
+      "properties": {
+        "status": {"enum": ["owned", "licensed", "public_domain", "fair_use_research", "unverified"]},
+        "approved_by": {"type": "string", "minLength": 1},
+        "approved_at": {"type": "string", "format": "date-time"},
+        "basis": {"type": "string", "minLength": 1},
+        "allowed_uses": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"enum": ["evidence_analysis", "procedure_learning", "cloud_analysis", "dataset_training", "redistribution"]}
+        }
+      }
+    },
+    "manifest_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

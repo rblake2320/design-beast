@@ -8,7 +8,6 @@ fails CLOSED with an attributable, human-gated event — never a silent pass
 or a silent drop.
 """
 import pytest
-
 from explicit_content_video import ExplicitContentVideoExtractor
 from safe_search import SafeSearchExtractor, likelihood_at_least
 from web_entities import WebDetectionExtractor
@@ -140,7 +139,7 @@ def test_screened_person_free_frame_emits_clue_events():
     events = stub.extract({**FRAME, "contains_person": False}, "src-1")
     kinds = [e["kind"] for e in events]
     assert kinds == ["web_entity", "matching_page", "similar_image"]
-    assert all(e["review_state"] == "observed" for e in events)
+    assert all(e["review_state"] == "inferred" for e in events)
     full_match = next(e for e in events if e["kind"] == "matching_page")
     assert full_match["confidence"] == 1.0
 

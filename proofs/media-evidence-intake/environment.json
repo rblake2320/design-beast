@@ -1,0 +1,18 @@
+{
+  "schema": "beast.evidence.proof-environment/v1",
+  "captured_at": "2026-08-04T22:07:00Z",
+  "repository_base_commit": "7dc30cbce96c20cd664aada55204e9843bc40545",
+  "branch": "codex/evidence-intake",
+  "python": "3.12.10",
+  "inkscape": "Inkscape 1.4.4 (dcaf3e7, 2026-05-05)",
+  "adapter": {
+    "path": "bench/heldout-typed-compiler/metaballs_adapter.py",
+    "sha256": "1f8cd5a3659a4c6b99a4a7fa73d9229023ecdd9d31b6fe1daeee5920ec979e0d"
+  },
+  "typed_state": {
+    "path": "bench/heldout-typed-compiler/typed-state-feedback-repair.json",
+    "file_sha256": "28d82724f57294eca4f1c83d9d55b0669fb3191fdcbdbb682d1d1fab136cc83e",
+    "compilation_fingerprint": "6d7141bf526a137cc5382822c317502abc26c9f822499ab566cfa9cc0325636e"
+  },
+  "scope": "Fresh execution of the documented feedback repair; not an unbiased held-out run or generalized benchmark."
+}

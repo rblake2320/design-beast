@@ -7,24 +7,25 @@
   "properties": {
     "event_id": {"type": "string"},
     "source_id": {"type": "string", "description": "sha256 of source media, ties back to source_manifest"},
-    "source_time_start_ms": {"type": "integer"},
-    "source_time_end_ms": {"type": "integer"},
+    "source_time_start_ms": {"type": "integer", "minimum": 0},
+    "source_time_end_ms": {"type": "integer", "minimum": 0},
     "modality": {
       "type": "string",
       "enum": ["screen_text", "transcript", "ui_state", "object", "pose", "landmark",
-               "reflection_clue", "scene_change", "force_estimate", "document"]
+               "reflection_clue", "scene_change", "force_estimate", "document",
+               "safety", "web_match"]
     },
-    "kind": {"type": "string", "description": "free-text subtype e.g. terminal_output, code_editor, error_message"},
-    "content": {"type": "string"},
+    "kind": {"type": ["string", "null"], "description": "free-text subtype e.g. terminal_output, code_editor, error_message"},
+    "content": {"type": ["string", "object", "array", "null"]},
     "bbox": {
-      "type": "object",
+      "type": ["object", "null"],
       "properties": {
         "x": {"type": "number"}, "y": {"type": "number"},
         "w": {"type": "number"}, "h": {"type": "number"}
       }
     },
     "geo": {
-      "type": "object",
+      "type": ["object", "null"],
       "properties": {"lat": {"type": ["number", "null"]}, "lng": {"type": ["number", "null"]}}
     },
     "confidence": {"type": "number", "minimum": 0, "maximum": 1},
