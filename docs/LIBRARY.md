@@ -12,7 +12,9 @@ Evidence level: **reproduced** (2026-09-12, 399 real photos on one RTX 5090 —
 | Stage | Component | What it does | Runs on |
 |---|---|---|---|
 | 1 inventory | Pillow, hashlib, imagehash | SHA-256, EXIF (date/camera/GPS), dimensions, pHash/dHash, 1024px JPEG thumbnail **stored in the DB** | CPU |
-| 2 dedup | union-find | exact (SHA-256) + near (pHash ≤ 6 bits, dHash guard) + embedding-confirmed (cosine ≥ 0.965 **and** pHash ≤ 18) clusters; representative = largest | CPU |
+| 2 dedup | union-find | exact (SHA-256) + near (pHash ≤ 6 bits, dHash guard) + embedding-confirmed (cosine ≥ 0.965 **and** pHash ≤ 18) clusters; representative = largest. A near-identical pair that is a *distinct capture* (same dimensions, different bytes, EXIF 1–90 s apart) is a burst frame, not a duplicate | CPU |
+| 2b stacks | Laplacian sharpness (OpenCV) | burst = same scene (pHash ≤ 20 or embedding ≥ 0.90) within 90 s; every frame is kept and placed under `<album>/<YYYY-MM>/stack-<best>/`, only the **sharpest** frame is reviewed and shown first | CPU |
+| 2c events | time + GPS, `reverse_geocoder` (offline GeoNames) | new event when gap > 6 h or GPS moves > 25 km; consecutive same-place events ≤ 48 h apart merge into a trip; events with ≥ 3 photos and GPS are named `"Asheville, North Carolina - June 2025"`, photos without GPS in the same window ride along | CPU |
 | 3 embed | SigLIP2 SO400M/14-384 | 1152-d image embeddings, batched, fp16 | GPU |
 | 4 faces | InsightFace buffalo_l | detect ≥ 40px faces, 512-d embeddings, greedy centroid grouping (cosine ≥ 0.55) into unlabelled persons | GPU |
 | 5 review fast | Ollama `qwen3-vl:8b` | every cluster **representative** → JSON (schema-forced, thinking off): caption, categories, objects, people_count, scene, quality, document, text_present, sensitive, suggested_album, confidence | GPU (any node) |
@@ -58,6 +60,25 @@ beast library apply [--hardlink]
 beast library status
 ```
 
+### Batched fast tier (vLLM) — the 10-20× knob
+
+Ollama serves one image per request; vLLM batches them. On this box (Docker Desktop, WSL2):
+
+```powershell
+docker run -d --gpus all --name beast-vllm --ipc=host -p 127.0.0.1:8021:8000 `
+  -v "D:\Models\huggingface\hub:/root/.cache/huggingface/hub" -e HF_HUB_OFFLINE=1 `
+  -e VLLM_USE_V2_MODEL_RUNNER=0 -e VLLM_WSL2_ENABLE_PIN_MEMORY=1 `
+  vllm/vllm-openai:latest --model Qwen/Qwen3-VL-8B-Instruct-FP8 --max-model-len 8192 `
+  --limit-mm-per-prompt '{"image":1}' --gpu-memory-utilization 0.5 --max-num-seqs 16
+```
+
+Then `BEAST_LIBRARY_REVIEW_URL=http://127.0.0.1:8021/v1/chat/completions` (or `library_review_url`
+in `beast.config.json`) and `beast library review --tier fast --parallel 16`. The two WSL2 env
+vars are required: without them the engine dies with `RuntimeError: UVA is not available`
+([vllm#43381](https://github.com/vllm-project/vllm/issues/43381),
+[vllm#47387](https://github.com/vllm-project/vllm/issues/47387)). Measured numbers:
+`bench/results/library-review-*.json` (`python bench/library_review_bench.py`).
+
 Multi-node: run `scan/dedup/embed/faces` on the machine that can see the files, then
 `beast library --dsn $DSN review --tier fast --worker spark-1` on each Spark against its
 local Ollama. Deep tier is the same command with `--tier deep`.
@@ -84,10 +105,18 @@ failed under hard links); `--hardlink` remains as an explicit opt-in for read-on
   it does not know your family's names for events. Label people with `people --label`.
 - Confidence is self-reported by the model; the deep tier re-checks the low end, it does
   not calibrate it.
-- Throughput on this box (`qwen3-vl:8b`, 3 parallel): ≈ 3 s per representative after
-  warm-up. A 50k-image library is a multi-hour job on one GPU — that is what the shared
-  queue and the Sparks are for. Not yet measured: see `next_test` in
-  `beast/capabilities.json`.
+- Throughput on this box, measured 2026-09-12 (`bench/results/library-review-20260912-*.json`,
+  48–96 real thumbnails): every non-VLM stage is fast — SigLIP2 74 img/s, InsightFace 22 img/s,
+  inventory 36 img/s/thread, easyocr 0.9 img/s (documents only). The VLM fast tier is the
+  only slow stage: **Ollama `qwen3-vl:8b` caps at 0.96 img/s** regardless of concurrency
+  (0.31 at 1, 0.93 at 4, 0.96 at 16); **vLLM `Qwen3-VL-8B-Instruct-FP8` reaches 7.6 img/s at
+  16 in flight** (0.25 / 0.81 / 1.63 / 7.63 at 1/4/8/16; 7.59 at 32 with `--max-num-seqs 16`).
+  Full fast tier on the 353-representative real library: 7 min (Ollama) → **46 s** (vLLM).
+  50k images ≈ 14 h → < 2 h. Deep tier (27B, ~3% of images) and easyocr on document-heavy
+  folders are the next ceilings. Multi-node not yet measured.
+- FP8 `Qwen3-VL-8B` via vLLM under-sets the `document` flag versus Ollama's Q4 model (155 vs
+  323 of 382 on the screenshot folder); OCR routing therefore also honours `text_present`
+  and the `screenshot` category (366/382 routed).
 - HEIC needs `pillow-heif`; RAW formats are not inventoried.
 - SigLIP2's text tower is not used for name-to-name similarity (its text-text cosines are
   anisotropic — unrelated names scored > 0.85 in testing); bge-m3 via Ollama does that.

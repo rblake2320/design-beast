@@ -54,7 +54,25 @@ PROMPT = """You are cataloguing a personal photo library. Look at the image and 
 - confidence: 0-1 for how sure you are of the whole answer."""
 
 
+def _generate_openai(url: str, model: str, prompt: str, image_b64: str, num_predict: int, timeout: int) -> dict:
+    """OpenAI-compatible chat endpoint (vLLM / SGLang): batched serving, many images in flight."""
+    body = json.dumps({
+        "model": model, "max_tokens": num_predict, "temperature": 0.1,
+        "messages": [{"role": "user", "content": [
+            {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{image_b64}"}},
+            {"type": "text", "text": prompt}]}],
+        "response_format": {"type": "json_schema", "json_schema": {"name": "review", "schema": SCHEMA}},
+        "chat_template_kwargs": {"enable_thinking": False},
+    }).encode()
+    req = urllib.request.Request(url, body, {"Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        out = json.loads(r.read())
+    return json.loads(out["choices"][0]["message"]["content"])
+
+
 def _generate(url: str, model: str, prompt: str, image_b64: str, num_predict: int, timeout: int) -> dict:
+    if "/v1/" in url:
+        return _generate_openai(url, model, prompt, image_b64, num_predict, timeout)
     body = json.dumps({
         "model": model, "prompt": prompt, "images": [image_b64], "stream": False,
         "format": SCHEMA, "think": False,
@@ -102,8 +120,8 @@ def run(store_factory, tier: str, model: str, ollama_url: str, worker: str = "lo
                 if aid is None:
                     return
                 asset = store.asset(aid)
-                if asset is None or asset["dup_of"] is not None:
-                    store.skip(aid, stage, "duplicate of representative")
+                if asset is None or asset["dup_of"] is not None or asset["stack_of"] is not None:
+                    store.skip(aid, stage, "duplicate or burst-stack member")
                     with lock:
                         stats["skipped"] += 1
                     continue

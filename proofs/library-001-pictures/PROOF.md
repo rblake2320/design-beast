@@ -72,6 +72,22 @@ three chat screenshots, all people=[5]
 - Postgres/pgvector backend exercised on the fixture against container `beast-library-pg`
   (:5436): scan, dedup, exclusive claims, `<=>` nearest, faces — same code path.
 
+## Round 2 (same day) — speed and the "magic" features, measured
+
+| What | Receipt |
+|---|---|
+| Fast tier, Ollama `qwen3-vl:8b` | 0.31 / 0.93 / 0.94 / 0.96 img/s at 1/4/8/16 concurrency (48 images each) — a hard ceiling |
+| Fast tier, vLLM `Qwen3-VL-8B-Instruct-FP8` (Docker, WSL2 env vars) | 0.25 / 0.81 / 1.63 / **7.63** img/s at 1/4/8/16; confirmed **7.60 / 7.59** at 16/32 on 96 images (`bench/results/library-review-20260912-1646.json`, `-1647.json`) |
+| Full fast tier on the real library via vLLM | 353 representatives, 0 failed, **46 s wall** (was 7 min), avg 2.0 s latency per image under load |
+| Burst stacks (real run) | 18 stacks / 30 member frames detected among the screenshots (frames seconds apart, same size); members skipped from review, still placed |
+| Events | 106 time-gap events, 0 with GPS (screenshots carry none) → place naming exercised by test on real coordinates: Asheville NC, Berlin-Mitte, Austin TX resolved offline |
+| Tests | 42 passed (8 library incl. burst-stack and GPS-trip tests with real EXIF written by Pillow; 34 repo) |
+
+Adopted from the field sweep: batched serving (vLLM), time+GPS trips with offline reverse
+geocoding (PhotoPrism/Google-style), burst culling by sharpness (Excire-style). Deferred
+with reasons: ONNX/TensorRT SigLIP2 (74 img/s already, not the bottleneck), Perception
+Encoder (needs a measured retrieval win on this data), video, timeline/map UI.
+
 ## Honest gaps
 
 - Album quality was judged by reading the names and sample groups, not against a labelled set.

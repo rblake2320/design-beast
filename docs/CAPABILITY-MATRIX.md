@@ -126,6 +126,9 @@ COSTS-BASELINE.md (pricing sources), WIN-PLAN.md (what we build next).
 | Document/receipt/screenshot OCR, only where the VLM saw a document | easyocr GPU | free | Google Photos (cloud) |
 | Album plan → approval queue → hash-verified copy, never delete/overwrite | **beast library plan/approve/apply + ledger** | free | nobody ships approval-gated organizing |
 | Multi-node review workers (5090 + DGX Sparks) from one queue | pgvector store, `FOR UPDATE SKIP LOCKED`, thumbnails in-store | free | nobody local |
+| Batched local VLM tagging | **vLLM Qwen3-VL-8B FP8: 7.6 img/s measured (Ollama 0.96)** — 353 images in 46 s | free | Google/Apple (cloud, their models) |
+| Trips/events by time + GPS with offline place names | **`beast library events` — "Asheville, North Carolina - June 2025" (reverse_geocoder, no network)** | free | Google/Apple Memories (cloud), PhotoPrism (local) |
+| Burst stacks with best-shot pick | **Laplacian sharpness; every frame kept, sharpest reviewed/shown first (18 stacks found in the real run)** | free | Excire ($), Apple Photos |
 
 ## Knowledge & Automation (the surround)
 

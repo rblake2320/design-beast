@@ -8,3 +8,7 @@ easyocr==1.7.2
 transformers>=4.51
 psycopg[binary]>=3.2
 pgvector>=0.3
+scipy>=1.11
+reverse_geocoder>=1.5
+opencv-python>=4.10
+# Optional batched fast tier (10-20x Ollama): docker image vllm/vllm-openai, see docs/LIBRARY.md

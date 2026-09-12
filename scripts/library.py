@@ -28,7 +28,7 @@ sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(REPO / "studio"))
 import config  # noqa: E402
 
-from library import albums, dedup, embed, faces, inventory, ocr, organize, review, search  # noqa: E402
+from library import albums, dedup, embed, events, faces, inventory, ocr, organize, review, search  # noqa: E402
 from library.store import STAGES, Store  # noqa: E402
 
 
@@ -69,9 +69,19 @@ def cmd_ocr(args):
     _print(ocr.run(_store(args), worker=args.worker, documents_only=not args.all, limit=args.limit))
 
 
+def _fast_backend(args):
+    """(url, model) for the fast tier: batched OpenAI-compatible server when configured."""
+    url = args.ollama or config.get("library_review_url") or config.get("ollama_url")
+    model = config.get("library_review_model") if "/v1/" in url else config.get("library_fast_model")
+    return url, model
+
+
 def cmd_review(args):
-    model = args.model or config.get(f"library_{args.tier}_model")
-    url = args.ollama or config.get("ollama_url")
+    if args.tier == "fast" and not args.model:
+        url, model = _fast_backend(args)
+    else:
+        model = args.model or config.get(f"library_{args.tier}_model")
+        url = args.ollama or config.get("ollama_url")
     target = _target(args)
 
     def progress(stats, path, result):
@@ -93,12 +103,14 @@ def cmd_run(args):
     report["dedup"] = dedup.cluster(store, embed_model=config.get("library_embed_model"))
     if not args.no_faces:
         report["faces"] = faces.run(store, worker=args.worker)
-    report["review_fast"] = review.run(lambda: Store(target), "fast", config.get("library_fast_model"),
-                                       url, worker=args.worker, parallel=args.parallel)
+    fast_url, fast_model = _fast_backend(args)
+    report["review_fast"] = review.run(lambda: Store(target), "fast", fast_model, fast_url,
+                                       worker=args.worker, parallel=args.parallel)
     report["ocr"] = ocr.run(store, worker=args.worker)
     if not args.no_deep:
         report["review_deep"] = review.run(lambda: Store(target), "deep", config.get("library_deep_model"),
                                            url, worker=args.worker, parallel=max(1, args.parallel // 2))
+    report["events"] = events.run(store)
     report["albums"] = albums.run(store, url, config.get("library_deep_model"))
     if args.dest:
         report["plan"] = organize.plan(store, Path(args.dest), ollama_url=url)
@@ -133,6 +145,10 @@ def cmd_people(args):
         store.label_person(int(args.label[0]), args.label[1]); store.commit()
     for pid, label, _, n in store.persons():
         print(f"{pid:>4}  {n:>4} faces  {label or '(unlabelled)'}")
+
+
+def cmd_events(args):
+    _print(events.run(_store(args)))
 
 
 def cmd_albums(args):
@@ -197,6 +213,7 @@ def main(argv=None) -> int:
     p.add_argument("--from", dest="date_from"); p.add_argument("--to", dest="date_to")
     p.add_argument("--album"); p.add_argument("--json", action="store_true"); p.set_defaults(fn=cmd_search)
     p = sub.add_parser("people"); p.add_argument("--label", nargs=2, metavar=("ID", "NAME")); p.set_defaults(fn=cmd_people)
+    p = sub.add_parser("events"); p.set_defaults(fn=cmd_events)
     p = sub.add_parser("albums"); p.add_argument("--ollama"); p.add_argument("--model"); p.set_defaults(fn=cmd_albums)
     p = sub.add_parser("plan"); p.add_argument("--dest", required=True); p.add_argument("--ollama")
     p.add_argument("--no-people", action="store_true"); p.set_defaults(fn=cmd_plan)

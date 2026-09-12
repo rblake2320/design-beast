@@ -56,6 +56,9 @@ _DEFAULTS = {
     "library_embed_model": "google/siglip2-so400m-patch14-384",
     "library_fast_model": "qwen3-vl:8b",
     "library_deep_model": "qwen3.8:27b",
+    # batched OpenAI-compatible server (vLLM/SGLang) for the fast tier; empty = use ollama_url
+    "library_review_url": "",
+    "library_review_model": "Qwen/Qwen3-VL-8B-Instruct-FP8",
 }
 
 

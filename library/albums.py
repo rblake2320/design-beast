@@ -108,11 +108,15 @@ def run(store: Store, ollama_url: str, model: str, image_model: str = embed.DEFA
             existing.append(name)
         c = feat[members].mean(axis=0)
         centroids[g] = c / (np.linalg.norm(c) + 1e-9)
-    counts = {"grouped": 0, "borrowed": 0, "own": 0}
+    counts = {"event": 0, "grouped": 0, "borrowed": 0, "own": 0}
     with store.tx():
         store.clear_albums()
         for i, aid in enumerate(ids):
             g = int(labels[i])
+            if by_id[aid].get("event_title"):      # time+GPS event with a real place wins
+                store.put_album(aid, by_id[aid]["event_title"], "event", by_id[aid]["event_id"])
+                counts["event"] += 1
+                continue
             if g in named:
                 store.put_album(aid, named[g], "group", g); counts["grouped"] += 1
                 continue

@@ -82,7 +82,20 @@ class Store:
             self.con.execute("PRAGMA busy_timeout=60000")
         for stmt in _ddl(self.pg, embed_dim):
             self._exec(stmt)
+        self._migrate()
         self.con.commit()
+
+    _EXTRA_COLUMNS = {"event_id": "BIGINT", "event_title": "TEXT", "stack_of": "BIGINT"}
+
+    def _migrate(self) -> None:
+        if self.pg:
+            have = {r[0] for r in self.fetchall(
+                "SELECT column_name FROM information_schema.columns WHERE table_name = 'assets'")}
+        else:
+            have = {r[1] for r in self.fetchall("PRAGMA table_info(assets)")}
+        for col, typ in self._EXTRA_COLUMNS.items():
+            if col not in have:
+                self._exec(f"ALTER TABLE assets ADD COLUMN {col} {typ}")
 
     # ---- low-level -------------------------------------------------------
     def _q(self, sql: str) -> str:
@@ -166,26 +179,25 @@ class Store:
         row = self.fetchone("SELECT jpeg FROM thumbs WHERE asset_id = ?", (asset_id,))
         return bytes(row[0]) if row else None
 
+    _ASSET_COLS = ("id", "path", "sha256", "size", "width", "height", "format", "taken_at",
+                   "phash", "dhash", "dup_of", "cluster_id", "exif", "event_id", "event_title", "stack_of")
+
     def asset(self, asset_id: int) -> dict | None:
-        row = self.fetchone("SELECT id, path, sha256, size, width, height, format, taken_at, "
-                            "phash, dhash, dup_of, cluster_id FROM assets WHERE id = ?", (asset_id,))
-        if not row:
-            return None
-        keys = ("id", "path", "sha256", "size", "width", "height", "format", "taken_at",
-                "phash", "dhash", "dup_of", "cluster_id")
-        return dict(zip(keys, row))
+        row = self.fetchone(f"SELECT {', '.join(self._ASSET_COLS)} FROM assets WHERE id = ?", (asset_id,))
+        return dict(zip(self._ASSET_COLS, row)) if row else None
 
     def assets(self, representatives_only: bool = False) -> list[dict]:
-        where = "WHERE dup_of IS NULL" if representatives_only else ""
-        rows = self.fetchall("SELECT id, path, sha256, size, width, height, format, taken_at, "
-                             f"phash, dhash, dup_of, cluster_id FROM assets {where} ORDER BY id")
-        keys = ("id", "path", "sha256", "size", "width", "height", "format", "taken_at",
-                "phash", "dhash", "dup_of", "cluster_id")
-        return [dict(zip(keys, r)) for r in rows]
+        """representatives_only: neither a duplicate nor a burst-stack member."""
+        where = "WHERE dup_of IS NULL AND stack_of IS NULL" if representatives_only else ""
+        rows = self.fetchall(f"SELECT {', '.join(self._ASSET_COLS)} FROM assets {where} ORDER BY id")
+        return [dict(zip(self._ASSET_COLS, r)) for r in rows]
 
     def set_cluster(self, asset_id: int, cluster_id: int, dup_of: int | None) -> None:
         self.execute("UPDATE assets SET cluster_id = ?, dup_of = ? WHERE id = ?",
                      (cluster_id, dup_of, asset_id))
+
+    def set_stack(self, asset_id: int, stack_of: int | None) -> None:
+        self.execute("UPDATE assets SET stack_of = ? WHERE id = ?", (stack_of, asset_id))
 
     # ---- embeddings ------------------------------------------------------
     def put_embedding(self, asset_id: int, model: str, vec: np.ndarray) -> None:
@@ -205,7 +217,8 @@ class Store:
 
     def nearest(self, model: str, query: np.ndarray, k: int, exclude_dups: bool = True) -> list[tuple[int, float]]:
         if self.pg:
-            join = "JOIN assets a ON a.id = e.asset_id AND a.dup_of IS NULL" if exclude_dups else ""
+            join = ("JOIN assets a ON a.id = e.asset_id AND a.dup_of IS NULL AND a.stack_of IS NULL"
+                    if exclude_dups else "")
             rows = self.fetchall(
                 f"SELECT e.asset_id, 1 - (e.vec <=> ?) FROM embeddings e {join} "
                 "WHERE e.model = ? ORDER BY e.vec <=> ? LIMIT ?",
@@ -213,7 +226,8 @@ class Store:
             return [(int(a), float(s)) for a, s in rows]
         ids, mat = self.embeddings(model)
         if exclude_dups:
-            dups = {r[0] for r in self.fetchall("SELECT id FROM assets WHERE dup_of IS NOT NULL")}
+            dups = {r[0] for r in self.fetchall(
+                "SELECT id FROM assets WHERE dup_of IS NOT NULL OR stack_of IS NOT NULL")}
             keep = [i for i, a in enumerate(ids) if a not in dups]
             ids, mat = [ids[i] for i in keep], mat[keep] if keep else mat[:0]
         if not ids:

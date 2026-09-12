@@ -33,7 +33,8 @@ def read(image: Image.Image) -> tuple[str, float]:
 
 def is_document(store: Store, asset_id: int) -> bool:
     review = store.review(asset_id)
-    return bool(review and (review.get("document") or "document" in review.get("categories", [])
+    return bool(review and (review.get("document") or review.get("text_present")
+                            or "document" in review.get("categories", [])
                             or "screenshot" in review.get("categories", [])))
 
 

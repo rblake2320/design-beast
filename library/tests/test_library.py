@@ -63,7 +63,8 @@ def test_dedup_folds_exact_and_resized_copies_into_representative(library):
     store, _, _ = library
     out = dedup.cluster(store, embed_model=None)
     assert out == {"assets": 6, "clusters": 4, "duplicates": 2,
-                   "edges": {"sha256": 1, "phash": 3, "embedding": 0}}
+                   "edges": {"sha256": 1, "phash": 3, "embedding": 0},
+                   "stacks": {"stacks": 0, "members": 0}}
     by_name = {Path(a["path"]).name: a for a in store.assets()}
     rep = by_name["beach.jpg"]["id"]
     assert by_name["beach.jpg"]["dup_of"] is None
@@ -146,6 +147,70 @@ def test_plan_prefers_group_albums_over_per_image_review_names(library):
     assert albums == {"beach.jpg": "Beach trip", "truck.jpg": "Beach trip",
                       "party.jpg": "Birthday", "receipt.png": "Unsorted"}
     assert store.counts()["albums"] == 1
+
+
+def _with_exif(im: Image.Image, path: Path, taken: str, gps: tuple[float, float] | None = None):
+    exif = Image.Exif()
+    exif[306] = taken                                   # DateTime "YYYY:MM:DD HH:MM:SS"
+    if gps:
+        ifd = exif.get_ifd(0x8825)
+        for tag, ref_tag, val in ((2, 1, gps[0]), (4, 3, gps[1])):
+            d = abs(val); m = (d - int(d)) * 60; s = (m - int(m)) * 60
+            ifd[tag] = (int(d), int(m), round(s, 2))
+            ifd[ref_tag] = ("N" if val >= 0 else "S") if tag == 2 else ("E" if val >= 0 else "W")
+    im.save(path, quality=92, exif=exif.tobytes())
+
+
+def test_burst_stack_keeps_every_frame_and_picks_the_sharpest(tmp_path: Path):
+    from PIL import ImageFilter
+    src = tmp_path / "src"; src.mkdir()
+    base = _photo(tmp_path / "base.jpg", 11)
+
+    def frame(x: int, blur: float) -> Image.Image:        # a subject that moves between shots
+        im = base.copy()
+        ImageDraw.Draw(im).rectangle([x, 300, x + 350, 900], fill=(250, 250, 250))
+        return im.filter(ImageFilter.GaussianBlur(blur)) if blur else im
+    _with_exif(frame(100, 0), src / "burst_1.jpg", "2025:06:14 10:00:01")
+    _with_exif(frame(220, 3), src / "burst_2.jpg", "2025:06:14 10:00:03")
+    _with_exif(frame(340, 6), src / "burst_3.jpg", "2025:06:14 10:00:05")
+    _with_exif(_photo(tmp_path / "other.jpg", 12), src / "later.jpg", "2025:06:14 15:00:00")
+    store = Store(tmp_path / "lib.db")
+    inventory.scan(store, src)
+    out = dedup.cluster(store, embed_model=None)
+    assert out["duplicates"] == 0, "moving subject must not read as an exact/near duplicate"
+    by_name = {Path(a["path"]).name: a for a in store.assets()}
+    assert by_name["burst_1.jpg"]["stack_of"] is None
+    assert by_name["burst_2.jpg"]["stack_of"] == by_name["burst_1.jpg"]["id"]
+    assert by_name["burst_3.jpg"]["stack_of"] == by_name["burst_1.jpg"]["id"]
+    assert len(store.assets(representatives_only=True)) == 2
+    assert out["stacks"] == {"stacks": 1, "members": 2}
+    assert store.queue_counts()["review_fast"] == {"pending": 2, "skipped": 2}
+    _fake_free_review(store, {"burst_1.jpg": "Lake day", "later.jpg": "Lake day"})
+    organize.plan(store, tmp_path / "out", ollama_url="http://127.0.0.1:9/api/generate")
+    dests = {Path(p["path"]).name: p["dest"] for p in store.proposals("pending") if p["action"] == "link"}
+    assert len(dests) == 4 and "stack-burst_1" in dests["burst_2.jpg"] and "stack-" not in dests["burst_1.jpg"]
+
+
+def test_gps_events_become_place_albums_offline(tmp_path: Path):
+    from library import events
+    src = tmp_path / "src"; src.mkdir()
+    asheville, austin = (35.5951, -82.5515), (30.2672, -97.7431)
+    for i in range(3):
+        _with_exif(_photo(tmp_path / f"a{i}.jpg", 20 + i), src / f"ash_{i}.jpg", f"2025:06:1{i + 1} 12:00:00", asheville)
+    for i in range(3):
+        _with_exif(_photo(tmp_path / f"b{i}.jpg", 30 + i), src / f"aus_{i}.jpg", f"2025:09:0{i + 1} 12:00:00", austin)
+    _with_exif(_photo(tmp_path / "c.jpg", 40), src / "nogps.jpg", "2025:09:02 12:30:00")
+    store = Store(tmp_path / "lib.db")
+    inventory.scan(store, src)
+    out = events.run(store)
+    assert out["with_gps"] == 6 and out["placed_by_gps"] == 7      # the no-GPS photo rides along
+    titles = {Path(a["path"]).name: a["event_title"] for a in store.assets()}
+    assert titles["ash_0.jpg"] == "Asheville, North Carolina - June 2025"
+    assert titles["aus_2.jpg"] == "Austin, Texas - September 2025"
+    assert titles["nogps.jpg"] == "Austin, Texas - September 2025"     # same time window, no GPS → rides along
+    organize.plan(store, tmp_path / "out", people=False, ollama_url="http://127.0.0.1:9/api/generate")
+    albums = {p["album"] for p in store.proposals("pending")}
+    assert albums == {"Asheville, North Carolina - June 2025", "Austin, Texas - September 2025"}
 
 
 def test_cli_help_lists_every_stage():

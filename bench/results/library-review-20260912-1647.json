@@ -1,0 +1,27 @@
+{
+  "n": 96,
+  "results": {
+    "vllm": {
+      "url": "http://127.0.0.1:8021/v1/chat/completions",
+      "model": "Qwen/Qwen3-VL-8B-Instruct-FP8",
+      "runs": [
+        {
+          "parallel": 16,
+          "images": 96,
+          "ok": 96,
+          "failed": 0,
+          "seconds": 12.6,
+          "img_per_s": 7.6
+        },
+        {
+          "parallel": 32,
+          "images": 96,
+          "ok": 96,
+          "failed": 0,
+          "seconds": 12.6,
+          "img_per_s": 7.59
+        }
+      ]
+    }
+  }
+}

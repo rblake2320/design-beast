@@ -16,7 +16,7 @@ from .inventory import sha256_file
 from .store import Store
 
 RECURRING_PERSON_MIN_FACES = 3
-_SAFE = re.compile(r"[^A-Za-z0-9 _.-]+")
+_SAFE = re.compile(r"[^A-Za-z0-9 _.,-]+")
 
 
 ALBUM_MERGE_COSINE = 0.80   # bge-m3: "Beach trip"~"Beach day" 0.88, "Receipts"~"Invoice Records" 0.62
@@ -83,6 +83,8 @@ def album_name(store: Store, asset: dict, canonical: dict[str, str] | None = Non
     assigned = store.albums() if assigned is None else assigned
     if asset["id"] in assigned:
         name = _SAFE.sub("", assigned[asset["id"]][0]).strip(" .")[:40]
+    elif asset.get("event_title"):
+        name = _SAFE.sub("", asset["event_title"]).strip(" .")[:40]
     else:
         review = store.review(asset["id"]) or {}
         name = _SAFE.sub("", review.get("suggested_album") or "").strip(" .")[:40]
@@ -114,6 +116,14 @@ def plan(store: Store, dest_root: Path, people: bool = True,
                 store.put_proposal(asset["id"], "duplicate", None, None,
                                    f"duplicate of {rep['path'] if rep else asset['dup_of']}")
                 n_dup += 1
+                continue
+            if asset["stack_of"] is not None:      # burst frame: kept, filed under its best shot
+                rep = store.asset(asset["stack_of"]) or asset
+                album, folder = album_name(store, rep, canonical, assigned)
+                stack_dir = f"{folder}/stack-{Path(rep['path']).stem}"
+                store.put_proposal(asset["id"], "link", str(_dest(dest_root, stack_dir, asset)), album,
+                                   f"burst frame; best shot is {Path(rep['path']).name}")
+                n_link += 1
                 continue
             album, folder = album_name(store, asset, canonical, assigned)
             store.put_proposal(asset["id"], "link", str(_dest(dest_root, folder, asset)), album,
