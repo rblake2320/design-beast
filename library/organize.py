@@ -7,9 +7,11 @@ operation is hash-verified and ledgered.
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import re
 import shutil
+import time
 from pathlib import Path
 
 from .inventory import sha256_file
@@ -102,13 +104,25 @@ def _dest(root: Path, folder: str, asset: dict) -> Path:
     return root / folder / f"{stamp}_{src.name}" if stamp else root / folder / src.name
 
 
+def _propose(store: Store, applied: dict, asset_id: int, action: str, dest: str | None,
+             album: str | None, reason: str) -> str:
+    """A proposal for a file already placed elsewhere becomes a move inside the organized tree."""
+    old = applied.get((asset_id, action))
+    if old and dest and Path(old) != Path(dest):
+        store.put_proposal(asset_id, f"move:{action}", dest, album, f"from {old}")
+        return "move"
+    store.put_proposal(asset_id, action, dest, album, reason)
+    return "same" if old else "new"
+
+
 def plan(store: Store, dest_root: Path, people: bool = True,
          ollama_url: str = "http://localhost:11434/api/generate") -> dict:
     dest_root = dest_root.resolve()
     persons = {pid: (label or f"Person-{pid}", n) for pid, label, _, n in store.persons()}
     canonical = consolidate_albums(store, ollama_url)
     assigned = store.albums()
-    n_link = n_dup = n_people = 0
+    n_link = n_dup = n_people = n_move = 0
+    applied_dest = {(p["asset_id"], p["action"]): p["dest"] for p in store.proposals("applied") if p["dest"]}
     with store.tx():
         for asset in store.assets():
             if asset["dup_of"] is not None:
@@ -121,24 +135,24 @@ def plan(store: Store, dest_root: Path, people: bool = True,
                 rep = store.asset(asset["stack_of"]) or asset
                 album, folder = album_name(store, rep, canonical, assigned)
                 stack_dir = f"{folder}/stack-{Path(rep['path']).stem}"
-                store.put_proposal(asset["id"], "link", str(_dest(dest_root, stack_dir, asset)), album,
-                                   f"burst frame; best shot is {Path(rep['path']).name}")
+                n_move += _propose(store, applied_dest, asset["id"], "link", str(_dest(dest_root, stack_dir, asset)),
+                                   album, f"burst frame; best shot is {Path(rep['path']).name}") == "move"
                 n_link += 1
                 continue
             album, folder = album_name(store, asset, canonical, assigned)
-            store.put_proposal(asset["id"], "link", str(_dest(dest_root, folder, asset)), album,
-                               "album from review" if album != "Unsorted" else "no confident review")
+            n_move += _propose(store, applied_dest, asset["id"], "link", str(_dest(dest_root, folder, asset)), album,
+                               "album from review" if album != "Unsorted" else "no confident review") == "move"
             n_link += 1
             if people:
                 for pid in store.people_in(asset["id"]):
                     label, n = persons.get(pid, (None, 0))
                     if label and n >= RECURRING_PERSON_MIN_FACES:
-                        store.put_proposal(asset["id"], f"person:{pid}",
+                        n_move += _propose(store, applied_dest, asset["id"], f"person:{pid}",
                                            str(_dest(dest_root, f"People/{label}", asset)),
-                                           f"People/{label}", f"{n} faces of {label}")
+                                           f"People/{label}", f"{n} faces of {label}") == "move"
                         n_people += 1
     summary = {"dest_root": str(dest_root), "link": n_link, "duplicate": n_dup, "people": n_people,
-               "albums": len(set(canonical.values())) or 1}
+               "moves": n_move, "albums": len(set(canonical.values())) or 1}
     store.log("plan", summary)
     store.commit()
     return summary
@@ -158,7 +172,10 @@ def approve(store: Store, ids: list[int] | None = None, album: str | None = None
 
 def _place(src: Path, dest: Path, hardlink: bool) -> str:
     """Copy by default. A hard link shares bytes with the original, so editing the
-    organized file would edit the source — only for read-only libraries, by opt-in."""
+    organized file would edit the source — only for read-only libraries, by opt-in.
+
+    Writes go to a temp name and are renamed into place, so a crash mid-copy can never
+    leave a half file at a final path; leftover `.beast-partial` files are simply redone."""
     dest.parent.mkdir(parents=True, exist_ok=True)
     if hardlink:
         try:
@@ -168,15 +185,34 @@ def _place(src: Path, dest: Path, hardlink: bool) -> str:
             return "hardlink"
         except OSError:
             pass
-    shutil.copy2(src, dest)
+    tmp = dest.with_name(dest.name + ".beast-partial")
+    shutil.copy2(src, tmp)
+    with open(tmp, "rb+") as fh:
+        os.fsync(fh.fileno())
+    os.replace(tmp, dest)
     return "copy"
 
 
+def approved_albums(store: Store) -> set[str]:
+    """Albums a person has already said yes to — new photos may join them unattended."""
+    return {p["album"] for p in store.proposals() if p["album"] and p["status"] in ("approved", "applied")
+            and p["action"] == "link"}
+
+
 def apply(store: Store, hardlink: bool = False) -> dict:
-    applied = skipped = failed = noted = 0
+    applied = skipped = failed = noted = moved = 0
     for p in store.proposals("approved"):
         if not p["dest"]:   # informational (duplicate) — nothing to place
             store.set_proposal_status([p["id"]], "applied"); noted += 1
+            continue
+        if p["action"].startswith("move:"):
+            try:
+                _move(store, p)
+                moved += 1
+            except Exception as exc:  # noqa: BLE001
+                store.log("apply.error", {"proposal": p["id"], "error": f"{type(exc).__name__}: {exc}"})
+                failed += 1
+            store.commit()
             continue
         src, dest = Path(p["path"]), Path(p["dest"])
         asset = store.asset(p["asset_id"])
@@ -200,10 +236,70 @@ def apply(store: Store, hardlink: bool = False) -> dict:
             store.log("apply.error", {"proposal": p["id"], "error": f"{type(exc).__name__}: {exc}"})
             failed += 1
         store.commit()
-    summary = {"applied": applied, "already_present": skipped, "duplicates_noted": noted, "failed": failed}
+    summary = {"applied": applied, "moved": moved, "already_present": skipped, "duplicates_noted": noted,
+               "failed": failed}
     store.log("apply.summary", summary)
     store.commit()
+    if applied or moved:
+        write_manifest(store)
     return summary
+
+
+def write_manifest(store: Store) -> Path | None:
+    """`<dest_root>/.beast/manifest.json`: every placed file with its source and SHA-256, so the
+    organized tree explains itself even if the store is lost (see recover.rebuild_from_manifest)."""
+    placed = [p for p in store.proposals("applied") if p["dest"] and not p["action"].startswith("move:")]
+    row = store.fetchone("SELECT detail FROM ledger WHERE event = 'plan' ORDER BY id DESC LIMIT 1")
+    if not placed or not row:
+        return None
+    root = Path(json.loads(row[0])["dest_root"])
+    entries = [{"src": p["path"], "dest": p["dest"], "sha256": store.asset(p["asset_id"])["sha256"],
+                "album": p["album"], "action": p["action"]} for p in placed]
+    manifest = {"schema": "beast.library.manifest/v1", "written": time.strftime("%Y-%m-%dT%H:%M:%S"),
+                "count": len(entries), "entries": entries}
+    out = root / ".beast" / "manifest.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    tmp = out.with_suffix(".json.partial")
+    tmp.write_text(json.dumps(manifest, indent=1), encoding="utf-8")
+    os.replace(tmp, out)
+    return out
+
+
+def _move(store: Store, p: dict) -> None:
+    """Move an already-placed file inside the organized tree; the source library is never touched."""
+    base_action = p["action"].split(":", 1)[1]
+    base = next((b for b in store.proposals("applied") if b["asset_id"] == p["asset_id"]
+                 and b["action"] == base_action), None)
+    if not base or not base["dest"]:
+        raise FileNotFoundError(f"no applied {base_action} for asset {p['asset_id']}")
+    old, new = Path(base["dest"]), Path(p["dest"])
+    asset = store.asset(p["asset_id"])
+    if not old.exists():
+        raise FileNotFoundError(old)
+    if sha256_file(old) != asset["sha256"]:
+        raise RuntimeError(f"{old} no longer matches the library copy — left alone")
+    if new.exists():
+        if sha256_file(new) == asset["sha256"]:
+            old.unlink()                       # the same bytes are already at the new place
+        else:
+            new = new.with_name(f"{new.stem}_{asset['sha256'][:8]}{new.suffix}")
+    if old.exists():
+        new.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            os.replace(old, new)               # same volume: atomic rename
+        except OSError:
+            _place(old, new, False)            # cross volume: temp+rename copy, then drop the old
+            old.unlink()
+    if sha256_file(new) != asset["sha256"]:
+        raise RuntimeError(f"hash mismatch after move: {new}")
+    store.execute("UPDATE proposals SET dest = ? WHERE id = ?", (str(new), base["id"]))
+    store.set_proposal_status([p["id"]], "applied")
+    store.log("apply.move", {"from": str(old), "to": str(new), "sha256": asset["sha256"]})
+    try:                                       # tidy empty album folders left behind
+        old.parent.rmdir()
+        old.parent.parent.rmdir()
+    except OSError:
+        pass
 
 
 def manifest_hash(store: Store) -> str:

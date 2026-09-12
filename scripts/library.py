@@ -28,7 +28,7 @@ sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(REPO / "studio"))
 import config  # noqa: E402
 
-from library import albums, dedup, embed, events, faces, inventory, ocr, organize, review, search  # noqa: E402
+from library import albums, dedup, embed, events, faces, inventory, ocr, organize, recover, review, search  # noqa: E402
 from library.store import STAGES, Store  # noqa: E402
 
 
@@ -70,8 +70,13 @@ def cmd_ocr(args):
 
 
 def _fast_backend(args):
-    """(url, model) for the fast tier: batched OpenAI-compatible server when configured."""
-    url = args.ollama or config.get("library_review_url") or config.get("ollama_url")
+    """(url, model) for the fast tier: the batched server when it answers, else Ollama — loudly."""
+    url = args.ollama or config.get("library_review_url")
+    if not url:
+        url = review.batched_url_if_up(config.get("library_vllm_url")) or config.get("ollama_url")
+        if "/v1/" not in url:
+            print(f"  fast tier: batched server {config.get('library_vllm_url')} not listening — "
+                  f"falling back to Ollama (~8x slower). See docs/LIBRARY.md to start it.", file=sys.stderr)
     model = config.get("library_review_model") if "/v1/" in url else config.get("library_fast_model")
     return url, model
 
@@ -90,7 +95,7 @@ def cmd_review(args):
 
     _print(review.run(lambda: Store(target), args.tier, model, url, worker=args.worker,
                       parallel=args.parallel, deep_threshold=args.threshold, deep_all=args.all,
-                      limit=args.limit, progress=progress))
+                      limit=args.limit, progress=progress, remote=args.remote))
 
 
 def cmd_run(args):
@@ -118,6 +123,76 @@ def cmd_run(args):
     _print(report)
 
 
+def cmd_watch(args):
+    """Keep a folder organized: poll, process only what is new, auto-apply into albums you
+    have already approved once; anything that needs a new album waits for you."""
+    url = args.ollama or config.get("ollama_url")
+    target = _target(args)
+    failures = 0
+    cycles = 0
+    while True:
+        cycle = {"ts": time.strftime("%Y-%m-%dT%H:%M:%S")}
+        try:
+            store = Store(target)                       # a fresh connection per cycle: no stale handles
+            if cycles % 24 == 0:                        # periodic self-check + rolling backup
+                cycle["recover"] = recover.run(store, verify="sample", sample=20)
+                cycle["backup"] = recover.backup(store, Path(args.dest) / ".beast" / "backups")
+            scanned = inventory.scan(store, Path(args.root))
+            cycle["new"] = scanned["added_or_updated"]
+            if scanned["added_or_updated"] or store.queue_counts().get("review_fast", {}).get("pending"):
+                dedup.cluster(store, embed_model=None)
+                embed.run(store, config.get("library_embed_model"), worker=args.worker)
+                dedup.cluster(store, embed_model=config.get("library_embed_model"))
+                faces.run(store, worker=args.worker)
+                fast_url, fast_model = _fast_backend(args)
+                cycle["review"] = review.run(lambda: Store(target), "fast", fast_model, fast_url,
+                                             worker=args.worker, parallel=args.parallel)
+                ocr.run(store, worker=args.worker)
+                events.run(store)
+                albums.run(store, url, config.get("library_deep_model"))
+                cycle["plan"] = organize.plan(store, Path(args.dest), ollama_url=url)
+                known = organize.approved_albums(store)
+                auto = [p["id"] for p in store.proposals("pending")
+                        if p["action"] == "duplicate" or p["action"].startswith("move:") or p["album"] in known]
+                organize.approve(store, ids=auto)
+                cycle["auto_applied"] = organize.apply(store)
+                cycle["awaiting_approval"] = len(store.proposals("pending"))
+            store.log("watch.cycle", cycle)
+            store.commit(); store.close()
+            failures = 0
+        except Exception as exc:  # noqa: BLE001 — the loop must outlive any single failure
+            failures += 1
+            cycle["error"] = f"{type(exc).__name__}: {exc}"[:300]
+            try:
+                s = Store(target); s.log("watch.error", cycle); s.commit(); s.close()
+            except Exception:  # noqa: BLE001
+                pass
+        print(json.dumps(cycle, default=str), flush=True)
+        cycles += 1
+        if args.once:
+            return
+        time.sleep(min(args.interval * (2 ** min(failures, 4)), 3600))   # back off while something is broken
+
+
+def cmd_recover(args):
+    _print(recover.run(_store(args), verify="all" if args.all else "sample"))
+
+
+def cmd_backup(args):
+    _print(recover.backup(_store(args), Path(args.dir)))
+
+
+def cmd_restore(args):
+    target = _target(args)
+    if target.startswith("postgres"):
+        raise SystemExit("restore is for the SQLite store; for Postgres use pg_restore on the .dump")
+    _print(recover.restore(Path(args.backup), Path(target)))
+
+
+def cmd_rebuild(args):
+    _print(recover.rebuild_from_manifest(_store(args), Path(args.dest)))
+
+
 def cmd_status(args):
     store = _store(args)
     _print({"store": "postgres" if store.pg else "sqlite", "counts": store.counts(),
@@ -129,8 +204,10 @@ def cmd_requeue(args):
 
 
 def cmd_search(args):
-    rows = search.search(_store(args), query=args.query, like=args.like, text=args.text, k=args.k,
-                         model=config.get("library_embed_model"), person=args.person,
+    store = _store(args)
+    rows = search.search(store, query=args.query, like=args.like, text=args.text, k=args.k,
+                         model=config.get("library_embed_model"),
+                         person=_person_id(store, args.person) if args.person else None,
                          date_from=args.date_from, date_to=args.date_to, album=args.album)
     if args.json:
         _print(rows); return
@@ -139,12 +216,39 @@ def cmd_search(args):
         print(f"{r['score']:.3f}  {r['path']}\n       {r['taken_at']}  [{r['album']}]{people}  {r['caption'] or ''}")
 
 
+def _person_id(store, ref: str) -> int:
+    if ref.isdigit():
+        return int(ref)
+    pid = store.person_by_label(ref)
+    if pid is None:
+        raise SystemExit(f"no person named {ref!r} — `beast library people` lists them")
+    return pid
+
+
 def cmd_people(args):
     store = _store(args)
     if args.label:
-        store.label_person(int(args.label[0]), args.label[1]); store.commit()
-    for pid, label, _, n in store.persons():
-        print(f"{pid:>4}  {n:>4} faces  {label or '(unlabelled)'}")
+        _print(faces.label(store, _person_id(store, args.label[0]), args.label[1])); return
+    if args.find:
+        _print(faces.find(store, _person_id(store, args.find))); return
+    if args.confirm:
+        _print(faces.confirm(store, int(args.confirm[0]), _person_id(store, args.confirm[1]))); return
+    if args.reject:
+        _print(faces.reject(store, int(args.reject[0]), _person_id(store, args.reject[1]))); return
+    if args.merge:
+        _print(faces.merge(store, _person_id(store, args.merge[0]), _person_id(store, args.merge[1]))); return
+    if args.recluster:
+        _print(faces.recluster(store)); return
+    if args.show:
+        pid = _person_id(store, args.show)
+        for f in store.faces(person_id=pid):
+            a = store.asset(f["asset_id"])
+            flag = {2: "confirmed", 1: "auto", 0: "SUGGESTED"}[f["confirmed"]]
+            print(f"face {f['id']:>5}  {flag:<9} sim={f['similarity'] or 0:.2f}  {a['path'] if a else '?'}")
+        return
+    for p in faces.people(store):
+        sugg = f"  ({p['suggested']} suggested)" if p["suggested"] else ""
+        print(f"{p['id']:>4}  {p['faces']:>4} faces in {p['images']:>4} images  {p['label'] or '(unnamed)'}{sugg}")
 
 
 def cmd_events(args):
@@ -190,6 +294,8 @@ def main(argv=None) -> int:
     ap.add_argument("--db", help="SQLite path (default: config library_db)")
     ap.add_argument("--dsn", help="postgresql://... (or BEAST_LIBRARY_DSN)")
     ap.add_argument("--worker", default=os.environ.get("COMPUTERNAME", "local"))
+    ap.add_argument("--remote", action="store_true",
+                    help="this worker is on another machine: never receives private assets")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     p = sub.add_parser("scan"); p.add_argument("root"); p.set_defaults(fn=cmd_scan)
@@ -207,12 +313,26 @@ def main(argv=None) -> int:
     p.add_argument("--no-faces", action="store_true"); p.add_argument("--no-deep", action="store_true")
     p.set_defaults(fn=cmd_run)
     p = sub.add_parser("status"); p.set_defaults(fn=cmd_status)
+    p = sub.add_parser("watch", help="keep ROOT organized into DEST unattended")
+    p.add_argument("root"); p.add_argument("--dest", required=True); p.add_argument("--interval", type=int, default=300)
+    p.add_argument("--ollama"); p.add_argument("--parallel", type=int, default=16); p.add_argument("--once", action="store_true")
+    p.set_defaults(fn=cmd_watch)
+    p = sub.add_parser("recover", help="reclaim stale work, requeue errors, remove partial files, verify placed files")
+    p.add_argument("--all", action="store_true", help="re-hash every placed file, not a sample"); p.set_defaults(fn=cmd_recover)
+    p = sub.add_parser("backup"); p.add_argument("--dir", required=True); p.set_defaults(fn=cmd_backup)
+    p = sub.add_parser("restore"); p.add_argument("backup"); p.set_defaults(fn=cmd_restore)
+    p = sub.add_parser("rebuild", help="lost store: rebuild placements from DEST/.beast/manifest.json")
+    p.add_argument("--dest", required=True); p.set_defaults(fn=cmd_rebuild)
     p = sub.add_parser("requeue"); p.add_argument("stage", choices=STAGES); p.set_defaults(fn=cmd_requeue)
     p = sub.add_parser("search"); p.add_argument("query", nargs="?"); p.add_argument("--like")
-    p.add_argument("--text"); p.add_argument("-k", type=int, default=20); p.add_argument("--person", type=int)
+    p.add_argument("--text"); p.add_argument("-k", type=int, default=20); p.add_argument("--person", metavar="ID|NAME")
     p.add_argument("--from", dest="date_from"); p.add_argument("--to", dest="date_to")
     p.add_argument("--album"); p.add_argument("--json", action="store_true"); p.set_defaults(fn=cmd_search)
-    p = sub.add_parser("people"); p.add_argument("--label", nargs=2, metavar=("ID", "NAME")); p.set_defaults(fn=cmd_people)
+    p = sub.add_parser("people", help="list people; --label ID NAME names one and finds them everywhere")
+    p.add_argument("--label", nargs=2, metavar=("ID|NAME", "NEWNAME")); p.add_argument("--find", metavar="ID|NAME")
+    p.add_argument("--confirm", nargs=2, metavar=("FACE", "ID|NAME")); p.add_argument("--reject", nargs=2, metavar=("FACE", "ID|NAME"))
+    p.add_argument("--merge", nargs=2, metavar=("KEEP", "DROP")); p.add_argument("--recluster", action="store_true")
+    p.add_argument("--show", metavar="ID|NAME"); p.set_defaults(fn=cmd_people)
     p = sub.add_parser("events"); p.set_defaults(fn=cmd_events)
     p = sub.add_parser("albums"); p.add_argument("--ollama"); p.add_argument("--model"); p.set_defaults(fn=cmd_albums)
     p = sub.add_parser("plan"); p.add_argument("--dest", required=True); p.add_argument("--ollama")

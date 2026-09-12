@@ -40,6 +40,7 @@ def is_document(store: Store, asset_id: int) -> bool:
 
 def run(store: Store, worker: str = "local", documents_only: bool = True,
         limit: int | None = None) -> dict:
+    store.reclaim_stale("ocr")
     done = skipped = failed = 0
     while limit is None or done + failed + skipped < limit:
         aid = store.claim("ocr", worker)

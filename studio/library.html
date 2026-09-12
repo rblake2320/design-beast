@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beast Library</title>
+<style>
+  :root { --bg:#111214; --panel:#1a1c20; --line:#2a2d33; --fg:#e8e6e1; --mut:#8a8f98; --acc:#e9b44c; --ok:#5bc48f; --bad:#e26d5c; }
+  * { box-sizing:border-box }
+  body { margin:0; background:var(--bg); color:var(--fg); font:14px/1.45 system-ui, "Segoe UI", sans-serif }
+  header { display:flex; gap:16px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--bg); z-index:2 }
+  header h1 { font-size:16px; margin:0; letter-spacing:.04em } header h1 b { color:var(--acc) }
+  header input { flex:1; max-width:560px; background:var(--panel); border:1px solid var(--line); color:var(--fg); padding:9px 12px; border-radius:8px; font-size:15px }
+  header select, header button, .btn { background:var(--panel); border:1px solid var(--line); color:var(--fg); padding:8px 12px; border-radius:8px; cursor:pointer }
+  .btn.acc { background:var(--acc); color:#111; border-color:var(--acc); font-weight:600 }
+  nav { display:flex; gap:6px; padding:10px 20px; border-bottom:1px solid var(--line) }
+  nav button { background:none; border:none; color:var(--mut); padding:6px 10px; cursor:pointer; border-radius:6px }
+  nav button.on { color:var(--fg); background:var(--panel) }
+  main { padding:16px 20px }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:10px }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:10px; overflow:hidden; cursor:pointer }
+  .card img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; background:#000 }
+  .card .cap { padding:8px 10px; color:var(--mut); font-size:12px; height:58px; overflow:hidden }
+  .card .cap b { color:var(--fg); display:block; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+  .people { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:12px }
+  .person { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:10px; text-align:center }
+  .face { width:96px; height:96px; border-radius:50%; object-fit:cover; margin:0 auto 8px; display:block; background:#000 }
+  .person input { width:100%; background:#0c0d0f; border:1px solid var(--line); color:#fff; font-weight:600; padding:6px 8px; border-radius:6px; text-align:center }
+  .person small { color:var(--mut) }
+  .album { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:12px; margin-bottom:12px }
+  .album .row { display:flex; align-items:center; gap:12px; margin-bottom:8px }
+  .album .row h3 { margin:0; font-size:15px; flex:1 }
+  .strip { display:flex; gap:6px; overflow-x:auto } .strip img { height:72px; border-radius:6px }
+  .stat { display:inline-block; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:8px 12px; margin:0 8px 8px 0 }
+  .stat b { display:block; font-size:18px }
+  #toast { position:fixed; bottom:16px; right:16px; background:var(--panel); border:1px solid var(--line); padding:10px 14px; border-radius:8px; display:none }
+  #detail { position:fixed; inset:0; background:rgba(0,0,0,.8); display:none; align-items:center; justify-content:center; z-index:5 }
+  #detail .box { background:var(--panel); border-radius:12px; max-width:min(1100px, 94vw); max-height:92vh; overflow:auto; padding:16px; display:grid; grid-template-columns:2fr 1fr; gap:16px }
+  #detail img { width:100%; border-radius:8px } #detail pre { white-space:pre-wrap; color:var(--mut); font-size:12px }
+  .tag { display:inline-block; background:var(--bg); border:1px solid var(--line); border-radius:999px; padding:2px 8px; margin:2px; font-size:12px; color:var(--mut) }
+  .sug { color:var(--acc) }
+  @media (max-width:700px){ #detail .box { grid-template-columns:1fr } }
+</style>
+</head>
+<body>
+<header>
+  <h1><b>BEAST</b> LIBRARY</h1>
+  <input id="q" placeholder='Search: "kids at the beach", "receipt", "sunset over water"…' autofocus>
+  <select id="who"><option value="">anyone</option></select>
+  <button id="go">Search</button>
+</header>
+<nav>
+  <button data-tab="search" class="on">Photos</button>
+  <button data-tab="people">People</button>
+  <button data-tab="review">Review albums</button>
+  <button data-tab="status">Status</button>
+</nav>
+<main>
+  <section id="tab-search"><div class="grid" id="results"></div></section>
+  <section id="tab-people" hidden>
+    <p style="color:var(--mut)">Type a name and press Enter — the library is searched for that person immediately, and every new photo is matched against them from then on. <span class="sug">Gold</span> = suggested, needs a yes/no.</p>
+    <div id="merges"></div>
+    <div class="people" id="people"></div>
+  </section>
+  <section id="tab-review" hidden>
+    <div class="row" style="display:flex;gap:8px;margin-bottom:12px">
+      <button class="btn acc" id="approve-all">Approve everything</button>
+      <button class="btn" id="apply">Apply approved (copy into albums)</button>
+      <button class="btn" id="recover">Recover / verify</button>
+      <span id="review-total" style="color:var(--mut);align-self:center"></span>
+    </div>
+    <div id="albums"></div>
+  </section>
+  <section id="tab-status" hidden><div id="status"></div></section>
+</main>
+<div id="toast"></div>
+<div id="detail" onclick="if(event.target===this)this.style.display='none'"><div class="box"><div><img id="d-img"></div><div id="d-meta"></div></div></div>
+<script>
+const $ = s => document.querySelector(s);
+const api = (p, opt) => fetch('/api/library' + p, opt).then(r => r.json());
+const post = (p, body) => api(p, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body || {})});
+const toast = m => { const t = $('#toast'); t.textContent = m; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 2600); };
+
+document.querySelectorAll('nav button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('nav button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('main section').forEach(s => s.hidden = s.id !== 'tab-' + b.dataset.tab);
+  ({people: loadPeople, review: loadReview, status: loadStatus, search: () => {}})[b.dataset.tab]();
+});
+
+async function doSearch() {
+  const q = $('#q').value.trim(), who = $('#who').value;
+  const p = new URLSearchParams(); if (q) p.set('q', q); if (who) p.set('person', who); p.set('k', 60);
+  const {results} = await api('/search?' + p);
+  $('#results').innerHTML = results.map(r => `
+    <div class="card" onclick="openAsset(${r.id})">
+      <img loading="lazy" src="/api/library/thumb/${r.id}">
+      <div class="cap"><b>${r.album || 'Unsorted'}</b>${(r.taken_at||'').slice(0,10)} · ${r.caption || ''}</div>
+    </div>`).join('') || '<p style="color:var(--mut)">Nothing matched.</p>';
+}
+$('#go').onclick = doSearch; $('#q').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+
+async function openAsset(id) {
+  const a = await api('/asset/' + id);
+  $('#d-img').src = '/api/library/thumb/' + id;
+  const r = a.review || {};
+  $('#d-meta').innerHTML = `<h3 style="margin:0 0 6px">${a.album || 'Unsorted'}</h3>
+    <p>${r.caption || ''}</p>
+    <div>${(r.categories||[]).map(c => `<span class="tag">${c}</span>`).join('')}</div>
+    <pre>${a.path}\n${a.taken_at || ''}  ${a.width}×${a.height}${a.duration ? '  video ' + a.duration + 's' : ''}
+people: ${a.people.join(', ') || '—'}   quality: ${r.quality ? r.quality.score : '?'}   ${a.dup_of ? 'duplicate of #' + a.dup_of : ''}${a.stack_of ? 'burst frame of #' + a.stack_of : ''}</pre>`;
+  $('#detail').style.display = 'flex';
+}
+
+async function loadPeople() {
+  const {merges} = await api('/people/merges');
+  $('#merges').innerHTML = merges.length ? '<h3 style="margin:4px 0 8px">Same person?</h3>' + merges.map(m => `
+    <div style="display:inline-flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin:0 8px 8px 0">
+      <img src="/api/library/face/${m.a_face}" style="width:48px;height:48px;border-radius:50%">
+      <img src="/api/library/face/${m.b_face}" style="width:48px;height:48px;border-radius:50%">
+      <small style="color:var(--mut)">${m.a_label || 'Person ' + m.a} · ${m.b_label || 'Person ' + m.b} · ${m.similarity}</small>
+      <button class="btn acc" onclick="post('/people/merge',{keep:'${m.a_label ? m.a : (m.b_label ? m.b : m.a)}',drop:'${m.a_label ? m.b : (m.b_label ? m.a : m.b)}'}).then(()=>{toast('merged');loadPeople()})">yes</button>
+      <button class="btn" onclick="this.parentElement.remove()">no</button>
+    </div>`).join('') : '';
+  const {people} = await api('/people');
+  $('#who').innerHTML = '<option value="">anyone</option>' + people.map(p => `<option value="${p.id}">${p.label || 'Person ' + p.id}</option>`).join('');
+  $('#people').innerHTML = people.map(p => `
+    <div class="person">
+      <img class="face" src="${p.key_face ? '/api/library/face/' + p.key_face : ''}">
+      <input value="${p.label || ''}" placeholder="Person ${p.id}" onkeydown="if(event.key==='Enter'){nameIt(${p.id}, this.value)}">
+      <small>${p.faces} faces · ${p.images} photos${p.suggested ? ` · <span class="sug">${p.suggested} suggested</span>` : ''}</small><br>
+      <button class="btn" style="margin-top:6px" onclick="showFaces(${p.id})">faces</button>
+    </div>`).join('');
+}
+async function nameIt(id, name) { const r = await post(`/people/${id}/label`, {name}); toast(`${name}: ${r.total} photos (${r.moved} newly found, ${r.suggested} suggested)`); loadPeople(); }
+async function showFaces(id) {
+  const {faces} = await api(`/people/${id}/faces`);
+  $('#d-img').src = ''; $('#d-meta').innerHTML = `<h3>Faces of person ${id}</h3>` + faces.map(f => `
+    <div style="display:flex;gap:8px;align-items:center;margin:6px 0">
+      <img src="/api/library/face/${f.face}" style="width:64px;height:64px;border-radius:50%"><img src="/api/library/thumb/${f.asset}" style="width:90px;height:68px;object-fit:cover;border-radius:6px">
+      <div style="flex:1;font-size:12px;color:var(--mut)">${['SUGGESTED','auto','confirmed'][f.confirmed]} · sim ${(f.similarity||0).toFixed(2)}<br>${(f.path||'').split(/[\\/]/).pop()}</div>
+      <button class="btn" onclick="post('/faces/${f.face}/confirm',{person:'${id}'}).then(()=>{toast('confirmed');showFaces(${id})})">yes</button>
+      <button class="btn" onclick="post('/faces/${f.face}/reject',{person:'${id}'}).then(()=>{toast('not them');showFaces(${id})})">no</button>
+    </div>`).join('');
+  $('#detail').style.display = 'flex';
+}
+
+async function loadReview() {
+  const {albums, total} = await api('/proposals?status=pending');
+  $('#review-total').textContent = total ? `${total} proposals waiting` : 'nothing waiting';
+  $('#albums').innerHTML = albums.map(a => `
+    <div class="album">
+      <div class="row"><h3>${a.album || 'duplicates / moves'} <small style="color:var(--mut)">${a.count}</small></h3>
+        <button class="btn acc" onclick="decide('approve', ${JSON.stringify(a.ids)})">approve</button>
+        <button class="btn" onclick="decide('reject', ${JSON.stringify(a.ids)})">reject</button></div>
+      <div class="strip">${a.sample.map(s => `<img src="/api/library/thumb/${s.asset}" title="${s.dest || s.action}">`).join('')}</div>
+    </div>`).join('');
+}
+async function decide(what, ids) { const r = await post('/proposals/' + what, {ids}); toast(JSON.stringify(r)); loadReview(); }
+$('#approve-all').onclick = async () => { const r = await post('/proposals/approve', {all: true}); toast(`approved ${r.approved}`); loadReview(); };
+$('#apply').onclick = async () => { toast('applying…'); const r = await post('/apply'); toast(`applied ${r.applied}, moved ${r.moved}, failed ${r.failed}`); loadReview(); };
+$('#recover').onclick = async () => { toast('recovering…'); const r = await post('/recover'); toast(`integrity ${r.integrity}; verified ${r.verify ? r.verify.ok + '/' + r.verify.checked : '-'}`); };
+
+async function loadStatus() {
+  const s = await api('/status');
+  $('#status').innerHTML = Object.entries(s.counts).map(([k, v]) => `<div class="stat"><b>${v}</b>${k}</div>`).join('')
+    + '<h3>Queue</h3><pre>' + JSON.stringify(s.queue, null, 1) + '</pre><h3>Albums</h3>'
+    + Object.entries(s.albums).map(([a, n]) => `<span class="tag">${a} · ${n}</span>`).join('');
+}
+loadPeople(); doSearch();
+</script>
+</body>
+</html>

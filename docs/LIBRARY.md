@@ -51,9 +51,14 @@ beast library dedup [--no-embeddings]
 beast library embed | faces | ocr [--all]
 beast library review --tier fast|deep [--parallel N] [--all] [--ollama http://spark-1:11434/api/generate]
 beast library search "sunset over water" [-k 20] [--person 5] [--from 2024-06 --to 2024-08] [--text invoice] [--like ref.jpg]
-beast library people [--label ID "Name"]
+beast library people [--label ID|NAME "Name"] [--find NAME] [--confirm FACE NAME] [--reject FACE NAME]
+                     [--merge KEEP DROP] [--recluster] [--show NAME]
+beast library events                          # time + GPS trips, offline place names
 beast library albums [--model qwen3.8:27b]   # group + name; rerun any time, plan picks it up
-beast library plan --dest D:\Organized [--no-people]
+beast library plan --dest D:\Organized [--no-people]    # emits move: proposals for files placed earlier
+beast library watch D:\Photos --dest D:\Organized [--interval 300] [--once]   # unattended
+beast library recover [--all] · backup --dir DIR · restore BACKUP · rebuild --dest D:\Organized
+beast library --remote --dsn $DSN review --tier fast     # worker on another node: never sees private assets
 beast library proposals [--status pending] [--album "Beach trip"]
 beast library approve --all | --album X | 12 13 14      (reject: same forms)
 beast library apply [--hardlink]
@@ -82,6 +87,60 @@ vars are required: without them the engine dies with `RuntimeError: UVA is not a
 Multi-node: run `scan/dedup/embed/faces` on the machine that can see the files, then
 `beast library --dsn $DSN review --tier fast --worker spark-1` on each Spark against its
 local Ollama. Deep tier is the same command with `--tier deep`.
+
+## People — the way a phone does it
+
+Every face is embedded once at ingest (InsightFace buffalo_l, 512-d); matching is dot products
+against a few **exemplars** per person, so it is instant and does not drift like a centroid.
+Two bands: cosine ≥ 0.55 is assigned automatically, 0.42–0.55 is only a **suggestion** until
+you say yes/no; faces that are tiny, blurry or turned away never seed a new person. Naming is a
+query: `beast library people --label 24 "Grandma"` (or the People tab) immediately searches the
+whole library for her and every later scan matches new faces against named people first.
+Corrections stick: `--reject FACE Grandma` is remembered; `--confirm FACE Grandma` becomes an
+exemplar; `--merge Grandma 31` folds a stray cluster in; `--recluster` rebuilds the anonymous
+people while named ones stay fixed. Search by name: `search "birthday cake" --person Grandma`.
+
+## Unattended operation and recovery (the enterprise part)
+
+`beast library watch D:\Photos --dest D:\Organized` polls, processes only what is new, auto-
+applies into albums you have already approved once, and leaves anything that needs a new
+album waiting in the Review tab. Every 24 cycles it self-checks and takes a rolling backup
+(`<dest>/.beast/backups`, last 7 kept). A failing cycle is logged and backed off, never fatal.
+
+| Failure | What happens | Proven by |
+|---|---|---|
+| worker/process dies mid-stage | its `running` claims are handed back at the next stage start (`reclaim_stale`) | `test_worker_death_mid_stage_is_reclaimed_automatically` |
+| model server down (vLLM/Ollama) | after 5 consecutive connection failures the stage returns its work to `pending` and stops cleanly — nothing is marked `error` | `test_model_server_outage_returns_work_to_pending_not_error` |
+| crash mid-copy | copies go to `name.beast-partial` and are renamed into place; `recover` deletes leftovers and the next `apply` redoes them | `test_crash_mid_copy_leaves_no_half_file_and_is_redone` |
+| organized file edited by a person | reported as `changed`, never overwritten | `test_changed_organized_file_is_reported_never_overwritten` |
+| organized file deleted | `recover` re-approves it; `apply` restores it from the untouched source | same test as mid-copy |
+| store corrupted / lost | `backup` (SQLite online backup) → `restore` (integrity-gated); or `rebuild --dest` from `<dest>/.beast/manifest.json`, which lists every placed file with its source and SHA-256 | `test_backup_restore_round_trip_and_integrity_gate`, `test_lost_store_rebuilt_from_manifest_without_recopying` |
+| a better decision later (new album name, named person) | `plan` emits `move:` proposals inside the organized tree; `apply` moves atomically, hash-verified, and tidies empty folders | `test_reconcile_moves_files_when_album_changes` |
+| private material on a shared queue | folders named private/IDs/passport/medical/tax/bank/insurance and anything the VLM flags `sensitive` are `private`: a `--remote` worker is never handed them or their thumbnails | `test_private_assets_never_reach_a_remote_worker` |
+
+`beast doctor` carries outcome checks for the store: stuck claims (> 1 h) FAIL, error rows WARN,
+backup older than 48 h FAIL, batched review server down for > 24 h FAIL (age is tracked in
+`session/doctor-state.json`, so a long outage cannot pass as a blip). SQLite runs WAL +
+`synchronous=FULL`, so a committed ledger row survives power loss.
+
+Readiness, honestly: every failure class above is reproduced by a test on this machine. What is
+NOT yet done is the soak — `watch` running unattended for 24 h with the model server and the
+machine deliberately interrupted mid-run — and a multi-node run. Until then the verdict is
+**Pilot** (one operator, one box), not Department/Enterprise.
+
+## Video
+
+`.mp4 .mov .m4v .mkv .avi .webm .3gp .mts` are inventoried through one representative frame
+(10 % in, via ffmpeg) — same hashes, thumbnail, embedding, review and album path as a photo;
+`duration` and `creation_time` come from ffprobe. Live Photos' `.mov` halves therefore land
+next to their `.heic`. Not yet: scene-level indexing inside long videos.
+
+## Studio Library tab
+
+`python studio/server.py` → `http://localhost:8787/library`: natural-language search with a
+person filter, People (real face crops, type a name + Enter, yes/no on suggestions, "same
+person?" merge prompts), Review (approve/reject per album, apply, recover/verify), Status.
+API under `/api/library/*` for other agents.
 
 ## Guarantees and their tests
 

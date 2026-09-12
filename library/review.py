@@ -11,9 +11,12 @@ import base64
 import json
 import threading
 import time
+import urllib.error
 import urllib.request
 
 from .store import Store
+
+BACKEND_DOWN_AFTER = 5     # consecutive connection failures = the server is gone, not the image
 
 SCHEMA = {
     "type": "object",
@@ -52,6 +55,16 @@ PROMPT = """You are cataloguing a personal photo library. Look at the image and 
 - suggested_album: a short album name a person would use (e.g. "Beach trip", "Kids sports",
   "Receipts", "Screenshots", "Home renovation"). Prefer specific over generic.
 - confidence: 0-1 for how sure you are of the whole answer."""
+
+
+def batched_url_if_up(chat_url: str, timeout: float = 2.0) -> str | None:
+    """Return chat_url when its server answers /health (vLLM/SGLang), else None."""
+    health = chat_url.split("/v1/")[0] + "/health"
+    try:
+        with urllib.request.urlopen(health, timeout=timeout) as r:
+            return chat_url if r.status == 200 else None
+    except Exception:  # noqa: BLE001
+        return None
 
 
 def _generate_openai(url: str, model: str, prompt: str, image_b64: str, num_predict: int, timeout: int) -> dict:
@@ -103,10 +116,15 @@ def needs_deep(store: Store, asset_id: int, threshold: float) -> bool:
 
 def run(store_factory, tier: str, model: str, ollama_url: str, worker: str = "local",
         parallel: int = 1, deep_threshold: float = 0.7, deep_all: bool = False,
-        limit: int | None = None, progress=None) -> dict:
+        limit: int | None = None, progress=None, remote: bool = False) -> dict:
+    """remote=True marks a worker on another machine: it is never handed a private asset's
+    thumbnail (path rules at scan time; `sensitive` verdicts also mark the asset private for
+    every later stage)."""
     stage = f"review_{tier}"
     lock = threading.Lock()
-    stats = {"done": 0, "skipped": 0, "failed": 0, "ms_total": 0}
+    stats = {"done": 0, "skipped": 0, "failed": 0, "ms_total": 0, "backend_down": False}
+    outage = {"consecutive": 0}
+    store_factory().reclaim_stale(stage)
 
     def loop(slot: int):
         store = store_factory()
@@ -114,9 +132,9 @@ def run(store_factory, tier: str, model: str, ollama_url: str, worker: str = "lo
         try:
             while True:
                 with lock:
-                    if limit is not None and stats["done"] + stats["failed"] >= limit:
+                    if stats["backend_down"] or (limit is not None and stats["done"] + stats["failed"] >= limit):
                         return
-                aid = store.claim(stage, name)
+                aid = store.claim(stage, name, remote=remote)
                 if aid is None:
                     return
                 asset = store.asset(aid)
@@ -130,7 +148,7 @@ def run(store_factory, tier: str, model: str, ollama_url: str, worker: str = "lo
                     with lock:
                         stats["skipped"] += 1
                     continue
-                thumb = store.get_thumb(aid)
+                thumb = store.get_thumb_for(aid, remote)
                 if not thumb:
                     store.skip(aid, stage, "no thumbnail")
                     with lock:
@@ -142,12 +160,23 @@ def run(store_factory, tier: str, model: str, ollama_url: str, worker: str = "lo
                     ms = int((time.time() - t0) * 1000)
                     with store.tx():
                         store.put_review(aid, tier, model, result, name, ms)
+                        if result.get("sensitive"):
+                            store.mark_private(aid)     # later stages stay on this machine
                     store.finish(aid, stage)
                     with lock:
-                        stats["done"] += 1; stats["ms_total"] += ms
+                        stats["done"] += 1; stats["ms_total"] += ms; outage["consecutive"] = 0
                         if progress:
                             progress(stats, asset["path"], result)
-                except Exception as exc:  # noqa: BLE001
+                except (urllib.error.URLError, ConnectionError, TimeoutError, OSError) as exc:
+                    # the model server, not the image, failed: hand the work back and stop cleanly
+                    store.finish(aid, stage, "pending")
+                    with lock:
+                        outage["consecutive"] += 1
+                        if outage["consecutive"] >= BACKEND_DOWN_AFTER:
+                            stats["backend_down"] = True
+                            stats["backend_error"] = f"{type(exc).__name__}: {exc}"[:200]
+                    time.sleep(min(30, 2 ** outage["consecutive"]))
+                except Exception as exc:  # noqa: BLE001 — this image failed; the rest continue
                     store.finish(aid, stage, "error", f"{type(exc).__name__}: {exc}"[:300])
                     with lock:
                         stats["failed"] += 1

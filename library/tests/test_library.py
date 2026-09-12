@@ -114,13 +114,14 @@ def test_plan_approve_apply_never_touches_source_and_is_idempotent(library):
 
     assert organize.approve(store, everything=True) == 6
     applied = organize.apply(store)
-    assert applied == {"applied": 4, "already_present": 0, "duplicates_noted": 2, "failed": 0}
-    placed = sorted(p.relative_to(dest).as_posix() for p in dest.rglob("*") if p.is_file())
+    assert applied == {"applied": 4, "moved": 0, "already_present": 0, "duplicates_noted": 2, "failed": 0}
+    placed = sorted(p.relative_to(dest).as_posix() for p in dest.rglob("*") if p.is_file() and ".beast" not in p.parts)
     assert len(placed) == 4 and placed[0].startswith("Beach trip/")
+    assert (dest / ".beast" / "manifest.json").exists()
     for p in dest.rglob("*.jpg"):
         assert hashlib.sha256(p.read_bytes()).hexdigest() in before.values()
     assert {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in src.iterdir()} == before
-    assert organize.apply(store) == {"applied": 0, "already_present": 0, "duplicates_noted": 0, "failed": 0}
+    assert organize.apply(store) == {"applied": 0, "moved": 0, "already_present": 0, "duplicates_noted": 0, "failed": 0}
 
     # a different file already at the destination is never overwritten
     victim = next(dest.rglob("*_party.jpg"))

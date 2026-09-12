@@ -60,6 +60,11 @@ def _ddl(pg: bool, embed_dim: int) -> list[str]:
         f"CREATE TABLE IF NOT EXISTS ledger (id {pk}, ts TEXT NOT NULL, event TEXT NOT NULL, detail TEXT)",
         """CREATE TABLE IF NOT EXISTS albums (asset_id BIGINT PRIMARY KEY, album TEXT NOT NULL,
             source TEXT NOT NULL, group_id INT)""",
+        f"""CREATE TABLE IF NOT EXISTS exemplars (id {pk}, person_id BIGINT NOT NULL,
+            face_id BIGINT NOT NULL, vec {vec(FACE_DIM)} NOT NULL)""",
+        "CREATE INDEX IF NOT EXISTS exemplars_person ON exemplars(person_id)",
+        f"""CREATE TABLE IF NOT EXISTS face_rejects (face_id BIGINT NOT NULL, person_id BIGINT NOT NULL,
+            PRIMARY KEY (face_id, person_id))""",
     ]
 
 
@@ -79,23 +84,30 @@ class Store:
             Path(target).parent.mkdir(parents=True, exist_ok=True)
             self.con = sqlite3.connect(str(target), timeout=60)
             self.con.execute("PRAGMA journal_mode=WAL")
+            self.con.execute("PRAGMA synchronous=FULL")     # a committed ledger row survives power loss
             self.con.execute("PRAGMA busy_timeout=60000")
+        self.target = str(target)
         for stmt in _ddl(self.pg, embed_dim):
             self._exec(stmt)
         self._migrate()
         self.con.commit()
 
-    _EXTRA_COLUMNS = {"event_id": "BIGINT", "event_title": "TEXT", "stack_of": "BIGINT"}
+    _EXTRA_COLUMNS = {
+        "assets": {"event_id": "BIGINT", "event_title": "TEXT", "stack_of": "BIGINT",
+                   "private": "INT DEFAULT 0", "duration": "REAL"},
+        "faces": {"confirmed": "INT DEFAULT 0", "similarity": "REAL"},
+    }
 
     def _migrate(self) -> None:
-        if self.pg:
-            have = {r[0] for r in self.fetchall(
-                "SELECT column_name FROM information_schema.columns WHERE table_name = 'assets'")}
-        else:
-            have = {r[1] for r in self.fetchall("PRAGMA table_info(assets)")}
-        for col, typ in self._EXTRA_COLUMNS.items():
-            if col not in have:
-                self._exec(f"ALTER TABLE assets ADD COLUMN {col} {typ}")
+        for table, cols in self._EXTRA_COLUMNS.items():
+            if self.pg:
+                have = {r[0] for r in self.fetchall(
+                    "SELECT column_name FROM information_schema.columns WHERE table_name = ?", (table,))}
+            else:
+                have = {r[1] for r in self.fetchall(f"PRAGMA table_info({table})")}
+            for col, typ in cols.items():
+                if col not in have:
+                    self._exec(f"ALTER TABLE {table} ADD COLUMN {col} {typ}")
 
     # ---- low-level -------------------------------------------------------
     def _q(self, sql: str) -> str:
@@ -147,8 +159,8 @@ class Store:
         if existing and existing[1] == row["sha256"]:
             return int(existing[0])
         cols = ("path", "sha256", "size", "mtime", "width", "height", "format",
-                "taken_at", "exif", "phash", "dhash")
-        vals = tuple(row.get(c) for c in cols)
+                "taken_at", "exif", "phash", "dhash", "private", "duration")
+        vals = tuple(row.get(c, 0 if c == "private" else None) for c in cols)
         if existing:
             sets = ", ".join(f"{c} = ?" for c in cols[1:])
             self.execute(f"UPDATE assets SET {sets}, dup_of = NULL, cluster_id = NULL "
@@ -180,7 +192,8 @@ class Store:
         return bytes(row[0]) if row else None
 
     _ASSET_COLS = ("id", "path", "sha256", "size", "width", "height", "format", "taken_at",
-                   "phash", "dhash", "dup_of", "cluster_id", "exif", "event_id", "event_title", "stack_of")
+                   "phash", "dhash", "dup_of", "cluster_id", "exif", "event_id", "event_title", "stack_of",
+                   "private", "duration")
 
     def asset(self, asset_id: int) -> dict | None:
         row = self.fetchone(f"SELECT {', '.join(self._ASSET_COLS)} FROM assets WHERE id = ?", (asset_id,))
@@ -238,10 +251,58 @@ class Store:
 
     # ---- faces -----------------------------------------------------------
     def put_face(self, asset_id: int, bbox: list[float], score: float, vec: np.ndarray,
-                 person_id: int | None) -> None:
-        self.execute("INSERT INTO faces (asset_id, bbox, score, vec, person_id) VALUES (?, ?, ?, ?, ?)",
-                     (asset_id, json.dumps([round(float(v), 1) for v in bbox]), float(score),
-                      self._vec_in(vec), person_id))
+                 person_id: int | None, similarity: float | None = None, confirmed: int = 0) -> int:
+        params = (asset_id, json.dumps([round(float(v), 1) for v in bbox]), float(score),
+                  self._vec_in(vec), person_id, similarity, confirmed)
+        sql = ("INSERT INTO faces (asset_id, bbox, score, vec, person_id, similarity, confirmed) "
+               "VALUES (?, ?, ?, ?, ?, ?, ?)")
+        if self.pg:
+            return int(self.fetchone(sql + " RETURNING id", params)[0])
+        return int(self._exec(sql, params).lastrowid)
+
+    def faces(self, person_id: int | None = None, unassigned: bool = False) -> list[dict]:
+        where = ("WHERE person_id = ?", (person_id,)) if person_id is not None else \
+                ("WHERE person_id IS NULL", ()) if unassigned else ("", ())
+        rows = self.fetchall("SELECT id, asset_id, bbox, score, vec, person_id, similarity, confirmed "
+                             f"FROM faces {where[0]} ORDER BY id", where[1])
+        return [{"id": int(r[0]), "asset_id": int(r[1]), "bbox": json.loads(r[2]), "score": r[3],
+                 "vec": self._vec_out(r[4]), "person_id": r[5], "similarity": r[6],
+                 "confirmed": int(r[7] or 0)} for r in rows]
+
+    def set_face_person(self, face_id: int, person_id: int | None, similarity: float | None,
+                        confirmed: int) -> None:
+        self.execute("UPDATE faces SET person_id = ?, similarity = ?, confirmed = ? WHERE id = ?",
+                     (person_id, similarity, confirmed, face_id))
+
+    def exemplars(self, person_id: int | None = None) -> dict[int, list[tuple[int, np.ndarray]]]:
+        where = "WHERE person_id = ?" if person_id is not None else ""
+        out: dict[int, list[tuple[int, np.ndarray]]] = {}
+        for pid, fid, vec in self.fetchall(f"SELECT person_id, face_id, vec FROM exemplars {where} ORDER BY id",
+                                           (person_id,) if person_id is not None else ()):
+            out.setdefault(int(pid), []).append((int(fid), self._vec_out(vec)))
+        return out
+
+    def add_exemplar(self, person_id: int, face_id: int, vec: np.ndarray) -> None:
+        self.execute("INSERT INTO exemplars (person_id, face_id, vec) VALUES (?, ?, ?)",
+                     (person_id, face_id, self._vec_in(vec)))
+
+    def clear_exemplars(self, person_id: int) -> None:
+        self.execute("DELETE FROM exemplars WHERE person_id = ?", (person_id,))
+
+    def rejects(self) -> set[tuple[int, int]]:
+        return {(int(f), int(p)) for f, p in self.fetchall("SELECT face_id, person_id FROM face_rejects")}
+
+    def reject_face(self, face_id: int, person_id: int) -> None:
+        self.execute("INSERT INTO face_rejects (face_id, person_id) VALUES (?, ?) ON CONFLICT DO NOTHING",
+                     (face_id, person_id))
+
+    def person_by_label(self, label: str) -> int | None:
+        row = self.fetchone("SELECT id FROM persons WHERE LOWER(label) = LOWER(?)", (label,))
+        return int(row[0]) if row else None
+
+    def delete_person(self, person_id: int) -> None:
+        self.execute("DELETE FROM exemplars WHERE person_id = ?", (person_id,))
+        self.execute("DELETE FROM persons WHERE id = ?", (person_id,))
 
     def persons(self) -> list[tuple[int, str | None, np.ndarray, int]]:
         return [(int(i), lbl, self._vec_out(c), int(n)) for i, lbl, c, n in
@@ -290,20 +351,31 @@ class Store:
         return None
 
     # ---- queue -----------------------------------------------------------
-    def claim(self, stage: str, worker: str) -> int | None:
+    def claim(self, stage: str, worker: str, remote: bool = False) -> int | None:
+        """remote=True: this worker is on another machine — private assets are never handed to it."""
+        guard = ("AND asset_id NOT IN (SELECT id FROM assets WHERE private = 1) " if remote else "")
         if self.pg:
             row = self.fetchone(
                 "UPDATE queue SET status = 'running', worker = ?, claimed_at = ? WHERE id = ("
-                "SELECT id FROM queue WHERE stage = ? AND status = 'pending' ORDER BY id "
+                f"SELECT id FROM queue WHERE stage = ? AND status = 'pending' {guard}ORDER BY id "
                 "FOR UPDATE SKIP LOCKED LIMIT 1) RETURNING asset_id", (worker, _now(), stage))
         else:
             self.con.execute("BEGIN IMMEDIATE")
             row = self.fetchone(
                 "UPDATE queue SET status = 'running', worker = ?, claimed_at = ? WHERE id = ("
-                "SELECT id FROM queue WHERE stage = ? AND status = 'pending' ORDER BY id LIMIT 1) "
+                f"SELECT id FROM queue WHERE stage = ? AND status = 'pending' {guard}ORDER BY id LIMIT 1) "
                 "RETURNING asset_id", (worker, _now(), stage))
         self.commit()
         return int(row[0]) if row else None
+
+    def get_thumb_for(self, asset_id: int, remote: bool) -> bytes | None:
+        """Thumbnail access with the privacy rule enforced in one place."""
+        if remote and self.fetchone("SELECT private FROM assets WHERE id = ?", (asset_id,))[0]:
+            return None
+        return self.get_thumb(asset_id)
+
+    def mark_private(self, asset_id: int) -> None:
+        self.execute("UPDATE assets SET private = 1 WHERE id = ?", (asset_id,))
 
     def finish(self, asset_id: int, stage: str, status: str = "done", error: str | None = None) -> None:
         self.execute("UPDATE queue SET status = ?, error = ? WHERE asset_id = ? AND stage = ?",
@@ -312,6 +384,41 @@ class Store:
 
     def skip(self, asset_id: int, stage: str, reason: str) -> None:
         self.finish(asset_id, stage, "skipped", reason)
+
+    STALE_MINUTES = 30
+
+    def reclaim_stale(self, stage: str | None = None, minutes: int = STALE_MINUTES) -> int:
+        """A claim older than `minutes` belongs to a worker that died; hand the work back.
+        Called at the start of every stage run, so recovery from a crash is automatic."""
+        cutoff = time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime(time.time() - minutes * 60))
+        where = "status = 'running' AND claimed_at < ?" + (" AND stage = ?" if stage else "")
+        params = (cutoff, stage) if stage else (cutoff,)
+        cur = self._exec(f"UPDATE queue SET status = 'pending', worker = NULL, claimed_at = NULL WHERE {where}",
+                         params)
+        n = cur.rowcount
+        if n:
+            self.log("queue.reclaim_stale", {"stage": stage, "count": n, "older_than_min": minutes})
+        self.commit()
+        return n
+
+    def integrity(self) -> str:
+        if self.pg:
+            return "ok" if self.fetchone("SELECT 1")[0] == 1 else "unreachable"
+        return str(self.fetchone("PRAGMA integrity_check")[0])
+
+    def backup(self, dest: Path) -> Path:
+        """Consistent copy of the whole store (SQLite online backup API; pg_dump for Postgres)."""
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        if self.pg:
+            import subprocess
+            with open(dest, "wb") as fh:
+                subprocess.run(["pg_dump", "--format=custom", self.target], stdout=fh, check=True)
+            return dest
+        out = sqlite3.connect(str(dest))
+        with out:
+            self.con.backup(out)
+        out.close()
+        return dest
 
     def requeue(self, stage: str, statuses: tuple[str, ...] = ("running", "error")) -> int:
         marks = ", ".join("?" for _ in statuses)
@@ -346,7 +453,8 @@ class Store:
                      reason: str) -> None:
         self.execute("INSERT INTO proposals (asset_id, action, dest, album, reason, status, created_at) "
                      "VALUES (?, ?, ?, ?, ?, 'pending', ?) ON CONFLICT (asset_id, action) DO UPDATE SET "
-                     "dest = excluded.dest, album = excluded.album, reason = excluded.reason, "
+                     "dest = CASE WHEN proposals.status = 'applied' THEN proposals.dest ELSE excluded.dest END, "
+                     "album = excluded.album, reason = excluded.reason, "
                      "status = CASE WHEN proposals.status = 'applied' THEN 'applied' ELSE 'pending' END",
                      (asset_id, action, dest, album, reason, _now()))
 

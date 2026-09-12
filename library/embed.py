@@ -49,6 +49,7 @@ def embed_texts(texts: list[str], model_name: str = DEFAULT_MODEL) -> np.ndarray
 
 def run(store: Store, model_name: str = DEFAULT_MODEL, batch_size: int = 32, worker: str = "local",
         limit: int | None = None) -> dict:
+    store.reclaim_stale("embed")
     done = failed = 0
     batch: list[tuple[int, Image.Image]] = []
 
