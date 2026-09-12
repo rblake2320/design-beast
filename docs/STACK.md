@@ -21,7 +21,8 @@ One line per capability; re-verify dates when checked. Machine: Windows 11, RTX 
 | Real-ESRGAN | `D:\ai\tools\realesrgan\realesrgan-ncnn-vulkan.exe` — image upscale (video: see SeedVR2 in SCOUT-2026-07) | staged |
 | ACE-Step 1.5 | `D:\AI\ACE-Step-1.5` (`uv run acestep` → Gradio, `acestep-api` → REST) — local music gen, Apache 2.0 ship-safe, full songs in seconds on 5090; DiT/LM weights auto-download on first run | ✅ installed 2026-07-31, first-run download pending |
 | Game editing suite | Krita 5 (paint) · GIMP 3.2 (`%LOCALAPPDATA%\Programs\GIMP 3`) · Audacity (audio) · Tiled (tilemaps) · Inkscape (vector/UI) · Godot 4.7.1 (`D:\tools\godot`, portable — 2D-strong second engine) · Pixelorama 1.2 (`D:\tools\pixelorama`, pixel art/sprite sheets) · gltf-transform CLI (GLB optimize) — all free/OSS, all in doctor | ✅ installed + verified 2026-07-31 |
-| OCR | easyocr at `D:\ai` (+ deepface) — feeds the skill-compiler's UI-text extraction | staged, pre-existing |
+| OCR | easyocr 1.7.2 (GPU) — feeds the skill-compiler's UI-text extraction and `beast library ocr` | ✅ verified 2026-09-12 |
+| Media library organizer | `beast library` — SigLIP2 SO400M (`google/siglip2-so400m-patch14-384`, HF cache `D:\Models\huggingface`), InsightFace buffalo_l (`~\.insightface`), imagehash, easyocr, Ollama qwen3-vl:8b / qwen3.8:27b / bge-m3; store = SQLite (`library/data/`) or pgvector (`BEAST_LIBRARY_DSN`; dev container `beast-library-pg` :5436) | ✅ reproduced 2026-09-12 on 399 real photos (docs/LIBRARY.md) |
 
 ## Design skills (native Skill tool)
 frontend-design · impeccable · theme-factory · dataviz · algorithmic-art ·

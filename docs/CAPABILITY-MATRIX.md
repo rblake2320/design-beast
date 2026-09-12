@@ -115,6 +115,18 @@ COSTS-BASELINE.md (pricing sources), WIN-PLAN.md (what we build next).
 | Section-only processing (--start/--end) | shipped | free | rare |
 | Competitor video analysis (score shots, pacing, judge frames) | watch bundle + judge/YOLO/SAM over frames | free | nobody |
 
+## Media library (organizing what you already have)
+
+| Capability | Beast | Cost | Who else / their model |
+|---|---|---|---|
+| Inventory + exact/near-duplicate clustering (SHA-256, pHash/dHash, SigLIP2-confirmed) | **beast library scan/dedup (reproduced 2026-09-12: 399 real photos, 17 dups)** | free | Gemini Photos/Apple dedupe — cloud, their models; PhotoSweeper ($) |
+| Natural-language + similar-image search over a local library | **SigLIP2 SO400M embeddings, SQLite or pgvector** | free | Google/Apple Photos (cloud, no export); Immich (free, CLIP ViT-B) |
+| Face grouping, local only, unlabelled until you name them | **InsightFace buffalo_l** | free | Apple/Google (cloud), Immich |
+| Structured VLM review (caption, tags, quality, document/sensitive flags, album) | **two-tier local: qwen3-vl:8b every representative → qwen3.8:27b on low-confidence/documents** | free | Excire Foto ($), Mylio ($) — smaller taggers |
+| Document/receipt/screenshot OCR, only where the VLM saw a document | easyocr GPU | free | Google Photos (cloud) |
+| Album plan → approval queue → hash-verified copy, never delete/overwrite | **beast library plan/approve/apply + ledger** | free | nobody ships approval-gated organizing |
+| Multi-node review workers (5090 + DGX Sparks) from one queue | pgvector store, `FOR UPDATE SKIP LOCKED`, thumbnails in-store | free | nobody local |
+
 ## Knowledge & Automation (the surround)
 
 - MemoryWeb (6,185 memories, 3-tier search) · UltraRAG · project-hub · NotebookLM

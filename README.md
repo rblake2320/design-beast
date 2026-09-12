@@ -41,6 +41,7 @@ workflow, not model — and this repo encodes the workflow.
 | `docs/OPPORTUNITY-LEDGER.md` | Evidence-first discovery protocol + parked openings |
 | `studio/` | The API: jobs, GPU leases, judge loop, provenance manifests, env snapshots, chained ledger, backend registry |
 | `scripts/` | doctor · validation/operator status · resource admission · recovery · Watch and evidence gates |
+| `library/` | Media library organizer: inventory, dedup, SigLIP2 search, faces, VLM review, OCR, approval-gated organize — `docs/LIBRARY.md` |
 | `bin/beast.ps1` | CLI: `beast doctor · validate · status · resource-check · checkpoint · recover · watch · watch-validate` |
 | `requirements*.txt` | Reproducible Studio runtime and test dependencies |
 | `repos.yml` | Linked project repos (incl. vigil, hyperframes, ai-content-engine) |
@@ -92,6 +93,21 @@ See [`docs/WATCH-LEARN.md`](docs/WATCH-LEARN.md).
 The Watch publication contract now requires frame-linked visual-only facts and
 real reinspection references for ambiguous segments. Parsing captions alone cannot
 pass the watching gate.
+
+### Organize a photo/media library
+
+```powershell
+.\bin\beast.ps1 library run D:\Photos --dest D:\Photos-Organized   # every stage, read-only on the source
+.\bin\beast.ps1 library search "dog beside a red truck" --from 2024-01
+.\bin\beast.ps1 library people --label 5 "Grandma"
+.\bin\beast.ps1 library proposals ; .\bin\beast.ps1 library approve --all ; .\bin\beast.ps1 library apply
+```
+
+Inventory + SHA-256/pHash dedup → SigLIP2 embeddings → InsightFace people → local VLM
+review of each cluster representative (fast tier every image, 27B deep tier only where
+needed) → OCR on documents → album plan → approval queue → hash-verified copy. Nothing
+is ever deleted or overwritten. Workers on other machines (DGX Sparks) share one pgvector
+queue. See [`docs/LIBRARY.md`](docs/LIBRARY.md).
 
 ## Domains this covers
 

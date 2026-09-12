@@ -99,6 +99,40 @@ if ollama:
 check("MemoryWeb :8100", True if _http_ok("http://localhost:8100/api/health")
       else None, "", "nssm restart MemoryWeb-API (optional service)")
 
+# ---- beast library (media organizer) lane — optional, degrades to WARN ----
+_lib_missing = []
+for mod in ("imagehash", "insightface", "easyocr", "transformers", "onnxruntime", "pgvector"):
+    try:
+        __import__(mod)
+    except ImportError:
+        _lib_missing.append(mod)
+check("library python deps", True if not _lib_missing else None,
+      "imagehash insightface easyocr transformers onnxruntime pgvector" if not _lib_missing
+      else f"missing: {' '.join(_lib_missing)}", "pip install -r requirements-library.txt")
+_siglip = "models--" + config.get("library_embed_model").replace("/", "--")
+_hf_dirs = [Path(os.environ.get("HF_HOME", Path.home() / ".cache/huggingface")) / "hub"]
+for _var in ("HF_HUB_CACHE", "TRANSFORMERS_CACHE"):   # transformers honours both (legacy on Windows boxes)
+    if os.environ.get(_var):
+        _hf_dirs.append(Path(os.environ[_var]))
+_siglip_hit = next((d / _siglip for d in _hf_dirs if (d / _siglip).exists()), None)
+check("library SigLIP2 weights", True if _siglip_hit else None, str(_siglip_hit or _hf_dirs[0] / _siglip),
+      "first `beast library embed` run downloads them (~1.6 GB)")
+_face = Path.home() / ".insightface/models/buffalo_l"
+check("library InsightFace buffalo_l", True if _face.exists() else None, str(_face),
+      "first `beast library faces` run downloads it (~300 MB)")
+if ollama:
+    _lib_models = {config.get("library_fast_model"), config.get("library_deep_model"), "bge-m3"}
+    try:
+        _have = {m["name"] for m in tags.get("models", [])} | {m["name"].split(":")[0] for m in tags.get("models", [])}
+        _lack = sorted(m for m in _lib_models if m not in _have and m.split(":")[0] not in _have)
+        check("library review models", True if not _lack else None,
+              ", ".join(sorted(_lib_models)) if not _lack else f"missing: {', '.join(_lack)}",
+              "ollama pull " + " ".join(_lack))
+    except NameError:
+        check("library review models", None, "could not list Ollama models", "")
+check("library store", True, "postgres/pgvector (shared, BEAST_LIBRARY_DSN)" if config.get("library_dsn")
+      else f"sqlite {config.get('library_db')}")
+
 # ---- audio / vision venvs (optional lanes) ----
 for name, path in [
     ("yolo-vision venv", Path(r"D:\content\yolo-vision\.venv")),
