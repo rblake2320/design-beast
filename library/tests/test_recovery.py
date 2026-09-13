@@ -139,6 +139,33 @@ def test_reconcile_moves_files_when_album_changes(placed):
     assert sorted(p.name for p in src.iterdir()) == ["a.jpg", "b.jpg", "c.jpg"]   # source untouched
 
 
+def test_approval_survives_a_replan_unless_the_proposal_changed(tmp_path: Path):
+    """Found by the soak: watch mode re-plans every cycle, and a re-plan used to reset
+    'approved' back to 'pending', so unattended apply never placed anything."""
+    src = tmp_path / "src"; src.mkdir()
+    for i, n in enumerate(("a.jpg", "b.jpg")):
+        _photo(src / n, 300 + i)
+    store = Store(tmp_path / "lib.db"); inventory.scan(store, src); dedup.cluster(store, embed_model=None)
+    _fake_free_review(store, {"a.jpg": "Trip", "b.jpg": "Home"})
+    plan = lambda: organize.plan(store, tmp_path / "out", ollama_url="http://127.0.0.1:9/api/generate")  # noqa: E731
+    plan()
+    assert organize.approve(store, album="Trip") == 1
+    plan()                                                     # the next watch cycle
+    status = {p["album"]: p["status"] for p in store.proposals() if p["action"] == "link"}
+    assert status == {"Trip": "approved", "Home": "pending"}
+    assert organize.approved_albums(store) == {"Trip"}
+    b = next(a for a in store.assets() if a["path"].endswith("b.jpg"))
+    store.put_album(b["id"], "Trip", "group", 1); store.commit()
+    plan()                                                     # b now joins an already-approved album
+    ids = [p["id"] for p in store.proposals("pending") if p["album"] in organize.approved_albums(store)]
+    assert organize.approve(store, ids=ids) == 1
+    assert organize.apply(store)["applied"] == 2
+    a = next(x for x in store.assets() if x["path"].endswith("a.jpg"))
+    store.put_album(a["id"], "Beach", "group", 2); store.commit()
+    plan()                                                     # a changed album → a move, still needs a yes
+    assert [p["status"] for p in store.proposals() if p["action"] == "move:link"] == ["pending"]
+
+
 def test_private_assets_never_reach_a_remote_worker(tmp_path: Path):
     src = tmp_path / "src"; (src / "IDs").mkdir(parents=True); (src / "Trips").mkdir()
     _photo(src / "IDs" / "passport.jpg", 5); _photo(src / "Trips" / "beach.jpg", 6)

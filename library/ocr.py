@@ -49,11 +49,14 @@ def run(store: Store, worker: str = "local", documents_only: bool = True,
         if documents_only and not is_document(store, aid):
             store.skip(aid, "ocr", "not a document"); skipped += 1; continue
         source = store.asset(aid)
+        review = store.review(aid) or {}
         try:
             image = None
-            if source and source["path"]:
+            # Full resolution only for real documents (scans, forms); the 1024px thumbnail is
+            # plenty for screenshots and signs and is ~4x faster on phone-camera originals.
+            if source and source["path"] and review.get("document"):
                 try:
-                    image = Image.open(source["path"])   # full resolution when reachable
+                    image = Image.open(source["path"])
                     image.load()
                 except OSError:
                     image = None

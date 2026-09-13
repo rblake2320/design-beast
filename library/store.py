@@ -455,7 +455,10 @@ class Store:
                      "VALUES (?, ?, ?, ?, ?, 'pending', ?) ON CONFLICT (asset_id, action) DO UPDATE SET "
                      "dest = CASE WHEN proposals.status = 'applied' THEN proposals.dest ELSE excluded.dest END, "
                      "album = excluded.album, reason = excluded.reason, "
-                     "status = CASE WHEN proposals.status = 'applied' THEN 'applied' ELSE 'pending' END",
+                     # an approval survives a re-plan unless the proposal itself changed
+                     "status = CASE WHEN proposals.status = 'applied' THEN 'applied' "
+                     "WHEN proposals.status = 'approved' AND proposals.dest IS NOT DISTINCT FROM excluded.dest "
+                     "AND proposals.album IS NOT DISTINCT FROM excluded.album THEN 'approved' ELSE 'pending' END",
                      (asset_id, action, dest, album, reason, _now()))
 
     def proposals(self, status: str | None = None, album: str | None = None) -> list[dict]:

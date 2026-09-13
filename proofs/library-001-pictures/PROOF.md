@@ -88,6 +88,42 @@ geocoding (PhotoPrism/Google-style), burst culling by sharpness (Excire-style). 
 with reasons: ONNX/TensorRT SigLIP2 (74 img/s already, not the bottleneck), Perception
 Encoder (needs a measured retrieval win on this data), video, timeline/map UI.
 
+## Round 3 — durability, people, and the second real library
+
+**Second real library (`D:\OneDrive\Pictures`, 1,392 files, own store `library/data/onedrive.db`,
+dest `D:\Photos-Organized`):** 1,359 assets inventoried (HEIC included), 80 duplicates, **85 burst
+stacks / 127 frames**, 149 faces → 84 people (9 recurring), 1,155 fast reviews via vLLM in ≈ 3 min,
+1,042 OCR'd, 18 deep, 301 time events (only 1 file carried GPS — this export has no location data,
+so place naming is exercised by test, not here), 317 groups → 104 named once → **116 albums**
+(Python Selenium Tutorials 169, AI Agent Hive Screenshots 155, Election Tracking 95, Martial Arts
+Gear 65, Fantasy Character Art 56 …). Applied: **1,305 files, 0 failed**, 80 duplicates noted,
+manifest `fd18962e…`, 30/30 random hash checks, source still 1,392 files, 122 stack folders,
+`People/Person-N` for 9 recurring people, backup 115 MB in `D:\Photos-Organized\.beast\backups`.
+Mid-run I killed the process during OCR on purpose; `recover` reclaimed the 1 running row and
+the remaining stages resumed with no rework.
+
+**People (phone-style):** on the first library, faces v2 grouped 41 faces → 17 people; naming
+person 24 (`--label 24 Test-A`) returned all 14 photos and `search --person Test-A` works by
+name; the live InsightFace test passes on a real face image. A "same person?" check on three
+visually similar YouTube-thumbnail persons measured exemplar cosines 0.145 / −0.087 / 0.079 —
+the model says different people, and on inspection it was right.
+
+**Fault-injection tests (all real, `library/tests/test_recovery.py`):** worker death → reclaimed;
+model server down → work returns to `pending`, nothing marked error; crash mid-copy → no half
+file, redone; edited copy → reported, never overwritten; backup/restore round trip with an
+integrity gate; lost store rebuilt from the manifest without re-copying; album change → atomic
+verified move; private folders never handed to a remote worker; video via a real ffmpeg frame.
+
+**Soak (`bench/library_soak.py`, watch mode + live faults), honestly:**
+- Run 1 (40 min): reported "pass" but **no fault ever fired** — a scheduler bug (`dict.pop` in the
+  condition). Discarded as evidence.
+- Run 2 (25 min): faults fired. kill → supervisor restart 5 s later; vLLM stopped → the next two
+  cycles reviewed with Ollama `qwen3-vl:8b` (loud fallback in the log) → back on vLLM after
+  `docker start`; 11 cycles, 0 loop errors, integrity ok. **Verdict FAIL**: the simulated owner
+  approval never ran (another script bug), so 0 files were placed and the partial-file fault
+  had no target. `bench/results/library-soak-20260912-1825.json`, `-…-19xx.json`.
+- Run 3: see the verdict block appended below.
+
 ## Honest gaps
 
 - Album quality was judged by reading the names and sample groups, not against a labelled set.
