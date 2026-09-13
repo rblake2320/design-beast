@@ -89,7 +89,8 @@ def main() -> int:
             elif k == "vllm_start":
                 log(event="fault.vllm_start", out=sh("docker", "start", "beast-vllm").stdout.strip())
             elif k == "partial":
-                victims = [p for p in dest.rglob("*.jpg") if ".beast" not in p.parts]
+                victims = [p for p in dest.rglob("*") if p.is_file() and ".beast" not in p.parts
+                           and p.suffix.lower() in (".jpg", ".jpeg", ".png", ".heic")]
                 if victims:
                     v = random.choice(victims); v.unlink()
                     v.with_name(v.name + ".beast-partial").write_bytes(b"half")
