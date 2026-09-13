@@ -18,6 +18,7 @@ switch ($Cmd) {
     'watch'   { python (Join-Path $Repo 'scripts\watch_video.py') @Rest }
     'watch-index' { python (Join-Path $Repo 'scripts\watch_index.py') @Rest }
     'watch-seek' { python (Join-Path $Repo 'scripts\watch_seek.py') @Rest }
+    'library' { python (Join-Path $Repo 'scripts\library.py') @Rest }
     'recipes' {
         Get-ChildItem (Join-Path $Repo 'design-system\recipes') -Filter *.md | ForEach-Object {
             $head = (Get-Content $_.FullName -TotalCount 3) -join ' '
@@ -40,6 +41,8 @@ beast watch-validate PROCEDURE TIMELINE  prove visual-only and reinspection link
 beast watch     video URL/file -> frames+transcript bundle an agent can "watch"
 beast watch-index BUNDLE ["query"] -> build/search semantic visual memory
 beast watch-seek BUNDLE --at TIME [--level 1|2|3] -> rewind/forward for missing evidence
+beast library   organize a photo/media collection: run ROOT --dest OUT | scan | dedup | embed |
+                faces | ocr | review --tier fast|deep | search "..." | people | plan | approve | apply
 beast recipes   list prompt recipe cards
 '@
     }

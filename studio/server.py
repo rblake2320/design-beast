@@ -87,6 +87,10 @@ def _nim_key() -> str:
 app = FastAPI(title="Beast Studio")
 app.mount("/runs", StaticFiles(directory=RUNS), name="runs")
 app.mount("/uploads", StaticFiles(directory=UPLOADS), name="uploads")
+
+import library_api  # noqa: E402 — Library tab: search, people naming, approvals, recover
+app.include_router(library_api.router)
+app.get("/library")(library_api.page)
 LOCK = threading.Lock()
 jobs.init()  # durable job store; recovers orphans from a previous process
 

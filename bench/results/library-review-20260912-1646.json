@@ -1,0 +1,81 @@
+{
+  "n": 48,
+  "results": {
+    "ollama": {
+      "url": "http://localhost:11434/api/generate",
+      "model": "qwen3-vl:8b",
+      "runs": [
+        {
+          "parallel": 1,
+          "images": 48,
+          "ok": 48,
+          "failed": 0,
+          "seconds": 155.4,
+          "img_per_s": 0.31
+        },
+        {
+          "parallel": 4,
+          "images": 48,
+          "ok": 48,
+          "failed": 0,
+          "seconds": 51.6,
+          "img_per_s": 0.93
+        },
+        {
+          "parallel": 8,
+          "images": 48,
+          "ok": 48,
+          "failed": 0,
+          "seconds": 51.1,
+          "img_per_s": 0.94
+        },
+        {
+          "parallel": 16,
+          "images": 48,
+          "ok": 48,
+          "failed": 0,
+          "seconds": 50.1,
+          "img_per_s": 0.96
+        }
+      ]
+    },
+    "vllm": {
+      "url": "http://127.0.0.1:8021/v1/chat/completions",
+      "model": "Qwen/Qwen3-VL-8B-Instruct-FP8",
+      "runs": [
+        {
+          "parallel": 1,
+          "images": 48,
+          "ok": 48,
+          "failed": 0,
+          "seconds": 189.3,
+          "img_per_s": 0.25
+        },
+        {
+          "parallel": 4,
+          "images": 48,
+          "ok": 48,
+          "failed": 0,
+          "seconds": 59.5,
+          "img_per_s": 0.81
+        },
+        {
+          "parallel": 8,
+          "images": 48,
+          "ok": 48,
+          "failed": 0,
+          "seconds": 29.4,
+          "img_per_s": 1.63
+        },
+        {
+          "parallel": 16,
+          "images": 48,
+          "ok": 48,
+          "failed": 0,
+          "seconds": 6.3,
+          "img_per_s": 7.63
+        }
+      ]
+    }
+  }
+}

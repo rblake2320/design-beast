@@ -35,3 +35,6 @@ beast.config.json
 watched/
 studio/.beast_model_hashes.json
 node_modules/
+
+# beast library store + thumbnails (node-local)
+library/data/
