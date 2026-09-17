@@ -1,0 +1,173 @@
+{
+  "minutes": 25,
+  "events": [
+    {
+      "t": 0.0,
+      "event": "feed",
+      "total": 6
+    },
+    {
+      "t": 0.0,
+      "event": "watch.start",
+      "pid": 90636
+    },
+    {
+      "t": 90.1,
+      "event": "feed",
+      "total": 12
+    },
+    {
+      "t": 150.1,
+      "event": "owner.approve_all",
+      "count": 12
+    },
+    {
+      "t": 180.1,
+      "event": "feed",
+      "total": 18
+    },
+    {
+      "t": 270.1,
+      "event": "feed",
+      "total": 24
+    },
+    {
+      "t": 300.1,
+      "event": "fault.kill_watch"
+    },
+    {
+      "t": 305.1,
+      "event": "watch.exit",
+      "code": 1
+    },
+    {
+      "t": 305.2,
+      "event": "watch.restart",
+      "pid": 65616
+    },
+    {
+      "t": 360.2,
+      "event": "feed",
+      "total": 30
+    },
+    {
+      "t": 450.2,
+      "event": "feed",
+      "total": 36
+    },
+    {
+      "t": 482.1,
+      "event": "fault.vllm_stop",
+      "out": "beast-vllm"
+    },
+    {
+      "t": 542.1,
+      "event": "feed",
+      "total": 42
+    },
+    {
+      "t": 632.1,
+      "event": "feed",
+      "total": 48
+    },
+    {
+      "t": 722.2,
+      "event": "feed",
+      "total": 54
+    },
+    {
+      "t": 722.8,
+      "event": "fault.vllm_start",
+      "out": "beast-vllm"
+    },
+    {
+      "t": 812.9,
+      "event": "feed",
+      "total": 60
+    },
+    {
+      "t": 902.9,
+      "event": "feed",
+      "total": 66
+    },
+    {
+      "t": 993.0,
+      "event": "feed",
+      "total": 72
+    },
+    {
+      "t": 1083.0,
+      "event": "feed",
+      "total": 78
+    },
+    {
+      "t": 1173.0,
+      "event": "feed",
+      "total": 84
+    },
+    {
+      "t": 1263.1,
+      "event": "feed",
+      "total": 90
+    },
+    {
+      "t": 1353.1,
+      "event": "feed",
+      "total": 96
+    },
+    {
+      "t": 1443.2,
+      "event": "feed",
+      "total": 102
+    },
+    {
+      "t": 1503.8,
+      "event": "watch.stop"
+    },
+    {
+      "t": 1504.2,
+      "event": "recover",
+      "integrity": "ok",
+      "verify": {
+        "checked": 0,
+        "ok": 0,
+        "missing_reapproved": 0,
+        "changed": 0
+      },
+      "partials": 0
+    }
+  ],
+  "verdict": {
+    "fed": 102,
+    "placed": 0,
+    "duplicates": 1,
+    "awaiting_approval": 110,
+    "unplaced_and_not_pending": [],
+    "wrong_hash": [],
+    "partials_left": [],
+    "cycles": 17,
+    "watch_errors": [],
+    "stale_reclaims": 2,
+    "integrity": "ok",
+    "counts": {
+      "assets": 102,
+      "duplicates": 1,
+      "clusters": 101,
+      "embeddings": 102,
+      "faces": 17,
+      "persons": 4,
+      "ocr": 84,
+      "reviews_fast": 100,
+      "reviews_deep": 0,
+      "albums": 26,
+      "proposals_pending": 110,
+      "proposals_applied": 1
+    },
+    "faults_fired": [
+      "fault.kill_watch",
+      "fault.vllm_start",
+      "fault.vllm_stop"
+    ],
+    "pass": false
+  }
+}

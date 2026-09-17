@@ -12,6 +12,7 @@ import os
 import shutil
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
@@ -98,6 +99,92 @@ if ollama:
         check("judge model", None, "could not list Ollama models", "")
 check("MemoryWeb :8100", True if _http_ok("http://localhost:8100/api/health")
       else None, "", "nssm restart MemoryWeb-API (optional service)")
+
+# ---- beast library (media organizer) lane — optional, degrades to WARN ----
+_lib_missing = []
+for mod in ("imagehash", "insightface", "easyocr", "transformers", "onnxruntime", "pgvector"):
+    try:
+        __import__(mod)
+    except ImportError:
+        _lib_missing.append(mod)
+check("library python deps", True if not _lib_missing else None,
+      "imagehash insightface easyocr transformers onnxruntime pgvector" if not _lib_missing
+      else f"missing: {' '.join(_lib_missing)}", "pip install -r requirements-library.txt")
+_siglip = "models--" + config.get("library_embed_model").replace("/", "--")
+_hf_dirs = [Path(os.environ.get("HF_HOME", Path.home() / ".cache/huggingface")) / "hub"]
+for _var in ("HF_HUB_CACHE", "TRANSFORMERS_CACHE"):   # transformers honours both (legacy on Windows boxes)
+    if os.environ.get(_var):
+        _hf_dirs.append(Path(os.environ[_var]))
+_siglip_hit = next((d / _siglip for d in _hf_dirs if (d / _siglip).exists()), None)
+check("library SigLIP2 weights", True if _siglip_hit else None, str(_siglip_hit or _hf_dirs[0] / _siglip),
+      "first `beast library embed` run downloads them (~1.6 GB)")
+_face = Path.home() / ".insightface/models/buffalo_l"
+check("library InsightFace buffalo_l", True if _face.exists() else None, str(_face),
+      "first `beast library faces` run downloads it (~300 MB)")
+if ollama:
+    _lib_models = {config.get("library_fast_model"), config.get("library_deep_model"), "bge-m3"}
+    try:
+        _have = {m["name"] for m in tags.get("models", [])} | {m["name"].split(":")[0] for m in tags.get("models", [])}
+        _lack = sorted(m for m in _lib_models if m not in _have and m.split(":")[0] not in _have)
+        check("library review models", True if not _lack else None,
+              ", ".join(sorted(_lib_models)) if not _lack else f"missing: {', '.join(_lack)}",
+              "ollama pull " + " ".join(_lack))
+    except NameError:
+        check("library review models", None, "could not list Ollama models", "")
+check("library store", True, "postgres/pgvector (shared, BEAST_LIBRARY_DSN)" if config.get("library_dsn")
+      else f"sqlite {config.get('library_db')}")
+
+
+def _down_hours(key: str, up: bool) -> float:
+    """Remember since when a lane has been down so a stale outage reads as one, not a blip."""
+    import time
+    state_path = REPO / "session" / "doctor-state.json"
+    try:
+        state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
+    except ValueError:
+        state = {}
+    hours = 0.0
+    if up:
+        state.pop(key, None)
+    else:
+        hours = (time.time() - state.setdefault(key, time.time())) / 3600
+    state_path.parent.mkdir(parents=True, exist_ok=True)
+    state_path.write_text(json.dumps(state, indent=2), encoding="utf-8")
+    return hours
+
+
+# Outcome checks on the store itself: stuck work, permanent errors, a stale backup.
+_lib_db = Path(config.get("library_db"))
+if _lib_db.exists() and not config.get("library_dsn"):
+    try:
+        import sqlite3 as _sq
+        _c = _sq.connect(str(_lib_db))
+        _stuck = _c.execute("SELECT COUNT(*) FROM queue WHERE status = 'running' AND claimed_at < ?",
+                            (time.strftime("%Y-%m-%dT%H:%M:%S",
+                             time.localtime(time.time() - 3600)),)).fetchone()[0]
+        _errs = _c.execute("SELECT COUNT(*) FROM queue WHERE status = 'error'").fetchone()[0]
+        _last_bak = _c.execute("SELECT ts FROM ledger WHERE event = 'backup' ORDER BY id DESC LIMIT 1").fetchone()
+        _n = _c.execute("SELECT COUNT(*) FROM assets").fetchone()[0]
+        _c.close()
+        check("library queue: no stuck claims (>1h)", _stuck == 0, f"{_stuck} stuck of {_n} assets",
+              "beast library recover")
+        check("library queue: no error rows", True if _errs == 0 else None, f"{_errs} errors",
+              "beast library recover  (requeues once; inspect ledger if they return)")
+        _bak_age_h = ((time.time()
+                       - time.mktime(time.strptime(_last_bak[0], "%Y-%m-%dT%H:%M:%S")))
+                      / 3600) if _last_bak else None
+        check("library backup age", True if _bak_age_h is not None and _bak_age_h < 48 else (None if _n < 50 else False),
+              f"{_bak_age_h:.0f} h" if _bak_age_h is not None else "never", "beast library backup --dir <dest>/.beast/backups")
+    except Exception as _exc:  # noqa: BLE001
+        check("library store health", False, f"{type(_exc).__name__}: {_exc}"[:80], "beast library recover / restore")
+
+_vllm_up = _http_ok(config.get("library_vllm_url").split("/v1/")[0] + "/health")
+_vllm_h = _down_hours("library_vllm", _vllm_up)
+# The batched tier is the 8x knob: after a day down it is a FAIL, not an "optional lane".
+check("library batched review (vLLM :8021)", True if _vllm_up else (None if _vllm_h < 24 else False),
+      config.get("library_review_model") if _vllm_up
+      else f"down for {_vllm_h:.1f} h — fast tier falls back to Ollama (8x slower)",
+      "docker start beast-vllm  (recipe: docs/LIBRARY.md)")
 
 # ---- audio / vision venvs (optional lanes) ----
 for name, path in [

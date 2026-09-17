@@ -1,0 +1,164 @@
+{
+  "minutes": 20,
+  "events": [
+    {
+      "t": 0.0,
+      "event": "feed",
+      "total": 6
+    },
+    {
+      "t": 0.0,
+      "event": "watch.start",
+      "pid": 83732
+    },
+    {
+      "t": 90.1,
+      "event": "feed",
+      "total": 12
+    },
+    {
+      "t": 150.1,
+      "event": "owner.approve_all",
+      "count": 12
+    },
+    {
+      "t": 180.1,
+      "event": "feed",
+      "total": 18
+    },
+    {
+      "t": 270.2,
+      "event": "feed",
+      "total": 24
+    },
+    {
+      "t": 300.2,
+      "event": "fault.kill_watch"
+    },
+    {
+      "t": 305.2,
+      "event": "watch.exit",
+      "code": 1
+    },
+    {
+      "t": 305.2,
+      "event": "watch.restart",
+      "pid": 66672
+    },
+    {
+      "t": 360.2,
+      "event": "feed",
+      "total": 30
+    },
+    {
+      "t": 450.2,
+      "event": "feed",
+      "total": 36
+    },
+    {
+      "t": 482.1,
+      "event": "fault.vllm_stop",
+      "out": "beast-vllm"
+    },
+    {
+      "t": 542.1,
+      "event": "feed",
+      "total": 42
+    },
+    {
+      "t": 632.2,
+      "event": "feed",
+      "total": 48
+    },
+    {
+      "t": 722.2,
+      "event": "feed",
+      "total": 54
+    },
+    {
+      "t": 723.0,
+      "event": "fault.vllm_start",
+      "out": "beast-vllm"
+    },
+    {
+      "t": 813.1,
+      "event": "feed",
+      "total": 60
+    },
+    {
+      "t": 903.1,
+      "event": "feed",
+      "total": 66
+    },
+    {
+      "t": 963.1,
+      "event": "fault.partial",
+      "file": "D:\\content\\design-beast\\.worktrees\\library-organizer\\library\\data\\soak\\dest\\SpaceX Interview Questions\\2026-08\\20260821_0011_Screenshot 2026-08-21 111903.png"
+    },
+    {
+      "t": 993.2,
+      "event": "feed",
+      "total": 72
+    },
+    {
+      "t": 1083.2,
+      "event": "feed",
+      "total": 78
+    },
+    {
+      "t": 1173.3,
+      "event": "feed",
+      "total": 84
+    },
+    {
+      "t": 1204.5,
+      "event": "watch.stop"
+    },
+    {
+      "t": 1205.0,
+      "event": "recover",
+      "integrity": "ok",
+      "verify": {
+        "checked": 5,
+        "ok": 4,
+        "missing_reapproved": 1,
+        "changed": 0
+      },
+      "partials": 1
+    }
+  ],
+  "verdict": {
+    "fed": 84,
+    "placed": 5,
+    "duplicates": 1,
+    "awaiting_approval": 85,
+    "unplaced_and_not_pending": [],
+    "wrong_hash": [],
+    "partials_left": [],
+    "cycles": 13,
+    "watch_errors": [],
+    "stale_reclaims": 1,
+    "integrity": "ok",
+    "counts": {
+      "assets": 84,
+      "duplicates": 1,
+      "clusters": 83,
+      "embeddings": 84,
+      "faces": 14,
+      "persons": 4,
+      "ocr": 77,
+      "reviews_fast": 83,
+      "reviews_deep": 0,
+      "albums": 30,
+      "proposals_pending": 85,
+      "proposals_applied": 7
+    },
+    "faults_fired": [
+      "fault.kill_watch",
+      "fault.partial",
+      "fault.vllm_start",
+      "fault.vllm_stop"
+    ],
+    "pass": true
+  }
+}

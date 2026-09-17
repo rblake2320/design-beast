@@ -1,6 +1,6 @@
 {
   "schema": "beast.capability-graph/v1",
-  "updated": "2026-08-03",
+  "updated": "2026-09-12",
   "evidence_order": ["observed", "reproduced", "measured", "verified", "generalized"],
   "system_hypothesis": {
     "claim": "Expensive intelligence and human demonstrations can be compiled into cheaper, verified, replayable execution without increasing unsupported claims.",
@@ -111,6 +111,19 @@
       "evidence": ["docs/decisions/BR-EXECUTION-20260803.md", "tests/test_collect_reflection_evidence.py"],
       "breadth_count": 1,
       "next_test": "Run the predeclared five-task before/after replay after approved proposals."
+    },
+    {
+      "id": "library.organize",
+      "name": "Personal media library organizer",
+      "domain": "eyes_memory",
+      "level": "reproduced",
+      "claim": "A read-only photo collection is inventoried, exact and near duplicates are clustered, every image is embedded (SigLIP2) and face-grouped (InsightFace), cluster representatives are reviewed by a local VLM into structured tags, documents are OCR'd, and an approved album plan is applied by hash-verified copy with nothing deleted or overwritten.",
+      "boundary": "Album names and tags are model judgments, not ground truth; face groups are unnamed until a person names them; every listed failure class is reproduced by a test and by a short fault-injected soak on one machine, but no 24 h soak and no multi-node run exist yet, so readiness is Pilot (one operator, one box), not Department or Enterprise.",
+      "depends_on": [],
+      "targets": ["local image folders", "SQLite store", "PostgreSQL + pgvector store"],
+      "evidence": ["docs/LIBRARY.md", "proofs/library-001-pictures/PROOF.md", "library/tests/test_library.py", "library/tests/test_library_live.py"],
+      "breadth_count": 1,
+      "next_test": "Run `beast library watch` for 24 h with the fault schedule in bench/library_soak.py on a >=10k-image library with one DGX Spark review worker on the shared pgvector store; require zero unplaced files, zero partials, integrity ok, and record images/hour and duplicate/album precision on a hand-checked sample."
     }
   ]
 }

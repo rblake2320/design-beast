@@ -50,6 +50,17 @@ _DEFAULTS = {
     "ollama_url": "http://localhost:11434/api/generate",
     "judge_model": "qwen3-vl:8b",
     "expand_models": "qwen3.6:27b,gemma3:latest",
+    # beast library (media organizer): SQLite by default, BEAST_LIBRARY_DSN for shared Postgres
+    "library_db": str(REPO / "library" / "data" / "beast-library.db"),
+    "library_dsn": "",
+    "library_embed_model": "google/siglip2-so400m-patch14-384",
+    "library_fast_model": "qwen3-vl:8b",
+    "library_deep_model": "qwen3.8:27b",
+    # batched OpenAI-compatible server (vLLM/SGLang) for the fast tier; empty = auto-detect
+    # library_vllm_url (falls back to ollama_url, loudly, when it is not listening)
+    "library_review_url": "",
+    "library_vllm_url": "http://127.0.0.1:8021/v1/chat/completions",
+    "library_review_model": "Qwen/Qwen3-VL-8B-Instruct-FP8",
 }
 
 

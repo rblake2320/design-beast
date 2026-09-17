@@ -1,0 +1,14 @@
+# beast library (media organizer) lane — on top of requirements.txt.
+# torch must be a cu128 build on Blackwell (RTX 5090): pip install torch --index-url https://download.pytorch.org/whl/cu128
+imagehash==4.3.2
+pillow-heif
+insightface>=0.7
+onnxruntime-gpu>=1.20
+easyocr==1.7.2
+transformers>=4.51
+psycopg[binary]>=3.2
+pgvector>=0.3
+scipy>=1.11
+reverse_geocoder>=1.5
+opencv-python>=4.10
+# Optional batched fast tier (10-20x Ollama): docker image vllm/vllm-openai, see docs/LIBRARY.md

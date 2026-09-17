@@ -87,6 +87,10 @@ def _nim_key() -> str:
 app = FastAPI(title="Beast Studio")
 app.mount("/runs", StaticFiles(directory=RUNS), name="runs")
 app.mount("/uploads", StaticFiles(directory=UPLOADS), name="uploads")
+
+import library_api  # noqa: E402 — Library tab: search, people naming, approvals, recover
+app.include_router(library_api.router)
+app.get("/library")(library_api.page)
 LOCK = threading.Lock()
 jobs.init()  # durable job store; recovers orphans from a previous process
 
@@ -482,8 +486,12 @@ def _stop_backend_conflicts(name: str, checkpoint=lambda: None,
 
 
 def _backend_created(name: str) -> bool:
-    return subprocess.run(["docker", "container", "inspect", name],
-                          capture_output=True, timeout=30).returncode == 0
+    try:
+        return subprocess.run(["docker", "container", "inspect", name],
+                              capture_output=True, timeout=30).returncode == 0
+    except (FileNotFoundError, OSError):
+        # CI / desktops without Docker: treat as "not created".
+        return False
 
 
 def ensure_backend(name: str, run_dir: Path = None, wait_s: int = None,
