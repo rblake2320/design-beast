@@ -486,12 +486,12 @@ def _stop_backend_conflicts(name: str, checkpoint=lambda: None,
 
 
 def _backend_created(name: str) -> bool:
-  try:
+    try:
         return subprocess.run(["docker", "container", "inspect", name],
                               capture_output=True, timeout=30).returncode == 0
     except (FileNotFoundError, OSError):
-      # CI / desktops without Docker: treat as "not created".
-      return False
+        # CI / desktops without Docker: treat as "not created".
+        return False
 
 
 def ensure_backend(name: str, run_dir: Path = None, wait_s: int = None,
