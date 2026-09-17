@@ -1,2 +1,9 @@
 -r requirements.txt
 pytest==9.1.1
+# Starlette/FastAPI TestClient (studio API tests)
+httpx>=0.27
+# library offline CI (inventory phash + dedup + GPS albums)
+# Keep the heavy GPU stack (requirements-library.txt) out of Actions.
+imagehash==4.3.1
+numpy>=1.26
+reverse_geocoder>=1.5
