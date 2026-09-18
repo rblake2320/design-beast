@@ -1,0 +1,17 @@
+{
+  "clip_ms": 0,
+  "source_ms": null,
+  "source_sha256": null,
+  "sha256": "f9a27df8fd1f8466b05ae841b6049a27a730ceaf011f6586dab9b653176bc8b1",
+  "state": {
+    "screen_type": "3D viewport in Sculpting mode",
+    "view": "User Perspective (Local), showing a small portion of a model's head.",
+    "content": "A partial view of a pinkish-brown 3D model, likely female, with green geometry at its base. No full body or environment visible.",
+    "overlays": "3D Cursor placement indicator, tool settings like Radius and Factor, annotation bar, and mode indicators.",
+    "visible_text": "Sculpting, User Perspective (Local), (1) Female 2, Radius 35 px, Factor 0.750, Annotation: Note, Placement: 3D Cursor.",
+    "uncertainty": "Only partial model visible; no context for full scene or intended edits."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.184947399990051,
+  "provider_cost_usd": 0
+}

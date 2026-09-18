@@ -1,0 +1,6 @@
+{
+  "frame_sha256": "8f17d2efc2bd95986380d924f10c3ce2bf584029e55062ba44f2f6ddac8c57fb",
+  "frame": "watched\\real-challenge-01\\frames\\f_000000010000.jpg",
+  "prompt": "Describe ONLY this single image. Return JSON with exactly three short strings: screen_type, visible_content, visible_text. No inferred actions. At most 90 words total.",
+  "endpoint": "chat"
+}

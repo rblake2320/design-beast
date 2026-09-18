@@ -1,0 +1,13 @@
+{
+  "selection": "failed-case diagnostic",
+  "frames": [
+    0,
+    23
+  ],
+  "model": "qwen3.8:27b-review-cpu",
+  "model_digest": "072e49df5f18f3a4752533ec2998155e662f320d81d1939d2dd041d610f03bac",
+  "max_calls": 2,
+  "num_gpu": 0,
+  "cpu_threads": 4,
+  "output_tokens_per_call": 400
+}

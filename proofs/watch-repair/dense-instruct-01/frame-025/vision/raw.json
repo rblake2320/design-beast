@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:19:31.2383965Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D modeling software interface\",\n  \"view\": \"Right Orthographic (Local), showing a female character model centered on grid.\",\n  \"content\": \"A low-poly female humanoid model with pinkish-purple torso, green limbs, and white cursor near leg. Grid background visible.\",\n  \"overlays\": \"White brush cursor, red selection box around model, grid lines, interface panels.\",\n  \"visible_text\": \"Right Orthographic (Local), Female 2, Object Mode, Sculpting, Global, Radius 35 px, Factor 0.750, Drag: Select Box, Scene Collection, Bulk Dude 1, Fat Dude 2, Female 1, Female 2, Scene, Object, Movie Clip, Units, Gravity, Simulation, Keying Sets, Audio, Rigid Body World, Light Probes, Custom Properties.\",\n  \"uncertainty\": \"No uncertainty. All visible elements are accurately described from this single screenshot.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4807096700,
+  "load_duration": 3255641400,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 403483000,
+  "eval_count": 203,
+  "eval_duration": 1106620000
+}

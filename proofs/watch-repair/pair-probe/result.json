@@ -1,0 +1,26 @@
+{
+  "frames": {
+    "before": {
+      "sha256": "8f17d2efc2bd95986380d924f10c3ce2bf584029e55062ba44f2f6ddac8c57fb",
+      "ms": 10000
+    },
+    "after": {
+      "sha256": "36ac709491bb2bd95c4f58e3016189c08703f9afb6dda3e1da0fdf0cf513bb5f",
+      "ms": 20000
+    }
+  },
+  "observation": {
+    "before": "Viewport shows 'Right Orthographic (Local)' with 'Female 2' character in wireframe. No annotations.",
+    "after": "Viewport shows 'Right Orthographic (Local)' with 'Female 2' character in wireframe. A white pencil annotation appears near the character.",
+    "changes": [
+      "Pencil annotation added near character",
+      "No viewport/camera change",
+      "No object geometry or visibility change"
+    ],
+    "uncertain": "Annotation tool active but no other UI changes"
+  },
+  "evidence_class": "unverified_visual_observations",
+  "elapsed_seconds": 4.572695199996815,
+  "provider_cost_usd": 0,
+  "procedure_promotions": 0
+}

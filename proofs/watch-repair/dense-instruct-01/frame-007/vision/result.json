@@ -1,0 +1,15 @@
+{
+  "source_ms": 3500,
+  "sha256": "201db6100041742163cf6cdb5312c5a46717d92aa30940aa987c88f6cdbbf78a",
+  "state": {
+    "screen_type": "3D viewport",
+    "view": "User Perspective (Local), centered on a human-like figure.",
+    "content": "A low-poly, purple humanoid model with green neck and limbs. No visible textures or details beyond base geometry.",
+    "overlays": "White pencil cursor near the model. No active selection highlights or annotations.",
+    "visible_text": "Sculpting mode active. Scene Collection: Female 2. Scene: Gravity enabled. Version 5.0.1.",
+    "uncertainty": "No uncertainty; all visible elements are explicitly rendered in the viewport."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.481433599998127,
+  "provider_cost_usd": 0
+}

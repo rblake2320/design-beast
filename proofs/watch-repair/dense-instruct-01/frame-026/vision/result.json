@@ -1,0 +1,15 @@
+{
+  "source_ms": 13000,
+  "sha256": "daf3be8b94a3d855975562a661e9b5c92695346b2c7f974007f1b09e7e3cc069",
+  "state": {
+    "screen_type": "3D viewport in Blender",
+    "view": "User Perspective (Local), showing 'Female 2' model centered.",
+    "content": "Pink humanoid model with green neck and legs. No other objects visible.",
+    "overlays": "White pencil cursor near model. No active selection highlights or drawn marks.",
+    "visible_text": "Sculpting mode active. Tool settings: Radius 35 px, Factor 0.750. Scene Collection lists 'Female 2'.",
+    "uncertainty": "No uncertainty; all elements clearly visible and labeled."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.496889400004875,
+  "provider_cost_usd": 0
+}

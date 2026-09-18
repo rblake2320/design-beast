@@ -1,0 +1,15 @@
+{
+  "source_ms": 10500,
+  "sha256": "045652cb727288e3126f27a14f47895218435fa4910b5bad5bac3af6cabb3dcc",
+  "state": {
+    "screen_type": "3D viewport",
+    "view": "Right Orthographic (Local), showing 'Female 2' model centered.",
+    "content": "A human-like 3D model with pinkish-purple torso and green limbs, standing upright. Head is partially visible with a white brush cursor near it.",
+    "overlays": "White brush cursor, selection box around the model, grid lines, and various UI panels with tool settings.",
+    "visible_text": "Right Orthographic (Local), Female 2, Sculpting, Global, Radius 35 px, Factor 0.750, Drag: Select Box, Scene Collection, ViewLayer, Scene, Object, Gravity, Simulation, Keying Sets, Rigid Body World, Light Probes, Animation, Custom Properties.",
+    "uncertainty": "None"
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.707582899995032,
+  "provider_cost_usd": 0
+}

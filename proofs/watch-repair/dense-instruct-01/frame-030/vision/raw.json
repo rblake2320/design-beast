@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:19:56.7612789Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D viewport\",\n  \"view\": \"User Perspective (Local), centered on 'Female 2' model.\",\n  \"content\": \"A humanoid model with pink torso, green limbs, and orange arm/leg joints. No visible facial features or detailed textures.\",\n  \"overlays\": \"White pencil cursor near center-right. Selection highlights around model's arms and legs. Annotation tool active with 'Global', 'Radius 35 px', 'Factor 0.750'.\",\n  \"visible_text\": \"User Perspective (Local), Female 2, Object Mode, Sculpting, Global, Radius 35 px, Factor 0.750, Select Box, Scene Collection, Bulk Dude 1, Fat Dude 2, Female 1, Female 2.\",\n  \"uncertainty\": \"No visible text or geometry changes indicate current mode/tool usage. No user actions inferred.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 5251024400,
+  "load_duration": 3616262200,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 457183000,
+  "eval_count": 192,
+  "eval_duration": 1132970000
+}

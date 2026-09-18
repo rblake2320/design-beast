@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:19:11.0830538Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D viewport\",\n  \"view\": \"Right Orthographic (Local), showing 'Female 2' model centered.\",\n  \"content\": \"A human-like 3D model with pinkish-purple torso and green limbs, standing upright. Head is partially visible with a white brush cursor near it.\",\n  \"overlays\": \"White brush cursor, selection box around the model, grid lines, and various UI panels with tool settings.\",\n  \"visible_text\": \"Right Orthographic (Local), Female 2, Sculpting, Global, Radius 35 px, Factor 0.750, Drag: Select Box, Scene Collection, ViewLayer, Scene, Object, Gravity, Simulation, Keying Sets, Rigid Body World, Light Probes, Animation, Custom Properties.\",\n  \"uncertainty\": \"None\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4702064200,
+  "load_duration": 3265021600,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 417432000,
+  "eval_count": 176,
+  "eval_duration": 975345000
+}

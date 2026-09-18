@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:23:13.7564052Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"video capture\",\n  \"view\": \"medium close-up of a man centered in frame, facing camera directly\",\n  \"content\": \"Man with dark hair and black shirt; black desk lamp left, green plant right; plain wall background with blinds visible behind plant\",\n  \"overlays\": \"\",\n  \"visible_text\": \"\",\n  \"uncertainty\": \"No discernible uncertainty in visible elements\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4439557100,
+  "load_duration": 3494069000,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 415258000,
+  "eval_count": 88,
+  "eval_duration": 489244000
+}

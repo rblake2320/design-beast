@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:24:49.1416587Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"static screen\",\n  \"view\": \"centered text and graphic on plain background\",\n  \"content\": \"Text 'The writing isn't' partially covered by a metallic bookmark-like shape with curved ends.\",\n  \"overlays\": \"bookmark-shaped overlay covering part of the text.\",\n  \"visible_text\": \"The writing isn't\",\n  \"uncertainty\": \"No uncertainty; elements are clearly visible and static.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4415526400,
+  "load_duration": 3464902400,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 395153000,
+  "eval_count": 92,
+  "eval_duration": 513313000
+}

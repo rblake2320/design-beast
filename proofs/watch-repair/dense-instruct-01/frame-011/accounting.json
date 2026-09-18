@@ -1,0 +1,33 @@
+{
+  "frame": {
+    "id": "frame-0012",
+    "file": "frames/f_000000005500.jpg",
+    "source_seconds": 5.5,
+    "source_time": "00:00:05.500",
+    "clip_seconds": 5.5,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "00bf7f3f3f3f3f01",
+    "sha256": "0ab3fc12b05d91624b12978c12fe3f72a7683add86598300c50f6b774595213f",
+    "change_from_previous": 4,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "result": {
+    "source_ms": 5500,
+    "sha256": "0ab3fc12b05d91624b12978c12fe3f72a7683add86598300c50f6b774595213f",
+    "state": {
+      "screen_type": "3D viewport",
+      "view": "Right Orthographic (Local), showing 'Female 2' model centered.",
+      "content": "A pink/purple humanoid figure with green neck/legs, standing upright. Grid background visible.",
+      "overlays": "White pencil cursor near center, selection box tool active in top menu bar.",
+      "visible_text": "Sculpting mode active. Scene Collection lists 'Female 2'. ViewLayer and Scene panels visible.",
+      "uncertainty": "None."
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 4.3372191000089515,
+    "provider_cost_usd": 0
+  }
+}

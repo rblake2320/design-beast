@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:19:50.9624442Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D modeling software interface\",\n  \"view\": \"User Perspective (Local) showing a humanoid figure centered in the viewport.\",\n  \"content\": \"A pinkish-purple humanoid model with green limbs and neck. No visible facial features or detailed textures.\",\n  \"overlays\": \"A white pencil cursor. Selection box highlights around the model's limbs. Tool options bar at top with 'Global', 'Radius 35 px', 'Factor 0.750'.\",\n  \"visible_text\": \"User Perspective (Local), Female 2, Object Mode, Sculpting, Global, Radius 35 px, Factor 0.750, Drag: Select Box, Show Hidden Objects, Rotate View, Center View to Mouse.\",\n  \"uncertainty\": \"No uncertainty; all visible elements are clearly rendered and labeled.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4707432700,
+  "load_duration": 3253522200,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 420210000,
+  "eval_count": 177,
+  "eval_duration": 994513000
+}

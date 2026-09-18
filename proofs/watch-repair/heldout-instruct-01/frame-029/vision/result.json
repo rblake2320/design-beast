@@ -1,0 +1,17 @@
+{
+  "clip_ms": 14500,
+  "source_ms": 314500,
+  "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+  "sha256": "b466dfdcc51dd210cfbc7e0481ff3db50463c1a8de29f0e25db1f6e00c8ceb78",
+  "state": {
+    "screen_type": "video screenshot",
+    "view": "medium close-up, centered on man\u2019s face and upper torso",
+    "content": "Man with dark hair wearing black shirt. Black lamp to left, green plant to right. Background is plain wall.",
+    "overlays": "",
+    "visible_text": "",
+    "uncertainty": "No visible text or overlays. Subject's exact expression not fully discernible from single frame."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.480933200000436,
+  "provider_cost_usd": 0
+}

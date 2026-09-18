@@ -1,0 +1,13 @@
+{
+  "original_sha256": "309c565694f81383ed72e93893368e2b237ac7cb7f6559204000ce2ddfb369c1",
+  "bbox_xyxy": [
+    0,
+    0,
+    640,
+    180
+  ],
+  "clip_ms": 0,
+  "crop_sha256": "f9a27df8fd1f8466b05ae841b6049a27a730ceaf011f6586dab9b653176bc8b1",
+  "transformation": "deterministic crop; no generated pixels",
+  "label": "top-left"
+}

@@ -1,0 +1,17 @@
+{
+  "model": "qwen3-vl:8b",
+  "created_at": "2026-09-18T20:05:39.4565934Z",
+  "message": {
+    "role": "assistant",
+    "content": "",
+    "thinking": "{\"screen_type\": \"Blender 3D software interface\", \"visible_content\": \"3D viewport showing a human figure model in Sculpting mode with grid background, toolbar on left, scene collection list on right\", \"visible_text\": \"Sculpting, Object Mode, View, Select, Add, Object, Right Orthographic (Local), Female 2, Scene Collection, Bulk Dude 1, Fat Dude 2, Female 1, Female 2\"}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4096522100,
+  "load_duration": 3080639300,
+  "prompt_eval_count": 1120,
+  "prompt_eval_duration": 448766000,
+  "eval_count": 97,
+  "eval_duration": 545873000
+}

@@ -1,0 +1,15 @@
+{
+  "source_ms": 27500,
+  "sha256": "ab1ae5eb85c8b8de7cfd5dc7940829c06ce7a44c73dd66cd563a535f1d6b2a5a",
+  "state": {
+    "screen_type": "Instructional slide",
+    "view": "Full-screen text layout on dark background",
+    "content": "Text blocks with headings like 'FOLLOW THE SHAPE LANGUAGE' and bullet points about character blocking, all white text on black.",
+    "overlays": "White arrow cursor pointing at 'STRAIGHT VS CURVES' section",
+    "visible_text": "HOW TO BLOCK OUT, STYLIZED CHARACTER ACADEMY, TELL YOUR OWN STORIES WITH YOUR 3D CHARACTERS",
+    "uncertainty": "None"
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.18521850000252,
+  "provider_cost_usd": 0
+}

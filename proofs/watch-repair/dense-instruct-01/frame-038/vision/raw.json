@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:20:36.5623318Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"Instructional slide\",\n  \"view\": \"Full-screen text layout on dark background; centered title, four bullet points below.\",\n  \"content\": \"Title 'HOW TO BLOCK OUT' in yellow. Four white text sections with bold headings. Footer text in yellow.\",\n  \"overlays\": \"White cursor arrow pointing right near the fourth bullet point.\",\n  \"visible_text\": \"HOW TO BLOCK OUT, FOLLOW THE SHAPE LANGUAGE, BREAK THE CHARACTER INTO PARTS, USE SIMPLE SHAPES, STRAIGHT VS CURVES, STYLIZED CHARACTER ACADEMY, TELL YOUR OWN STORIES WITH YOUR 3D CHARACTERS.\",\n  \"uncertainty\": \"None. Text is fully legible and clearly presented.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4475811900,
+  "load_duration": 3165321400,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 409329000,
+  "eval_count": 156,
+  "eval_duration": 861124000
+}

@@ -1,0 +1,33 @@
+{
+  "frame": {
+    "id": "frame-0015",
+    "file": "frames/f_000000007000.jpg",
+    "source_seconds": 7.0,
+    "source_time": "00:00:07.000",
+    "clip_seconds": 7.0,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "00bf7f3f3f3f3f01",
+    "sha256": "4a93d82df264dc23829ac748b295220f7593c0368972391fad3ef0f38f749a70",
+    "change_from_previous": 0,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "result": {
+    "source_ms": 7000,
+    "sha256": "4a93d82df264dc23829ac748b295220f7593c0368972391fad3ef0f38f749a70",
+    "state": {
+      "screen_type": "3D modeling software interface",
+      "view": "Right Orthographic (Local), showing a humanoid figure centered on grid.",
+      "content": "A low-poly humanoid model with purple torso, green neck/legs, and light green feet. Head has white brush cursor over top.",
+      "overlays": "White brush cursor on head; red/green/blue axis gizmo visible near model's center.",
+      "visible_text": "Sculpting mode active; 'Right Orthographic (Local)', 'Female 2', 'Scene Collection' tree, 'Object Mode'.",
+      "uncertainty": "No uncertainty. All elements clearly visible and labeled."
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 4.554960499997833,
+    "provider_cost_usd": 0
+  }
+}

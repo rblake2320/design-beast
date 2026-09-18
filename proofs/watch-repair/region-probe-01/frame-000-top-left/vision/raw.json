@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:27:47.8290224Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D viewport in Sculpting mode\",\n  \"view\": \"User Perspective (Local), showing a small portion of a model's head.\",\n  \"content\": \"A partial view of a pinkish-brown 3D model, likely female, with green geometry at its base. No full body or environment visible.\",\n  \"overlays\": \"3D Cursor placement indicator, tool settings like Radius and Factor, annotation bar, and mode indicators.\",\n  \"visible_text\": \"Sculpting, User Perspective (Local), (1) Female 2, Radius 35 px, Factor 0.750, Annotation: Note, Placement: 3D Cursor.\",\n  \"uncertainty\": \"Only partial model visible; no context for full scene or intended edits.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4156808900,
+  "load_duration": 2837861600,
+  "prompt_eval_count": 1198,
+  "prompt_eval_duration": 399583000,
+  "eval_count": 167,
+  "eval_duration": 882755000
+}

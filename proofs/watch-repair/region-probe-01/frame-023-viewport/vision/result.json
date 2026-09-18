@@ -1,0 +1,17 @@
+{
+  "clip_ms": 11500,
+  "source_ms": null,
+  "source_sha256": null,
+  "sha256": "4e42ab8c4100c897ced89cd7069042214444af0f40ff04348b3b6f58f9282eb8",
+  "state": {
+    "screen_type": "3D modeling software viewport",
+    "view": "Side view of a humanoid model centered on grid.",
+    "content": "Model has pink torso, green neck/legs, and light green feet. Purple shading on torso with visible polygonal edges.",
+    "overlays": "White pencil icon overlaid on upper torso, indicating editing mode.",
+    "visible_text": "",
+    "uncertainty": "No visible text or tool labels. Pencil icon suggests editing, but no explicit mode name shown."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 3.887715599994408,
+  "provider_cost_usd": 0
+}

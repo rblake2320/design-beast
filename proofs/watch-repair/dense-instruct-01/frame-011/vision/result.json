@@ -1,0 +1,15 @@
+{
+  "source_ms": 5500,
+  "sha256": "0ab3fc12b05d91624b12978c12fe3f72a7683add86598300c50f6b774595213f",
+  "state": {
+    "screen_type": "3D viewport",
+    "view": "Right Orthographic (Local), showing 'Female 2' model centered.",
+    "content": "A pink/purple humanoid figure with green neck/legs, standing upright. Grid background visible.",
+    "overlays": "White pencil cursor near center, selection box tool active in top menu bar.",
+    "visible_text": "Sculpting mode active. Scene Collection lists 'Female 2'. ViewLayer and Scene panels visible.",
+    "uncertainty": "None."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.3372191000089515,
+  "provider_cost_usd": 0
+}

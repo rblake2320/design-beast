@@ -1,0 +1,5 @@
+{
+  "frame_sha256": "65c9f2151b12066445ca71a36bd5db96d0ba2f95b2ccb1766806e086271c082c",
+  "tsv": "level\tpage_num\tblock_num\tpar_num\tline_num\tword_num\tleft\ttop\twidth\theight\tconf\ttext\r\n1\t1\t0\t0\t0\t0\t0\t0\t1280\t720\t-1\t\r\n2\t1\t1\t0\t0\t0\t552\t201\t226\t59\t-1\t\r\n3\t1\t1\t1\t0\t0\t552\t201\t226\t59\t-1\t\r\n4\t1\t1\t1\t1\t0\t552\t201\t226\t59\t-1\t\r\n5\t1\t1\t1\t1\t1\t552\t175\t73\t92\t61.341793\toe\r\n5\t1\t1\t1\t1\t2\t678\t201\t100\t59\t35.587524\tFN\r\n2\t1\t2\t0\t0\t0\t629\t299\t75\t24\t-1\t\r\n3\t1\t2\t1\t0\t0\t629\t299\t75\t24\t-1\t\r\n4\t1\t2\t1\t1\t0\t629\t299\t75\t24\t-1\t\r\n5\t1\t2\t1\t1\t1\t629\t299\t75\t24\t0.000000\t~etl\r\n",
+  "evidence_class": "unverified_ocr"
+}

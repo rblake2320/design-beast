@@ -1,0 +1,13 @@
+{
+  "original_sha256": "25b630074aa92179629c520ca8103fb29444d227627996ecb5d6e302a6a878cf",
+  "bbox_xyxy": [
+    200,
+    120,
+    1080,
+    600
+  ],
+  "clip_ms": 17000,
+  "crop_sha256": "c9320c64066f80e650372ec193ecaf26bb476869122f59f3701a808190160a72",
+  "transformation": "deterministic crop; no generated pixels",
+  "label": "center"
+}

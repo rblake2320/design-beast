@@ -1,0 +1,15 @@
+{
+  "source_ms": 4000,
+  "sha256": "a314f422407011c47e11a73c1a1fd1d15f8284d0b06c04cffa3ff9c8e15809ac",
+  "state": {
+    "screen_type": "3D viewport",
+    "view": "User Perspective (Local), showing a low-poly female character model centered in view.",
+    "content": "A low-poly female humanoid model with pinkish-purple body and teal limbs/neck, standing upright. No other objects visible.",
+    "overlays": "White pencil cursor near center. No active selection highlights or drawn marks on the model.",
+    "visible_text": "User Perspective (Local), Female 2, Sculpting, Global, Radius: 35 px, Factor: 0.750, Select Box, Scene Collection, ViewLayer, Scene, Camera, Object, Background S., Movie Clip, Gravity, Simulation, Keying Sets, Rigid Body World, Light Probes, Animation, Custom Properties.",
+    "uncertainty": "None; all elements are clearly visible and labeled."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.703980699996464,
+  "provider_cost_usd": 0
+}
