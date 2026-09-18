@@ -1,0 +1,63 @@
+{
+  "clip_ms": 19500,
+  "frame_sha256": "395190b7939d694c927dd33b24c91b65a7cf8a611d877055d9a9db8773c325de",
+  "pixel_state_sha256": "f136e9ea515557dc5144d68e02534c2b7802ecbb092bc468c9ab2e5fa084ef00",
+  "ui_regions_sha256": "6616cdfcddefb6c5cab73541937f0ae33d461a1d5fef8298e706be71476407df",
+  "ui_regions": [
+    {
+      "bbox_xyxy": [
+        1221.8968505859375,
+        334.6260070800781,
+        1259.0516357421875,
+        372.2921447753906
+      ],
+      "raw_score": 0.445279061794281
+    }
+  ],
+  "temporal_windows": [
+    {
+      "window": 3,
+      "sha256": "3af17253880667eeda2bd06ba42857d43b2443c6e9755bf2eb8bc1ca2eeb1f85",
+      "start_ms": 12000,
+      "end_ms": 19500,
+      "distance": 0.17482566833496094
+    },
+    {
+      "window": 4,
+      "sha256": "33a4b90026d84d8814fff640d7604f557abffc76b3be84562a7487de1641f4dd",
+      "start_ms": 16000,
+      "end_ms": 23500,
+      "distance": 0.04482549428939819
+    }
+  ],
+  "inspection_recommendation": {
+    "schema_version": "beast.watch.inspection/v1",
+    "requested_action": "compare_states",
+    "target_interval": {
+      "start_ms": 19000,
+      "end_ms": 19500
+    },
+    "target_regions": [
+      {
+        "x": 0.96171875,
+        "y": 0.46944444444444444,
+        "width": 0.01484375,
+        "height": 0.04027777777777778
+      }
+    ],
+    "predicted_value_of_inspection": 0.0,
+    "confidence": {
+      "perception": 0.0,
+      "transition": 0.0,
+      "procedure": 0.0
+    },
+    "uncertainty_reasons": [
+      "OCR/flow scores are uncalibrated; no causal action is established",
+      "Unobserved time between samples remains uncertain",
+      "Scheduling heuristic is uncalibrated; no evidence promotion."
+    ],
+    "option_readout": null
+  },
+  "confidence_status": "zero policy inputs mean not established; not calibrated probabilities",
+  "evidence_class": "unverified_multichannel_visual_state"
+}

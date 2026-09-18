@@ -1,0 +1,28 @@
+{
+  "schema_version": "beast.watch.pixel-state/v1",
+  "clip_ms": 0,
+  "frame_sha256": "4ec8ad202c3c25f46f2d94c6fd7bed04fdc85f71826a8e381d1bd21555a47fcd",
+  "before_sha256": null,
+  "dimensions": [
+    1280,
+    720
+  ],
+  "text_elements": [],
+  "appeared_text_track_ids": [],
+  "disappeared_text_track_ids": [],
+  "motion_tracks": [],
+  "region_motion": [],
+  "changed_regions": [],
+  "changed_pixel_fraction": null,
+  "motion_scale": null,
+  "affine_inlier_fraction": null,
+  "tracking_reset": true,
+  "uncertainty": [
+    "OCR/flow scores are uncalibrated; no causal action is established",
+    "Unobserved time between samples remains uncertain"
+  ],
+  "perception_confidence": null,
+  "transition_confidence": null,
+  "procedure_confidence": null,
+  "evidence_class": "pixel_measurement_not_semantic_verdict"
+}

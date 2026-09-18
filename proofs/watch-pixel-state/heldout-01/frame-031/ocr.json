@@ -1,0 +1,5 @@
+{
+  "frame_sha256": "ee8783201ac8630c4a50be4c08419474a5380682682af988199db11632703137",
+  "tsv": "level\tpage_num\tblock_num\tpar_num\tline_num\tword_num\tleft\ttop\twidth\theight\tconf\ttext\r\n1\t1\t0\t0\t0\t0\t0\t0\t1280\t720\t-1\t\r\n2\t1\t1\t0\t0\t0\t304\t355\t149\t37\t-1\t\r\n3\t1\t1\t1\t0\t0\t304\t355\t149\t37\t-1\t\r\n4\t1\t1\t1\t1\t0\t304\t355\t149\t37\t-1\t\r\n5\t1\t1\t1\t1\t1\t300\t351\t60\t51\t92.206169\tThe\r\n5\t1\t1\t1\t1\t2\t376\t351\t82\t51\t33.168961\twriti\r\n2\t1\t2\t0\t0\t0\t846\t356\t125\t45\t-1\t\r\n3\t1\t2\t1\t0\t0\t846\t356\t125\t45\t-1\t\r\n4\t1\t2\t1\t1\t0\t846\t356\t125\t45\t-1\t\r\n5\t1\t2\t1\t1\t1\t842\t352\t40\t53\t89.503197\trd\r\n5\t1\t2\t1\t1\t2\t899\t356\t72\t45\t94.401657\tpart\r\n",
+  "evidence_class": "unverified_ocr"
+}

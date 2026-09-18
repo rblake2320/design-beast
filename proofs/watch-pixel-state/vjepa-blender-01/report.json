@@ -1,0 +1,53 @@
+{
+  "windows": [
+    {
+      "window": 0,
+      "start_ms": 0,
+      "end_ms": 7500,
+      "distance_from_previous": null
+    },
+    {
+      "window": 1,
+      "start_ms": 4000,
+      "end_ms": 11500,
+      "distance_from_previous": 0.01832669973373413
+    },
+    {
+      "window": 2,
+      "start_ms": 8000,
+      "end_ms": 15500,
+      "distance_from_previous": 0.12189745903015137
+    },
+    {
+      "window": 3,
+      "start_ms": 12000,
+      "end_ms": 19500,
+      "distance_from_previous": 0.17482566833496094
+    },
+    {
+      "window": 4,
+      "start_ms": 16000,
+      "end_ms": 23500,
+      "distance_from_previous": 0.04482549428939819
+    },
+    {
+      "window": 5,
+      "start_ms": 20000,
+      "end_ms": 27500,
+      "distance_from_previous": 0.056913912296295166
+    },
+    {
+      "window": 6,
+      "start_ms": 22500,
+      "end_ms": 30000,
+      "distance_from_previous": 0.007342815399169922
+    }
+  ],
+  "model": "facebook/vjepa2-vitl-fpc64-256",
+  "revision": "b3c1679b7c34d3255ef3547f27c7b226aefab26f",
+  "elapsed_seconds": 84.46800000000803,
+  "peak_allocated_mib": 686.89697265625,
+  "semantic_acceptances": 0,
+  "procedure_promotions": 0,
+  "provider_cost_usd": 0
+}
