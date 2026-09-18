@@ -199,7 +199,7 @@
 <body>
 <header>
   <div class="wordmark"><span class="ox">🦬</span>BEAST <em>STUDIO</em></div>
-  <div class="tagline">local production floor · RTX 5090 · nothing leaves this machine</div>
+  <div class="tagline">local by default · selected cloud engines send prompts and references</div>
   <div id="phase">standing by</div>
 </header>
 
@@ -213,6 +213,9 @@
         <div id="dropmsg">feed the beast an image —<br>it becomes reference & edit target</div>
       </div>
       <input type="file" id="file" accept="image/*" hidden>
+      <label for="savedasset">saved source images</label>
+      <select id="savedasset"><option value="">choose an existing image…</option></select>
+      <button id="refreshassets" type="button">refresh saved images</button>
       <div class="imgacts">
         <button id="bjudge" title="free local vision judge">⚖ judge</button>
         <button id="brefine" title="FLUX Kontext local edit">🛠 refine</button>
@@ -358,11 +361,34 @@ function intake(file) {
 function setImage(fname, dataUrl) {
   upload = fname;
   drop.classList.toggle('has', !!fname);
-  $('dropmsg').innerHTML = fname
-    ? `<img src="${dataUrl || '/uploads/' + fname}"><b style="color:var(--amber-hot)">${fname}</b>`
-    : 'feed the beast an image —<br>it becomes reference & edit target';
+  $('dropmsg').replaceChildren();
+  if (fname) {
+    const image = document.createElement('img');
+    image.src = dataUrl || '/uploads/' + encodeURIComponent(fname);
+    image.alt = fname;
+    const caption = document.createElement('b');
+    caption.style.color = 'var(--amber-hot)'; caption.textContent = fname;
+    $('dropmsg').append(image, caption);
+  } else {
+    $('dropmsg').textContent = 'feed the beast an image — it becomes reference & edit target';
+  }
   $('judgeout').style.display = 'none';
 }
+
+async function refreshAssets() {
+  try {
+    const response = await fetch('/api/uploads');
+    if (!response.ok) throw new Error('saved image list unavailable');
+    const files = await response.json();
+    $('savedasset').replaceChildren(new Option('choose an existing image…', ''));
+    files.forEach(item => $('savedasset').add(new Option(item.file, item.file)));
+  } catch (error) { showErr(error.message); }
+}
+$('savedasset').onchange = () => {
+  if ($('savedasset').value) setImage($('savedasset').value);
+};
+$('refreshassets').onclick = refreshAssets;
+refreshAssets();
 
 // ---------- voice ----------
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;

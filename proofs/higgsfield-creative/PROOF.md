@@ -1,5 +1,9 @@
 # Higgsfield creative proof
 
+Follow-up: native CLI authentication, new native generation and live Studio
+source rendering were subsequently executed. See `../higgsfield-native/PROOF.md`.
+The statements below retain the boundary of this earlier MCP-only experiment.
+
 ## Observed outcome
 
 Four GPT Image 2 candidates completed through the authenticated Higgsfield MCP

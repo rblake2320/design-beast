@@ -4,6 +4,12 @@ from types import SimpleNamespace
 
 import pytest
 import server
+import higgsfield_cli
+
+
+@pytest.fixture(autouse=True)
+def native_cli_stub(monkeypatch):
+    monkeypatch.setattr(higgsfield_cli, "resolve_cli", lambda: "native-hf.exe")
 
 
 @pytest.mark.parametrize("code", [1, 2, 23])

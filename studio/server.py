@@ -102,28 +102,9 @@ def friendly(err: str) -> str:
 
 
 def hf_generate(model: str, prompt: str, out_file: Path, extra: list = None) -> dict:
-    """Run one Higgsfield job, download result. Returns {url,file} or {error}."""
-    cmd = [shutil.which("higgsfield") or "higgsfield", "generate", "create", model,
-           "--prompt", prompt, "--wait", "--wait-timeout", "15m", "--json"] + (extra or [])
-    try:
-        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=1000)
-    except subprocess.TimeoutExpired:
-        # The provider may have accepted the paid request. Never replay here.
-        return {"error": "Higgsfield outcome unknown after CLI timeout; reconcile the provider job before retrying.",
-                "outcome": "outcome_unknown"}
-    except OSError:
-        return {"error": "Higgsfield CLI could not be launched; check its installation.",
-                "outcome": "not_submitted"}
-    if proc.returncode != 0:
-        # Failed commands can echo INPUT media URLs. They are not results.
-        # A nonzero exit may also occur after submission, so do not imply safe retry.
-        return {"error": "Higgsfield CLI exited unsuccessfully; reconcile provider state before retrying.",
-                "outcome": "outcome_unknown", "exit_code": proc.returncode}
-    urls = re.findall(r'https://[^"\s]+\.(?:png|jpe?g|webp|mp4)[^"\s]*', proc.stdout)
-    if not urls:
-        return {"error": friendly(proc.stderr or proc.stdout)}
-    urllib.request.urlretrieve(urls[0], out_file)
-    return {"url": urls[0], "file": out_file.name}
+    """One native CLI attempt with retained intent and decoded artifact proof."""
+    from higgsfield_cli import generate
+    return generate(model, prompt, out_file, extra)
 
 
 def _nim_invoke(url: str, payload: dict, headers: dict, timeout: int = 600) -> dict:
@@ -998,6 +979,15 @@ class UploadReq(BaseModel):
     name: str = Field(min_length=1, max_length=200)
     # dataURL or raw base64; 30MB binary ≈ 40MB encoded
     data: str = Field(min_length=1, max_length=42 * 1024 * 1024)
+
+
+@app.get("/api/uploads")
+def list_uploads():
+    """List only contained image files already in Studio's local intake."""
+    return [{"file": p.name} for p in sorted(UPLOADS.iterdir())
+            if p.is_file() and not p.is_symlink()
+            and p.resolve().is_relative_to(UPLOADS.resolve())
+            and p.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}]
 
 
 @app.post("/api/upload")
