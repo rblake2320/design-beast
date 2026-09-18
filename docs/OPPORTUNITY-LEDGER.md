@@ -1,5 +1,41 @@
 # Opportunity Ledger
 
+### OPP-20260918-01 — Standalone evidence-bound Blender execution
+
+- Status: experiment
+- Trigger: owner authorized execution integration; local Blender 5.1.2 responds
+  to CLI help, while the exposed editor MCP read fails to connect. The existing
+  `bench/concern-proof/blender_adapter.py` is benchmark-only, not a Beast command.
+- New capability hypothesis: Beast can execute a closed scene-action contract in
+  a disposable background process without borrowing an agent harness connection.
+- Potential beneficiaries: Watch users, creative regression testing, Vigil's
+  future native scene postconditions, and offline asset automation.
+- Current-project value: connect typed Watch output to native execution and
+  independent saved-scene measurement with explicit execution permission.
+- Outside-project value: reusable bounded Blender regression runner; no novelty claim.
+- Prior art and primary sources: Blender's native background/Python APIs already
+  provide this execution substrate. Installed 5.1.2 `--help` confirms background,
+  factory-startup, disable-autoexec, python-exit-code, and thread flags.
+  https://docs.blender.org/manual/en/latest/advanced/command_line/arguments.html
+  (web fetch unavailable this session; installed CLI semantics probed directly).
+- Falsifiable claim: one owner-authored primitive scene passes typed validation,
+  executes from Beast CLI, saves/reopens in a second process, and passes native
+  structural assertions and retained PNG inspection; unsupported actions fail
+  before Blender launches and uncertain runs never silently replay.
+- Smallest real experiment: CPU-only, two render threads, disposable output
+  directory, four camera views of one fixed scene, retained intent and result.
+- Measures and acceptance threshold: exact object/transform/material checks,
+  nonempty evaluated meshes, four decodable PNGs, artifact hashes, fresh reopen,
+  nonzero exit on failed checks and no mutation without explicit permission.
+- Risks: trusted local executable/worker are not an OS security sandbox; visual
+  similarity to a tutorial and arbitrary tutorial understanding remain unproven.
+- Evidence: implementation and test receipts will be retained under
+  `proofs/blender-execution/`; initial bridge failure is not a passing handshake.
+- Decision: build this bounded slice; preserve existing editor scenes, PhoneClaw,
+  unrelated worktrees, and paid-provider authorization boundaries.
+- Revisit trigger: retained real CLI proof and independent review, then a fresh
+  tutorial with frame-linked observations for all source-derived parameters.
+
 Design Beast treats unexpected capability as a first-class output of engineering and
 research. A discovery must not be discarded merely because it falls outside the
 current task, and it must not be promoted merely because it sounds novel.
