@@ -19,6 +19,7 @@ switch ($Cmd) {
     'watch-index' { python (Join-Path $Repo 'scripts\watch_index.py') @Rest }
     'watch-seek' { python (Join-Path $Repo 'scripts\watch_seek.py') @Rest }
     'watch-perceive' { python (Join-Path $Repo 'scripts\watch_perception.py') @Rest }
+    'watch-training' { python (Join-Path $Repo 'scripts\watch_training.py') @Rest; exit $LASTEXITCODE }
     'watch-ui-regions' { python (Join-Path $Repo 'scripts\watch_ui_regions.py') @Rest }
     'watch-fuse' { python (Join-Path $Repo 'scripts\fuse_watch_state.py') @Rest }
     'watch-temporal' {
@@ -51,6 +52,8 @@ beast watch     video URL/file -> frames+transcript bundle an agent can "watch"
 beast watch-index BUNDLE ["query"] -> build/search semantic visual memory
 beast watch-seek BUNDLE --at TIME [--level 1|2|3] -> rewind/forward for missing evidence
 beast watch-perceive --bundle BUNDLE --output NEW_DIR [--ocr-root RECEIPTS] -> CPU spatial/temporal measurements
+beast watch-training prepare --source VIDEO_OR_URL --output NEW_DIR -> real-footage review workspace
+beast watch-training render --review DIR --plan JSON --output NEW_DIR -> source-linked captioned draft
 beast watch-ui-regions --bundle BUNDLE --output NEW_DIR -> pinned OmniParser detector (CPU)
 beast watch-fuse --pixels DIR --ui DIR --temporal DIR --output NEW_DIR -> frame-bound multimodal state
 beast watch-temporal --bundle BUNDLE --output NEW_DIR -> admitted pinned V-JEPA 2 clip embeddings
