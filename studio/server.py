@@ -105,7 +105,20 @@ def hf_generate(model: str, prompt: str, out_file: Path, extra: list = None) -> 
     """Run one Higgsfield job, download result. Returns {url,file} or {error}."""
     cmd = [shutil.which("higgsfield") or "higgsfield", "generate", "create", model,
            "--prompt", prompt, "--wait", "--wait-timeout", "15m", "--json"] + (extra or [])
-    proc = subprocess.run(cmd, capture_output=True, text=True, timeout=1000)
+    try:
+        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=1000)
+    except subprocess.TimeoutExpired:
+        # The provider may have accepted the paid request. Never replay here.
+        return {"error": "Higgsfield outcome unknown after CLI timeout; reconcile the provider job before retrying.",
+                "outcome": "outcome_unknown"}
+    except OSError:
+        return {"error": "Higgsfield CLI could not be launched; check its installation.",
+                "outcome": "not_submitted"}
+    if proc.returncode != 0:
+        # Failed commands can echo INPUT media URLs. They are not results.
+        # A nonzero exit may also occur after submission, so do not imply safe retry.
+        return {"error": "Higgsfield CLI exited unsuccessfully; reconcile provider state before retrying.",
+                "outcome": "outcome_unknown", "exit_code": proc.returncode}
     urls = re.findall(r'https://[^"\s]+\.(?:png|jpe?g|webp|mp4)[^"\s]*', proc.stdout)
     if not urls:
         return {"error": friendly(proc.stderr or proc.stdout)}

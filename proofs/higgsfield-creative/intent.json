@@ -1,0 +1,64 @@
+{
+  "schema": "beast.external-creative-proof/v1",
+  "status": "prepared_not_submitted",
+  "authorization": {
+    "credit_cap": 500,
+    "initial_balance": 3000
+  },
+  "transport": "higgsfield_mcp_connector",
+  "runtime_boundary": "Does not prove local Design Beast CLI authentication or autonomous generation.",
+  "recipe": "design-system/recipes/cinematic-scene.md",
+  "brief": "Concept illustration of observed frames becoming structured geometry and a finished asset; not product UI.",
+  "comparison_axis": "lighting",
+  "estimate_exact_per_candidate": 6.5,
+  "requests": [
+    {
+      "index": 1,
+      "params": {
+        "model": "gpt_image_2",
+        "aspect_ratio": "16:9",
+        "resolution": "2k",
+        "quality": "high",
+        "count": 1,
+        "use_unlim": false,
+        "prompt": "Cinematic concept art of an uninhabited creative workshop: three physical glass film frames at left transform into a precise cyan wireframe sculpture at center and a beautifully finished amber ceramic sculpture at right, the same folded ribbon form across all three stages. Matte charcoal architectural room, brushed aluminum workbench, restrained cyan and amber accents. Wide 16:9 composition, clear readable silhouettes, eye-level 35mm lens, refined industrial design, physically plausible materials, generous dark negative space upper left. Pure scene illustration, no interface, no logos, no lettering. Soft daylight from a large camera-left window, gentle fill."
+      }
+    },
+    {
+      "index": 2,
+      "params": {
+        "model": "gpt_image_2",
+        "aspect_ratio": "16:9",
+        "resolution": "2k",
+        "quality": "high",
+        "count": 1,
+        "use_unlim": false,
+        "prompt": "Cinematic concept art of an uninhabited creative workshop: three physical glass film frames at left transform into a precise cyan wireframe sculpture at center and a beautifully finished amber ceramic sculpture at right, the same folded ribbon form across all three stages. Matte charcoal architectural room, brushed aluminum workbench, restrained cyan and amber accents. Wide 16:9 composition, clear readable silhouettes, eye-level 35mm lens, refined industrial design, physically plausible materials, generous dark negative space upper left. Pure scene illustration, no interface, no logos, no lettering. Large overhead softbox, sculpted soft shadow."
+      }
+    },
+    {
+      "index": 3,
+      "params": {
+        "model": "gpt_image_2",
+        "aspect_ratio": "16:9",
+        "resolution": "2k",
+        "quality": "high",
+        "count": 1,
+        "use_unlim": false,
+        "prompt": "Cinematic concept art of an uninhabited creative workshop: three physical glass film frames at left transform into a precise cyan wireframe sculpture at center and a beautifully finished amber ceramic sculpture at right, the same folded ribbon form across all three stages. Matte charcoal architectural room, brushed aluminum workbench, restrained cyan and amber accents. Wide 16:9 composition, clear readable silhouettes, eye-level 35mm lens, refined industrial design, physically plausible materials, generous dark negative space upper left. Pure scene illustration, no interface, no logos, no lettering. Low warm side light from camera-right with subtle cool fill."
+      }
+    },
+    {
+      "index": 4,
+      "params": {
+        "model": "gpt_image_2",
+        "aspect_ratio": "16:9",
+        "resolution": "2k",
+        "quality": "high",
+        "count": 1,
+        "use_unlim": false,
+        "prompt": "Cinematic concept art of an uninhabited creative workshop: three physical glass film frames at left transform into a precise cyan wireframe sculpture at center and a beautifully finished amber ceramic sculpture at right, the same folded ribbon form across all three stages. Matte charcoal architectural room, brushed aluminum workbench, restrained cyan and amber accents. Wide 16:9 composition, clear readable silhouettes, eye-level 35mm lens, refined industrial design, physically plausible materials, generous dark negative space upper left. Pure scene illustration, no interface, no logos, no lettering. Cool diffuse skylight, narrow amber rim light."
+      }
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "transport": "higgsfield_mcp_connector",
+  "credit_cap": 500,
+  "balance_before": 3000,
+  "balance_after": 2971,
+  "balance_delta": 29,
+  "estimated_spend": 29,
+  "artifacts": [
+    {
+      "file": "candidate-1.png",
+      "job_id": "b80e2fd0-5517-450a-bece-b844762940b5",
+      "receipt": "candidates.json",
+      "sha256": "a3782a0fa138d4c90fa1972fcda117b80f4302d3945b945eb254ebb5347f5b95",
+      "dimensions": [
+        2688,
+        1520
+      ]
+    },
+    {
+      "file": "candidate-2.png",
+      "job_id": "a5a9993b-9a08-4269-948d-477fd4b4de73",
+      "receipt": "candidates.json",
+      "sha256": "0ad2ecff0dbd048499dc79b125434db0c096909bc51ae5898dafda97413de7c4",
+      "dimensions": [
+        2688,
+        1520
+      ]
+    },
+    {
+      "file": "candidate-3.png",
+      "job_id": "bf904c7e-ca1b-4b00-a0f8-b07e81298496",
+      "receipt": "candidates.json",
+      "sha256": "1c442fb36cd8bb23dadd596204262f4682e1c96815aeda2ac469ef11edb736e0",
+      "dimensions": [
+        2688,
+        1520
+      ]
+    },
+    {
+      "file": "candidate-4.png",
+      "job_id": "ff45eed2-0e7b-4e97-bb36-80031dc649ba",
+      "receipt": "candidates.json",
+      "sha256": "708f7bfd7da529a226cb9a1174968709cc49d99c532a5d88f7161b8feaa8227f",
+      "dimensions": [
+        2688,
+        1520
+      ]
+    },
+    {
+      "file": "refined-4k.png",
+      "job_id": "2b1029a0-de52-45a1-ad46-4b160c8cc1fd",
+      "receipt": "refinement-result.json",
+      "sha256": "ed1b6c2aa8c451be842c72cbc202bdcadab7868db6d472cbe4a716e37927c196",
+      "dimensions": [
+        5504,
+        3072
+      ]
+    }
+  ]
+}
