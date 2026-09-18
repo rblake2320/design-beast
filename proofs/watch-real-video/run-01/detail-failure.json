@@ -1,0 +1,6 @@
+{
+  "error_type": "ValidationError",
+  "error": "1 validation error for VisualAnswer\n  Invalid JSON: EOF while parsing a string at line 1 column 8528 [type=json_invalid, input_value='{\"changes\": [{\"before_in...llar. The model\\'s body', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid",
+  "http_body": null,
+  "elapsed_seconds": 13.2730661000096
+}

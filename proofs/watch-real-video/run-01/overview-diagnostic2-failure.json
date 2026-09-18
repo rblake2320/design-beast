@@ -1,0 +1,6 @@
+{
+  "error_type": "HTTPError",
+  "error": "HTTP Error 400: Bad Request",
+  "http_body": "{\"error\":\"{\\\"error\\\":{\\\"code\\\":400,\\\"message\\\":\\\"Failed to initialize samplers: failed to parse grammar\\\",\\\"type\\\":\\\"invalid_request_error\\\"}}\"}",
+  "elapsed_seconds": 3.1132033000030788
+}

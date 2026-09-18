@@ -1,0 +1,45 @@
+{
+  "status": "completed",
+  "intent_sha256": "88ea456d280e42d8ad5069fd1a6b2d70338c41dbcb0249f275380e9371b7555a",
+  "elapsed_seconds": 0.3525188000057824,
+  "charged_frames": 4,
+  "provider_cost": 0,
+  "request": {
+    "id": "seek-0001",
+    "created_unix": 1789761252.5772736,
+    "center_seconds": 15.0,
+    "center_time": "00:00:15.000",
+    "level": 3,
+    "level_name": "forensic",
+    "direction": "both",
+    "before_seconds": 15.0,
+    "after_seconds": 15.0,
+    "fps": 0.1,
+    "reason": "Frozen initial uniform overview; transcript withheld.",
+    "requested_frames": 4,
+    "new_frames": 4
+  },
+  "frames": [
+    {
+      "source_seconds": 0.0,
+      "file": "frames/f_000000000000.jpg",
+      "sha256": "d9d46720bc084767113252d87e6846b9ef64cdda5ffb1a1bc8f18df3eef1fb10"
+    },
+    {
+      "source_seconds": 10.0,
+      "file": "frames/f_000000010000.jpg",
+      "sha256": "8f17d2efc2bd95986380d924f10c3ce2bf584029e55062ba44f2f6ddac8c57fb"
+    },
+    {
+      "source_seconds": 20.0,
+      "file": "frames/f_000000020000.jpg",
+      "sha256": "36ac709491bb2bd95c4f58e3016189c08703f9afb6dda3e1da0fdf0cf513bb5f"
+    },
+    {
+      "source_seconds": 30.0,
+      "file": "frames/f_000000030000.jpg",
+      "sha256": "c6b139443359dc5d6fb32d07a7763553b1feb2f18379a47f64a9d2b413703b56"
+    }
+  ],
+  "timeline_after_sha256": "7947716f8add0838f6a69cfea788ed5c2b8ffba3d2cf74d8c9a1aabe7be51df4"
+}
