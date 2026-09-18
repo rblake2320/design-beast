@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:25:11.9880885Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"abstract digital interface\",\n  \"view\": \"floating document icons against blurred background; central PDF icon prominent.\",\n  \"content\": \"multiple blurred document-like shapes with faint lines; red PDF icon on top center; blue cloud icon left side.\",\n  \"overlays\": \"none visible; no cursor or selections.\",\n  \"visible_text\": \"PDF label on red icon; other text obscured by blur.\",\n  \"uncertainty\": \"blur obscures content details; exact document types unknown.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4444935900,
+  "load_duration": 3423071900,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 407536000,
+  "eval_count": 106,
+  "eval_duration": 576154000
+}

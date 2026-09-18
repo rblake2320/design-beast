@@ -1,0 +1,36 @@
+{
+  "frame": {
+    "id": "frame-0009",
+    "file": "frames/f_000000004000.jpg",
+    "source_seconds": 4.0,
+    "source_time": "00:00:04.000",
+    "clip_seconds": 4.0,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "0003033fbfbfe7ff",
+    "sha256": "db79f711903f5148919aa7612c483fa4bdddc81c529357de4e9757b8db8c42b1",
+    "change_from_previous": 0,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "ocr_status": "observed_unverified",
+  "result": {
+    "clip_ms": 4000,
+    "source_ms": 304000,
+    "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+    "sha256": "db79f711903f5148919aa7612c483fa4bdddc81c529357de4e9757b8db8c42b1",
+    "state": {
+      "screen_type": "video capture",
+      "view": "medium close-up, centered on subject",
+      "content": "Man with dark hair and black shirt. Behind: black lamp left, green plant right. Walls light gray.",
+      "overlays": "",
+      "visible_text": "",
+      "uncertainty": ""
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 4.306474500001059,
+    "provider_cost_usd": 0
+  }
+}

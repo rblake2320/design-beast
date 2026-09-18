@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:25:49.6485612Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"video recording screenshot\",\n  \"view\": \"medium close-up, centered on a man\u2019s face and upper torso\",\n  \"content\": \"Man with dark hair, wearing black shirt, facing camera. Behind him: black lamp to left, green plant to right, plain wall background.\",\n  \"overlays\": \"\",\n  \"visible_text\": \"\",\n  \"uncertainty\": \"No visible text or overlays. Subject\u2019s exact expression and posture not fully determinable from single frame.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4741921400,
+  "load_duration": 3741290400,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 406070000,
+  "eval_count": 104,
+  "eval_duration": 554835000
+}

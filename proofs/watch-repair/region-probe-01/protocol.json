@@ -1,0 +1,49 @@
+{
+  "selection": "post-failure diagnostic; not held out",
+  "timeline_sha256": "3c811e6ea7f62bcf39bd835a97665b84b14d3fdc640532ef657bba914ea4f60d",
+  "cases": [
+    [
+      0,
+      "top-left",
+      [
+        0,
+        0,
+        640,
+        180
+      ]
+    ],
+    [
+      17,
+      "viewport",
+      [
+        320,
+        140,
+        820,
+        640
+      ]
+    ],
+    [
+      23,
+      "viewport",
+      [
+        320,
+        140,
+        820,
+        640
+      ]
+    ],
+    [
+      34,
+      "center",
+      [
+        200,
+        120,
+        1080,
+        600
+      ]
+    ]
+  ],
+  "model": "qwen3-vl:8b-instruct",
+  "max_calls": 4,
+  "procedure_promotions": 0
+}

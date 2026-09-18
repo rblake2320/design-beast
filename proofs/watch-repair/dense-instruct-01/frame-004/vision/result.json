@@ -1,0 +1,15 @@
+{
+  "source_ms": 2000,
+  "sha256": "f5a895fb96ba3a770751902b9b8288dc1745d74fc8d68896fcc68c4ed31c02c6",
+  "state": {
+    "screen_type": "3D modeling software interface",
+    "view": "Front Orthographic (Local) view, showing a low-poly human torso model centered on grid.",
+    "content": "Low-poly female torso model with pink body, green neckband, and teal feet. Grid background visible.",
+    "overlays": "White pencil cursor, selection box tool active, object mode indicator, scene collection panel.",
+    "visible_text": "Front Orthographic (Local), Female 2, Object Mode, Scene Collection, ViewLayer, Gravity, Simulation, Keying Sets, Audio, Rigid Body World, Light Probes, Custom Properties.",
+    "uncertainty": "No uncertainty; all visible elements are clearly rendered and labeled in the interface."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.563176099996781,
+  "provider_cost_usd": 0
+}

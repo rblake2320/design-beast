@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:18:00.6983701Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D viewport\",\n  \"view\": \"User Perspective (Local), centered on a human-like figure.\",\n  \"content\": \"A low-poly, purple humanoid model with green neck and limbs. No visible textures or details beyond base geometry.\",\n  \"overlays\": \"White pencil cursor near the model. No active selection highlights or annotations.\",\n  \"visible_text\": \"Sculpting mode active. Scene Collection: Female 2. Scene: Gravity enabled. Version 5.0.1.\",\n  \"uncertainty\": \"No uncertainty; all visible elements are explicitly rendered in the viewport.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4454012700,
+  "load_duration": 3279542300,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 416928000,
+  "eval_count": 130,
+  "eval_duration": 715901000
+}

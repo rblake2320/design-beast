@@ -1,0 +1,15 @@
+{
+  "source_ms": 6500,
+  "sha256": "527e2b9dae5bc2226ae0e54cac0ae59c983dec748ded43084eae67afd0d3d38d",
+  "state": {
+    "screen_type": "3D modeling software interface",
+    "view": "Right Orthographic (Local), showing a human-like figure centered on grid.",
+    "content": "A stylized female humanoid model with segmented purple torso, green neck/legs, and light green feet. No facial features visible.",
+    "overlays": "White pen cursor near top of head. Red X-axis gizmo highlighted. Annotation tool active with 'Radius: 35 px' and 'Factor: 0.750'.",
+    "visible_text": "Sculpting mode active. Tool options: Global, Radius, Factor, Drag, Select Box. Scene Collection lists 'Female 2', 'Fat Dude 2', etc. ViewLayer panel visible.",
+    "uncertainty": "No uncertainty. All elements clearly rendered in current viewport."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.76553829999466,
+  "provider_cost_usd": 0
+}

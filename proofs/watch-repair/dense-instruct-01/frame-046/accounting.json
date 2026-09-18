@@ -1,0 +1,33 @@
+{
+  "frame": {
+    "id": "frame-0047",
+    "file": "frames/f_000000023000.jpg",
+    "source_seconds": 23.0,
+    "source_time": "00:00:23.000",
+    "clip_seconds": 23.0,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "00007f7f7f7f0000",
+    "sha256": "528a3844904bed9e2fa27bf78b3957388680e5580bc785be68727e4e4a9e878c",
+    "change_from_previous": 0,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "result": {
+    "source_ms": 23000,
+    "sha256": "528a3844904bed9e2fa27bf78b3957388680e5580bc785be68727e4e4a9e878c",
+    "state": {
+      "screen_type": "Instructional slide",
+      "view": "Full-screen text layout on dark background",
+      "content": "Black background with white and orange text. Text explains 'HOW TO BLOCK OUT' character design principles using simple shapes and silhouette checks.",
+      "overlays": "White cursor arrow pointing at 'STRAIGHT VS CURVES' section",
+      "visible_text": "HOW TO BLOCK OUT, FOLLOW THE SHAPE LANGUAGE, BREAK THE CHARACTER INTO PARTS, USE SIMPLE SHAPES, STRAIGHT VS CURVES, CHECK THE SILHOUETTE, STYLIZED CHARACTER ACADEMY, TELL YOUR OWN STORIES WITH YOUR 3D CHARACTERS",
+      "uncertainty": "None. All text and cursor are clearly visible and legible on the screen."
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 4.4464806000032695,
+    "provider_cost_usd": 0
+  }
+}

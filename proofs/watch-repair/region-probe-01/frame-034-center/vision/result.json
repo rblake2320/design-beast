@@ -1,0 +1,17 @@
+{
+  "clip_ms": 17000,
+  "source_ms": null,
+  "source_sha256": null,
+  "sha256": "c9320c64066f80e650372ec193ecaf26bb476869122f59f3701a808190160a72",
+  "state": {
+    "screen_type": "Blender 3D modeling software interface with multiple windows open.",
+    "view": "Split-screen view showing three panels: left with 3D viewport, center with browser tab, right with reference images.",
+    "content": "Left: 3D character model in purple. Center: text box with instructions. Right: character concept sketches with red outlines.",
+    "overlays": "Cursor over center text box. Blue border around center panel. Browser tab title visible.",
+    "visible_text": "HOW TO BLOCK OUT, FOLLOW THE SHAPE LANGUAGE, BREAK THE CHARACTER INTO PARTS, USE SIMPLE SHAPES, STRAIGHT VS CURVES.",
+    "uncertainty": "No uncertainty; all elements clearly rendered and labeled."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.118823699987843,
+  "provider_cost_usd": 0
+}

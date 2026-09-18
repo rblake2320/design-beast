@@ -1,0 +1,6 @@
+{
+  "frame_sha256": "36ac709491bb2bd95c4f58e3016189c08703f9afb6dda3e1da0fdf0cf513bb5f",
+  "frame": "watched\\real-challenge-01\\frames\\f_000000020000.jpg",
+  "prompt": "Describe ONLY this single image. Return JSON with exactly three short strings: screen_type, visible_content, visible_text. No inferred actions. At most 90 words total.",
+  "endpoint": "generate"
+}

@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:19:36.1217961Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D viewport in Blender\",\n  \"view\": \"User Perspective (Local), showing 'Female 2' model centered.\",\n  \"content\": \"Pink humanoid model with green neck and legs. No other objects visible.\",\n  \"overlays\": \"White pencil cursor near model. No active selection highlights or drawn marks.\",\n  \"visible_text\": \"Sculpting mode active. Tool settings: Radius 35 px, Factor 0.750. Scene Collection lists 'Female 2'.\",\n  \"uncertainty\": \"No uncertainty; all elements clearly visible and labeled.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4477167000,
+  "load_duration": 3311040400,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 421886000,
+  "eval_count": 128,
+  "eval_duration": 702895000
+}

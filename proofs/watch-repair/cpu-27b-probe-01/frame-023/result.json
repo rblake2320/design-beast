@@ -1,0 +1,17 @@
+{
+  "clip_ms": 11500,
+  "source_ms": null,
+  "source_sha256": null,
+  "sha256": "5d606f702af3cb95b38a564f59835173d051ca09c6a7c337284696643f47df08",
+  "state": {
+    "screen_type": "3D modeling software interface (Blender) in Sculpt mode",
+    "view": "Right Orthographic (Local) view; character model centered, occupying middle vertical portion of viewport",
+    "content": "Humanoid character model in profile facing left; pinkish-purple body, green neck and feet, blocky head; positioned centrally on dark grid background",
+    "overlays": "White brush cursor icon over character's hip area; green/red/yellow axis gizmo top-right; grid lines across viewport",
+    "visible_text": "Sculpting, Right Orthographic (Local), (1) Female 2, Radius 35 px, Factor 0.750, Scene Collection, Bulk Dude 1, Fat Dude 2, Female 1, Female 2, ViewLayer, Camera, Object, Scene, Gravity, Simulation, Keying Sets, Audio, Rigid Body World, Light Probes, Animation, Custom Properties, 5.0.1",
+    "uncertainty": "Exact mesh topology and hidden geometry not visible; whether model is selected or in edit state beyond sculpt mode is unclear"
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 193.65868569999293,
+  "provider_cost_usd": 0
+}

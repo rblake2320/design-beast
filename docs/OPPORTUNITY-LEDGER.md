@@ -2,6 +2,21 @@
 
 ### OPP-20260918-03 — Replaceable Watch inspection-policy contract
 
+- Repair research follow-up 2026-09-18: frame-bound single-image inference,
+  all-frame accounting, explicit Instruct model, UTF8 OCR, and byte-custody
+  guards were implemented beside Watch. Independent review found 4/10 supported
+  Blender event representations (4 partial, 2 missed), with at least 15 false
+  frame descriptions. A frozen unseen talking-head/motion-graphic clip had
+  5/5 coarse representations but at least one false icon identification.
+  These are reviewer-derived coverage findings, not autonomous event recovery.
+  All outputs remain unverified; no procedure promotions. The full repair gate
+  still FAILS. Primary-source research and negative alternative probes are in
+  `proofs/watch-repair/RESEARCH.md`; independent grades are retained alongside.
+  Potential value inside Beast and Vigil is more inspectable observation
+  provenance, not a proven general-purpose visual learner. Neither Jev nor
+  SemIf is installed as an evidence authority. Revisit on a perception backend
+  that passes the original semantic challenge and a frozen unseen GUI test.
+
 - Real-video follow-up 2026-09-18: `proofs/watch-real-video/PROOF.md` records
   a FAILED transcript-free Blender tutorial challenge. The local 8B VLM plus
   current sampling recovered 0/10 independently referenced events with correct

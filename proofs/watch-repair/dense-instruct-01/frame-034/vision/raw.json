@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:20:16.777396Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"Blender 3D modeling software interface\",\n  \"view\": \"User Perspective (Local) showing female character model centered, with reference panels open.\",\n  \"content\": \"A humanoid character model with green legs and purple torso. Three reference windows display character sketches and a tutorial.\",\n  \"overlays\": \"Cursor over text in central window. Three floating reference windows with tabs and close buttons. Scene Collection panel on right.\",\n  \"visible_text\": \"User Perspective (Local), Female 2, Course Copy - Chapter 2 - Blocking our Your Characters - Google...\",\n  \"uncertainty\": \"No visible uncertainty; all elements clearly rendered.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4491712300,
+  "load_duration": 3294287500,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 408468000,
+  "eval_count": 139,
+  "eval_duration": 747404000
+}

@@ -1,0 +1,33 @@
+{
+  "frame": {
+    "id": "frame-0031",
+    "file": "frames/f_000000015000.jpg",
+    "source_seconds": 15.0,
+    "source_time": "00:00:15.000",
+    "clip_seconds": 15.0,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "00bf7f3f3f3f3f01",
+    "sha256": "88f83c69b0861775e3c43819ba220e9c100d32f33203d4ca2230b950536da7c9",
+    "change_from_previous": 0,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "result": {
+    "source_ms": 15000,
+    "sha256": "88f83c69b0861775e3c43819ba220e9c100d32f33203d4ca2230b950536da7c9",
+    "state": {
+      "screen_type": "3D viewport",
+      "view": "User Perspective (Local), centered on 'Female 2' model.",
+      "content": "A humanoid model with pink torso, green limbs, and orange arm/leg joints. No visible facial features or detailed textures.",
+      "overlays": "White pencil cursor near center-right. Selection highlights around model's arms and legs. Annotation tool active with 'Global', 'Radius 35 px', 'Factor 0.750'.",
+      "visible_text": "User Perspective (Local), Female 2, Object Mode, Sculpting, Global, Radius 35 px, Factor 0.750, Select Box, Scene Collection, Bulk Dude 1, Fat Dude 2, Female 1, Female 2.",
+      "uncertainty": "No visible text or geometry changes indicate current mode/tool usage. No user actions inferred."
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 5.2768455000041286,
+    "provider_cost_usd": 0
+  }
+}

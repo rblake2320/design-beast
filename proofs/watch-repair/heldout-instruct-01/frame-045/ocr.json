@@ -1,0 +1,5 @@
+{
+  "frame_sha256": "031ded17c768c456f4f7a13bd127556bf4373171f91ba90e099a8a358594cf23",
+  "tsv": "level\tpage_num\tblock_num\tpar_num\tline_num\tword_num\tleft\ttop\twidth\theight\tconf\ttext\r\n1\t1\t0\t0\t0\t0\t0\t0\t1280\t720\t-1\t\r\n2\t1\t1\t0\t0\t0\t618\t365\t49\t26\t-1\t\r\n3\t1\t1\t1\t0\t0\t618\t365\t49\t26\t-1\t\r\n4\t1\t1\t1\t1\t0\t618\t365\t49\t26\t-1\t\r\n5\t1\t1\t1\t1\t1\t618\t365\t49\t26\t86.074974\t~\r\n",
+  "evidence_class": "unverified_ocr"
+}

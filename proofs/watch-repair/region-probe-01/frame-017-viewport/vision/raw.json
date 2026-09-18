@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:27:51.712626Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D modeling software viewport\",\n  \"view\": \"Side view of a humanoid model centered on grid.\",\n  \"content\": \"Model has pink torso, green neck/legs, and light green feet. Body segmented with visible polygonal faces.\",\n  \"overlays\": \"Blue vertical line along body. White pencil cursor near thigh. No text or tool labels visible.\",\n  \"visible_text\": \"\",\n  \"uncertainty\": \"No uncertainty; clear view of model and overlays.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 3811226200,
+  "load_duration": 2832776900,
+  "prompt_eval_count": 1185,
+  "prompt_eval_duration": 371299000,
+  "eval_count": 105,
+  "eval_duration": 569216000
+}

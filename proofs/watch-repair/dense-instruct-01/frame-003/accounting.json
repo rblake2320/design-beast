@@ -1,0 +1,33 @@
+{
+  "frame": {
+    "id": "frame-0004",
+    "file": "frames/f_000000001500.jpg",
+    "source_seconds": 1.5,
+    "source_time": "00:00:01.500",
+    "clip_seconds": 1.5,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "080c0c0c0c0d0c01",
+    "sha256": "5d6409c502e10cb9a04ba58584dc84177c6f6e77bee683fe26fe8c0a80137c27",
+    "change_from_previous": 16,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "result": {
+    "source_ms": 1500,
+    "sha256": "5d6409c502e10cb9a04ba58584dc84177c6f6e77bee683fe26fe8c0a80137c27",
+    "state": {
+      "screen_type": "3D modeling software interface",
+      "view": "Front Orthographic (Local) view, centered on a low-poly human figure.",
+      "content": "A stylized female torso and legs model with pinkish-purple body, green neck and feet. Headless, no hands or arms.",
+      "overlays": "White brush cursor near the right hip. No active selection highlights or drawn marks on geometry.",
+      "visible_text": "Front Orthographic (Local), Female 2, Sculpting mode active, Annotation Draw, Rotate View, Options, Scene Collection, ViewLayer, Gravity, Simulation, Keying Sets, Audio, Rigid Body World, Light Probes, Custom Properties.",
+      "uncertainty": "No uncertainty; all visible elements are clearly depicted."
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 4.628138900006888,
+    "provider_cost_usd": 0
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "source_ms": 11500,
+  "sha256": "5d606f702af3cb95b38a564f59835173d051ca09c6a7c337284696643f47df08",
+  "state": {
+    "screen_type": "3D modeling software interface",
+    "view": "Right Orthographic (Local), showing a single humanoid figure centered on grid.",
+    "content": "A stylized humanoid model with pink torso, green limbs, and white sculpting brush cursor near hip.",
+    "overlays": "White sculpting brush cursor, green/red/blue axis gizmo, selection box, tool settings panel.",
+    "visible_text": "Sculpting, Object Mode, Right Orthographic (Local), Female 2, Global, Radius 35 px, Factor 0.750, Select Box.",
+    "uncertainty": "No uncertainty; screenshot is static and fully described."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.515882599996985,
+  "provider_cost_usd": 0
+}

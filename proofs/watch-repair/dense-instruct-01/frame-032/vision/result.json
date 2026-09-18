@@ -1,0 +1,15 @@
+{
+  "source_ms": 16000,
+  "sha256": "7c90550c6bcbf70d067a036388535025c11d06bab73ed8dd1a2843d34faddfb0",
+  "state": {
+    "screen_type": "3D viewport",
+    "view": "User Perspective (Local), centered on 'Female 2' model.",
+    "content": "A humanoid 3D model, 'Female 2', with pink torso, green limbs, and orange arm highlights. No other objects visible.",
+    "overlays": "White arrow cursor. Selected object highlighted with orange edges. No active popups or tool overlays.",
+    "visible_text": "User Perspective (Local), (1) Female 2, Sculpting, ViewLayer, Scene Collection, Gravity, Simulation, Keying Sets, Rigid Body World, Light Probes, Animation, Custom Properties.",
+    "uncertainty": "No uncertainty. All visible elements are clearly defined and unambiguous in this single frame."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.640581300001941,
+  "provider_cost_usd": 0
+}

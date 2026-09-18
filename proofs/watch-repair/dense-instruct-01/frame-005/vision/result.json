@@ -1,0 +1,15 @@
+{
+  "source_ms": 2500,
+  "sha256": "009569cdc00f0094385183a99943a0a34021af86cff6aa896fde0a89cab6ae35",
+  "state": {
+    "screen_type": "3D modeling software interface",
+    "view": "User Perspective (Local) showing a low-poly human torso model centered in viewport.",
+    "content": "A purple torso model with green neck and leg areas. No visible facial features or limbs beyond torso and legs.",
+    "overlays": "White pencil cursor near model. Selection box tool active. Scene Collection panel on right.",
+    "visible_text": "User Perspective (Local), Female 2, Sculpting, Object Mode, Global, Radius: 35 px, Factor: 0.750, Drag: Select Box",
+    "uncertainty": "No visible uncertainty; all elements clearly rendered and labeled."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.553946900006849,
+  "provider_cost_usd": 0
+}

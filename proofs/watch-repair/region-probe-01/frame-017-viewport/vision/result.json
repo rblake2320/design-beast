@@ -1,0 +1,17 @@
+{
+  "clip_ms": 8500,
+  "source_ms": null,
+  "source_sha256": null,
+  "sha256": "03603839e4147e813383d1fea996a5381030f9bb2474797c54cb73389a7ea2ab",
+  "state": {
+    "screen_type": "3D modeling software viewport",
+    "view": "Side view of a humanoid model centered on grid.",
+    "content": "Model has pink torso, green neck/legs, and light green feet. Body segmented with visible polygonal faces.",
+    "overlays": "Blue vertical line along body. White pencil cursor near thigh. No text or tool labels visible.",
+    "visible_text": "",
+    "uncertainty": "No uncertainty; clear view of model and overlays."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 3.815281599992886,
+  "provider_cost_usd": 0
+}

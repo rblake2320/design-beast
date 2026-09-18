@@ -1,0 +1,17 @@
+{
+  "model": "qwen3-vl:8b",
+  "created_at": "2026-09-18T20:08:33.5706272Z",
+  "message": {
+    "role": "assistant",
+    "content": "",
+    "thinking": "{\"before\":\"Viewport shows 'Right Orthographic (Local)' with 'Female 2' character in wireframe. No annotations.\", \"after\":\"Viewport shows 'Right Orthographic (Local)' with 'Female 2' character in wireframe. A white pencil annotation appears near the character.\", \"changes\":[\"Pencil annotation added near character\", \"No viewport/camera change\", \"No object geometry or visibility change\"], \"uncertain\":\"Annotation tool active but no other UI changes\"}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4542411200,
+  "load_duration": 3158378200,
+  "prompt_eval_count": 2024,
+  "prompt_eval_duration": 747646000,
+  "eval_count": 97,
+  "eval_duration": 570187000
+}

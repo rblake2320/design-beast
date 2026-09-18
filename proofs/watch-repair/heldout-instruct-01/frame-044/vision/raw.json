@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:25:54.3053002Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"video capture\",\n  \"view\": \"medium close-up of a man centered in frame, facing camera directly.\",\n  \"content\": \"Man with dark hair and black shirt. Behind him: black lamp on left, green plant on right. Background wall is plain white.\",\n  \"overlays\": \"\",\n  \"visible_text\": \"\",\n  \"uncertainty\": \"No visible text or overlays. Lighting and background objects are static. No inferred actions or editing tools present.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4461277700,
+  "load_duration": 3463353000,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 402531000,
+  "eval_count": 102,
+  "eval_duration": 557883000
+}
