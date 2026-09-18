@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import io
 import json
 import subprocess
 import time
@@ -10,9 +11,7 @@ import urllib.request
 from pathlib import Path
 from typing import Annotated
 
-import cv2
-import numpy as np
-from PIL import Image, ImageDraw
+from PIL import Image, ImageChops, ImageDraw
 from pydantic import Field
 
 from studio.resource_guard import admission
@@ -65,11 +64,12 @@ def pixel_change(before: Path, after: Path, before_hash: str | None = None,
     for data, expected in zip(encoded, (before_hash, after_hash)):
         if expected is not None and hashlib.sha256(data).hexdigest() != expected:
             raise ValueError("pixel comparison custody mismatch")
-    a, b = [cv2.imdecode(np.frombuffer(data, dtype=np.uint8), cv2.IMREAD_COLOR) for data in encoded]
-    if a is None or b is None or a.shape != b.shape:
-        raise ValueError("invalid pair pixels")
-    difference = cv2.absdiff(a, b).max(axis=2)
-    return float((difference > 20).mean())
+    with Image.open(io.BytesIO(encoded[0])) as a, Image.open(io.BytesIO(encoded[1])) as b:
+        if a.size != b.size:
+            raise ValueError("invalid pair pixels")
+        channels = ImageChops.difference(a.convert("RGB"), b.convert("RGB")).split()
+        maximum = ImageChops.lighter(ImageChops.lighter(channels[0], channels[1]), channels[2])
+        return sum(maximum.histogram()[21:]) / (a.width * a.height)
 
 
 def observe_pair(before: Path, after: Path, directory: Path, before_ms: int,
