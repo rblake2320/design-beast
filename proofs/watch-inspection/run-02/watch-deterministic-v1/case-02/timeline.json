@@ -1,0 +1,416 @@
+{
+  "schema": "beast.watch.timeline/v3",
+  "source": {
+    "local_video": "video.mkv",
+    "range": {
+      "start_seconds": 0,
+      "end_seconds": 6,
+      "start": "00:00",
+      "end": "00:06"
+    }
+  },
+  "sampling": {
+    "height": 64
+  },
+  "frames": [
+    {
+      "id": "frame-0001",
+      "file": "frames/f_000000000000.jpg",
+      "source_seconds": 0.0,
+      "source_time": "00:00:00.000",
+      "clip_seconds": 0.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": null,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0002",
+      "file": "frames/f_000000000250.jpg",
+      "source_seconds": 0.25,
+      "source_time": "00:00:00.250",
+      "clip_seconds": 0.25,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0003",
+      "file": "frames/f_000000000500.jpg",
+      "source_seconds": 0.5,
+      "source_time": "00:00:00.500",
+      "clip_seconds": 0.5,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0004",
+      "file": "frames/f_000000000750.jpg",
+      "source_seconds": 0.75,
+      "source_time": "00:00:00.750",
+      "clip_seconds": 0.75,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0005",
+      "file": "frames/f_000000001000.jpg",
+      "source_seconds": 1.0,
+      "source_time": "00:00:01.000",
+      "clip_seconds": 1.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0006",
+      "file": "frames/f_000000001250.jpg",
+      "source_seconds": 1.25,
+      "source_time": "00:00:01.250",
+      "clip_seconds": 1.25,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0007",
+      "file": "frames/f_000000001500.jpg",
+      "source_seconds": 1.5,
+      "source_time": "00:00:01.500",
+      "clip_seconds": 1.5,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0008",
+      "file": "frames/f_000000001750.jpg",
+      "source_seconds": 1.75,
+      "source_time": "00:00:01.750",
+      "clip_seconds": 1.75,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0009",
+      "file": "frames/f_000000002000.jpg",
+      "source_seconds": 2.0,
+      "source_time": "00:00:02.000",
+      "clip_seconds": 2.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0010",
+      "file": "frames/f_000000002250.jpg",
+      "source_seconds": 2.25,
+      "source_time": "00:00:02.250",
+      "clip_seconds": 2.25,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "5f5dcdcb5d538285b7cde7168ad1439968aba3ba4aabb8611147f062b22cf4c9",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0011",
+      "file": "frames/f_000000002500.jpg",
+      "source_seconds": 2.5,
+      "source_time": "00:00:02.500",
+      "clip_seconds": 2.5,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0012",
+      "file": "frames/f_000000002750.jpg",
+      "source_seconds": 2.75,
+      "source_time": "00:00:02.750",
+      "clip_seconds": 2.75,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0013",
+      "file": "frames/f_000000003000.jpg",
+      "source_seconds": 3.0,
+      "source_time": "00:00:03.000",
+      "clip_seconds": 3.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0014",
+      "file": "frames/f_000000003250.jpg",
+      "source_seconds": 3.25,
+      "source_time": "00:00:03.250",
+      "clip_seconds": 3.25,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0015",
+      "file": "frames/f_000000003500.jpg",
+      "source_seconds": 3.5,
+      "source_time": "00:00:03.500",
+      "clip_seconds": 3.5,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0016",
+      "file": "frames/f_000000003750.jpg",
+      "source_seconds": 3.75,
+      "source_time": "00:00:03.750",
+      "clip_seconds": 3.75,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0017",
+      "file": "frames/f_000000004000.jpg",
+      "source_seconds": 4.0,
+      "source_time": "00:00:04.000",
+      "clip_seconds": 4.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0018",
+      "file": "frames/f_000000004250.jpg",
+      "source_seconds": 4.25,
+      "source_time": "00:00:04.250",
+      "clip_seconds": 4.25,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0019",
+      "file": "frames/f_000000004500.jpg",
+      "source_seconds": 4.5,
+      "source_time": "00:00:04.500",
+      "clip_seconds": 4.5,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0020",
+      "file": "frames/f_000000004750.jpg",
+      "source_seconds": 4.75,
+      "source_time": "00:00:04.750",
+      "clip_seconds": 4.75,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0021",
+      "file": "frames/f_000000005000.jpg",
+      "source_seconds": 5.0,
+      "source_time": "00:00:05.000",
+      "clip_seconds": 5.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0022",
+      "file": "frames/f_000000005250.jpg",
+      "source_seconds": 5.25,
+      "source_time": "00:00:05.250",
+      "clip_seconds": 5.25,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0023",
+      "file": "frames/f_000000005500.jpg",
+      "source_seconds": 5.5,
+      "source_time": "00:00:05.500",
+      "clip_seconds": 5.5,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0024",
+      "file": "frames/f_000000005750.jpg",
+      "source_seconds": 5.75,
+      "source_time": "00:00:05.750",
+      "clip_seconds": 5.75,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0025",
+      "file": "frames/f_000000006000.jpg",
+      "source_seconds": 6.0,
+      "source_time": "00:00:06.000",
+      "clip_seconds": 6.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    }
+  ],
+  "evidence_requests": [
+    {
+      "id": "seek-0001",
+      "created_unix": 1789760578.8877163,
+      "center_seconds": 3.0,
+      "center_time": "00:00:03.000",
+      "level": 2,
+      "level_name": "action",
+      "direction": "both",
+      "before_seconds": 3.0,
+      "after_seconds": 3.0,
+      "fps": 4.0,
+      "reason": "Causality and reproducibility require independent evidence.",
+      "requested_frames": 25,
+      "new_frames": 25
+    }
+  ],
+  "coverage": {
+    "extracted_frames": 25,
+    "dense_samples": 25,
+    "near_duplicates": 0
+  },
+  "bundle_fingerprint": "7926a71e52a2e7f3ede063fe06fb50acd939736187762f93ccc35d6e2ef595a6",
+  "visual_index_stale": false
+}
