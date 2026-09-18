@@ -1,0 +1,41 @@
+{
+  "backend": "watch-deterministic-v1",
+  "case_id": "case-03",
+  "stratum": "ambiguous_cause",
+  "source_kind": "prerecorded",
+  "source_sha256": "52400b3b35c545c1884e5c93a106b9f40094eb6e3f870016433c6a2472cedb69",
+  "evidence_class": "evidence_supported_transition",
+  "gates": {
+    "transition_passed": true,
+    "action_supports_cause": false,
+    "reproducibility_passed": false,
+    "transition_evidence": [
+      "frames/f_000000002750.jpg#sha256=26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "frames/f_000000003000.jpg#sha256=5f5dcdcb5d538285b7cde7168ad1439968aba3ba4aabb8611147f062b22cf4c9"
+    ],
+    "causal_evidence": [],
+    "reproducibility_evidence": []
+  },
+  "confidence": {
+    "perception": 0.5,
+    "transition": 0.5,
+    "procedure": 0.0
+  },
+  "inspections": 1,
+  "frames": 25,
+  "elapsed_seconds": 0.9044796999951359,
+  "provider_cost": 0,
+  "provider_cost_unit": "USD",
+  "gpu_calls": 0,
+  "compute_budget_exceeded": false,
+  "true_positive": true,
+  "false_acceptance": false,
+  "miss": false,
+  "procedure_false_acceptance": false,
+  "brier": {
+    "perception": 0.25,
+    "transition": 0.25,
+    "procedure": 0.0
+  },
+  "inspection_receipt": "watch-deterministic-v1/case-03/inspection.result.json"
+}
