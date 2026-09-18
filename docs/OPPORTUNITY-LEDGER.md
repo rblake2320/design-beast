@@ -2,6 +2,12 @@
 
 ### OPP-20260918-01 — Standalone evidence-bound Blender execution
 
+- Follow-up experiment: after runner freeze `aac9d29`, selected previously
+  uninspected tutorial `https://www.youtube.com/watch?v=m9c80LWLa-8`
+  (blenderian, "Blender how to bend a cube", 135 seconds). Compile only inspected
+  frame-supported facts, preserve missing-operation failures, and label any
+  post-inspection adapter change as a same-task repair, not held-out success.
+
 - Status: experiment
 - Trigger: owner authorized execution integration; local Blender 5.1.2 responds
   to CLI help, while the exposed editor MCP read fails to connect. The existing
