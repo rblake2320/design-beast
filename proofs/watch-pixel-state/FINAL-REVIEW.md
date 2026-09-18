@@ -172,3 +172,27 @@ Reviewed repaired SHA-256:
 Disposition: no remaining blocker identified in these specific repairs for
 retained-input, recommendation-only experimentation. Not general-input hardening,
 semantic success, deployment approval, or permission to merge.
+
+## Git-byte portability addendum — eee4ce6
+
+Independently checked exact commit
+`eee4ce683af8b55244cb51fc4eafa19a1269bc1b` using raw `git cat-file --batch`
+blob bytes, not PowerShell text conversion. All **2,254 committed JSON files**
+in the two protected proof trees equal the retained local bytes. All **305
+pixel-state report hash links** across the five pixel runs match their committed
+state blobs. Both run-03 fusion intents and all **122** fused records' pixel,
+UI and temporal-window links also match committed blobs.
+
+All six measured implementation files contain LF-only committed bytes, equal
+the working files and equal commit94ef441 after line-ending normalization.
+Their hashes match the reviewed hashes above. The blender-02, heldout-02 and
+fresh-ocr-blender-01 implementation receipts match committed visual_state.py.
+This confirms source-algorithm continuity for this packaging repair, not a new
+inference result.
+
+The added `watch/tests/test_evidence_git_bytes.py` independently passed:
+**1 passed in 1.78s**. No previous inference or previously passed focused suite
+was rerun. `.gitattributes` disables JSON text normalization in the two proof
+trees and enforces LF for the six measured source files. The identified
+committed-byte portability defect is closed for this reviewed scope. No new
+semantic or deployment claim follows.

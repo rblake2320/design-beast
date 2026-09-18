@@ -97,3 +97,15 @@ and spatial evidence, while global motion fit could be dominated by application
 chrome. The new executable lane preserves those measurements. Remaining semantic
 misinterpretation requires a separately evaluated event interpreter/verification
 stage. It is not resolved merely by adding these components.
+
+## Exact-byte portability follow-up
+
+`eee4ce6` closes a Git transport defect: automatic CRLF normalization changed
+JSON blobs while receipts referred to original Windows bytes. Narrow
+`.gitattributes` entries now preserve both dependent proof trees byte-for-byte;
+the original retained bytes were staged again without changing parsed data or
+rerunning inference. Six measured implementation files use explicit LF endings.
+`test_evidence_git_bytes.py` reads 61 actual committed Git blobs and verifies
+their report hashes. This new regression plus five fusion/runtime cases passed.
+The preceding full suite remains 334 passes; this adds one test, not a new claim
+of semantic accuracy. Independent portability review is appended separately.
