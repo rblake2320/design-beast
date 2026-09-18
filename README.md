@@ -13,6 +13,11 @@ workflow, not model — and this repo encodes the workflow.
 
 ## The rules that make output good
 
+**Blender execution:** `beast blender` now runs bounded JSON procedures in fresh
+local Blender processes and retains saved-scene, step, render and failure evidence.
+See [the command and owner verification guide](docs/BLENDER-EXECUTION.md).
+This is primitive-scene execution, not generalized tutorial learning.
+
 1. **Never one-shot.** Generate 4+ candidates, judge, pick, refine. See
    [`design-system/QUALITY-LOOP.md`](design-system/QUALITY-LOOP.md).
 2. **Never freehand a prompt** for anything that matters. Use a recipe card from

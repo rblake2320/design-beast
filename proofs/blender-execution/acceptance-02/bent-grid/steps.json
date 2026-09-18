@@ -1,0 +1,348 @@
+[
+  {
+    "action": "add_mesh",
+    "id": "grid-add",
+    "observed": {
+      "objects": {
+        "Ribbon": {
+          "base_polygons": 99,
+          "base_vertices": 136,
+          "bend": null,
+          "bounds": [
+            [
+              -1.0,
+              -1.0,
+              0.0
+            ],
+            [
+              -1.0,
+              -1.0,
+              0.0
+            ],
+            [
+              -1.0,
+              1.0,
+              0.0
+            ],
+            [
+              -1.0,
+              1.0,
+              0.0
+            ],
+            [
+              1.0,
+              -1.0,
+              0.0
+            ],
+            [
+              1.0,
+              -1.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0,
+              0.0
+            ]
+          ],
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "material": null,
+          "max_vertex_displacement": 0.0,
+          "modifier_count": 0,
+          "modifier_state": null,
+          "polygons": 99,
+          "primitive_shape": "grid",
+          "render_visible": true,
+          "rotation_deg": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "type": "MESH",
+          "vertices": 136
+        }
+      },
+      "version": "5.1.2"
+    }
+  },
+  {
+    "action": "transform",
+    "id": "grid-shape",
+    "observed": {
+      "objects": {
+        "Ribbon": {
+          "base_polygons": 99,
+          "base_vertices": 136,
+          "bend": null,
+          "bounds": [
+            [
+              -1.0,
+              -0.30000001192092896,
+              0.0
+            ],
+            [
+              -1.0,
+              -0.30000001192092896,
+              0.0
+            ],
+            [
+              -1.0,
+              0.30000001192092896,
+              0.0
+            ],
+            [
+              -1.0,
+              0.30000001192092896,
+              0.0
+            ],
+            [
+              1.0,
+              -0.30000001192092896,
+              0.0
+            ],
+            [
+              1.0,
+              -0.30000001192092896,
+              0.0
+            ],
+            [
+              1.0,
+              0.30000001192092896,
+              0.0
+            ],
+            [
+              1.0,
+              0.30000001192092896,
+              0.0
+            ]
+          ],
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "material": null,
+          "max_vertex_displacement": 0.0,
+          "modifier_count": 0,
+          "modifier_state": null,
+          "polygons": 99,
+          "primitive_shape": "grid",
+          "render_visible": true,
+          "rotation_deg": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            0.30000001192092896,
+            1.0
+          ],
+          "type": "MESH",
+          "vertices": 136
+        }
+      },
+      "version": "5.1.2"
+    }
+  },
+  {
+    "action": "material",
+    "id": "grid-color",
+    "observed": {
+      "objects": {
+        "Ribbon": {
+          "base_polygons": 99,
+          "base_vertices": 136,
+          "bend": null,
+          "bounds": [
+            [
+              -1.0,
+              -0.30000001192092896,
+              0.0
+            ],
+            [
+              -1.0,
+              -0.30000001192092896,
+              0.0
+            ],
+            [
+              -1.0,
+              0.30000001192092896,
+              0.0
+            ],
+            [
+              -1.0,
+              0.30000001192092896,
+              0.0
+            ],
+            [
+              1.0,
+              -0.30000001192092896,
+              0.0
+            ],
+            [
+              1.0,
+              -0.30000001192092896,
+              0.0
+            ],
+            [
+              1.0,
+              0.30000001192092896,
+              0.0
+            ],
+            [
+              1.0,
+              0.30000001192092896,
+              0.0
+            ]
+          ],
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "material": {
+            "metallic": 0.15000000596046448,
+            "rgba": [
+              0.03999999910593033,
+              0.3499999940395355,
+              0.800000011920929,
+              1.0
+            ],
+            "roughness": 0.4000000059604645
+          },
+          "max_vertex_displacement": 0.0,
+          "modifier_count": 0,
+          "modifier_state": null,
+          "polygons": 99,
+          "primitive_shape": "grid",
+          "render_visible": true,
+          "rotation_deg": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            0.30000001192092896,
+            1.0
+          ],
+          "type": "MESH",
+          "vertices": 136
+        }
+      },
+      "version": "5.1.2"
+    }
+  },
+  {
+    "action": "bend",
+    "id": "grid-bend",
+    "observed": {
+      "objects": {
+        "Ribbon": {
+          "base_polygons": 99,
+          "base_vertices": 136,
+          "bend": {
+            "angle_deg": 90.00000250447816,
+            "axis": "Z"
+          },
+          "bounds": [
+            [
+              -1.6074230670928955,
+              -0.2998068928718567,
+              0.0
+            ],
+            [
+              -1.6074230670928955,
+              -0.2998068928718567,
+              0.0
+            ],
+            [
+              -1.6074230670928955,
+              0.3240090012550354,
+              0.0
+            ],
+            [
+              -1.6074230670928955,
+              0.3240090012550354,
+              0.0
+            ],
+            [
+              1.6074230670928955,
+              -0.2998068928718567,
+              0.0
+            ],
+            [
+              1.6074230670928955,
+              -0.2998068928718567,
+              0.0
+            ],
+            [
+              1.6074230670928955,
+              0.3240090012550354,
+              0.0
+            ],
+            [
+              1.6074230670928955,
+              0.3240090012550354,
+              0.0
+            ]
+          ],
+          "location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "material": {
+            "metallic": 0.15000000596046448,
+            "rgba": [
+              0.03999999910593033,
+              0.3499999940395355,
+              0.800000011920929,
+              1.0
+            ],
+            "roughness": 0.4000000059604645
+          },
+          "max_vertex_displacement": 0.90126261822654,
+          "modifier_count": 1,
+          "modifier_state": {
+            "method": "BEND",
+            "render": true,
+            "type": "SIMPLE_DEFORM",
+            "viewport": true
+          },
+          "polygons": 99,
+          "primitive_shape": "grid",
+          "render_visible": true,
+          "rotation_deg": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            0.30000001192092896,
+            1.0
+          ],
+          "type": "MESH",
+          "vertices": 136
+        }
+      },
+      "version": "5.1.2"
+    }
+  }
+]

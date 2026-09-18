@@ -111,6 +111,19 @@
       "evidence": ["docs/decisions/BR-EXECUTION-20260803.md", "tests/test_collect_reflection_evidence.py"],
       "breadth_count": 1,
       "next_test": "Run the predeclared five-task before/after replay after approved proposals."
+    },
+    {
+      "id": "blender.closed_execution",
+      "name": "Standalone bounded Blender procedure execution",
+      "domain": "hands",
+      "level": "measured",
+      "claim": "A data-only Beast CLI procedure creates, saves, reopens, measures and renders primitive scenes in fresh Blender processes; a real five-case matrix retains two positives and three negatives.",
+      "boundary": "CPU-only closed operations on authored test scenes; typed Watch binding is tested but real tutorial interpretation and visual acceptance are not established. This is not an OS sandbox or generalized modeling.",
+      "depends_on": [],
+      "targets": ["Blender 5.1.2", "Windows", "source-distributed Beast CLI"],
+      "evidence": ["proofs/blender-execution/PROOF.md", "proofs/blender-execution/acceptance-02/acceptance.json", "tests/test_blender_execution.py"],
+      "breadth_count": 2,
+      "next_test": "Execute a new tutorial with independently inspected frame-linked observations and predeclared native plus visual outcome gates."
     }
   ]
 }

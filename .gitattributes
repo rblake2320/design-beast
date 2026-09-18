@@ -1,0 +1,2 @@
+# Retained machine evidence hashes must survive Git checkout on every platform.
+proofs/blender-execution/** -text
