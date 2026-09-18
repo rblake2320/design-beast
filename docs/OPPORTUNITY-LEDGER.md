@@ -1,5 +1,35 @@
 # Opportunity Ledger
 
+### OPP-20260918-03 — Replaceable Watch inspection-policy contract
+
+- Status: experiment; measured synthetic extraction controls, not semantic competence.
+- Trigger: owner requested independent perception/transition/procedure confidence,
+  recommendation-only policy and frozen evaluation before Jev integration.
+- New local capability: typed inspection recommendations can enter existing Watch
+  seek execution with bounded frames/time and retained decisions/source custody.
+- Current-project value: compare future attention policies without surrendering
+  evidence authority; outside-project value: the same pattern could govern Vigil
+  inspection scheduling. No Vigil integration is claimed here.
+- Prior art: existing `watch.seek` supplies escalation and extraction. TypeSafe's
+  structured Jev interface and SemIf's conditional-option readout motivate an
+  interchangeable policy boundary, not a new visual engine or novelty claim.
+  Sources: https://typesafe.ai/blog/introducing-system-one-models-and-jev and
+  https://github.com/TheoLeeCJ/SemIf/tree/b9cb32537e78be65f19abfcb1de8fc504b627d84.
+- Smallest experiment: four owner-authored luminance clips; fixed 1-fps versus
+  existing Watch 4-fps schedule, identical 25-frame/one-inspection/60-second caps.
+- Falsifiable gate: exact video/frame hashes and requested timestamps retained;
+  no false pixel-transition acceptance on static control; no causal procedure
+  promotion without independent cause and reproducibility evidence.
+- Evidence: `proofs/watch-inspection/`, `docs/WATCH-INSPECTION.md`, boundary tests.
+- Measured limits: brief change missed by sparse control and found with more
+  frames; this is not an efficiency win, semantic-action recall or calibration.
+- Risks: trusted local validators supply gate references; in-process policy
+  isolation is not a sandbox. Synthetic labels are not real application strata.
+- Decision: ship the contract/baseline/harness through independent draft review.
+  SemIf option-score provenance is included; no upstream code/model is installed.
+- Revisit trigger: frozen real tutorial and separate live-capture sets, isolated
+  model worker, resource admission, and matched evaluation before model claims.
+
 Design Beast treats unexpected capability as a first-class output of engineering and
 research. A discovery must not be discarded merely because it falls outside the
 current task, and it must not be promoted merely because it sounds novel.
