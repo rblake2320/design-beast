@@ -69,6 +69,13 @@ def observe_frame(frame: Path, clip_ms: int, expected_hash: str, output: Path,
         gate = evaluate(measure_gpu(use_cache=False), policy, "watch_vision_10g")
     elif model in ("qwen3-vl:8b", "qwen3-vl:8b-instruct"):
         gate = admission("judge", use_cache=False)
+    elif model == "qwen3.8:27b-review-cpu":
+        import psutil
+        gate = admission("judge", use_cache=False)
+        gate["cpu_available_mib"] = psutil.virtual_memory().available // 1048576
+        gate["cpu_required_mib"] = 32768
+        gate["cpu_reserved_mib"] = 8192
+        gate["admitted"] = gate["admitted"] and gate["cpu_available_mib"] >= 40960
     else:
         raise ValueError("model has no measured admission profile")
     retain(output / "admission.json", gate)
@@ -86,6 +93,8 @@ def observe_frame(frame: Path, clip_ms: int, expected_hash: str, output: Path,
     if model.endswith("-instruct"):
         body.pop("think")
         body["options"].update(temperature=0.7, top_p=0.8, top_k=20, presence_penalty=1.5, seed=3407)
+    if model == "qwen3.8:27b-review-cpu":
+        body["options"].update(num_gpu=0, num_thread=4, num_predict=400)
     source_ms = clip_ms + source_offset_ms if source_sha256 else None
     retain(output / "intent.json", {"clip_ms": clip_ms, "source_ms": source_ms,
         "source_sha256": source_sha256, "sha256": expected_hash,
@@ -96,7 +105,7 @@ def observe_frame(frame: Path, clip_ms: int, expected_hash: str, output: Path,
     try:
         request = urllib.request.Request("http://127.0.0.1:11434/api/chat", json.dumps(body).encode(),
                                          {"Content-Type": "application/json"})
-        with urllib.request.urlopen(request, timeout=120) as response:
+        with urllib.request.urlopen(request, timeout=300 if model == "qwen3.8:27b-review-cpu" else 120) as response:
             raw = json.loads(response.read())
         retain(output / "raw.json", raw)
         state = parse_state(raw)

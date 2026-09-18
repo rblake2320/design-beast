@@ -11,12 +11,14 @@ from pathlib import Path
 from typing import Annotated
 
 import cv2
+import numpy as np
 from PIL import Image, ImageDraw
 from pydantic import Field
 
 from studio.resource_guard import admission
 from .inspection import Contract
 from .inspection_runtime import digest, retain
+from .ocr_observer import observe_ocr
 
 PROMPT = """This is ONE evidence image containing two consecutive screenshots.
 TOP is BEFORE and BOTTOM is AFTER. Inspect both. Report only what visibly changed.
@@ -57,8 +59,13 @@ def parse_observation(raw: dict[str, object]) -> PairObservation:
     return PairObservation.model_validate_json(json.dumps(parsed, allow_nan=False))
 
 
-def pixel_change(before: Path, after: Path) -> float:
-    a, b = cv2.imread(str(before)), cv2.imread(str(after))
+def pixel_change(before: Path, after: Path, before_hash: str | None = None,
+                 after_hash: str | None = None) -> float:
+    encoded = [before.read_bytes(), after.read_bytes()]
+    for data, expected in zip(encoded, (before_hash, after_hash)):
+        if expected is not None and hashlib.sha256(data).hexdigest() != expected:
+            raise ValueError("pixel comparison custody mismatch")
+    a, b = [cv2.imdecode(np.frombuffer(data, dtype=np.uint8), cv2.IMREAD_COLOR) for data in encoded]
     if a is None or b is None or a.shape != b.shape:
         raise ValueError("invalid pair pixels")
     difference = cv2.absdiff(a, b).max(axis=2)
@@ -139,10 +146,7 @@ def observe_bundle(bundle: Path, output: Path, tesseract: str) -> dict[str, obje
     ocr = output / "ocr"
     ocr.mkdir()
     for index, path in enumerate(paths):
-        result = subprocess.run([tesseract, str(path), "stdout", "--psm", "11", "tsv"],
-                                capture_output=True, text=True, timeout=30, check=True)
-        retain(ocr / f"{index:03d}.json", {"frame": rows[index], "engine": "tesseract",
-                                          "tsv": result.stdout, "classification": "unverified_ocr"})
+        retain(ocr / f"{index:03d}.json", observe_ocr(path, rows[index]["sha256"], tesseract))
     results = []
     for index in range(1, len(paths)):
         fraction = pixel_change(paths[index - 1], paths[index])

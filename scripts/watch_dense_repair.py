@@ -3,8 +3,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import hashlib
-import shutil
 import subprocess
 import sys
 import urllib.request
@@ -15,6 +13,7 @@ from watch.inspection import Confidence, InspectionContext, InspectionDecision, 
 from watch.inspection_runtime import digest, execute_inspection, retain
 from watch.frame_observer import observe_frame
 from watch.temporal_observer import pixel_change
+from watch.ocr_observer import observe_ocr
 
 
 def prepare(source: Path, start: int, output: Path, ffmpeg: str) -> None:
@@ -69,15 +68,7 @@ def run(bundle: Path, output: Path, tesseract: str, model: str) -> None:
         frame_dir.mkdir()
         ocr_status = "failed"
         try:
-            ocr_pixels = path.read_bytes()
-            if hashlib.sha256(ocr_pixels).hexdigest() != row["sha256"]:
-                raise ValueError("OCR source changed before submission")
-            ocr = subprocess.run([tesseract, "stdin", "stdout", "--psm", "11", "tsv"],
-                                 input=ocr_pixels, check=True, capture_output=True, timeout=30)
-            if digest(path) != row["sha256"]:
-                raise ValueError("OCR source changed")
-            retain(frame_dir / "ocr.json", {"frame_sha256": row["sha256"], "tsv": ocr.stdout.decode("utf-8"),
-                                            "evidence_class": "unverified_ocr"})
+            retain(frame_dir / "ocr.json", observe_ocr(path, row["sha256"], tesseract))
             ocr_status = "observed_unverified"
         except Exception as exc:
             retain(frame_dir / "ocr-failure.json", {"error": str(exc), "error_type": type(exc).__name__})
@@ -100,7 +91,12 @@ def run(bundle: Path, output: Path, tesseract: str, model: str) -> None:
         item = {"before_sha256": before["frame"]["sha256"], "after_sha256": after["frame"]["sha256"],
                 "before_ms": round(before["frame"]["source_seconds"] * 1000),
                 "after_ms": round(after["frame"]["source_seconds"] * 1000),
-                "pixel_change_fraction": pixel_change(bundle / before["frame"]["file"], bundle / after["frame"]["file"]),
+                "time_basis": "clip-relative milliseconds",
+                "source_sha256": source["source_sha256"],
+                "before_source_ms": round((before["frame"]["source_seconds"] + source["start_seconds"]) * 1000),
+                "after_source_ms": round((after["frame"]["source_seconds"] + source["start_seconds"]) * 1000),
+                "pixel_change_fraction": pixel_change(bundle / before["frame"]["file"], bundle / after["frame"]["file"],
+                    before["frame"]["sha256"], after["frame"]["sha256"]),
                 "evidence_class": "unverified_transition_candidate", "procedure_confidence": None}
         if before["status"] == after["status"] == "observed_unverified":
             item["before_state"] = before["result"]["state"]
