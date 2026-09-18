@@ -1,5 +1,30 @@
 # Opportunity Ledger
 
+### OPP-20260918-02 — Higgsfield creative assets with explicit transport provenance
+
+- Status: measured, bounded external-connector proof.
+- Trigger: owner authorized up to 500 credits for live creative integration.
+- Evidence: `proofs/higgsfield-creative/PROOF.md`, five completed provider job
+  receipts, decoded images and hashes; 29-credit observed balance decrease.
+- Current-project value: four-candidate visual comparison, reference refinement,
+  and actual refined pixels accepted by Studio's existing upload/resolver route.
+- Outside-project value: the same receipt/custody pattern may support Vigil's
+  artifact evidence. No Vigil integration or native creative postcondition is
+  claimed by this run.
+- Prior art: Higgsfield's official CLI and generation tooling already provide
+  generation and reference edits (https://github.com/higgsfield-ai/cli).
+  This is an integration proof, not a novelty claim or new generation model.
+- Experiment: four 2K candidates, visual selection, one 4K reference refinement;
+  retained exact returned dimensions and requested/reported model distinction.
+- Gate: five distinct completed jobs, exact artifact set and hash/decode checks,
+  existing Studio consumer accepts identical bytes. Independent 10-test review.
+- Constraints: harness MCP access is not local CLI authentication; successful
+  CLI exit parsing remains unsafe/unverified. Nonzero-exit false success is
+  contained with regression tests. Full production UI and downstream 3D/video
+  generation remain outside this proof.
+- Route: retain as an externally generated creative evidence bundle; next gate
+  is user-authenticated native CLI contract capture, not blind paid retries.
+
 ### OPP-20260918-01 — Standalone evidence-bound Blender execution
 
 - Follow-up experiment: after runner freeze `aac9d29`, selected previously
