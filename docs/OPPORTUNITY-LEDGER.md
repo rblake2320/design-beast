@@ -2,6 +2,15 @@
 
 ### OPP-20260918-03 — Replaceable Watch inspection-policy contract
 
+- Source-faithful training follow-up: owner reaffirmed the product target as
+  new training videos using actual source footage/images aligned to explanations,
+  including on-screen information absent from narration. Implement a real-video
+  change-review player and draft segment plan, then a source-only draft renderer.
+  No generated illustration may substitute for observed evidence. Draft captions
+  are editorial claims requiring review, not verified procedures or permission
+  to redistribute the source. Hypothesis: source-linked review makes omissions
+  and narration/visual mismatches inspectable before training-video publication.
+
 - Pixel-state experiment: owner authorized implementation of spatial OCR,
   tracked image features and temporal state rather than another screenshot
   description prompt. Hypothesis: measured motion and region-linked text can
