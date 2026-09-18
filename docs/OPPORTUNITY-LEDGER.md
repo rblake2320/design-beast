@@ -2,6 +2,17 @@
 
 ### OPP-20260918-03 — Replaceable Watch inspection-policy contract
 
+- Pixel-state experiment: owner authorized implementation of spatial OCR,
+  tracked image features and temporal state rather than another screenshot
+  description prompt. Hypothesis: measured motion and region-linked text can
+  expose changes missed or mislabeled by the VLM without asserting causal
+  actions. Baseline uses CPU Lucas-Kanade forward/backward tracking, robust
+  affine estimates and spatial OCR; not OmniParser or V-JEPA model inference.
+  Prior art: OpenCV optical-flow/calib3d documentation and Microsoft OmniParser
+  (structured elements), Meta V-JEPA 2 (temporal representation). This is an
+  implementation experiment, not a new semantic competence claim. Possible
+  Vigil reuse is observation provenance only; no Vigil change in this branch.
+
 - Repair research follow-up 2026-09-18: frame-bound single-image inference,
   all-frame accounting, explicit Instruct model, UTF8 OCR, and byte-custody
   guards were implemented beside Watch. Independent review found 4/10 supported
