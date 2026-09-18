@@ -1,0 +1,49 @@
+{
+  "artifacts": {
+    "build.log": {
+      "bytes": 642,
+      "sha256": "22221561cbeaf4e6950be2d7530ad3a9447a2f3c01765c7da3add90c3b797ca0"
+    },
+    "procedure.json": {
+      "bytes": 2146,
+      "sha256": "913e59cf581cfb1917ba9d46be0283511030ccf97ee32e2200d2be04b7491610"
+    }
+  },
+  "authorization": "explicit_local_execute",
+  "boundary": "Structural execution only; visual acceptance and tutorial comprehension not proven.",
+  "contract_sha256": "cb5bf1cca141e69e5eca2eed82699e482e891f74d2f263bb7ff9ad5a2d23a210",
+  "elapsed_seconds": 1.266,
+  "error": "ValueError: Blender build failed (23); see build.log",
+  "executable_sha256": "1e6624af112b3c936f4b038b025ebd2bf00ae72c4b62881a6787166d71c58fa5",
+  "ok": false,
+  "procedure_id": "three-form-blockout",
+  "procedure_sha256": "913e59cf581cfb1917ba9d46be0283511030ccf97ee32e2200d2be04b7491610",
+  "processes": [
+    {
+      "command": [
+        "C:\\Program Files\\Blender Foundation\\Blender 5.1\\blender.exe",
+        "--background",
+        "--factory-startup",
+        "--disable-autoexec",
+        "--threads",
+        "2",
+        "--python-exit-code",
+        "23",
+        "--python",
+        "D:\\content\\design-beast-blender\\scripts\\blender_worker.py",
+        "--",
+        "build",
+        "D:\\content\\design-beast-blender\\proofs\\blender-execution\\acceptance-01\\version-drift"
+      ],
+      "phase": "build",
+      "returncode": 23,
+      "status": "exited"
+    }
+  ],
+  "renderer": "CYCLES_CPU",
+  "schema": "beast.blender.execution/v1",
+  "source_claim": "owner_authored",
+  "status": "failed",
+  "threads": 2,
+  "worker_sha256": "9c652bc0e3cead8d0ef84246efee455bf89b9a043363b8aa5ca75c2990c929b7"
+}

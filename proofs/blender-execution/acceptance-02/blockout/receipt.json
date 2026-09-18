@@ -1,0 +1,159 @@
+{
+  "artifacts": {
+    "build.log": {
+      "bytes": 273,
+      "sha256": "02dd74f054dd5a6516fa8b40272be4ee13f976dca442a21b718f8c402c6952f6"
+    },
+    "measurement.json": {
+      "bytes": 5332,
+      "sha256": "5d5684f333a6c6647124cb98d78d85d133d4323f1b40297fa09eb95705ec931a"
+    },
+    "procedure.json": {
+      "bytes": 2146,
+      "sha256": "fcf88cf3cf36fb6e6f5985b44384f9d80134cd384346642fd16946e83826e155"
+    },
+    "scene.blend": {
+      "bytes": 108438,
+      "sha256": "d74e72d1c2e861c7ecdbc329d4b489abcb647bfc7f1c340b2c936feb84d76fa1"
+    },
+    "steps.json": {
+      "bytes": 36352,
+      "sha256": "514df735a96ee52f49da1f83ecd74a36dce56d3ece707c0e1e41b862c3f86579"
+    },
+    "verify.log": {
+      "bytes": 905,
+      "sha256": "1823377d9e906e79d71b0ab83cc23ede59a7e7896b2c4225da558017a4efa044"
+    },
+    "view-0.png": {
+      "bytes": 195922,
+      "sha256": "14b3d61a80299fa098dad3505481208e53bbd72f135a6917959f5c22a0f2af91"
+    },
+    "view-1.png": {
+      "bytes": 200639,
+      "sha256": "17512d1e8e7f9954626a0452f274ca4066757560126da4ce6f44125d69393a18"
+    },
+    "view-2.png": {
+      "bytes": 198978,
+      "sha256": "df963531539adc66452c5e0597d2a7e697b4792ff22f3eb2b270333088fc651e"
+    },
+    "view-3.png": {
+      "bytes": 196586,
+      "sha256": "aa1e2cfc87ebbee70d6673cef703ff6213864eee675fcd54407707d9ef0e6584"
+    }
+  },
+  "authorization": "explicit_local_execute",
+  "boundary": "Structural execution only; visual acceptance and tutorial comprehension not proven.",
+  "contract_sha256": "cb5bf1cca141e69e5eca2eed82699e482e891f74d2f263bb7ff9ad5a2d23a210",
+  "elapsed_seconds": 5.344,
+  "executable_sha256": "1e6624af112b3c936f4b038b025ebd2bf00ae72c4b62881a6787166d71c58fa5",
+  "gates": {
+    "Base.base_topology": true,
+    "Base.bend": true,
+    "Base.geometry": true,
+    "Base.location": true,
+    "Base.material": true,
+    "Base.modifier_count": true,
+    "Base.modifier_state": true,
+    "Base.primitive_shape": true,
+    "Base.render_visible": true,
+    "Base.rotation_deg": true,
+    "Base.scale": true,
+    "Base.type": true,
+    "CoralCube.base_topology": true,
+    "CoralCube.bend": true,
+    "CoralCube.geometry": true,
+    "CoralCube.location": true,
+    "CoralCube.material": true,
+    "CoralCube.modifier_count": true,
+    "CoralCube.modifier_state": true,
+    "CoralCube.primitive_shape": true,
+    "CoralCube.render_visible": true,
+    "CoralCube.rotation_deg": true,
+    "CoralCube.scale": true,
+    "CoralCube.type": true,
+    "TealSphere.base_topology": true,
+    "TealSphere.bend": true,
+    "TealSphere.geometry": true,
+    "TealSphere.location": true,
+    "TealSphere.material": true,
+    "TealSphere.modifier_count": true,
+    "TealSphere.modifier_state": true,
+    "TealSphere.primitive_shape": true,
+    "TealSphere.render_visible": true,
+    "TealSphere.rotation_deg": true,
+    "TealSphere.scale": true,
+    "TealSphere.type": true,
+    "object_set_exact": true,
+    "step.base-add": true,
+    "step.base-color": true,
+    "step.base-size": true,
+    "step.cube-add": true,
+    "step.cube-color": true,
+    "step.cube-position": true,
+    "step.sphere-add": true,
+    "step.sphere-color": true,
+    "step.sphere-position": true,
+    "step_trace_complete": true,
+    "version_exact": true,
+    "view-0.decoded": true,
+    "view-0.nonuniform": true,
+    "view-1.decoded": true,
+    "view-1.nonuniform": true,
+    "view-2.decoded": true,
+    "view-2.nonuniform": true,
+    "view-3.decoded": true,
+    "view-3.nonuniform": true
+  },
+  "ok": true,
+  "procedure_id": "three-form-blockout",
+  "procedure_sha256": "fcf88cf3cf36fb6e6f5985b44384f9d80134cd384346642fd16946e83826e155",
+  "processes": [
+    {
+      "command": [
+        "C:\\Program Files\\Blender Foundation\\Blender 5.1\\blender.exe",
+        "--background",
+        "--factory-startup",
+        "--disable-autoexec",
+        "--threads",
+        "2",
+        "--python-exit-code",
+        "23",
+        "--python",
+        "D:\\content\\design-beast-blender\\scripts\\blender_worker.py",
+        "--",
+        "build",
+        "D:\\content\\design-beast-blender\\proofs\\blender-execution\\acceptance-02\\blockout"
+      ],
+      "phase": "build",
+      "returncode": 0,
+      "status": "exited"
+    },
+    {
+      "command": [
+        "C:\\Program Files\\Blender Foundation\\Blender 5.1\\blender.exe",
+        "--background",
+        "--factory-startup",
+        "--disable-autoexec",
+        "--threads",
+        "2",
+        "--python-exit-code",
+        "23",
+        "--python",
+        "D:\\content\\design-beast-blender\\scripts\\blender_worker.py",
+        "--",
+        "verify",
+        "D:\\content\\design-beast-blender\\proofs\\blender-execution\\acceptance-02\\blockout"
+      ],
+      "phase": "verify",
+      "returncode": 0,
+      "status": "exited"
+    }
+  ],
+  "renderer": "CYCLES_CPU",
+  "saved_scene_sha256": "d74e72d1c2e861c7ecdbc329d4b489abcb647bfc7f1c340b2c936feb84d76fa1",
+  "schema": "beast.blender.execution/v1",
+  "source_claim": "owner_authored",
+  "status": "structurally_verified",
+  "threads": 2,
+  "worker_sha256": "9c652bc0e3cead8d0ef84246efee455bf89b9a043363b8aa5ca75c2990c929b7"
+}

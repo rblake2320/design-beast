@@ -1,0 +1,24 @@
+{
+  "artifact_bytes": 18592481,
+  "artifact_sha256": "ee75250ed77cf2837fd39ae51f636f52ffe17d7a7f70b5f0ce8fa492034d312c",
+  "dimensions": [
+    5504,
+    3072
+  ],
+  "exit_code": 0,
+  "format": "PNG",
+  "job_id": "3f892fd2-6875-43f1-874a-3a72d48fadf3",
+  "job_type": "nano_banana_pro",
+  "media_type": "image",
+  "model": "nano_banana_2",
+  "ok": true,
+  "output": "native-refinement.png",
+  "provider_status": "completed",
+  "request_sha256": "3099db4be51c7fbf3b46e009e478f401a7aacb61bfccdbd2033dfcad11c58b15",
+  "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Dbz85IbUG5EK60PCBtz0pQFPYK/hf_20260918_033902_3f892fd2-6875-43f1-874a-3a72d48fadf3.png",
+  "result_url_sha256": "4f6f42dd1f0937cf0a92bc118f7153e35d12007d60770bde9b3d3446ad354d52",
+  "schema": "beast.higgsfield.execution/v1",
+  "started_at": "2026-09-18T03:39:01.070795+00:00",
+  "status": "completed",
+  "transport": "native_cli"
+}

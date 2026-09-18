@@ -1,0 +1,89 @@
+{
+  "cases": [
+    {
+      "case": "no-authority",
+      "command": [
+        "C:\\Python312\\python.exe",
+        "D:\\content\\design-beast-blender\\scripts\\blender_execute.py",
+        "D:\\content\\design-beast-blender\\proofs\\blender-execution\\acceptance-01\\no-authority.json",
+        "--output",
+        "D:\\content\\design-beast-blender\\proofs\\blender-execution\\acceptance-01\\no-authority",
+        "--blender",
+        "C:\\Program Files\\Blender Foundation\\Blender 5.1\\blender.exe"
+      ],
+      "passed": true,
+      "returncode": 2,
+      "stderr": "",
+      "stdout": "{\"ok\": false, \"status\": \"rejected\", \"error\": \"execution requires --allow-execute\"}\n"
+    },
+    {
+      "case": "blockout",
+      "command": [
+        "C:\\Python312\\python.exe",
+        "D:\\content\\design-beast-blender\\scripts\\blender_execute.py",
+        "D:\\content\\design-beast-blender\\proofs\\blender-execution\\acceptance-01\\blockout.json",
+        "--output",
+        "D:\\content\\design-beast-blender\\proofs\\blender-execution\\acceptance-01\\blockout",
+        "--blender",
+        "C:\\Program Files\\Blender Foundation\\Blender 5.1\\blender.exe",
+        "--allow-execute"
+      ],
+      "passed": true,
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "{\"ok\": true, \"status\": \"structurally_verified\", \"receipt\": \"D:\\\\content\\\\design-beast-blender\\\\proofs\\\\blender-execution\\\\acceptance-01\\\\blockout\\\\receipt.json\", \"error\": null}\n"
+    },
+    {
+      "case": "bent-grid",
+      "command": [
+        "C:\\Python312\\python.exe",
+        "D:\\content\\design-beast-blender\\scripts\\blender_execute.py",
+        "D:\\content\\design-beast-blender\\proofs\\blender-execution\\acceptance-01\\bent-grid.json",
+        "--output",
+        "D:\\content\\design-beast-blender\\proofs\\blender-execution\\acceptance-01\\bent-grid",
+        "--blender",
+        "C:\\Program Files\\Blender Foundation\\Blender 5.1\\blender.exe",
+        "--allow-execute"
+      ],
+      "passed": true,
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "{\"ok\": true, \"status\": \"structurally_verified\", \"receipt\": \"D:\\\\content\\\\design-beast-blender\\\\proofs\\\\blender-execution\\\\acceptance-01\\\\bent-grid\\\\receipt.json\", \"error\": null}\n"
+    },
+    {
+      "case": "version-drift",
+      "command": [
+        "C:\\Python312\\python.exe",
+        "D:\\content\\design-beast-blender\\scripts\\blender_execute.py",
+        "D:\\content\\design-beast-blender\\proofs\\blender-execution\\acceptance-01\\version-drift.json",
+        "--output",
+        "D:\\content\\design-beast-blender\\proofs\\blender-execution\\acceptance-01\\version-drift",
+        "--blender",
+        "C:\\Program Files\\Blender Foundation\\Blender 5.1\\blender.exe",
+        "--allow-execute"
+      ],
+      "passed": true,
+      "returncode": 1,
+      "stderr": "",
+      "stdout": "{\"ok\": false, \"status\": \"failed\", \"receipt\": \"D:\\\\content\\\\design-beast-blender\\\\proofs\\\\blender-execution\\\\acceptance-01\\\\version-drift\\\\receipt.json\", \"error\": \"ValueError: Blender build failed (23); see build.log\"}\n"
+    },
+    {
+      "case": "noop-bend",
+      "command": [
+        "C:\\Python312\\python.exe",
+        "D:\\content\\design-beast-blender\\scripts\\blender_execute.py",
+        "D:\\content\\design-beast-blender\\proofs\\blender-execution\\acceptance-01\\noop-bend.json",
+        "--output",
+        "D:\\content\\design-beast-blender\\proofs\\blender-execution\\acceptance-01\\noop-bend",
+        "--blender",
+        "C:\\Program Files\\Blender Foundation\\Blender 5.1\\blender.exe",
+        "--allow-execute"
+      ],
+      "passed": true,
+      "returncode": 1,
+      "stderr": "",
+      "stdout": "{\"ok\": false, \"status\": \"failed\", \"receipt\": \"D:\\\\content\\\\design-beast-blender\\\\proofs\\\\blender-execution\\\\acceptance-01\\\\noop-bend\\\\receipt.json\", \"error\": null}\n"
+    }
+  ],
+  "ok": true
+}

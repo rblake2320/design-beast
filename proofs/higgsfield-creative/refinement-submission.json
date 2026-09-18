@@ -1,0 +1,18 @@
+{
+  "jobs": [
+    {
+      "index": 5,
+      "job_id": "2b1029a0-de52-45a1-ad46-4b160c8cc1fd",
+      "status": "pending",
+      "adjustments": {
+        "medias[0].role": {
+          "requested": "image",
+          "used": "image_references",
+          "reason": "Nano Banana 2 backend expects schema-key media roles"
+        }
+      }
+    }
+  ],
+  "submitted_count": 1,
+  "failed_count": 0
+}

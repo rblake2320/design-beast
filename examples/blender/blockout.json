@@ -1,0 +1,16 @@
+{
+  "schema": "beast.blender.procedure/v1",
+  "id": "three-form-blockout",
+  "blender_version": "5.1.2",
+  "steps": [
+    {"id":"base-add","action":"add_mesh","object":"Base","primitive":"cube"},
+    {"id":"base-size","action":"transform","object":"Base","location":[0,0,-0.2],"rotation_deg":[0,0,0],"scale":[2.4,1.4,0.2]},
+    {"id":"base-color","action":"material","object":"Base","rgba":[0.07,0.09,0.14,1],"roughness":0.65,"metallic":0.1},
+    {"id":"cube-add","action":"add_mesh","object":"CoralCube","primitive":"cube"},
+    {"id":"cube-position","action":"transform","object":"CoralCube","location":[-1.05,0,0.65],"rotation_deg":[0,0,12],"scale":[0.65,0.65,0.65]},
+    {"id":"cube-color","action":"material","object":"CoralCube","rgba":[0.8,0.12,0.06,1],"roughness":0.38,"metallic":0.05},
+    {"id":"sphere-add","action":"add_mesh","object":"TealSphere","primitive":"uv_sphere"},
+    {"id":"sphere-position","action":"transform","object":"TealSphere","location":[0.9,0,0.8],"rotation_deg":[0,0,0],"scale":[0.8,0.8,0.8]},
+    {"id":"sphere-color","action":"material","object":"TealSphere","rgba":[0.03,0.5,0.4,1],"roughness":0.28,"metallic":0.25}
+  ]
+}

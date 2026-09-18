@@ -1,5 +1,77 @@
 # Opportunity Ledger
 
+### OPP-20260918-02 — Higgsfield creative assets with explicit transport provenance
+
+- Native follow-up: `proofs/higgsfield-native/PROOF.md` retains authenticated
+  native generation, verified artifact, actual HTTP intake, and visible Studio
+  source selection. Native receipts replace regex guessing; 171 Studio tests
+  pass with the default 7 live-GPU exclusions. Total campaign spend 33/500.
+
+- Status: measured, bounded external-connector proof.
+- Trigger: owner authorized up to 500 credits for live creative integration.
+- Evidence: `proofs/higgsfield-creative/PROOF.md`, five completed provider job
+  receipts, decoded images and hashes; 29-credit observed balance decrease.
+- Current-project value: four-candidate visual comparison, reference refinement,
+  and actual refined pixels accepted by Studio's existing upload/resolver route.
+- Outside-project value: the same receipt/custody pattern may support Vigil's
+  artifact evidence. No Vigil integration or native creative postcondition is
+  claimed by this run.
+- Prior art: Higgsfield's official CLI and generation tooling already provide
+  generation and reference edits (https://github.com/higgsfield-ai/cli).
+  This is an integration proof, not a novelty claim or new generation model.
+- Experiment: four 2K candidates, visual selection, one 4K reference refinement;
+  retained exact returned dimensions and requested/reported model distinction.
+- Gate: five distinct completed jobs, exact artifact set and hash/decode checks,
+  existing Studio consumer accepts identical bytes. Independent 10-test review.
+- Constraints: harness MCP access is not local CLI authentication; successful
+  CLI exit parsing remains unsafe/unverified. Nonzero-exit false success is
+  contained with regression tests. Full production UI and downstream 3D/video
+  generation remain outside this proof.
+- Route: retain as an externally generated creative evidence bundle; next gate
+  is user-authenticated native CLI contract capture, not blind paid retries.
+
+### OPP-20260918-01 — Standalone evidence-bound Blender execution
+
+- Follow-up experiment: after runner freeze `aac9d29`, selected previously
+  uninspected tutorial `https://www.youtube.com/watch?v=m9c80LWLa-8`
+  (blenderian, "Blender how to bend a cube", 135 seconds). Compile only inspected
+  frame-supported facts, preserve missing-operation failures, and label any
+  post-inspection adapter change as a same-task repair, not held-out success.
+
+- Status: experiment
+- Trigger: owner authorized execution integration; local Blender 5.1.2 responds
+  to CLI help, while the exposed editor MCP read fails to connect. The existing
+  `bench/concern-proof/blender_adapter.py` is benchmark-only, not a Beast command.
+- New capability hypothesis: Beast can execute a closed scene-action contract in
+  a disposable background process without borrowing an agent harness connection.
+- Potential beneficiaries: Watch users, creative regression testing, Vigil's
+  future native scene postconditions, and offline asset automation.
+- Current-project value: connect typed Watch output to native execution and
+  independent saved-scene measurement with explicit execution permission.
+- Outside-project value: reusable bounded Blender regression runner; no novelty claim.
+- Prior art and primary sources: Blender's native background/Python APIs already
+  provide this execution substrate. Installed 5.1.2 `--help` confirms background,
+  factory-startup, disable-autoexec, python-exit-code, and thread flags.
+  https://docs.blender.org/manual/en/latest/advanced/command_line/arguments.html
+  (web fetch unavailable this session; installed CLI semantics probed directly).
+- Falsifiable claim: one owner-authored primitive scene passes typed validation,
+  executes from Beast CLI, saves/reopens in a second process, and passes native
+  structural assertions and retained PNG inspection; unsupported actions fail
+  before Blender launches and uncertain runs never silently replay.
+- Smallest real experiment: CPU-only, two render threads, disposable output
+  directory, four camera views of one fixed scene, retained intent and result.
+- Measures and acceptance threshold: exact object/transform/material checks,
+  nonempty evaluated meshes, four decodable PNGs, artifact hashes, fresh reopen,
+  nonzero exit on failed checks and no mutation without explicit permission.
+- Risks: trusted local executable/worker are not an OS security sandbox; visual
+  similarity to a tutorial and arbitrary tutorial understanding remain unproven.
+- Evidence: implementation and test receipts will be retained under
+  `proofs/blender-execution/`; initial bridge failure is not a passing handshake.
+- Decision: build this bounded slice; preserve existing editor scenes, PhoneClaw,
+  unrelated worktrees, and paid-provider authorization boundaries.
+- Revisit trigger: retained real CLI proof and independent review, then a fresh
+  tutorial with frame-linked observations for all source-derived parameters.
+
 Design Beast treats unexpected capability as a first-class output of engineering and
 research. A discovery must not be discarded merely because it falls outside the
 current task, and it must not be promoted merely because it sounds novel.

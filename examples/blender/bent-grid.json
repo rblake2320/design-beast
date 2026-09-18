@@ -1,0 +1,11 @@
+{
+  "schema": "beast.blender.procedure/v1",
+  "id": "bent-grid-diagnostic",
+  "blender_version": "5.1.2",
+  "steps": [
+    {"id":"grid-add","action":"add_mesh","object":"Ribbon","primitive":"grid"},
+    {"id":"grid-shape","action":"transform","object":"Ribbon","location":[0,0,0],"rotation_deg":[0,0,0],"scale":[1,0.3,1]},
+    {"id":"grid-color","action":"material","object":"Ribbon","rgba":[0.04,0.35,0.8,1],"roughness":0.4,"metallic":0.15},
+    {"id":"grid-bend","action":"bend","object":"Ribbon","axis":"Z","angle_deg":90}
+  ]
+}

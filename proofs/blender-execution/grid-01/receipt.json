@@ -1,0 +1,130 @@
+{
+  "artifacts": {
+    "build.log": {
+      "bytes": 273,
+      "sha256": "5c490a8d9e0f2b410137512ff5ea62d53c7cbc935b2b58abb1c92d2c10464e89"
+    },
+    "measurement.json": {
+      "bytes": 1741,
+      "sha256": "68c349fa8756555e922afca48a7c80eabd3301c2a774384dee5c9edf1e7fb247"
+    },
+    "procedure.json": {
+      "bytes": 918,
+      "sha256": "8b30aa09637c06168027b189d483a2ee82caf3b0a590635a93de5a865623b960"
+    },
+    "scene.blend": {
+      "bytes": 91061,
+      "sha256": "5f476ee29197fee04aacfb1a5e9e0013d6a67edb66fe2324dbce93fc0c37c608"
+    },
+    "steps.json": {
+      "bytes": 7409,
+      "sha256": "90cb192bf31f89005d7ad58ab4351de0810bdae6227cb0e11eb6a86124fa12cc"
+    },
+    "verify.log": {
+      "bytes": 830,
+      "sha256": "c811c36f61f4911653da5bbd347c77911721ed16b9ed7353234e682cc7939764"
+    },
+    "view-0.png": {
+      "bytes": 178321,
+      "sha256": "42f9734690b0d64e8eb4fa944b46ebe47827cdfb7a45abb3f7183204100d9fea"
+    },
+    "view-1.png": {
+      "bytes": 179506,
+      "sha256": "d215e1315f82213c29bbbba6f0ff34895dadbf9918e8f054db209b1e682ff7a7"
+    },
+    "view-2.png": {
+      "bytes": 175111,
+      "sha256": "02ad7e0d825e0d97ccbd01abe82409526d5ed690128fa6970cd8b04b8582d7b2"
+    },
+    "view-3.png": {
+      "bytes": 170047,
+      "sha256": "a4b373e8bf7d0ced246645cce6108c9748ddc63589be71cc9f52bfd7fded4e7c"
+    }
+  },
+  "authorization": "explicit_local_execute",
+  "boundary": "Structural execution only; visual acceptance and tutorial comprehension not proven.",
+  "contract_sha256": "9ea5f22841fc4644b33ffc823a731677ec83660eed1dbb532d72269215842c50",
+  "elapsed_seconds": 4.078,
+  "executable_sha256": "1e6624af112b3c936f4b038b025ebd2bf00ae72c4b62881a6787166d71c58fa5",
+  "gates": {
+    "Ribbon.base_topology": true,
+    "Ribbon.bend": true,
+    "Ribbon.geometry": true,
+    "Ribbon.location": true,
+    "Ribbon.material": true,
+    "Ribbon.modifier_count": true,
+    "Ribbon.modifier_state": true,
+    "Ribbon.primitive_shape": true,
+    "Ribbon.render_visible": true,
+    "Ribbon.rotation_deg": true,
+    "Ribbon.scale": true,
+    "Ribbon.type": true,
+    "object_set_exact": true,
+    "step.grid-add": true,
+    "step.grid-bend": true,
+    "step.grid-color": true,
+    "step.grid-shape": true,
+    "step_trace_complete": true,
+    "version_exact": true,
+    "view-0.decoded": true,
+    "view-0.nonuniform": true,
+    "view-1.decoded": true,
+    "view-1.nonuniform": true,
+    "view-2.decoded": true,
+    "view-2.nonuniform": true,
+    "view-3.decoded": true,
+    "view-3.nonuniform": true
+  },
+  "ok": true,
+  "procedure_id": "bent-grid-diagnostic",
+  "procedure_sha256": "8b30aa09637c06168027b189d483a2ee82caf3b0a590635a93de5a865623b960",
+  "processes": [
+    {
+      "command": [
+        "C:\\Program Files\\Blender Foundation\\Blender 5.1\\blender.exe",
+        "--background",
+        "--factory-startup",
+        "--disable-autoexec",
+        "--threads",
+        "2",
+        "--python-exit-code",
+        "23",
+        "--python",
+        "D:\\content\\design-beast-blender\\scripts\\blender_worker.py",
+        "--",
+        "build",
+        "D:\\content\\design-beast-blender\\proofs\\blender-execution\\grid-01"
+      ],
+      "phase": "build",
+      "returncode": 0,
+      "status": "exited"
+    },
+    {
+      "command": [
+        "C:\\Program Files\\Blender Foundation\\Blender 5.1\\blender.exe",
+        "--background",
+        "--factory-startup",
+        "--disable-autoexec",
+        "--threads",
+        "2",
+        "--python-exit-code",
+        "23",
+        "--python",
+        "D:\\content\\design-beast-blender\\scripts\\blender_worker.py",
+        "--",
+        "verify",
+        "D:\\content\\design-beast-blender\\proofs\\blender-execution\\grid-01"
+      ],
+      "phase": "verify",
+      "returncode": 0,
+      "status": "exited"
+    }
+  ],
+  "renderer": "CYCLES_CPU",
+  "saved_scene_sha256": "5f476ee29197fee04aacfb1a5e9e0013d6a67edb66fe2324dbce93fc0c37c608",
+  "schema": "beast.blender.execution/v1",
+  "source_claim": "owner_authored",
+  "status": "structurally_verified",
+  "threads": 2,
+  "worker_sha256": "a94d77cea7c9bc00738401c38c44383f0f0950d0943dab490ccf3aa1a23caaa9"
+}

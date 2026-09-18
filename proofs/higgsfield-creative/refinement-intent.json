@@ -1,0 +1,27 @@
+{
+  "status": "prepared_not_submitted",
+  "spent_before": 26,
+  "estimated_additional": 3,
+  "credit_cap": 500,
+  "winner": 3,
+  "visual_judgment": {
+    "1": "Good material separation, left observations too obscured",
+    "2": "Readable but overhead fixture dominates",
+    "3": "Strongest source-frame to geometry correspondence; glare and right edge clutter need repair",
+    "4": "Clean lighting but observations too dim and form correspondence weaker"
+  },
+  "params": {
+    "model": "nano_banana_2",
+    "resolution": "4k",
+    "aspect_ratio": "16:9",
+    "count": 1,
+    "use_unlim": false,
+    "medias": [
+      {
+        "role": "image",
+        "value": "bf904c7e-ca1b-4b00-a0f8-b07e81298496"
+      }
+    ],
+    "prompt": "Refine this exact composition, preserving the workshop, three framed observations, cyan wireframe and amber ceramic ribbon sculpture. Raise exposure only within the three picture frames so their identical ribbon form reads clearly. Reduce the ceramic specular glare to a subtle satin glaze with fine texture. Remove the brush pots at the extreme right, replacing them with clean empty workbench. Keep the generous dark upper-left negative space. Fine precise mesh lines, crisp crafted edges, restrained charcoal/cyan/amber color grade. Deliver a clean detailed 4K scene illustration, with no lettering or interface."
+  }
+}

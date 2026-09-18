@@ -1,0 +1,131 @@
+{
+  "artifacts": {
+    "build.log": {
+      "bytes": 273,
+      "sha256": "02dd74f054dd5a6516fa8b40272be4ee13f976dca442a21b718f8c402c6952f6"
+    },
+    "measurement.json": {
+      "bytes": 1780,
+      "sha256": "d179d400033a547d192df4734a3b7ce2432d396b8e300f3100475f8749216576"
+    },
+    "procedure.json": {
+      "bytes": 918,
+      "sha256": "8b30aa09637c06168027b189d483a2ee82caf3b0a590635a93de5a865623b960"
+    },
+    "scene.blend": {
+      "bytes": 91060,
+      "sha256": "0d2d3ff7b1067380a68a7088fd76cca5b5e1dc69ea3af3279ddcf7a867c1da19"
+    },
+    "steps.json": {
+      "bytes": 7581,
+      "sha256": "1fd7efd649f8f9a70d21dcaab7af6130d07d14b57774a9d2dbde23d1c1dc300f"
+    },
+    "verify.log": {
+      "bytes": 910,
+      "sha256": "841f4e9b6a0946dd013762ec59c85b44b34fea1bc4b1b3bfaafd4f64a9a1b9ef"
+    },
+    "view-0.png": {
+      "bytes": 178337,
+      "sha256": "70eeabebce1db305c43c53119118ce2c6f275f9b9f78c157303b96e85d2ed0e6"
+    },
+    "view-1.png": {
+      "bytes": 179522,
+      "sha256": "3a69c57c8c315d147aef148330ce7f588cfe83406cae6bbb40d4b70429c5e6bf"
+    },
+    "view-2.png": {
+      "bytes": 175127,
+      "sha256": "453b96c2b9669dfa1b55c2ad4534af02475957099653634bb3a4c0532799b1b1"
+    },
+    "view-3.png": {
+      "bytes": 170063,
+      "sha256": "03a3a360df43fcd4b887b0e190ae95920bd80bb90ab1f2e04c0c6570420920cb"
+    }
+  },
+  "authorization": "explicit_local_execute",
+  "boundary": "Structural execution only; visual acceptance and tutorial comprehension not proven.",
+  "contract_sha256": "cb5bf1cca141e69e5eca2eed82699e482e891f74d2f263bb7ff9ad5a2d23a210",
+  "elapsed_seconds": 4.093,
+  "executable_sha256": "1e6624af112b3c936f4b038b025ebd2bf00ae72c4b62881a6787166d71c58fa5",
+  "gates": {
+    "Ribbon.base_topology": true,
+    "Ribbon.bend": true,
+    "Ribbon.bend_effect": false,
+    "Ribbon.geometry": true,
+    "Ribbon.location": true,
+    "Ribbon.material": true,
+    "Ribbon.modifier_count": true,
+    "Ribbon.modifier_state": true,
+    "Ribbon.primitive_shape": true,
+    "Ribbon.render_visible": true,
+    "Ribbon.rotation_deg": true,
+    "Ribbon.scale": true,
+    "Ribbon.type": true,
+    "object_set_exact": true,
+    "step.grid-add": true,
+    "step.grid-bend": false,
+    "step.grid-color": true,
+    "step.grid-shape": true,
+    "step_trace_complete": true,
+    "version_exact": true,
+    "view-0.decoded": true,
+    "view-0.nonuniform": true,
+    "view-1.decoded": true,
+    "view-1.nonuniform": true,
+    "view-2.decoded": true,
+    "view-2.nonuniform": true,
+    "view-3.decoded": true,
+    "view-3.nonuniform": true
+  },
+  "ok": false,
+  "procedure_id": "bent-grid-diagnostic",
+  "procedure_sha256": "8b30aa09637c06168027b189d483a2ee82caf3b0a590635a93de5a865623b960",
+  "processes": [
+    {
+      "command": [
+        "C:\\Program Files\\Blender Foundation\\Blender 5.1\\blender.exe",
+        "--background",
+        "--factory-startup",
+        "--disable-autoexec",
+        "--threads",
+        "2",
+        "--python-exit-code",
+        "23",
+        "--python",
+        "D:\\content\\design-beast-blender\\scripts\\blender_worker.py",
+        "--",
+        "build",
+        "D:\\content\\design-beast-blender\\proofs\\blender-execution\\acceptance-01\\noop-bend"
+      ],
+      "phase": "build",
+      "returncode": 0,
+      "status": "exited"
+    },
+    {
+      "command": [
+        "C:\\Program Files\\Blender Foundation\\Blender 5.1\\blender.exe",
+        "--background",
+        "--factory-startup",
+        "--disable-autoexec",
+        "--threads",
+        "2",
+        "--python-exit-code",
+        "23",
+        "--python",
+        "D:\\content\\design-beast-blender\\scripts\\blender_worker.py",
+        "--",
+        "verify",
+        "D:\\content\\design-beast-blender\\proofs\\blender-execution\\acceptance-01\\noop-bend"
+      ],
+      "phase": "verify",
+      "returncode": 0,
+      "status": "exited"
+    }
+  ],
+  "renderer": "CYCLES_CPU",
+  "saved_scene_sha256": "0d2d3ff7b1067380a68a7088fd76cca5b5e1dc69ea3af3279ddcf7a867c1da19",
+  "schema": "beast.blender.execution/v1",
+  "source_claim": "owner_authored",
+  "status": "failed",
+  "threads": 2,
+  "worker_sha256": "9c652bc0e3cead8d0ef84246efee455bf89b9a043363b8aa5ca75c2990c929b7"
+}

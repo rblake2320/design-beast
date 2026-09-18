@@ -1,0 +1,124 @@
+{
+  "blender_version": "5.1.2",
+  "id": "three-form-blockout",
+  "schema": "beast.blender.procedure/v1",
+  "steps": [
+    {
+      "action": "add_mesh",
+      "id": "base-add",
+      "object": "Base",
+      "primitive": "cube"
+    },
+    {
+      "action": "transform",
+      "id": "base-size",
+      "location": [
+        0,
+        0,
+        -0.2
+      ],
+      "object": "Base",
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        2.4,
+        1.4,
+        0.2
+      ]
+    },
+    {
+      "action": "material",
+      "id": "base-color",
+      "metallic": 0.1,
+      "object": "Base",
+      "rgba": [
+        0.07,
+        0.09,
+        0.14,
+        1
+      ],
+      "roughness": 0.65
+    },
+    {
+      "action": "add_mesh",
+      "id": "cube-add",
+      "object": "CoralCube",
+      "primitive": "cube"
+    },
+    {
+      "action": "transform",
+      "id": "cube-position",
+      "location": [
+        -1.05,
+        0,
+        0.65
+      ],
+      "object": "CoralCube",
+      "rotation_deg": [
+        0,
+        0,
+        12
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ]
+    },
+    {
+      "action": "material",
+      "id": "cube-color",
+      "metallic": 0.05,
+      "object": "CoralCube",
+      "rgba": [
+        0.8,
+        0.12,
+        0.06,
+        1
+      ],
+      "roughness": 0.38
+    },
+    {
+      "action": "add_mesh",
+      "id": "sphere-add",
+      "object": "TealSphere",
+      "primitive": "uv_sphere"
+    },
+    {
+      "action": "transform",
+      "id": "sphere-position",
+      "location": [
+        0.9,
+        0,
+        0.8
+      ],
+      "object": "TealSphere",
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.8,
+        0.8,
+        0.8
+      ]
+    },
+    {
+      "action": "material",
+      "id": "sphere-color",
+      "metallic": 0.25,
+      "object": "TealSphere",
+      "rgba": [
+        0.03,
+        0.5,
+        0.4,
+        1
+      ],
+      "roughness": 0.28
+    }
+  ]
+}

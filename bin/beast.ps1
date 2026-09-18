@@ -4,6 +4,7 @@ param([Parameter(Position = 0)][string]$Cmd = 'help', [Parameter(ValueFromRemain
 $Repo = Split-Path $PSScriptRoot -Parent
 
 switch ($Cmd) {
+    'blender' { python (Join-Path $Repo 'scripts\blender_execute.py') @Rest; exit $LASTEXITCODE }
     'doctor'  { python (Join-Path $Repo 'scripts\doctor.py') @Rest }
     'sync'    { & (Join-Path $Repo 'scripts\sync_repos.ps1') @Rest }
     'judge'   { python (Join-Path $Repo 'scripts\judge_image.py') @Rest }
@@ -27,6 +28,7 @@ switch ($Cmd) {
     default {
         @'
 beast doctor    verify the whole stack (Blender bridge, UE, Higgsfield, ffmpeg, disk)
+beast blender PROCEDURE --output NEW_DIR --allow-execute   isolated Blender execution + native proof
 beast sync      clone/update all linked repos (repos.yml)
 beast judge     score generated images vs a brief (local llava)  <imgs> --brief "..."
 beast replay    name env drift vs a recorded run  <run-id> | --save-baseline | --check

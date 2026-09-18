@@ -1,0 +1,10 @@
+00:01.016  blend            | Read blend: "D:\content\design-beast-blender\proofs\blender-execution\acceptance-01\blockout\scene.blend"
+D:\content\design-beast-blender\scripts\blender_worker.py:122: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  scene.world.use_nodes = True
+00:01.704  render           | Saved: 'D:\content\design-beast-blender\proofs\blender-execution\acceptance-01\blockout\view-0.png'
+00:02.344  render           | Saved: 'D:\content\design-beast-blender\proofs\blender-execution\acceptance-01\blockout\view-1.png'
+00:02.969  render           | Saved: 'D:\content\design-beast-blender\proofs\blender-execution\acceptance-01\blockout\view-2.png'
+00:03.766  render           | Saved: 'D:\content\design-beast-blender\proofs\blender-execution\acceptance-01\blockout\view-3.png'
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:37:34)
+
+Blender quit
