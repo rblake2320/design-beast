@@ -18,6 +18,16 @@ switch ($Cmd) {
     'watch'   { python (Join-Path $Repo 'scripts\watch_video.py') @Rest }
     'watch-index' { python (Join-Path $Repo 'scripts\watch_index.py') @Rest }
     'watch-seek' { python (Join-Path $Repo 'scripts\watch_seek.py') @Rest }
+    'watch-perceive' { python (Join-Path $Repo 'scripts\watch_perception.py') @Rest }
+    'watch-ui-regions' { python (Join-Path $Repo 'scripts\watch_ui_regions.py') @Rest }
+    'watch-fuse' { python (Join-Path $Repo 'scripts\fuse_watch_state.py') @Rest }
+    'watch-temporal' {
+        $EncoderPython = Join-Path $Repo '.venv-watch-temporal\Scripts\python.exe'
+        if (-not (Test-Path -LiteralPath $EncoderPython)) {
+            throw 'Temporal environment missing; follow docs/WATCH-PIXEL-STATE.md setup.'
+        }
+        & $EncoderPython (Join-Path $Repo 'scripts\watch_temporal_encoder.py') @Rest
+    }
     'recipes' {
         Get-ChildItem (Join-Path $Repo 'design-system\recipes') -Filter *.md | ForEach-Object {
             $head = (Get-Content $_.FullName -TotalCount 3) -join ' '
@@ -40,6 +50,10 @@ beast watch-validate PROCEDURE TIMELINE  prove visual-only and reinspection link
 beast watch     video URL/file -> frames+transcript bundle an agent can "watch"
 beast watch-index BUNDLE ["query"] -> build/search semantic visual memory
 beast watch-seek BUNDLE --at TIME [--level 1|2|3] -> rewind/forward for missing evidence
+beast watch-perceive --bundle BUNDLE --output NEW_DIR [--ocr-root RECEIPTS] -> CPU spatial/temporal measurements
+beast watch-ui-regions --bundle BUNDLE --output NEW_DIR -> pinned OmniParser detector (CPU)
+beast watch-fuse --pixels DIR --ui DIR --temporal DIR --output NEW_DIR -> frame-bound multimodal state
+beast watch-temporal --bundle BUNDLE --output NEW_DIR -> admitted pinned V-JEPA 2 clip embeddings
 beast recipes   list prompt recipe cards
 '@
     }
