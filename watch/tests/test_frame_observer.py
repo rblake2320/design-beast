@@ -8,13 +8,13 @@ from watch.frame_observer import FrameState, observe_frame, parse_state
 
 
 def state() -> dict[str, str]:
-    return {key: "unknown" for key in FrameState.model_fields}
+    return {key: "A visible screen" for key in FrameState.model_fields}
 
 
 @pytest.mark.parametrize("field", ["response", "thinking", "content"])
 def test_complete_structured_envelope(field: str) -> None:
     payload = {"done": True, "done_reason": "stop", "message": {field: json.dumps(state())}}
-    assert parse_state(payload).view == "unknown"
+    assert parse_state(payload).view == "A visible screen"
 
 
 def test_source_identity_is_not_model_controlled() -> None:
@@ -32,6 +32,12 @@ def test_nonterminal_output_cannot_be_observation(reason: str | None) -> None:
 def test_duplicate_keys_rejected() -> None:
     with pytest.raises(ValueError, match="duplicate"):
         parse_state({"done": True, "done_reason": "stop", "response": '{"view":"a","view":"b"}'})
+
+
+@pytest.mark.parametrize("blank", ["", "  ", "unknown"])
+def test_empty_or_unknown_state_not_complete(blank: str) -> None:
+    with pytest.raises(ValueError):
+        parse_state({"done": True, "done_reason": "stop", "response": json.dumps({key: blank for key in FrameState.model_fields})})
 
 
 def test_changed_frame_refused_before_any_gpu_or_output(tmp_path: Path) -> None:

@@ -3,9 +3,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import hashlib
 import shutil
 import subprocess
 import sys
+import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -41,9 +43,19 @@ def run(bundle: Path, output: Path, tesseract: str, model: str) -> None:
     output.mkdir(parents=True, exist_ok=False)
     timeline = json.loads((bundle / "timeline.json").read_text())
     rows = sorted(timeline["frames"], key=lambda row: row["source_seconds"])
-    if len(rows) != 61:
-        raise ValueError("frozen experiment requires 61 frames")
+    if [row["source_seconds"] for row in rows] != [index / 2 for index in range(61)]:
+        raise ValueError("frozen experiment requires unique exact 2fps timestamps")
+    inspection = json.loads((bundle / "inspection.result.json").read_text())
+    intent = json.loads((bundle / "inspection.json").read_text())
+    if digest(bundle / "timeline.json") != inspection["timeline_after_sha256"] or digest(bundle / "video.mp4") != intent["source_sha256"]:
+        raise ValueError("frozen bundle identity changed")
+    if inspection["intent_sha256"] != digest(bundle / "inspection.json"):
+        raise ValueError("inspection receipt chain changed")
+    source = json.loads((bundle / "source.json").read_text())
+    with urllib.request.urlopen("http://127.0.0.1:11434/api/tags", timeout=10) as response:
+        identity = next(item for item in json.loads(response.read())["models"] if item["name"] == model)
     retain(output / "protocol.json", {"timeline_sha256": digest(bundle / "timeline.json"),
+        "source": source, "clip_sha256": intent["source_sha256"], "model_digest": identity["digest"],
         "model": model, "frames": 61, "max_vision_calls": 61, "output_tokens_per_frame": 600,
         "frame_binding": "single-image request; timestamp and hash attached only by code",
         "inference_sample_rate": 2, "comparison": "repair not equal-budget efficiency test",
@@ -55,22 +67,36 @@ def run(bundle: Path, output: Path, tesseract: str, model: str) -> None:
             raise ValueError("frame custody failure")
         frame_dir = output / f"frame-{index:03d}"
         frame_dir.mkdir()
-        ocr = subprocess.run([tesseract, str(path), "stdout", "--psm", "11", "tsv"],
-                             check=True, capture_output=True, text=True, timeout=30)
-        retain(frame_dir / "ocr.json", {"frame_sha256": row["sha256"], "tsv": ocr.stdout,
-                                        "evidence_class": "unverified_ocr"})
+        ocr_status = "failed"
+        try:
+            ocr_pixels = path.read_bytes()
+            if hashlib.sha256(ocr_pixels).hexdigest() != row["sha256"]:
+                raise ValueError("OCR source changed before submission")
+            ocr = subprocess.run([tesseract, "stdin", "stdout", "--psm", "11", "tsv"],
+                                 input=ocr_pixels, check=True, capture_output=True, timeout=30)
+            if digest(path) != row["sha256"]:
+                raise ValueError("OCR source changed")
+            retain(frame_dir / "ocr.json", {"frame_sha256": row["sha256"], "tsv": ocr.stdout.decode("utf-8"),
+                                            "evidence_class": "unverified_ocr"})
+            ocr_status = "observed_unverified"
+        except Exception as exc:
+            retain(frame_dir / "ocr-failure.json", {"error": str(exc), "error_type": type(exc).__name__})
         try:
             result = observe_frame(path, round(row["source_seconds"] * 1000), row["sha256"],
-                                   frame_dir / "vision", model=model)
-            states.append({"frame": row, "status": "observed_unverified", "result": result})
+                                   frame_dir / "vision", model=model, source_offset_ms=source["start_seconds"] * 1000,
+                                   source_sha256=source["source_sha256"], expected_model_digest=identity["digest"])
+            states.append({"frame": row, "status": "observed_unverified", "ocr_status": ocr_status, "result": result})
         except Exception as exc:
-            states.append({"frame": row, "status": "failed", "error": str(exc)})
+            states.append({"frame": row, "status": "failed", "ocr_status": ocr_status, "error": str(exc)})
         retain(frame_dir / "accounting.json", states[-1])
         sys.stdout.write(f"{index + 1}/61 {states[-1]['status']}\n")
         sys.stdout.flush()
     transitions = []
     for index in range(1, len(states)):
         before, after = states[index - 1], states[index]
+        for entry in (before, after):
+            if digest(bundle / entry["frame"]["file"]) != entry["frame"]["sha256"]:
+                raise ValueError("frame changed before temporal comparison")
         item = {"before_sha256": before["frame"]["sha256"], "after_sha256": after["frame"]["sha256"],
                 "before_ms": round(before["frame"]["source_seconds"] * 1000),
                 "after_ms": round(after["frame"]["source_seconds"] * 1000),
