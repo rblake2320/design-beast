@@ -57,3 +57,16 @@ Both `cpu-27b-probe-01/frame-000/result.json` and `frame-023/result.json` comple
 The completed frame-000 result lists both Sculpting and Object Mode without asserting Sculpting mode active, and correctly describes the pencil/profile view. It nevertheless says the software version is not visible although the lower-right source frame displays 5.0.1, and refers to sculpting-brush settings as underdetermined. Its retained elapsed time is approximately **185.09 seconds**. One selected-frame description is neither semantic closure nor evidence of practical throughput. No inference was rerun by this reviewer.
 
 Frame-023 explicitly says `in Sculpt mode` despite the visible Object Mode label and calls the eraser a brush cursor. It does correctly list the version 5.0.1. Its retained elapsed time is approximately **193.66 seconds**. Combined inference elapsed time is approximately **378.74 seconds for two frames**. The larger CPU model did not close the known semantic failure; at least one false statement remains in each selected frame result. This diagnostic does not license a full-video, autonomous-event or generalized-capability claim.
+
+## Separate packaging addendum: d9d66f7
+
+Independently reviewed the replacement of the indirect OpenCV/NumPy import with Pillow `ImageChops`. The implementation still reads and verifies image bytes before decoding, takes the maximum absolute RGB-channel difference, and counts pixels strictly above 20. This removes those two undeclared imports from this observer dependency path; it is not a whole-repository dependency audit.
+
+Independently ran `python -m pytest watch/tests watch/evidence/tests tests/test_watch_gate_injection.py tests/test_validate_watch_procedure.py -q`: **126 passed, 1 skipped**. This includes the two new pixel-change tests.
+
+Recomputed pixel-change fractions from original retained JPEG bytes with expected frame hashes for every recorded adjacent pair:
+
+- `dense-instruct-01`: **60/60 exact matches**, maximum absolute difference **0.0**.
+- `heldout-instruct-01`: **60/60 exact matches**, maximum absolute difference **0.0**.
+
+Current `watch/temporal_observer.py` SHA256: `d9b9715c95d9daf4eff865bf322324445a62c683f40c3553a7d7eb7f89f12e7a`. These 120 actual-pair comparisons support equivalence on the retained corpus, not every possible image format or decoder behavior. No inference was rerun, old reports were not rewritten, and semantic grades remain unchanged. No blocking finding for this narrowly scoped packaging repair; no merge performed.

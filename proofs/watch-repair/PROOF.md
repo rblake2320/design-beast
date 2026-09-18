@@ -89,6 +89,14 @@ Doctor previously reported 33 OK, optional ComfyUI offline, zero failures.
 Core graph validation: eight capabilities, one pack, no errors. The symlink skip
 remains a Windows environment limitation, not a pass.
 
+Final packaging check `d9d66f7`: the new pixel comparator originally imported
+undeclared OpenCV/NumPy through the observer. Replaced it with equivalent Pillow
+channel-difference operations using an existing declared dependency. Two extra
+threshold/dimension tests bring the targeted scope to **126 passed, 1 skipped**.
+The complete default local suite then passed: **317 passed, 1 skipped, 7 live-GPU
+tests deselected**, in 19.86 seconds. Live-GPU deselection is not a passing result
+for those seven tests. No models or heavy generation jobs were started by them.
+
 The unresolved product work is reliable spatial/temporal perception plus an
 independent semantic event adjudicator, followed by unseen GUI-video evaluation.
 A stronger model is only a candidate until it passes those retained cases.
