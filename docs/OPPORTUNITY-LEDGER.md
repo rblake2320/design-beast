@@ -2,6 +2,14 @@
 
 ### OPP-20260918-03 — Replaceable Watch inspection-policy contract
 
+- Real-video follow-up 2026-09-18: `proofs/watch-real-video/PROOF.md` records
+  a FAILED transcript-free Blender tutorial challenge. The local 8B VLM plus
+  current sampling recovered 0/10 independently referenced events with correct
+  grounding; its sole complete change cited the wrong frame, and detail output
+  truncated. Confidence 1.0 did not establish truth. No procedure promoted.
+  This opens a concrete repair target (frame binding and temporal coverage),
+  not a new proven visual capability. Preserve the failed baseline.
+
 - Status: experiment; measured synthetic extraction controls, not semantic competence.
 - Trigger: owner requested independent perception/transition/procedure confidence,
   recommendation-only policy and frozen evaluation before Jev integration.
