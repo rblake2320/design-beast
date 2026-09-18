@@ -13,16 +13,30 @@ from watch.inspection_runtime import digest, retain
 from watch.ocr_observer import observe_ocr
 
 
+def clip_stamps(timeline: dict[str, object]) -> list[int]:
+    """Resolve the two clocks without silently accepting contradictory coordinates."""
+    offset = timeline.get("source", {}).get("range", {}).get("start_seconds", 0)
+    stamps = []
+    for row in timeline["frames"]:
+        relative = row["source_seconds"]-offset
+        clip = row.get("clip_seconds", relative)
+        if abs(clip-relative) > .001:
+            raise ValueError("source and clip clocks disagree")
+        stamps.append(round(clip*1000))
+    return stamps
+
+
 def run(bundle: Path, output: Path, ocr_root: Path | None, max_seconds: float = 180) -> dict[str, object]:
     from watch.visual_state import VisualStateTracker, decode_verified
     import cv2
     import numpy as np
 
     raw_timeline = (bundle / "timeline.json").read_bytes()
-    rows = json.loads(raw_timeline)["frames"]
+    timeline = json.loads(raw_timeline)
+    rows = timeline["frames"]
     if not 2 <= len(rows) <= 96:
         raise ValueError("requires 2..96 frames")
-    stamps = [round(row["source_seconds"] * 1000) for row in rows]
+    stamps = clip_stamps(timeline)
     if any(type(s) is not int or s < 0 for s in stamps) or any(b <= a for a, b in zip(stamps, stamps[1:])):
         raise ValueError("unordered or duplicate timestamps")
     if not 0 < max_seconds <= 600:

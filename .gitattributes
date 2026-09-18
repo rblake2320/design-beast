@@ -1,6 +1,7 @@
 # Evidence hashes refer to exact bytes, not platform-normalized JSON text.
 /proofs/watch-pixel-state/**/*.json -text
 /proofs/watch-repair/**/*.json -text
+/proofs/watch-training/**/*.json -text
 # Keep measured implementation bytes stable across Windows/Linux checkouts.
 /watch/visual_state.py text eol=lf
 /watch/pixel_policy.py text eol=lf
