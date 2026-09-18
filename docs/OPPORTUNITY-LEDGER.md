@@ -2,6 +2,11 @@
 
 ### OPP-20260918-02 — Higgsfield creative assets with explicit transport provenance
 
+- Native follow-up: `proofs/higgsfield-native/PROOF.md` retains authenticated
+  native generation, verified artifact, actual HTTP intake, and visible Studio
+  source selection. Native receipts replace regex guessing; 171 Studio tests
+  pass with the default 7 live-GPU exclusions. Total campaign spend 33/500.
+
 - Status: measured, bounded external-connector proof.
 - Trigger: owner authorized up to 500 credits for live creative integration.
 - Evidence: `proofs/higgsfield-creative/PROOF.md`, five completed provider job
