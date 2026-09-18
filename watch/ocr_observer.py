@@ -6,12 +6,12 @@ import subprocess
 from pathlib import Path
 
 
-def observe_ocr(path: Path, expected_sha256: str, executable: str) -> dict[str, object]:
+def observe_ocr(path: Path, expected_sha256: str, executable: str, *, timeout: float = 30) -> dict[str, object]:
     pixels = path.read_bytes()
     if hashlib.sha256(pixels).hexdigest() != expected_sha256:
         raise ValueError("OCR source custody mismatch")
     result = subprocess.run([executable, "stdin", "stdout", "--psm", "11", "tsv"],
-                            input=pixels, check=True, capture_output=True, timeout=30)
+                            input=pixels, check=True, capture_output=True, timeout=timeout)
     text = result.stdout.decode("utf-8", errors="strict")
     if not text.startswith("level\tpage_num\t"):
         raise ValueError("OCR response is not TSV")

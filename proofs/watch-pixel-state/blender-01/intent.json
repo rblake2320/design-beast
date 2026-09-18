@@ -1,0 +1,12 @@
+{
+  "schema": "beast.watch.pixel-run/v1",
+  "timeline_sha256": "3c811e6ea7f62bcf39bd835a97665b84b14d3fdc640532ef657bba914ea4f60d",
+  "max_frames": 61,
+  "max_seconds": 180,
+  "opencv": "4.10.0",
+  "numpy": "2.2.6",
+  "implementation_sha256": "17f21bde92019c9742bfbdbe9a0be2dd186049f4988403a9096f81c5e0ba0e6c",
+  "time_basis": "clip-relative milliseconds",
+  "model_calls": 0,
+  "audio_or_transcript": false
+}

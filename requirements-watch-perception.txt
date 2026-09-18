@@ -1,0 +1,4 @@
+# Optional CPU spatial/temporal measurement lane; no model downloads.
+-r requirements.txt
+numpy==2.2.6
+opencv-python-headless==4.10.0.84

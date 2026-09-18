@@ -1,0 +1,4 @@
+-r requirements-watch-perception.txt
+ultralytics==8.4.2
+huggingface-hub==0.36.0
+# Detector weights stay external, pinned and separately licensed (AGPL-3.0).

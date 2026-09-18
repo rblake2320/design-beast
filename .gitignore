@@ -35,3 +35,5 @@ beast.config.json
 watched/
 studio/.beast_model_hashes.json
 node_modules/
+.venv-watch-temporal/
+proofs/watch-pixel-state/**/diagnostic.jpg
