@@ -10,6 +10,13 @@
   are editorial claims requiring review, not verified procedures or permission
   to redistribute the source. Hypothesis: source-linked review makes omissions
   and narration/visual mismatches inspectable before training-video publication.
+  Measured follow-up: PR37 connects existing Watch to real playback, editorial
+  plans and source-only captioned drafts. Browser playback/seek/export and two
+  rendered segments with9000ms source offset were exercised; decoded source
+  pixels and all11 caption rows checked. Independent artifacts and limitations:
+  `proofs/watch-training/INDEPENDENT-REVIEW.md`. No automatic caption semantics,
+  narration, generalized video comprehension or publication claim. Clipstitch
+  remains a separate spoken-word lane; live-capture PR27 is not silently merged.
 
 - Pixel-state experiment: owner authorized implementation of spatial OCR,
   tracked image features and temporal state rather than another screenshot
