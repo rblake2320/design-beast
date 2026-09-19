@@ -1,0 +1,28 @@
+{
+  "source_sha256": "dfee73ad430ba6e0a4951232f121f055c6901f50dce0eb84172f2d0e92bd0a05",
+  "units": [
+    {
+      "unit_id": "case-01-saved-result",
+      "kind": "observable_result",
+      "start_ms": 1500,
+      "end_ms": 2000,
+      "sentence": "Status Saved appears.",
+      "frame_refs": [
+        {
+          "clip_ms": 1500,
+          "sha256": "be109979fdd68939e9d13bfd113c1fdb76281e047205652bcdd8910c66131e13"
+        },
+        {
+          "clip_ms": 1750,
+          "sha256": "8feeb34457035a3240e2f7b873192e36850e9b3fdea92818dd3d8e9734008430"
+        }
+      ],
+      "result_evidence": "Prior sampled frame at 1500 ms reads Status: Unsaved; first sampled frame at 1750 ms reads Status: Saved. Result only; cause not established. See BLIND-LABELS.json.",
+      "reviewer": "independent agent /root/training_review; BLIND-LABELS.json",
+      "verdict": "accepted",
+      "perception_confidence": null,
+      "transition_confidence": null,
+      "procedure_confidence": null
+    }
+  ]
+}

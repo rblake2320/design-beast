@@ -1,0 +1,38 @@
+{
+  "observed_inputs": [
+    {
+      "frame": {
+        "source_seconds": 1.2,
+        "file": "frames/f_000000001200.jpg",
+        "sha256": "7e0dcfa44edac6c71f342c541739d3179d0f84b8efbf99b4230b01c0817336c5"
+      },
+      "kind": "key_down",
+      "key": "s"
+    },
+    {
+      "frame": {
+        "source_seconds": 1.333,
+        "file": "frames/f_000000001333.jpg",
+        "sha256": "fe1ede8d98d7fce2ffce5f6e2cecf3e7b0c556ecd794e6c84c8d75bbaed81844"
+      },
+      "kind": "key_down",
+      "key": "s"
+    },
+    {
+      "frame": {
+        "source_seconds": 1.467,
+        "file": "frames/f_000000001467.jpg",
+        "sha256": "ae5c295fadae95337d1a2020562651fda60198936626bccf1a17902c5e2a2471"
+      },
+      "kind": "key_down",
+      "key": "s"
+    }
+  ],
+  "ocr_calls": 16,
+  "elapsed_seconds": 1.797000000020489,
+  "gpu_calls": 0,
+  "model_tokens": 0,
+  "publication_allowed": false,
+  "causal_chains_accepted": 0,
+  "claim": "input indicators recognized from supplied frame pixels only; semantic review required"
+}
