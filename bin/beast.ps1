@@ -22,6 +22,7 @@ switch ($Cmd) {
     'watch-training' { python (Join-Path $Repo 'scripts\watch_training.py') @Rest; exit $LASTEXITCODE }
     'watch-narrate' { python (Join-Path $Repo 'scripts\narrate_watch_training.py') @Rest; exit $LASTEXITCODE }
     'watch-instruction-gate' { python (Join-Path $Repo 'scripts\gate_watch_instruction.py') @Rest; exit $LASTEXITCODE }
+    'watch-rewind-eval' { python (Join-Path $Repo 'scripts\evaluate_watch_rewind.py') @Rest; exit $LASTEXITCODE }
     'watch-ui-regions' { python (Join-Path $Repo 'scripts\watch_ui_regions.py') @Rest }
     'watch-fuse' { python (Join-Path $Repo 'scripts\fuse_watch_state.py') @Rest }
     'watch-temporal' {
@@ -57,6 +58,7 @@ beast watch-perceive --bundle BUNDLE --output NEW_DIR [--ocr-root RECEIPTS] -> C
 beast watch-training prepare --source VIDEO_OR_URL --output NEW_DIR -> real-footage review workspace
 beast watch-training render --review DIR --plan JSON --output NEW_DIR -> source-linked captioned draft
 beast watch-instruction-gate --review DIR --units JSON --output NEW_DIR -> eligible private units or review request
+beast watch-rewind-eval --review DIR --units JSON --output NEW_DIR -> bounded CPU reinspection comparison, no narration
 beast watch-ui-regions --bundle BUNDLE --output NEW_DIR -> pinned OmniParser detector (CPU)
 beast watch-fuse --pixels DIR --ui DIR --temporal DIR --output NEW_DIR -> frame-bound multimodal state
 beast watch-temporal --bundle BUNDLE --output NEW_DIR -> admitted pinned V-JEPA 2 clip embeddings
