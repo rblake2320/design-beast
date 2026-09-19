@@ -24,7 +24,14 @@ The executable report and all pair protocols, timelines, decisions and receipts
 are under `run-01/`. The criterion was selected for this experiment, not a claim
 of statistical significance or a universal minimum improvement.
 
-## Action recovery test
+## Action recovery test: FAIL on this interval
+
+Independent review examined all60 native frames through the ten contact sheets
+and inspected native frames35–39 at full resolution. The result-label change is
+bracketed by actual decoded presentation times (1.233333,1.266667] seconds.
+No identifiable initiating input plus control/result chain was recovered.
+This is a tested failure to recover the input from the interval, not a claim
+that the person performed no action. See `ACTION-REVIEW.md` for retained findings.
 
 All60 decoded native frames at30FPS across [0,2s) are retained in
 `run-01/native`, with exact presentation timestamps and SHA256 values. Ten contact
