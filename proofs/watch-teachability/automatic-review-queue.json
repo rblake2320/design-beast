@@ -1,0 +1,29 @@
+{
+  "decisions": [
+    {
+      "unit_id": "unit-000",
+      "decision": "review_required",
+      "reason": "classification and evidence need semantic review",
+      "verified_procedure": false,
+      "publication_allowed": false
+    },
+    {
+      "unit_id": "unit-001",
+      "decision": "review_required",
+      "reason": "classification and evidence need semantic review",
+      "verified_procedure": false,
+      "publication_allowed": false
+    },
+    {
+      "unit_id": "unit-002",
+      "decision": "review_required",
+      "reason": "classification and evidence need semantic review",
+      "verified_procedure": false,
+      "publication_allowed": false
+    }
+  ],
+  "eligible_units": 0,
+  "status": "review_required_no_narration",
+  "publication_allowed": false,
+  "boundary": "validates declared review and evidence links, not causal truth or reviewer identity"
+}
