@@ -13,12 +13,22 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from watch.inspection_runtime import digest, retain
 
 
+class PacingReviewRequired(ValueError):
+    def __init__(self, source_seconds: float, audio_seconds: float, duration: float) -> None:
+        super().__init__("needs_author_annotation_or_recapture: narration exceeds 2s hold or 75% unextended-source floor")
+        self.measurements = {"source_seconds": source_seconds, "audio_seconds": audio_seconds,
+            "proposed_duration_seconds": duration, "proposed_hold_seconds": duration-source_seconds,
+            "unextended_source_fraction": source_seconds/duration, "measured_motion_fraction": None}
+
+
 def segment_duration(source_seconds: float, audio_seconds: float) -> float:
     if not all(math.isfinite(t) and t > 0 for t in (source_seconds, audio_seconds)):
         raise ValueError("invalid source or audio duration")
     duration = math.ceil(max(source_seconds, audio_seconds+.25)*30)/30
     if duration > 120:
         raise ValueError("narrated segment exceeds120s budget")
+    if duration-source_seconds > 2.0+1e-9 or source_seconds/duration < .75-1e-9:
+        raise PacingReviewRequired(source_seconds, audio_seconds, duration)
     return duration
 
 
@@ -72,9 +82,9 @@ def narrate(rendered: Path, output: Path, model_dir: Path) -> None:
                 raise ValueError("narrator returned invalid or silent audio")
             audio_seconds = len(samples)/sr
             source_seconds = (segment["source_end_ms"]-segment["source_start_ms"])/1000
-            duration = segment_duration(source_seconds, audio_seconds)
             wav = f"voice-{index:03d}.wav"
             sf.write(str(output / wav), samples, sr, subtype="PCM_16")
+            duration = segment_duration(source_seconds, audio_seconds)
             clip = f"narrated-{index:03d}.mp4"
             # Hold the actual last source frame, explicitly labeled; never synthesize a replacement scene.
             filters = f"tpad=stop_mode=clone:stop_duration={duration},pad=iw:ih+90:0:0:color=black,drawtext=fontfile=caption-font.ttf:text='SYNTHETIC NARRATION / EDITORIAL DRAFT':fontsize=18:fontcolor=white:x=24:y=h-75,drawtext=fontfile=caption-font.ttf:text='HELD SOURCE FRAME':fontsize=18:fontcolor=white:x=24:y=h-45:enable='gte(t,{source_seconds})'"
@@ -84,6 +94,7 @@ def narrate(rendered: Path, output: Path, model_dir: Path) -> None:
                 cwd=output, check=True, capture_output=True, timeout=180)
             timing.append({"output_start_seconds": cursor, "output_end_seconds": cursor+duration,
                 "audio_seconds": audio_seconds, "held_seconds": duration-source_seconds,
+                "unextended_source_fraction": source_seconds/duration, "measured_motion_fraction": None,
                 "source": segment, "wav_sha256": digest(output / wav), "clip_sha256": digest(output / clip)})
             cursor += duration
         with (output / "concat.txt").open("x", encoding="utf-8", newline="\n") as stream:
@@ -98,6 +109,10 @@ def narrate(rendered: Path, output: Path, model_dir: Path) -> None:
             "probe": probe, "publication_allowed": False, "verified_procedure": False,
             "audio": "local Kokoro af_heart synthetic voice; not source speaker", "generated_scene_images": 0})
     except Exception as exc:
+        if isinstance(exc, PacingReviewRequired):
+            retain(output / "review-required.json", {"status": "needs_author_annotation_or_recapture",
+                "reason": str(exc), "measurements": exc.measurements,
+                "publication_allowed": False, "video_completed": False})
         retain(output / "failure.json", {"error": str(exc), "type": type(exc).__name__})
         raise
 

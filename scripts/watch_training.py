@@ -55,10 +55,10 @@ def main() -> int:
         render.add_argument("--"+name, type=Path, required=True)
     render.add_argument("--ffmpeg", default="ffmpeg")
     render.add_argument("--ffprobe", default="ffprobe")
-    auto = commands.add_parser("auto", help="existing review -> automatic visual explanations -> captioned narrated draft")
+    auto = commands.add_parser("auto", help="existing review -> visual proposals -> teachability review queue (no narration)")
     auto.add_argument("--review", type=Path, required=True)
     auto.add_argument("--output", type=Path, required=True)
-    auto.add_argument("--model-dir", type=Path, required=True)
+    auto.add_argument("--model-dir", type=Path, help="deprecated compatibility option; auto does not synthesize speech")
     auto.add_argument("--count", type=int, default=3)
     auto.add_argument("--reuse-observations", type=Path)
     args = parser.parse_args()
@@ -71,15 +71,14 @@ def main() -> int:
             result = {"review": str(prepare(args)), "publication_allowed": False}
         elif args.command == "auto":
             from scripts.draft_watch_explanations import draft
-            from scripts.narrate_watch_training import narrate
             args.output.mkdir(parents=True, exist_ok=False)
-            retain(args.output / "intent.json", {"operation": "automatic_unverified_narrated_draft", "review": str(args.review.resolve()), "publication_allowed": False})
+            retain(args.output / "intent.json", {"operation": "automatic_visual_review_queue", "review": str(args.review.resolve()), "publication_allowed": False})
             try:
                 draft(args.review, args.output / "explanations", args.count, args.reuse_observations)
-                render_watch_training.render(args.review, args.output / "explanations/training-draft.json", args.output / "render", "ffmpeg", "ffprobe")
-                narrate((args.output / "render").resolve(), (args.output / "narrated").resolve(), args.model_dir.resolve())
-                result = {"video": str(args.output / "narrated/narrated-training.mp4"), "publication_allowed": False,
-                    "status": "automatic_draft_requires_semantic_review"}
+                from scripts.gate_watch_instruction import evaluate
+                evaluate(args.review, args.output / "explanations/training-draft.json", args.output / "teachability", is_plan=True)
+                result = {"units": str(args.output / "teachability/units.json"), "publication_allowed": False,
+                    "status": "review_required_before_narration"}
                 retain(args.output / "report.json", result)
             except Exception as exc:
                 retain(args.output / "failure.json", {"error": str(exc), "type": type(exc).__name__})

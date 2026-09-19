@@ -8,7 +8,7 @@ from scripts.narrate_watch_training import narrate
 from watch.inspection_runtime import digest
 
 
-@pytest.mark.parametrize("source,audio", [(2,4.949333), (5,1), (.5,.5), (119,119)])
+@pytest.mark.parametrize("source,audio", [(2,1.5), (5,1), (.5,.1), (119,119)])
 def test_narration_never_cuts_off_audio_or_source(source, audio):
     duration = segment_duration(source, audio)
     assert duration >= source and duration >= audio+.25
@@ -18,6 +18,12 @@ def test_narration_never_cuts_off_audio_or_source(source, audio):
 @pytest.mark.parametrize("source,audio", [(0,1),(-1,2),(2,float('nan')),(float('inf'),1),(2,120)])
 def test_invalid_or_unbounded_duration_refused(source,audio):
     with pytest.raises(ValueError): segment_duration(source,audio)
+
+
+@pytest.mark.parametrize("source,audio", [(2,12.608),(2,12.714666),(2,9.173333),(.5,.5),(20,23)])
+def test_excessive_holds_request_recapture(source,audio):
+    from scripts.narrate_watch_training import PacingReviewRequired
+    with pytest.raises(PacingReviewRequired): segment_duration(source,audio)
 
 
 def test_model_cannot_promote_procedure():

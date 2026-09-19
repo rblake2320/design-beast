@@ -2,6 +2,16 @@
 
 ### OPP-20260918-03 — Replaceable Watch inspection-policy contract
 
+-2026-09-19 teachability continuation: automatic visual proposals now stop at a
+  review queue; class/evidence declarations select draft-only instructional units.
+  The old 2s-source/12.608s-speech segment is rejected by measured pacing limits.
+  A reviewed result-only sentence produces a 2.233s timeline with 0.233s added
+  hold. This contains inflation; it does not prove causal recovery or lower
+  reviewer cost. Evidence: `proofs/watch-teachability/PROOF.md`. Existing local
+  Kokoro/FFmpeg components are reused; no novelty claim. Value inside Watch is
+  preventing unusable drafts; outside it is an inspectable editorial triage
+  contract. Revisit after frozen manual-versus-assisted human-time measurements.
+
 -2026-09-19 measured continuation:automatic visual-change candidates now connect
   to separate-frame observations, targeted OCR, model-written draft explanations,
   original-footage assembly and local synthetic narration. Retained3known-case

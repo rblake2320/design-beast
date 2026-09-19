@@ -7,23 +7,32 @@ voice, never the original speaker's cloned voice.
 ```powershell
 python -m pip install -r requirements-watch-narration.txt
 # First prepare an existing source-linked review as documented in WATCH-TRAINING.md.
-.\bin\beast.ps1 watch-training auto --review watched\lesson-01\review --output watched\auto-lesson-01 --model-dir D:\ai\tools\kokoro --count 3
+.\bin\beast.ps1 watch-training auto --review watched\lesson-01\review --output watched\auto-lesson-01 --count 3
+# Review teachability/units.json, then export only eligible units:
+.\bin\beast.ps1 watch-instruction-gate --review watched\lesson-01\review --units reviewed-units.json --output watched\eligible-01
 # Existing edited plans can also be voiced without another visual-model call:
 .\bin\beast.ps1 watch-narrate --rendered watched\lesson-render-01 --output watched\voiced-lesson-01 --model-dir D:\ai\tools\kokoro
 ```
 
 The automatic path selects up to3 separated high-change candidates from actual
 pixel measurements, inspects each before/after frame separately through existing
-Watch observation, drafts an explanation, renders original source intervals,
-and generates synchronized speech. It needs the existing qwen3-vl:8b-instruct
+Watch observation and drafts explanations into a teachability review queue.
+It no longer renders or narrates unreviewed model proposals. It needs qwen3-vl:8b-instruct
 Ollama model and passes the judge resource profile before observations. Speech
 and optional Whisper verification use CPU only. No cloud spend was used.
 
 Outputs retain selected-frame IDs, prompts, observations, model responses,
 independent confidence fields, source hashes, source/output timing, voice-model
-hashes, generated WAVs, and a narrated MP4. The original footage plays at its
-original rate. If speech needs more time, the final source frame is held and
-explicitly labeled below the picture. No source controls are covered by labels.
+hashes and generated WAVs when the separate narration command is used. The
+original footage plays at its original rate. Narration refuses any segment
+needing over 2 seconds of additional hold or falling below 75% unextended source
+duration. Refusal retains `review-required.json`, measured durations and the WAV;
+it does not complete a video. Passing segments may briefly hold the actual last
+frame, explicitly labeled below the picture. No source controls are covered.
+Unextended source duration is NOT measured moving-footage percentage: the source
+may itself contain stillness. `measured_motion_fraction` remains null.
+
+See [WATCH-TEACHABILITY.md](WATCH-TEACHABILITY.md) for triage and evidence limits.
 
 All explanations remain unverified visual observations. The model's claimed
 certainty cannot remove the fixed spoken causal-uncertainty statement or the
