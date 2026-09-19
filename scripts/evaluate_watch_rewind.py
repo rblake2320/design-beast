@@ -31,7 +31,8 @@ def changes(bundle: Path, frames: list[dict]) -> tuple[ChangeSample, ...]:
 
 
 def evaluate(review: Path, units: Path, output: Path, *, frames: int = 16,
-             lookback_ms: int = 2000, seconds: float = 60.0, ffmpeg: str = "ffmpeg") -> dict:
+             lookback_ms: int = 2000, seconds: float = 60.0, ffmpeg: str = "ffmpeg",
+             reverse_order: bool = False) -> dict:
     if type(frames) is not int or not 8 <= frames <= 96 or not 1 <= seconds <= 120:
         raise ValueError("invalid frame/time budget")
     data_bytes, unit_bytes = (review / "review-data.json").read_bytes(), units.read_bytes()
@@ -68,14 +69,15 @@ def evaluate(review: Path, units: Path, output: Path, *, frames: int = 16,
         "coarse_frames": 5, "refinement": "largest full-frame RGB mean absolute difference; latest tie wins",
         "anchor_assumption": "latest cited frame of supplied reviewed result unit, not automatically discovered onset",
         "baseline": "existing deterministic Watch decision intersected with same backward window; fps fitted to budget",
-        "execution_order": ["watch-adaptive-bounded", "debt-rewind"],
+        "execution_order": list(reversed(["watch-adaptive-bounded", "debt-rewind"])) if reverse_order else ["watch-adaptive-bounded", "debt-rewind"],
         "boundary": "known-case scheduling/mechanical proof, not blind action recovery or calibrated confidence",
         "code_sha256": {p: digest(Path(__file__).resolve().parents[1] / p) for p in
             ("watch/rewind.py", "scripts/evaluate_watch_rewind.py", "watch/inspection.py", "watch/inspection_runtime.py", "watch/seek.py")}})
     retain(output / "seed.json", payload)
     results = []
     try:
-        for arm in ("watch-adaptive-bounded", "debt-rewind"):
+        arms = ("debt-rewind", "watch-adaptive-bounded") if reverse_order else ("watch-adaptive-bounded", "debt-rewind")
+        for arm in arms:
             bundle = output / arm
             bundle.mkdir()
             shutil.copyfile(source, bundle / "video.mp4")
