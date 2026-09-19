@@ -60,3 +60,23 @@ No blocking defect found for retaining this named-control result. Residual limit
 | Comparison report | `e60cb8172e79259dcd2a3a850270989e5b69d3b30ea2b06f269991b1c7d4f4e3` |
 
 Source and blind-frame hashes are retained in the unchanged blind-label artifact. This review approves retaining the measured indicator PASS and rewind-graduation FAIL separately; it does not certify a recovered causal instructional procedure or authorize merging.
+
+## Independent custody-guard follow-up (2026-09-19)
+
+Read the changed observer, scorer and regression. The earlier double-read report custody finding is now addressed: observer parses and hashes the same report snapshot; it reads each image once, checks that snapshot's hash, and supplies those exact bytes to Tesseract stdin. Thus a later file replacement cannot substitute different pixels after hash validation. The scorer similarly parses and hashes single snapshots of labels and comparison report. This is not a claim of comprehensive hostile-filesystem isolation.
+
+Reviewer ran the focused overlay tests: **9 passed**, including a regression that replaces both the frame file and report after snapshot acquisition and verifies the original pixel bytes are sent and original report hash is retained. No media or OCR rerun was performed by reviewer.
+
+Inspected the builder's bounded real follow-up `ocr-custody-check-01`: 16 OCR calls, four mouse-down frame proposals, about 1.797 seconds, zero model tokens/GPU calls and zero accepted causal chains. Programmatically compared all four proposal objects with the original case-01 baseline report: exactly equal. These four frame hits still mean one input event. Inspected `SCORE-CUSTODY-CHECK.json`: each arm remains three recovered positive cases, zero false-input cases and one correct negative; graduation remains **FAIL**. Its label and original comparison-report hashes match the previously reviewed artifacts.
+
+The complete eight-arm comparison was executed under the original observer hash above, **not** under the new guard. Only the affected case-01 baseline OCR path was rerun with the guard, plus rescoring of the retained full comparison. Original evidence was preserved and is not retroactively attributed to new code. Final scoped verdict remains **indicator recovery PASS; rewind graduation FAIL**. Other semantic/resource/generalization limitations above remain.
+
+| Follow-up artifact | SHA256 |
+| --- | --- |
+| Guarded `scripts/observe_watch_input_overlays.py` | `e79324b25b86d65a7857138d8f5743a84164c687271fb6471ec05bcc61f41640` |
+| Snapshot `scripts/score_watch_positive_controls.py` | `d2e08219a86f2ce4738d93d6054ab20f3948c5e49f377360c9020d891dc58cf7` |
+| `tests/test_watch_input_overlays.py` | `355559fbc22d3dd4e5600ae7e992b4a923a599c5e9c28b7fa462ab4e9d2acff9` |
+| `ocr-custody-check-01/report.json` | `321557982ecb3f0359113ec963fc9695af776a9ee0124e2468086fadbe0273ea` |
+| `SCORE-CUSTODY-CHECK.json` | `80a8ae4cc7172c861d016fc5e22d3308242f11701acaf76bdb061b60bcdcc364` |
+
+Final commit binding: independently verified that the three guarded source/test files immediately above match both working-file bytes and Git blob bytes at implementation commit `e8d7cc8e447c04bb9bcad3cadb32480a44d6be4a`, with the same listed SHA256 values. This binding does not relabel the original eight-arm execution as guarded-code execution. No tests, media, OCR or inference were rerun for this commit-only check; this appended binding is a report-only follow-up.
