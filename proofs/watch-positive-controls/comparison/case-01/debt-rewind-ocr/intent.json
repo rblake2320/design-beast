@@ -1,0 +1,8 @@
+{
+  "input_report_sha256": "0bbed68c8d0e97cc66cdc233b2e80e014c23765c57cdb4af58cc944007d06935",
+  "ocr_call_cap": 16,
+  "model_token_cap": 0,
+  "wall_seconds_cap": 60,
+  "parser": "explicit visible Mouse button DOWN / Key X DOWN indicators only",
+  "scope": "overlay-aware OCR proposals, not arbitrary mouse detection or causal verification"
+}

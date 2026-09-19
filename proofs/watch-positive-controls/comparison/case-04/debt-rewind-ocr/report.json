@@ -1,0 +1,10 @@
+{
+  "observed_inputs": [],
+  "ocr_calls": 14,
+  "elapsed_seconds": 1.4530000000086147,
+  "gpu_calls": 0,
+  "model_tokens": 0,
+  "publication_allowed": false,
+  "causal_chains_accepted": 0,
+  "claim": "input indicators recognized from supplied frame pixels only; semantic review required"
+}

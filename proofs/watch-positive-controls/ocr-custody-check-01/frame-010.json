@@ -1,0 +1,121 @@
+{
+  "frame": {
+    "source_seconds": 1.167,
+    "file": "frames/f_000000001167.jpg",
+    "sha256": "d1ba82508c4e747a3d7479746d0a6426bef68a92f6bbd7a571777f7ba858d30d"
+  },
+  "words": [
+    {
+      "text": "Training",
+      "box": [
+        24,
+        29,
+        85,
+        22
+      ]
+    },
+    {
+      "text": "workspace",
+      "box": [
+        116,
+        29,
+        115,
+        22
+      ]
+    },
+    {
+      "text": "\u2014",
+      "box": [
+        237,
+        39,
+        25,
+        2
+      ]
+    },
+    {
+      "text": "local",
+      "box": [
+        270,
+        29,
+        47,
+        17
+      ]
+    },
+    {
+      "text": "test",
+      "box": [
+        325,
+        29,
+        38,
+        17
+      ]
+    },
+    {
+      "text": "application",
+      "box": [
+        370,
+        29,
+        113,
+        22
+      ]
+    },
+    {
+      "text": "Status:",
+      "box": [
+        838,
+        188,
+        72,
+        17
+      ]
+    },
+    {
+      "text": "Unsaved",
+      "box": [
+        920,
+        188,
+        92,
+        17
+      ]
+    },
+    {
+      "text": "Save",
+      "box": [
+        144,
+        466,
+        65,
+        22
+      ]
+    },
+    {
+      "text": "Mouse",
+      "box": [
+        81,
+        665,
+        75,
+        18
+      ]
+    },
+    {
+      "text": "button",
+      "box": [
+        174,
+        664,
+        89,
+        19
+      ]
+    },
+    {
+      "text": "DOWN",
+      "box": [
+        282,
+        665,
+        59,
+        18
+      ]
+    }
+  ],
+  "input_proposal": {
+    "kind": "mouse_down",
+    "key": null
+  }
+}

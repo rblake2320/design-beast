@@ -1,0 +1,29 @@
+{
+  "source_sha256": "8ebaf216d63f7ba302ab767b1222fe60b275a564cd03df0f48a80f14df12ab68",
+  "review_sha256": "8dc6b68326228c0e221363758b74129dbfef6add67993050bf935072133ae32b",
+  "units_sha256": "3d455cc14d2cc6a1cbac4495f1b722c51ade618c373a171082e70e3572d44cf9",
+  "source_offset_ms": 0,
+  "coordinate_system": "clip milliseconds",
+  "window": {
+    "start_ms": 0,
+    "end_ms": 2000
+  },
+  "frame_budget_per_arm": 16,
+  "seconds_per_arm": 60.0,
+  "coarse_frames": 5,
+  "refinement": "largest full-frame RGB mean absolute difference; latest tie wins",
+  "anchor_assumption": "latest cited frame of supplied reviewed result unit, not automatically discovered onset",
+  "baseline": "existing deterministic Watch decision intersected with same backward window; fps fitted to budget",
+  "execution_order": [
+    "watch-adaptive-bounded",
+    "debt-rewind"
+  ],
+  "boundary": "known-case scheduling/mechanical proof, not blind action recovery or calibrated confidence",
+  "code_sha256": {
+    "watch/rewind.py": "761ab2708011a9110ccbafe75accb822258bc7a09b1182ca630eaf0718418af8",
+    "scripts/evaluate_watch_rewind.py": "94a1177426a4dcfae56c814ba535b5688f28d6b71a5f24d5e49694c7e9e2731f",
+    "watch/inspection.py": "883152dd9ebae2b38601141d85496dd7a78b5ded9f814086ab86f89ff7ad3835",
+    "watch/inspection_runtime.py": "513be2f3edd36d31727408a04db980fd167b70d2c2adf4bbf5d14eb604fa2f7e",
+    "watch/seek.py": "bf73063f57ece2a7ff5d46333ec0a6fbe626b64e3e0c27831334bc8b099520d9"
+  }
+}

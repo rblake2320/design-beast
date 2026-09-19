@@ -1,0 +1,50 @@
+{
+  "status": "completed",
+  "intent_sha256": "1ac31f81de96c00696c352eb2f7986210a8f674cc216a6b8d5b21b754df54549",
+  "elapsed_seconds": 0.26236839999910444,
+  "charged_frames": 5,
+  "provider_cost": 0,
+  "request": {
+    "id": "seek-0001",
+    "created_unix": 1789843865.4596093,
+    "center_seconds": 1.0,
+    "center_time": "00:00:01.000",
+    "level": 3,
+    "level_name": "forensic",
+    "direction": "both",
+    "before_seconds": 1.0,
+    "after_seconds": 1.0,
+    "fps": 2.0,
+    "reason": "Known result; inspect preceding interval to investigate unresolved action/control.; Zero confidence placeholders are uncalibrated, not evidence scores.; Forward replay checks sequence, not reproducibility.",
+    "requested_frames": 5,
+    "new_frames": 5
+  },
+  "frames": [
+    {
+      "source_seconds": 0.0,
+      "file": "frames/f_000000000000.jpg",
+      "sha256": "6391e85917141a3714307651527bbe8ce965b11abf54cda8c446da8a626fa399"
+    },
+    {
+      "source_seconds": 0.5,
+      "file": "frames/f_000000000500.jpg",
+      "sha256": "6f425bfa1841949025ca9d336efa64db4a14aa3f3df1944c5fdf429816926210"
+    },
+    {
+      "source_seconds": 1.0,
+      "file": "frames/f_000000001000.jpg",
+      "sha256": "f0fd905b3a51d084ffb9a9c1ee922181e975f5d5f427ae2c2d60ba502589d906"
+    },
+    {
+      "source_seconds": 1.5,
+      "file": "frames/f_000000001500.jpg",
+      "sha256": "fe1ede8d98d7fce2ffce5f6e2cecf3e7b0c556ecd794e6c84c8d75bbaed81844"
+    },
+    {
+      "source_seconds": 2.0,
+      "file": "frames/f_000000002000.jpg",
+      "sha256": "ee228ba04470d138e2eece38511299a8d96bd042a1433d7cc054f4f73bccb47e"
+    }
+  ],
+  "timeline_after_sha256": "926d0faa2d8de560d339efff9dd58244202d5b15b311582c92ee13425a9ebea2"
+}

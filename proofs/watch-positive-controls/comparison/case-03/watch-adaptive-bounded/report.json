@@ -1,0 +1,104 @@
+{
+  "arm": "watch-adaptive-bounded",
+  "charged_frames": 16,
+  "unique_frames": 16,
+  "elapsed_seconds": 0.9445501000154763,
+  "frames": [
+    {
+      "source_seconds": 1.25,
+      "file": "frames/f_000000001250.jpg",
+      "sha256": "7134a604a47f61ade8bc902ecc99980f09cdd9857ed7673dc34cbeec8770d788"
+    },
+    {
+      "source_seconds": 1.383,
+      "file": "frames/f_000000001383.jpg",
+      "sha256": "fe03d7853b4e2287364f0a418753282093ede60e83d387757df73b35619de70e"
+    },
+    {
+      "source_seconds": 1.517,
+      "file": "frames/f_000000001517.jpg",
+      "sha256": "44278fdbd7309838da9f9315fa93ab5511042857c6dde187a18662440fd96556"
+    },
+    {
+      "source_seconds": 1.65,
+      "file": "frames/f_000000001650.jpg",
+      "sha256": "debaee1487a8199924847dbe96c9aa2119f912213b1927c1ce89b5112bc102a6"
+    },
+    {
+      "source_seconds": 1.783,
+      "file": "frames/f_000000001783.jpg",
+      "sha256": "baed737b517da67a4600ef2e44d06527b372a0b3841eb63c84db84d3adb15482"
+    },
+    {
+      "source_seconds": 1.917,
+      "file": "frames/f_000000001917.jpg",
+      "sha256": "b3ad86e1c0ff9ea9ee2389a42a0a5a7189356f470d182f5131e878a8db7cdc8f"
+    },
+    {
+      "source_seconds": 2.05,
+      "file": "frames/f_000000002050.jpg",
+      "sha256": "b3ad86e1c0ff9ea9ee2389a42a0a5a7189356f470d182f5131e878a8db7cdc8f"
+    },
+    {
+      "source_seconds": 2.183,
+      "file": "frames/f_000000002183.jpg",
+      "sha256": "baed737b517da67a4600ef2e44d06527b372a0b3841eb63c84db84d3adb15482"
+    },
+    {
+      "source_seconds": 2.317,
+      "file": "frames/f_000000002317.jpg",
+      "sha256": "b3ad86e1c0ff9ea9ee2389a42a0a5a7189356f470d182f5131e878a8db7cdc8f"
+    },
+    {
+      "source_seconds": 2.45,
+      "file": "frames/f_000000002450.jpg",
+      "sha256": "b3ad86e1c0ff9ea9ee2389a42a0a5a7189356f470d182f5131e878a8db7cdc8f"
+    },
+    {
+      "source_seconds": 2.583,
+      "file": "frames/f_000000002583.jpg",
+      "sha256": "baed737b517da67a4600ef2e44d06527b372a0b3841eb63c84db84d3adb15482"
+    },
+    {
+      "source_seconds": 2.717,
+      "file": "frames/f_000000002717.jpg",
+      "sha256": "b3ad86e1c0ff9ea9ee2389a42a0a5a7189356f470d182f5131e878a8db7cdc8f"
+    },
+    {
+      "source_seconds": 2.85,
+      "file": "frames/f_000000002850.jpg",
+      "sha256": "b3ad86e1c0ff9ea9ee2389a42a0a5a7189356f470d182f5131e878a8db7cdc8f"
+    },
+    {
+      "source_seconds": 2.983,
+      "file": "frames/f_000000002983.jpg",
+      "sha256": "baed737b517da67a4600ef2e44d06527b372a0b3841eb63c84db84d3adb15482"
+    },
+    {
+      "source_seconds": 3.117,
+      "file": "frames/f_000000003117.jpg",
+      "sha256": "ee4d7f6f717c60d2c8bf4110134788a4ba7394365c92aea98878485152fcf122"
+    },
+    {
+      "source_seconds": 3.25,
+      "file": "frames/f_000000003250.jpg",
+      "sha256": "a3a558e8a38fc6d5c89b1b9de3e1941795ff431b8e6c9d8775b29757607f7b30"
+    }
+  ],
+  "debt": {
+    "control": "unresolved",
+    "action": "unresolved",
+    "reproducibility": "untested",
+    "perception_confidence": null,
+    "transition_confidence": null,
+    "procedure_confidence": null
+  },
+  "status": "review_required",
+  "gpu_calls": 0,
+  "paid_api_calls": 0,
+  "verified_procedure": false,
+  "publication_allowed": false,
+  "action_recall": null,
+  "false_causal_claim_rate": null,
+  "boundary": "no action detector; null semantic metrics, not zero errors"
+}
