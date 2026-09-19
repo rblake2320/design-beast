@@ -2,6 +2,15 @@
 
 ### OPP-20260918-03 — Replaceable Watch inspection-policy contract
 
+-2026-09-19 consequence-first continuation: separate frontier branch reuses Watch
+  inspection execution to allocate a fixed frame budget around a known visible
+  result. Five coarse samples select a pixel-change interval for dense sampling.
+  Real retained frames refine the named viewport-label transition bracket but
+  expose no initiating input; action debt stays unresolved. Evidence and limits:
+  `proofs/watch-rewind/PROOF.md`. Potential Beast/Vigil value is bounded evidence
+  gathering, not a new visual authority. Prior art and next falsifiable tests:
+  `docs/WATCH-REWIND.md`. No standalone project extraction or novelty claim.
+
 -2026-09-19 teachability continuation: automatic visual proposals now stop at a
   review queue; class/evidence declarations select draft-only instructional units.
   The old 2s-source/12.608s-speech segment is rejected by measured pacing limits.
