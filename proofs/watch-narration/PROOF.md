@@ -51,6 +51,9 @@ certify arbitrary semantics; independent visual review remains required.
 fault cases, extra-field refusal and certainty/caution regression. Real inference,
 OCR,TTS,FFmpeg and ASR runs are separate unmocked artifact tests. Source media
 stays locally retained under watched/; JSON receipts are committed byte-exactly.
+Full local suite363passed,1Windows symlink skip,7live-GPU deselected. Focused
+narration/training suite28passed. Optional imports occur only after preflight,
+so denial tests do not need installed speech models or audio packages.
 
 No main merge/publication; no arbitrary-video/all-action recovery, hidden-input
 causality, complete30s transition recall, long-video scale or production claim.
