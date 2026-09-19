@@ -1,0 +1,14 @@
+{
+  "source_sha256": "18c26e0118c9f01299a6a80da8a366d764cbdd4aefcfd6faca492e0f8dd7258c",
+  "crop_box": [
+    0,
+    0,
+    640,
+    240
+  ],
+  "scale": 3,
+  "inverted": true,
+  "derived_sha256": "cb01d5a87dfafd2fc8c66def2f495b9374d10f4201c6e224d29392f5d12b0654",
+  "text": "% file\r\n\r\nEdn\r\n\r\nRender\r\n\r\nWindow Help\r\n\r\nLayo\r\n\r\nModeling\r\n\r\nSculpting\r\n\r\ni\r\n\r\nU\r\n\r\nEditing\r\n\r\nTexture Paint\r\n\r\nShading\r\n\r\nAnimation\r\n\r\nRendering\r\n\r\n2\r\n\r\n+\u201d\r\n\r\n(B\u00ae Object Mode v\r\n\r\nView Select Add Object\r\n\r\nGopal v Ov Quarry @\r\n\r\nAnnotation: SS] Note\r\n\r\nv Placement: }e{ 3DCursor v\r\n\r\nStabilize Stroke\r\n\r\nRadius\r\n\r\n35 px\r\n\r\nFactor\r\n\r\n03750\r\n\r\nDrag:\r\n\r\nSelec\r\n\r\nRight Orthographic (Local)\r\n\r\n(1) Female 2\r\n\r\nve\r\n\r\nwa\r\n\r\n--)\r\n\r\n=\r\n\r\n<->\r\n\r\no-\r\n\r\na!\r\n\r\n\u2018=\r\n\r\nNo\r\n",
+  "evidence_class": "unverified_ocr"
+}

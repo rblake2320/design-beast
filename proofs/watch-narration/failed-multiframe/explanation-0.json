@@ -1,0 +1,8 @@
+{
+  "caption": "The viewport now displays a character blockout with simplified shapes, showing the head, torso, arms, legs, and feet as distinct sections.",
+  "uncertainty": "The exact timing of the transition is unclear, but the visible state at 18000ms shows the character divided into major parts.",
+  "perception_confidence": null,
+  "transition_confidence": null,
+  "procedure_confidence": null,
+  "evidence_class": "unverified_visual_observation"
+}

@@ -1,0 +1,8 @@
+{
+  "caption": "The interface switches from a 3D modeling view to a full-screen instructional slide.",
+  "uncertainty": "No uncertainty; the transition is clearly visible as a complete screen change.",
+  "perception_confidence": null,
+  "transition_confidence": null,
+  "procedure_confidence": null,
+  "evidence_class": "unverified_visual_observation"
+}
