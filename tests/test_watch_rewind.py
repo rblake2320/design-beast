@@ -48,6 +48,12 @@ def test_zero_budget_rejected():
     with pytest.raises(ValueError): budget_fps(Interval(start_ms=0,end_ms=2000),0)
 
 
+def test_reverse_order_is_available_without_changing_default():
+    import inspect
+    from scripts.evaluate_watch_rewind import evaluate
+    assert inspect.signature(evaluate).parameters["reverse_order"].default is False
+
+
 @pytest.mark.parametrize("field", ["perception_confidence", "transition_confidence", "procedure_confidence"])
 def test_nonfinite_confidence_rejected(field):
     with pytest.raises(ValueError): EvidenceDebt(**{field: float("nan")})

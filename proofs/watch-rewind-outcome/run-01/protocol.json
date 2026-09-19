@@ -1,0 +1,10 @@
+{
+  "source_sha256": "46ca6a61fa8cd4802284014fa091570e933403da1767d03f92108a6d4a78b8b1",
+  "pairs": 10,
+  "order": "alternating baseline-first and rewind-first; five each",
+  "speed_pass": "rewind faster in at least 8/10 pairs AND median paired time reduction >=10%",
+  "speed_unit": "existing arm extraction+pixel-measurement wall time; excludes setup/copy",
+  "action_pass": "reviewer identifies visible initiating input plus control and result from native frames",
+  "native_review": "all decoded frames at timestamps 0 <= t < 2 seconds; no sparse sampling",
+  "scope": "one known frozen recording; compare mechanisms, no semantic labels supplied to scheduler"
+}
