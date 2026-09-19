@@ -1,0 +1,8 @@
+{
+  "caption": "The model remains visually unchanged between the two screenshots, with no visible edits or transformations.",
+  "uncertainty": "None; both frames show identical model appearance and interface elements.",
+  "perception_confidence": null,
+  "transition_confidence": null,
+  "procedure_confidence": null,
+  "evidence_class": "unverified_visual_observation"
+}

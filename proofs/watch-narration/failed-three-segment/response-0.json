@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-19T07:37:52.6012993Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"caption\": \"The model\u2019s torso color changed from purple to pink between the two screenshots.\",\n  \"uncertainty\": \"No uncertainty \u2014 the color shift is directly visible and unambiguous.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 3565131200,
+  "load_duration": 3210943000,
+  "prompt_eval_count": 451,
+  "prompt_eval_duration": 95733000,
+  "eval_count": 42,
+  "eval_duration": 231520000
+}

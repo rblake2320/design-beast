@@ -55,6 +55,12 @@ def main() -> int:
         render.add_argument("--"+name, type=Path, required=True)
     render.add_argument("--ffmpeg", default="ffmpeg")
     render.add_argument("--ffprobe", default="ffprobe")
+    auto = commands.add_parser("auto", help="existing review -> automatic visual explanations -> captioned narrated draft")
+    auto.add_argument("--review", type=Path, required=True)
+    auto.add_argument("--output", type=Path, required=True)
+    auto.add_argument("--model-dir", type=Path, required=True)
+    auto.add_argument("--count", type=int, default=3)
+    auto.add_argument("--reuse-observations", type=Path)
     args = parser.parse_args()
     try:
         if args.command == "prepare":
@@ -63,6 +69,21 @@ def main() -> int:
             if args.pixels and not args.bundle:
                 raise ValueError("retained pixels require their existing bundle")
             result = {"review": str(prepare(args)), "publication_allowed": False}
+        elif args.command == "auto":
+            from scripts.draft_watch_explanations import draft
+            from scripts.narrate_watch_training import narrate
+            args.output.mkdir(parents=True, exist_ok=False)
+            retain(args.output / "intent.json", {"operation": "automatic_unverified_narrated_draft", "review": str(args.review.resolve()), "publication_allowed": False})
+            try:
+                draft(args.review, args.output / "explanations", args.count, args.reuse_observations)
+                render_watch_training.render(args.review, args.output / "explanations/training-draft.json", args.output / "render", "ffmpeg", "ffprobe")
+                narrate((args.output / "render").resolve(), (args.output / "narrated").resolve(), args.model_dir.resolve())
+                result = {"video": str(args.output / "narrated/narrated-training.mp4"), "publication_allowed": False,
+                    "status": "automatic_draft_requires_semantic_review"}
+                retain(args.output / "report.json", result)
+            except Exception as exc:
+                retain(args.output / "failure.json", {"error": str(exc), "type": type(exc).__name__})
+                raise
         else:
             render_watch_training.render(args.review, args.plan, args.output, args.ffmpeg, args.ffprobe)
             result = {"video": str(args.output / "training-draft.mp4"), "publication_allowed": False}

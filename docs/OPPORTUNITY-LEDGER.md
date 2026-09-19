@@ -2,6 +2,14 @@
 
 ### OPP-20260918-03 — Replaceable Watch inspection-policy contract
 
+-2026-09-19 measured continuation:automatic visual-change candidates now connect
+  to separate-frame observations, targeted OCR, model-written draft explanations,
+  original-footage assembly and local synthetic narration. Retained3known-case
+  repair follows2/3 semantic failures; exact spoken-word matching does not make
+  a visual explanation true. Evidence:`proofs/watch-narration/PROOF.md` and
+  independent review. No novelty, generalization or publication claim. Upstream
+  Qwen/Kokoro/Tesseract research and limits:`docs/WATCH-NARRATION.md`.
+
 - Source-faithful training follow-up: owner reaffirmed the product target as
   new training videos using actual source footage/images aligned to explanations,
   including on-screen information absent from narration. Implement a real-video

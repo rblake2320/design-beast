@@ -1,0 +1,14 @@
+{
+  "source_sha256": "478a9a299cb4867715501e9b17edf3e52d5a4158c532226888988f56a07a1fc5",
+  "crop_box": [
+    0,
+    0,
+    640,
+    240
+  ],
+  "scale": 3,
+  "inverted": true,
+  "derived_sha256": "f6ed17e202b3a44174da3f39f9eb4f72bf0a231ec71d7dee5acfb3e5f919e432",
+  "text": "HOW TOB\r\n\r\nFOLLOW THE SHAPE LANGUAGE \u2014 Different characters\r\n",
+  "evidence_class": "unverified_ocr"
+}

@@ -27,6 +27,8 @@ Outputs: real source video, sampled frames, measured-region review aids,
 downloadable strict plan, captioned `training-draft.mp4`, and source/output
 interval receipts. Caption bands sit below the original picture, never replace it.
 The current renderer deliberately omits audio; it is not a narrated lesson.
+The new optional [automatic narration workflow](WATCH-NARRATION.md) adds visual
+explanation candidates and local speech; this base caption-only command is unchanged.
 
 ## Existing components and ownership
 
