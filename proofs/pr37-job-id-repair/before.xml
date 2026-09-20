@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="6" time="0.408" timestamp="2026-09-19T22:16:09.875046-05:00" hostname="DESKTOP-CM6G60N"><testcase classname="studio.tests.test_job_creation" name="test_same_second_shared_uuid_prefix_does_not_collide" time="0.060"><failure message="sqlite3.IntegrityError: UNIQUE constraint failed: jobs.id">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000226D6F534A0&gt;
+
+    def test_same_second_shared_uuid_prefix_does_not_collide(monkeypatch):
+        values = iter([uuid.UUID("abcd0000-0000-4000-8000-000000000001"),
+                       uuid.UUID("abcd0000-0000-4000-8000-000000000002")])
+        monkeypatch.setattr(jobs.uuid, "uuid4", lambda: next(values))
+        monkeypatch.setattr(jobs.time, "strftime", lambda fmt: "20260919_000000")
+&gt;       first, second = create(), create()
+                                  ^^^^^^^^
+
+studio\tests\test_job_creation.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+studio\tests\test_job_creation.py:21: in create
+    return jobs.create(kind, "synthetic", "collision regression", {}, key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kind = 'create', model = 'synthetic', brief = 'collision regression'
+params = {}, idempotency_key = None
+
+    def create(kind: str, model: str, brief: str, params: dict,
+               idempotency_key: str = None) -&gt; tuple[str, bool]:
+        """Returns (job_id, created). If the idempotency key exists, returns the
+        existing job id with created=False."""
+        if idempotency_key:
+            row = _db().execute("SELECT id FROM jobs WHERE idempotency_key=?",
+                                (idempotency_key,)).fetchone()
+            if row:
+                return row["id"], False
+        jid = f"{time.strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:4]}"
+        now = time.time()
+        with _WRITE_LOCK:
+&gt;           _db().execute(
+                "INSERT INTO jobs (id, kind, model, brief, params, idempotency_key, "
+                "created, deadline) VALUES (?,?,?,?,?,?,?,?)",
+                (jid, kind, model, brief[:500], json.dumps(params), idempotency_key,
+                 now, now + DEADLINES.get(kind, DEFAULT_DEADLINE_S)))
+E           sqlite3.IntegrityError: UNIQUE constraint failed: jobs.id
+
+studio\jobs.py:130: IntegrityError</failure></testcase><testcase classname="studio.tests.test_job_creation" name="test_exact_id_collision_retries_without_overwriting" time="0.010"><failure message="sqlite3.IntegrityError: UNIQUE constraint failed: jobs.id">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000226D6F8AB10&gt;
+
+    def test_exact_id_collision_retries_without_overwriting(monkeypatch):
+        original_uuid = uuid.uuid4
+        repeated = original_uuid()
+        values = iter([repeated, repeated, original_uuid()])
+        monkeypatch.setattr(jobs.uuid, "uuid4", lambda: next(values))
+        monkeypatch.setattr(jobs.time, "strftime", lambda fmt: "20260919_000000")
+        first = create("first")
+&gt;       second = create("second")
+                 ^^^^^^^^^^^^^^^^
+
+studio\tests\test_job_creation.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+studio\tests\test_job_creation.py:21: in create
+    return jobs.create(kind, "synthetic", "collision regression", {}, key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kind = 'create', model = 'synthetic', brief = 'collision regression'
+params = {}, idempotency_key = 'second'
+
+    def create(kind: str, model: str, brief: str, params: dict,
+               idempotency_key: str = None) -&gt; tuple[str, bool]:
+        """Returns (job_id, created). If the idempotency key exists, returns the
+        existing job id with created=False."""
+        if idempotency_key:
+            row = _db().execute("SELECT id FROM jobs WHERE idempotency_key=?",
+                                (idempotency_key,)).fetchone()
+            if row:
+                return row["id"], False
+        jid = f"{time.strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:4]}"
+        now = time.time()
+        with _WRITE_LOCK:
+&gt;           _db().execute(
+                "INSERT INTO jobs (id, kind, model, brief, params, idempotency_key, "
+                "created, deadline) VALUES (?,?,?,?,?,?,?,?)",
+                (jid, kind, model, brief[:500], json.dumps(params), idempotency_key,
+                 now, now + DEADLINES.get(kind, DEFAULT_DEADLINE_S)))
+E           sqlite3.IntegrityError: UNIQUE constraint failed: jobs.id
+
+studio\jobs.py:130: IntegrityError</failure></testcase><testcase classname="studio.tests.test_job_creation" name="test_exhausted_collision_budget_rolls_back_and_fails" time="0.012"><failure message="sqlite3.IntegrityError: UNIQUE constraint failed: jobs.id">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000226D6F8A720&gt;
+
+    def test_exhausted_collision_budget_rolls_back_and_fails(monkeypatch):
+        repeated = uuid.uuid4()
+        calls = []
+        def next_uuid():
+            calls.append(1)
+            return repeated
+        monkeypatch.setattr(jobs.uuid, "uuid4", next_uuid)
+        monkeypatch.setattr(jobs.time, "strftime", lambda fmt: "20260919_000000")
+        create()
+        with pytest.raises(RuntimeError, match="job ID collision retry budget exhausted"):
+&gt;           create()
+
+studio\tests\test_job_creation.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+studio\tests\test_job_creation.py:21: in create
+    return jobs.create(kind, "synthetic", "collision regression", {}, key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kind = 'create', model = 'synthetic', brief = 'collision regression'
+params = {}, idempotency_key = None
+
+    def create(kind: str, model: str, brief: str, params: dict,
+               idempotency_key: str = None) -&gt; tuple[str, bool]:
+        """Returns (job_id, created). If the idempotency key exists, returns the
+        existing job id with created=False."""
+        if idempotency_key:
+            row = _db().execute("SELECT id FROM jobs WHERE idempotency_key=?",
+                                (idempotency_key,)).fetchone()
+            if row:
+                return row["id"], False
+        jid = f"{time.strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:4]}"
+        now = time.time()
+        with _WRITE_LOCK:
+&gt;           _db().execute(
+                "INSERT INTO jobs (id, kind, model, brief, params, idempotency_key, "
+                "created, deadline) VALUES (?,?,?,?,?,?,?,?)",
+                (jid, kind, model, brief[:500], json.dumps(params), idempotency_key,
+                 now, now + DEADLINES.get(kind, DEFAULT_DEADLINE_S)))
+E           sqlite3.IntegrityError: UNIQUE constraint failed: jobs.id
+
+studio\jobs.py:130: IntegrityError</failure></testcase><testcase classname="studio.tests.test_job_creation" name="test_other_integrity_errors_propagate_and_rollback" time="0.009"><failure message="assert not True&#10; +  where True = &lt;sqlite3.Connection object at 0x00000226D6EE7880&gt;.in_transaction&#10; +    where &lt;sqlite3.Connection object at 0x00000226D6EE7880&gt; = &lt;function _db at 0x00000226D6EA8AE0&gt;()&#10; +      where &lt;function _db at 0x00000226D6EA8AE0&gt; = jobs._db">def test_other_integrity_errors_propagate_and_rollback():
+        with pytest.raises(sqlite3.IntegrityError, match="NOT NULL constraint failed: jobs.kind"):
+            create(kind=None)
+&gt;       assert not jobs._db().in_transaction
+E       assert not True
+E        +  where True = &lt;sqlite3.Connection object at 0x00000226D6EE7880&gt;.in_transaction
+E        +    where &lt;sqlite3.Connection object at 0x00000226D6EE7880&gt; = &lt;function _db at 0x00000226D6EA8AE0&gt;()
+E        +      where &lt;function _db at 0x00000226D6EA8AE0&gt; = jobs._db
+
+studio\tests\test_job_creation.py:66: AssertionError</failure></testcase><testcase classname="studio.tests.test_job_creation" name="test_concurrent_idempotency_returns_one_created_job" time="0.023"><failure message="sqlite3.IntegrityError: UNIQUE constraint failed: jobs.idempotency_key">def test_concurrent_idempotency_returns_one_created_job():
+        barrier = threading.Barrier(8)
+        def worker(_):
+            try:
+                barrier.wait(timeout=10)
+                return create("concurrent-key")
+            finally:
+                jobs._db().close()
+        with ThreadPoolExecutor(max_workers=8) as executor:
+&gt;           results = list(executor.map(worker, range(8)))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+studio\tests\test_job_creation.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Python312\Lib\concurrent\futures\_base.py:619: in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python312\Lib\concurrent\futures\_base.py:317: in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+C:\Python312\Lib\concurrent\futures\_base.py:449: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+C:\Python312\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+C:\Python312\Lib\concurrent\futures\thread.py:59: in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+studio\tests\test_job_creation.py:75: in worker
+    return create("concurrent-key")
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+studio\tests\test_job_creation.py:21: in create
+    return jobs.create(kind, "synthetic", "collision regression", {}, key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kind = 'create', model = 'synthetic', brief = 'collision regression'
+params = {}, idempotency_key = 'concurrent-key'
+
+    def create(kind: str, model: str, brief: str, params: dict,
+               idempotency_key: str = None) -&gt; tuple[str, bool]:
+        """Returns (job_id, created). If the idempotency key exists, returns the
+        existing job id with created=False."""
+        if idempotency_key:
+            row = _db().execute("SELECT id FROM jobs WHERE idempotency_key=?",
+                                (idempotency_key,)).fetchone()
+            if row:
+                return row["id"], False
+        jid = f"{time.strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:4]}"
+        now = time.time()
+        with _WRITE_LOCK:
+&gt;           _db().execute(
+                "INSERT INTO jobs (id, kind, model, brief, params, idempotency_key, "
+                "created, deadline) VALUES (?,?,?,?,?,?,?,?)",
+                (jid, kind, model, brief[:500], json.dumps(params), idempotency_key,
+                 now, now + DEADLINES.get(kind, DEFAULT_DEADLINE_S)))
+E           sqlite3.IntegrityError: UNIQUE constraint failed: jobs.idempotency_key
+
+studio\jobs.py:130: IntegrityError</failure></testcase><testcase classname="studio.tests.test_job_creation" name="test_idempotency_replay_does_not_allocate_new_identifier" time="0.009" /></testsuite></testsuites>
