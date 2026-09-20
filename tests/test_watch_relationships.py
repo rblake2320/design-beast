@@ -132,3 +132,27 @@ def test_backwards_candidate_is_false_not_credit():
     result=grade(report,truth)
     assert result['temporal_pairs_correct']==0
     assert result['false_temporal_pairs']==1
+
+
+def test_future_control_label_cannot_leak_into_rewind():
+    from watch.relationships import prior_control
+    box=(60,400,140,100)
+    history=[(box,'Save',0,'a'*64),(box,'Delete',500,'b'*64)]
+    assert prior_control(history,box,100)==('Save',0,'a'*64)
+    assert prior_control(history,box,0) is None
+
+
+def test_ocr_conflict_does_not_create_second_physical_event():
+    box=(60,400,140,100)
+    a=frame(100,'mouse_down','Save').model_copy(update={'control_bounds':box})
+    b=frame(140,'mouse_down','See').model_copy(update={'control_bounds':box})
+    result=summarize([a,b])
+    assert len(result['events'])==1
+    assert result['events'][0]['control'] is None
+    assert result['events'][0]['control_conflicts']==['See']
+
+
+def test_result_bracket_ignores_startup_pixel_magnitude():
+    from scripts.evaluate_watch_relationships import result_bracket
+    bracket=result_bracket([frame(0,result=None),frame(1000),frame(2000,result='Saved')])
+    assert (bracket.start_ms,bracket.end_ms)==(1000,2000)

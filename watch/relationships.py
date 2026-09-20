@@ -11,6 +11,14 @@ def box_iou(a: list | tuple | None, b: list | tuple | None) -> float:
     return overlap/union if union else 0.0
 
 
+def prior_control(history: list[tuple[tuple[int,int,int,int],str,int,str]], bounds: tuple[int,int,int,int], ms: int) -> tuple[str,int,str] | None:
+    candidates=[(name,stamp,sha) for box,name,stamp,sha in history if stamp<ms and box_iou(box,bounds)>=0.5]
+    if not candidates: return None
+    latest=max(c[1] for c in candidates)
+    selected={c for c in candidates if c[1]==latest}
+    return selected.pop() if len(selected)==1 else None
+
+
 class FrameObservation(BaseModel):
     model_config = ConfigDict(extra='forbid', frozen=True)
     ms: int = Field(ge=0)
@@ -35,13 +43,17 @@ def summarize(observations: list[FrameObservation]) -> dict:
     previous: FrameObservation | None = None
     for row in ordered:
         if row.modality:
-            same = previous is not None and previous.modality == row.modality and previous.key == row.key and previous.control == row.control
+            same = (previous is not None and previous.modality == row.modality and previous.key == row.key
+                and (box_iou(previous.control_bounds,row.control_bounds)>=0.5 or previous.control==row.control))
             if not same:
                 events.append({'start_ms':row.ms,'end_ms':row.ms,'modality':row.modality,
                     'key':row.key,'control':row.control,'control_bounds':row.control_bounds,
                     'pointer':row.pointer,'frame_refs':[], 'unsampled_continuity':'unknown'})
                 events[-1]['control_reference']={'ms':row.control_reference_ms,'sha256':row.control_reference_sha256}
             events[-1]['end_ms'] = row.ms
+            if same and events[-1]['control'] != row.control:
+                events[-1].setdefault('control_conflicts',[]).append(row.control)
+                events[-1]['control']=None
             events[-1]['frame_refs'].append({'ms':row.ms,'sha256':row.sha256,'file':row.file})
         previous = row
     results: list[dict] = []

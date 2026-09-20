@@ -17,7 +17,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from scripts.observe_watch_input_overlays import parse_overlay
 from watch.inspection import Confidence, InspectionContext, Interval
 from watch.inspection_runtime import digest, execute_inspection, retain
-from watch.relationships import FrameObservation, summarize, needs_rewind, box_iou
+from watch.relationships import FrameObservation, summarize, needs_rewind, prior_control
 from watch.rewind import ChangeSample, budget_fps, refinement, request
 
 
@@ -65,6 +65,14 @@ def snapshot_changes(snapshots: dict[int, bytes]) -> tuple[ChangeSample, ...]:
             stat = ImageStat.Stat(ImageChops.difference(a.convert('RGB'),b.convert('RGB')))
             pairs.append(ChangeSample(start_ms=before,end_ms=after,mean_absolute_difference=sum(stat.mean)/3))
     return tuple(pairs)
+
+
+def result_bracket(observations: list[FrameObservation]) -> Interval | None:
+    rows=sorted((o for o in observations if o.result is not None),key=lambda o:o.ms)
+    for before,after in zip(rows,rows[1:]):
+        if before.result!=after.result and after.result.lower()!='idle':
+            return Interval(start_ms=before.ms,end_ms=after.ms)
+    return None
 
 
 def inspect_pixels(pixels: bytes, frame: dict, tesseract: str, timeout: float) -> tuple[FrameObservation, list[dict]]:
@@ -122,7 +130,7 @@ def arm(source: Path, output: Path, mode: str, duration_ms: int, tesseract: str,
         confidence=Confidence(perception=0,transition=0,procedure=0))
     observations: dict[int,FrameObservation] = {}
     snapshots: dict[int,bytes] = {}
-    known_controls: dict[tuple[int,int,int,int], tuple[str,int,str]] = {}
+    known_controls: list[tuple[tuple[int,int,int,int],str,int,str]] = []
     charged = 0
     ocr_calls = 0
     def inspect(interval: Interval, cap: int, phase: str) -> list[dict]:
@@ -145,9 +153,9 @@ def arm(source: Path, output: Path, mode: str, duration_ms: int, tesseract: str,
             ocr_calls += 1
             observation, words = inspect_pixels(pixels,frame,tesseract,min(30,left))
             if observation.modality and observation.control_bounds:
-                matches=[value for box,value in known_controls.items() if box_iou(box,observation.control_bounds)>=0.5]
-                if len(matches)==1:
-                    name,prior_ms,prior_hash=matches[0]
+                match=prior_control(known_controls,observation.control_bounds,ms)
+                if match:
+                    name,prior_ms,prior_hash=match
                     observation=observation.model_copy(update={'control':name,
                         'control_reference_ms':prior_ms,'control_reference_sha256':prior_hash})
             if observation.modality is None:
@@ -155,7 +163,7 @@ def arm(source: Path, output: Path, mode: str, duration_ms: int, tesseract: str,
                 for box in panels:
                     labels=[w['text'] for w in words if tuple(w.get('panel_box',()))==box]
                     if len(labels)==1 and labels[0].isalpha():
-                        known_controls[box]=(labels[0],ms,frame['sha256'])
+                        known_controls.append((box,labels[0],ms,frame['sha256']))
             snapshots[ms] = pixels
             observations[ms] = observation
             retain(output/f'ocr-{ms:06d}.json',{'observation':observation.model_dump(),'words':words})
@@ -168,7 +176,8 @@ def arm(source: Path, output: Path, mode: str, duration_ms: int, tesseract: str,
             retain(output/'initial-summary.json',initial)
             routing = 'stop_temporal_candidate_complete'
             if needs_rewind(initial):
-                decision = refinement(span,snapshot_changes(snapshots))
+                bracket=result_bracket(list(observations.values()))
+                decision = request(bracket,'Known-case repair: prioritize observed result transition bracket') if bracket else refinement(span,snapshot_changes(snapshots))
                 routing = 'no_pixel_change_preserve_uncertainty'
                 if decision:
                     routing = 'rewind_unresolved_temporal_candidate'
@@ -190,7 +199,7 @@ def arm(source: Path, output: Path, mode: str, duration_ms: int, tesseract: str,
         raise
 
 
-def run(root: Path, labels_a: Path, labels_b: Path, output: Path, tesseract: str) -> None:
+def run(root: Path, labels_a: Path, labels_b: Path, output: Path, tesseract: str, baseline_from: Path | None = None) -> None:
     output.mkdir(parents=True,exist_ok=False)
     repo = Path(__file__).resolve().parents[1]
     retain(output/'intent.json',{'labels_sha256':[digest(labels_a),digest(labels_b)],
@@ -199,6 +208,11 @@ def run(root: Path, labels_a: Path, labels_b: Path, output: Path, tesseract: str
             'scripts/observe_watch_input_overlays.py','watch/rewind.py','watch/inspection.py',
             'watch/inspection_runtime.py','watch/seek.py','watch/core.py')},
         'boundary':'label bytes hashed only, contents unavailable to observer; causal sufficiency never accepted'})
+    if baseline_from:
+        retain(output/'repair-lineage.json',{'baseline_from':str(baseline_from),
+            'baseline_intent_sha256':digest(baseline_from/'intent.json'),
+            'classification':'known-case routing repair, not fresh blind graduation or paired timing',
+            'changes':'first observed result bracket before MAD fallback; prior label time guard; conflicting OCR does not split held spatial event'})
     for i in range(1,11):
         source = root/f'case-{i:02d}'/'source.webm'
         probe=json.loads(subprocess.run(['ffprobe','-v','error','-show_entries','format=duration',
@@ -206,12 +220,22 @@ def run(root: Path, labels_a: Path, labels_b: Path, output: Path, tesseract: str
         duration_ms=int(float(probe['format']['duration'])*1000)-80
         expected_source_hash=digest(source)
         for mode in (('baseline','conditional') if i%2 else ('conditional','baseline')):
-            arm(source,output/f'case-{i:02d}'/mode,mode,duration_ms,tesseract,expected_source_hash)
+            destination=output/f'case-{i:02d}'/mode
+            if mode=='baseline' and baseline_from:
+                original=baseline_from/f'case-{i:02d}'/mode
+                report=json.loads((original/'report.json').read_bytes())
+                if report['source_sha256']!=expected_source_hash: raise ValueError('retained baseline source mismatch')
+                shutil.copytree(original,destination)
+                retain(destination/'reuse-receipt.json',{'original_report_sha256':digest(original/'report.json'),
+                    'execution':'retained original; not rerun under current code'})
+            else:
+                arm(source,destination,mode,duration_ms,tesseract,expected_source_hash)
 
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     for key in ('root','labels-a','labels-b','output'): parser.add_argument('--'+key,type=Path,required=True)
     parser.add_argument('--tesseract',default='tesseract')
+    parser.add_argument('--baseline-from',type=Path)
     a=parser.parse_args()
-    run(a.root,a.labels_a,a.labels_b,a.output,a.tesseract)
+    run(a.root,a.labels_a,a.labels_b,a.output,a.tesseract,a.baseline_from)
