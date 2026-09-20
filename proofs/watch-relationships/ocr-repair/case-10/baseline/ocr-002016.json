@@ -1,0 +1,170 @@
+{
+  "observation": {
+    "ms": 2016,
+    "sha256": "b35b40bf5b0d01ab5739433b7e5f4c10fb36723df0061167bf7f81748ca9c2f7",
+    "file": "frames/f_000000002016.jpg",
+    "modality": null,
+    "key": null,
+    "control": null,
+    "control_bounds": null,
+    "control_reference_ms": null,
+    "control_reference_sha256": null,
+    "pointer": [
+      9,
+      88
+    ],
+    "result": "Saved"
+  },
+  "words": [
+    {
+      "text": "Local",
+      "box": [
+        26,
+        29,
+        59,
+        19
+      ],
+      "line": [
+        "1",
+        "1",
+        "1"
+      ],
+      "origin": "global"
+    },
+    {
+      "text": "workflow",
+      "box": [
+        94,
+        29,
+        100,
+        19
+      ],
+      "line": [
+        "1",
+        "1",
+        "1"
+      ],
+      "origin": "global"
+    },
+    {
+      "text": "@",
+      "box": [
+        0,
+        79,
+        20,
+        20
+      ],
+      "line": [
+        "2",
+        "1",
+        "1"
+      ],
+      "origin": "global"
+    },
+    {
+      "text": "Status:",
+      "box": [
+        864,
+        168,
+        78,
+        19
+      ],
+      "line": [
+        "3",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        837,
+        137,
+        214,
+        83
+      ]
+    },
+    {
+      "text": "Saved",
+      "box": [
+        952,
+        168,
+        71,
+        19
+      ],
+      "line": [
+        "3",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        837,
+        137,
+        214,
+        83
+      ]
+    },
+    {
+      "text": "Save",
+      "box": [
+        95,
+        440,
+        72,
+        23
+      ],
+      "line": [
+        "4",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        67,
+        407,
+        127,
+        91
+      ]
+    },
+    {
+      "text": "Reset",
+      "box": [
+        316,
+        440,
+        82,
+        23
+      ],
+      "line": [
+        "5",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        287,
+        407,
+        138,
+        91
+      ]
+    },
+    {
+      "text": "Inspect",
+      "box": [
+        557,
+        440,
+        101,
+        29
+      ],
+      "line": [
+        "6",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        527,
+        407,
+        157,
+        91
+      ]
+    }
+  ]
+}

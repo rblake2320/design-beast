@@ -10,3 +10,9 @@
 /scripts/watch_temporal_encoder.py text eol=lf
 /scripts/watch_ui_regions.py text eol=lf
 /scripts/fuse_watch_state.py text eol=lf
+/proofs/watch-relationships/** -text
+/watch/relationships.py text eol=lf
+/scripts/*watch_relationships.py text eol=lf
+/tests/test_watch_relationships.py text eol=lf
+/tests/fixtures/watch-relationship-lab.html text eol=lf
+/bench/watch-relationships-v1.json text eol=lf

@@ -163,3 +163,18 @@ def test_pointer_occluded_label_requires_other_evidence():
     assert contains_pointer((60,400,140,100),(130,450))
     assert not contains_pointer((60,400,140,100),(800,100))
     assert not contains_pointer(None,(130,450))
+
+
+def test_scorer_rejects_changed_frame(tmp_path):
+    from scripts.score_watch_relationships import verify_refs
+    (tmp_path/'frame.jpg').write_bytes(b'changed')
+    report={'observations':[{'ms':0,'sha256':'a'*64,'file':'frame.jpg'}],
+        'summary':{'events':[],'results':[]}}
+    with pytest.raises(ValueError,match='hash mismatch'): verify_refs(report,tmp_path)
+
+
+def test_scorer_rejects_frame_escape_before_read(tmp_path):
+    from scripts.score_watch_relationships import verify_refs
+    report={'observations':[{'ms':0,'sha256':'a'*64,'file':'../outside.jpg'}],
+        'summary':{'events':[],'results':[]}}
+    with pytest.raises(ValueError,match='escape'): verify_refs(report,tmp_path)

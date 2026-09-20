@@ -1,0 +1,269 @@
+{
+  "mode": "baseline",
+  "source_sha256": "b1b7bea4492e8d44099e357764d31370f48c1d61eeee4a1c603d37732433edf9",
+  "summary": {
+    "events": [
+      {
+        "start_ms": 2016,
+        "end_ms": 2016,
+        "modality": "mouse_down",
+        "key": null,
+        "control": null,
+        "control_bounds": null,
+        "pointer": [
+          132,
+          454
+        ],
+        "frame_refs": [
+          {
+            "ms": 2016,
+            "sha256": "e76afe9be05ced0a1b33feca0ef4fa2be039bd59a6d717d2c1ba5f644f79e001",
+            "file": "frames/f_000000002016.jpg"
+          }
+        ],
+        "unsampled_continuity": "unknown"
+      }
+    ],
+    "results": [],
+    "temporal_candidates": [],
+    "causal_sufficiency": "unknown",
+    "accepted_causal_chains": [],
+    "publication_allowed": false,
+    "confidence": {
+      "perception": null,
+      "transition": null,
+      "procedure": null
+    }
+  },
+  "observations": [
+    {
+      "ms": 0,
+      "sha256": "6391e85917141a3714307651527bbe8ce965b11abf54cda8c446da8a626fa399",
+      "file": "frames/f_000000000000.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "pointer": null,
+      "result": null
+    },
+    {
+      "ms": 288,
+      "sha256": "86b1023a6bd38864161db0ab5770408bf8317de21544d0503fd7c483bab0c9ba",
+      "file": "frames/f_000000000288.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "pointer": [
+        9,
+        88
+      ],
+      "result": null
+    },
+    {
+      "ms": 576,
+      "sha256": "2f392852035407d3efa83d39ac1b78e1681452776ee5b6cb12aa72535caf5a76",
+      "file": "frames/f_000000000576.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "pointer": [
+        10,
+        89
+      ],
+      "result": null
+    },
+    {
+      "ms": 864,
+      "sha256": "de89ba14d6ea1231b8c9bcd0afa7cdafaa2d43c2bf32c07e61b72f3d0319756c",
+      "file": "frames/f_000000000864.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "pointer": [
+        10,
+        88
+      ],
+      "result": null
+    },
+    {
+      "ms": 1152,
+      "sha256": "6346e3dc90ecd6b8c76c7cd4b0a6a77f3c2063d224e315f449f41eb493756219",
+      "file": "frames/f_000000001152.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "pointer": [
+        10,
+        88
+      ],
+      "result": null
+    },
+    {
+      "ms": 1440,
+      "sha256": "004ca8f4040516876b4cf089d8f4dc26976ebfd107acd7b70e6dec4e63efb915",
+      "file": "frames/f_000000001440.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "pointer": [
+        10,
+        88
+      ],
+      "result": null
+    },
+    {
+      "ms": 1728,
+      "sha256": "7bea92444df116b4def28ce6c5985829889bddd7cc178eb090bcd27a96c057d5",
+      "file": "frames/f_000000001728.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "pointer": [
+        10,
+        88
+      ],
+      "result": null
+    },
+    {
+      "ms": 2016,
+      "sha256": "e76afe9be05ced0a1b33feca0ef4fa2be039bd59a6d717d2c1ba5f644f79e001",
+      "file": "frames/f_000000002016.jpg",
+      "modality": "mouse_down",
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "result": null
+    },
+    {
+      "ms": 2304,
+      "sha256": "1e6e0d939b9cdfc6bcf321ceb222acff108a037b67fa6c27c47d7499f288c0b2",
+      "file": "frames/f_000000002304.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "result": null
+    },
+    {
+      "ms": 2592,
+      "sha256": "eb7bee2d87d1134fc785d10dae5006793a709839930942b40ed51ec22e6d86e4",
+      "file": "frames/f_000000002592.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "result": null
+    },
+    {
+      "ms": 2880,
+      "sha256": "1e6e0d939b9cdfc6bcf321ceb222acff108a037b67fa6c27c47d7499f288c0b2",
+      "file": "frames/f_000000002880.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "result": null
+    },
+    {
+      "ms": 3168,
+      "sha256": "1e6e0d939b9cdfc6bcf321ceb222acff108a037b67fa6c27c47d7499f288c0b2",
+      "file": "frames/f_000000003168.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "result": null
+    },
+    {
+      "ms": 3456,
+      "sha256": "eb7bee2d87d1134fc785d10dae5006793a709839930942b40ed51ec22e6d86e4",
+      "file": "frames/f_000000003456.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "result": null
+    },
+    {
+      "ms": 3744,
+      "sha256": "1e6e0d939b9cdfc6bcf321ceb222acff108a037b67fa6c27c47d7499f288c0b2",
+      "file": "frames/f_000000003744.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "result": null
+    },
+    {
+      "ms": 4032,
+      "sha256": "eb7bee2d87d1134fc785d10dae5006793a709839930942b40ed51ec22e6d86e4",
+      "file": "frames/f_000000004032.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "result": null
+    },
+    {
+      "ms": 4320,
+      "sha256": "1e6e0d939b9cdfc6bcf321ceb222acff108a037b67fa6c27c47d7499f288c0b2",
+      "file": "frames/f_000000004320.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "result": null
+    }
+  ],
+  "routing": "baseline_full_budget",
+  "frame_requests": 16,
+  "ocr_calls": 16,
+  "wall_seconds": 2.7190000000118744,
+  "gpu_seconds": 0,
+  "model_tokens": 0,
+  "internal_codec_decodes": null,
+  "status": "completed"
+}

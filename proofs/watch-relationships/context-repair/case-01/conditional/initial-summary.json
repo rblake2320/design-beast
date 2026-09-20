@@ -1,0 +1,53 @@
+{
+  "events": [],
+  "results": [
+    {
+      "identity": "Idle",
+      "start_ms": 0,
+      "end_ms": 1040,
+      "frame_refs": [
+        {
+          "ms": 0,
+          "sha256": "b570653ec38d280e5de7d1b6bbee26cffd4ed34112591dcff80452beb2ccd8b8",
+          "file": "frames/f_000000000000.jpg"
+        },
+        {
+          "ms": 1040,
+          "sha256": "295c39fe333f715160077e7721b525a4b67cf52ec60118ca09cd3b985403f1a7",
+          "file": "frames/f_000000001040.jpg"
+        }
+      ]
+    },
+    {
+      "identity": "Saved",
+      "start_ms": 2080,
+      "end_ms": 4160,
+      "frame_refs": [
+        {
+          "ms": 2080,
+          "sha256": "5b42fdf16a1be128d45223ddd41cd11dc5cf0995b2af221e9d837be7eaf0cec9",
+          "file": "frames/f_000000002080.jpg"
+        },
+        {
+          "ms": 3120,
+          "sha256": "1f5c865a83e302a8f3c06d3cb96039de2979f273a2b7a84022d61aa98d098d6f",
+          "file": "frames/f_000000003120.jpg"
+        },
+        {
+          "ms": 4160,
+          "sha256": "1f5c865a83e302a8f3c06d3cb96039de2979f273a2b7a84022d61aa98d098d6f",
+          "file": "frames/f_000000004160.jpg"
+        }
+      ]
+    }
+  ],
+  "temporal_candidates": [],
+  "causal_sufficiency": "unknown",
+  "accepted_causal_chains": [],
+  "publication_allowed": false,
+  "confidence": {
+    "perception": null,
+    "transition": null,
+    "procedure": null
+  }
+}

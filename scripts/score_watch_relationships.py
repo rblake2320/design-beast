@@ -11,6 +11,26 @@ from watch.inspection_runtime import retain
 from watch.relationships import box_iou as iou
 
 
+def verify_refs(report: dict, bundle: Path) -> None:
+    observed={}
+    for row in report['observations']:
+        key=(row['ms'],row['sha256'],row['file'])
+        if row['ms'] in observed: raise ValueError('duplicate observation')
+        path=(bundle/row['file']).resolve()
+        if not path.is_relative_to(bundle.resolve()): raise ValueError('frame path escape')
+        if hashlib.sha256(path.read_bytes()).hexdigest()!=row['sha256']: raise ValueError('frame hash mismatch')
+        observed[row['ms']]=key
+    for event in report['summary']['events']:
+        prior=event.get('control_reference',{})
+        if prior.get('ms') is not None:
+            if prior['ms']>=event['start_ms'] or prior['ms'] not in observed or observed[prior['ms']][1]!=prior['sha256']:
+                raise ValueError('invalid prior control reference')
+    for item in report['summary']['events']+report['summary']['results']:
+        for ref in item['frame_refs']:
+            if observed.get(ref['ms'])!=(ref['ms'],ref['sha256'],ref['file']):
+                raise ValueError('summary reference is not an observation')
+
+
 def grade(report: dict, truth: dict) -> dict:
     if report['status']!='completed' or report['source_sha256']!=truth['source_sha256']:
         raise ValueError('incomplete or foreign source')
@@ -68,7 +88,7 @@ def grade(report: dict, truth: dict) -> dict:
         'expected_temporal_pairs':len(allowed),'temporal_pairs_correct':len(matched),'false_temporal_pairs':false_pairs,
         'causal_sufficiency_correct':summary['causal_sufficiency']==truth['causal_sufficiency'],
         'required_abstention':truth['required_abstention'],
-        'abstention_correct':truth['required_abstention'] and summary['causal_sufficiency']=='unknown',
+        'abstention_correct':truth['required_abstention']==(summary['causal_sufficiency']=='unknown'),
         'recovered_truth_events':sorted(used),
         'frame_requests':report['frame_requests'],'ocr_calls':report['ocr_calls'],'wall_seconds':report['wall_seconds']}
 
@@ -88,11 +108,14 @@ def score(run: Path, labels: list[Path], output: Path) -> None:
             path=run/truth['case']/mode/'report.json'
             snapshot=path.read_bytes()
             hashes[str(path.relative_to(run))]=hashlib.sha256(snapshot).hexdigest()
-            rows.append({'case':truth['case'],'mode':mode,**grade(json.loads(snapshot),truth)})
+            report=json.loads(snapshot)
+            if report['mode']!=mode: raise ValueError('report arm differs from directory')
+            verify_refs(report,path.parent)
+            rows.append({'case':truth['case'],'mode':mode,**grade(report,truth)})
     totals={mode:{key:sum(row[key] for row in rows if row['mode']==mode) for key in
         ('expected_events','recovered_events','false_event_extras','control_identity_correct','control_bounds_correct',
          'expected_results','results_correct','false_result_extras','expected_temporal_pairs','temporal_pairs_correct','false_temporal_pairs',
-         'abstention_correct','frame_requests','ocr_calls','wall_seconds')} for mode in ('baseline','conditional')}
+         'abstention_correct','causal_sufficiency_correct','frame_requests','ocr_calls','wall_seconds')} for mode in ('baseline','conditional')}
     additional=sum(len(set(next(r for r in rows if r['case']==c and r['mode']=='conditional')['recovered_truth_events'])-
         set(next(r for r in rows if r['case']==c and r['mode']=='baseline')['recovered_truth_events'])) for c in {r['case'] for r in rows})
     passed=(additional>=2 and totals['conditional']['false_temporal_pairs']<=totals['baseline']['false_temporal_pairs']
@@ -100,6 +123,8 @@ def score(run: Path, labels: list[Path], output: Path) -> None:
             and totals['conditional']['recovered_events']>totals['baseline']['recovered_events'])
     retain(output,{'rows':rows,'totals':totals,'additional_recovered_events':additional,
         'graduation':'PASS' if passed else 'FAIL','report_sha256':hashes,'labels_sha256':intent['labels_sha256'],
+        'scorer_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        'observer_intent_sha256':hashlib.sha256((run/'intent.json').read_bytes()).hexdigest(),
         'boundary':'temporal candidates are not causal links; unknown causal labels test abstention, not successful causal recovery'})
 
 

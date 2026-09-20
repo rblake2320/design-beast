@@ -1,0 +1,50 @@
+{
+  "status": "completed",
+  "intent_sha256": "4633f05ccfae17ab8f86296b0f1140ea1350c91d2f371ea3044dc933af1da5c4",
+  "elapsed_seconds": 0.27687760000117123,
+  "charged_frames": 5,
+  "provider_cost": 0,
+  "request": {
+    "id": "seek-0001",
+    "created_unix": 1789869292.8934388,
+    "center_seconds": 2.16,
+    "center_time": "00:00:02.160",
+    "level": 3,
+    "level_name": "forensic",
+    "direction": "both",
+    "before_seconds": 2.16,
+    "after_seconds": 2.16,
+    "fps": 0.9259259259259259,
+    "reason": "Bounded relationship experiment; Zero confidence placeholders are uncalibrated, not evidence scores.; Forward replay checks sequence, not reproducibility.",
+    "requested_frames": 5,
+    "new_frames": 5
+  },
+  "frames": [
+    {
+      "source_seconds": 0.0,
+      "file": "frames/f_000000000000.jpg",
+      "sha256": "6391e85917141a3714307651527bbe8ce965b11abf54cda8c446da8a626fa399"
+    },
+    {
+      "source_seconds": 1.08,
+      "file": "frames/f_000000001080.jpg",
+      "sha256": "240ff20ff6c8d13d7fcc665cfea1a769b5f3d688a96a3f320adbfdede19a4cef"
+    },
+    {
+      "source_seconds": 2.16,
+      "file": "frames/f_000000002160.jpg",
+      "sha256": "58e311a66d7bb130d1c5e0f0afbac651862b8a94de6a2d2a21f1ceaca61a2532"
+    },
+    {
+      "source_seconds": 3.24,
+      "file": "frames/f_000000003240.jpg",
+      "sha256": "4fea9bb6fc7474d92503b0578a154b779e8fe09d8c67021d58b2239aeff9de31"
+    },
+    {
+      "source_seconds": 4.32,
+      "file": "frames/f_000000004320.jpg",
+      "sha256": "e251a9ceaa75dd8dd90ae553fede6b1c155dee67efd3ad774b9a5c74ac451c7b"
+    }
+  ],
+  "timeline_after_sha256": "f198dfb6765fd1ecae5666c833867e69e00b4334009eaa0f19160af7e1b789e5"
+}

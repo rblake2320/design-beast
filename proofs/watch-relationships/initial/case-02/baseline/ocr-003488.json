@@ -1,0 +1,74 @@
+{
+  "observation": {
+    "ms": 3488,
+    "sha256": "dcd031a81a7f5c78942ac1fe713725b1fd92c0154fb68a215f2075a26b412511",
+    "file": "frames/f_000000003488.jpg",
+    "modality": null,
+    "key": null,
+    "control": null,
+    "control_bounds": null,
+    "pointer": [
+      358,
+      455
+    ],
+    "result": null
+  },
+  "words": [
+    {
+      "text": "Local",
+      "box": [
+        24,
+        29,
+        61,
+        19
+      ],
+      "line": [
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "text": "workflow",
+      "box": [
+        93,
+        29,
+        102,
+        19
+      ],
+      "line": [
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "text": "Boe",
+      "box": [
+        60,
+        400,
+        631,
+        105
+      ],
+      "line": [
+        "2",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "text": "ee",
+      "box": [
+        540,
+        396,
+        150,
+        149
+      ],
+      "line": [
+        "2",
+        "1",
+        "1"
+      ]
+    }
+  ]
+}

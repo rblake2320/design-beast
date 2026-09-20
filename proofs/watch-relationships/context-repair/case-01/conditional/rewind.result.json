@@ -1,0 +1,70 @@
+{
+  "status": "completed",
+  "intent_sha256": "8c51c02cca4e4d8b03be30bace6c053c087823e535772556f3757c283f52badd",
+  "elapsed_seconds": 0.4079250999784563,
+  "charged_frames": 9,
+  "provider_cost": 0,
+  "request": {
+    "id": "seek-0003",
+    "created_unix": 1789869429.6660776,
+    "center_seconds": 1.56,
+    "center_time": "00:00:01.560",
+    "level": 3,
+    "level_name": "forensic",
+    "direction": "both",
+    "before_seconds": 0.52,
+    "after_seconds": 0.52,
+    "fps": 7.6923076923076925,
+    "reason": "Bounded relationship experiment; Zero confidence placeholders are uncalibrated, not evidence scores.; Forward replay checks sequence, not reproducibility.",
+    "requested_frames": 9,
+    "new_frames": 7
+  },
+  "frames": [
+    {
+      "source_seconds": 1.04,
+      "file": "frames/f_000000001040.jpg",
+      "sha256": "295c39fe333f715160077e7721b525a4b67cf52ec60118ca09cd3b985403f1a7"
+    },
+    {
+      "source_seconds": 1.17,
+      "file": "frames/f_000000001170.jpg",
+      "sha256": "221d06bf7d68ad15116b0195c8434f310e62d11a98f2f447ab1850f7e8af0a0c"
+    },
+    {
+      "source_seconds": 1.3,
+      "file": "frames/f_000000001300.jpg",
+      "sha256": "4ad343a6c0a60a4b2886952bcdfacb829fa47f756c842e4efc5ddef249f12180"
+    },
+    {
+      "source_seconds": 1.43,
+      "file": "frames/f_000000001430.jpg",
+      "sha256": "d3a265e8cd579bcb26a977da7765c0bedd2c8657c70799c9b58a87927339d808"
+    },
+    {
+      "source_seconds": 1.56,
+      "file": "frames/f_000000001560.jpg",
+      "sha256": "f5846eba8da409670d28ad885f4246cd9b7c527a2a1598744014cc61fe0a74c7"
+    },
+    {
+      "source_seconds": 1.69,
+      "file": "frames/f_000000001690.jpg",
+      "sha256": "71cb172ab603369da6d8804cdf03fd877ee1a9aa890e4faf6140f40901398ffd"
+    },
+    {
+      "source_seconds": 1.82,
+      "file": "frames/f_000000001820.jpg",
+      "sha256": "edcaf9a1842ec6c8ebb54b3ce529e760cf8f61c9bdcfcb470b1128e8ecd07202"
+    },
+    {
+      "source_seconds": 1.95,
+      "file": "frames/f_000000001950.jpg",
+      "sha256": "5b42fdf16a1be128d45223ddd41cd11dc5cf0995b2af221e9d837be7eaf0cec9"
+    },
+    {
+      "source_seconds": 2.08,
+      "file": "frames/f_000000002080.jpg",
+      "sha256": "5b42fdf16a1be128d45223ddd41cd11dc5cf0995b2af221e9d837be7eaf0cec9"
+    }
+  ],
+  "timeline_after_sha256": "68531fee29326a69a82981fbd5d5702d91d05947b937cd306128724bbbd5c111"
+}

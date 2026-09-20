@@ -1,0 +1,39 @@
+{
+  "events": [
+    {
+      "start_ms": 1100,
+      "end_ms": 2200,
+      "modality": "mouse_down",
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "frame_refs": [
+        {
+          "ms": 1100,
+          "sha256": "7f64f3a7913bd4c6647bbc7def6c721285ffa230644d3b587c1c5af914dd3c7d",
+          "file": "frames/f_000000001100.jpg"
+        },
+        {
+          "ms": 2200,
+          "sha256": "5a3d208342c1a9b724050b35ed309495e8595776e8d3b52952e3870ac37d197c",
+          "file": "frames/f_000000002200.jpg"
+        }
+      ],
+      "unsampled_continuity": "unknown"
+    }
+  ],
+  "results": [],
+  "temporal_candidates": [],
+  "causal_sufficiency": "unknown",
+  "accepted_causal_chains": [],
+  "publication_allowed": false,
+  "confidence": {
+    "perception": null,
+    "transition": null,
+    "procedure": null
+  }
+}

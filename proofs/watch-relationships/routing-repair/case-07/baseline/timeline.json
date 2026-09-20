@@ -1,0 +1,281 @@
+{
+  "schema": "beast.watch.timeline/v3",
+  "source": {
+    "local_video": "source.webm",
+    "range": {
+      "start_seconds": 0,
+      "end_seconds": 4.32,
+      "start": "0",
+      "end": "4.32"
+    }
+  },
+  "sampling": {
+    "height": 720
+  },
+  "frames": [
+    {
+      "id": "frame-0001",
+      "file": "frames/f_000000000000.jpg",
+      "source_seconds": 0.0,
+      "source_time": "00:00:00.000",
+      "clip_seconds": 0.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l3"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "6391e85917141a3714307651527bbe8ce965b11abf54cda8c446da8a626fa399",
+      "change_from_previous": null,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0002",
+      "file": "frames/f_000000000288.jpg",
+      "source_seconds": 0.288,
+      "source_time": "00:00:00.288",
+      "clip_seconds": 0.288,
+      "reasons": [
+        "targeted_dense",
+        "seek_l3"
+      ],
+      "perceptual_hash": "00001f1f002060ff",
+      "sha256": "86b1023a6bd38864161db0ab5770408bf8317de21544d0503fd7c483bab0c9ba",
+      "change_from_previous": 43,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0003",
+      "file": "frames/f_000000000576.jpg",
+      "source_seconds": 0.576,
+      "source_time": "00:00:00.576",
+      "clip_seconds": 0.576,
+      "reasons": [
+        "targeted_dense",
+        "seek_l3"
+      ],
+      "perceptual_hash": "00001f1f002060ff",
+      "sha256": "2f392852035407d3efa83d39ac1b78e1681452776ee5b6cb12aa72535caf5a76",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0004",
+      "file": "frames/f_000000000864.jpg",
+      "source_seconds": 0.864,
+      "source_time": "00:00:00.864",
+      "clip_seconds": 0.864,
+      "reasons": [
+        "targeted_dense",
+        "seek_l3"
+      ],
+      "perceptual_hash": "00001f1f002060ff",
+      "sha256": "cc8c5f826374e697e8fdbd9458be4623891c10b282203d785ba63f4cc35c0c5c",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0005",
+      "file": "frames/f_000000001152.jpg",
+      "source_seconds": 1.152,
+      "source_time": "00:00:01.152",
+      "clip_seconds": 1.152,
+      "reasons": [
+        "targeted_dense",
+        "seek_l3"
+      ],
+      "perceptual_hash": "00001f1f002060ff",
+      "sha256": "240ff20ff6c8d13d7fcc665cfea1a769b5f3d688a96a3f320adbfdede19a4cef",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0006",
+      "file": "frames/f_000000001440.jpg",
+      "source_seconds": 1.44,
+      "source_time": "00:00:01.440",
+      "clip_seconds": 1.44,
+      "reasons": [
+        "targeted_dense",
+        "seek_l3"
+      ],
+      "perceptual_hash": "00001f1f002020ff",
+      "sha256": "47b60179539a46fddc628b651b7f0fb99967568c7d3ae2881eea187852a7e83f",
+      "change_from_previous": 1,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0007",
+      "file": "frames/f_000000001728.jpg",
+      "source_seconds": 1.728,
+      "source_time": "00:00:01.728",
+      "clip_seconds": 1.728,
+      "reasons": [
+        "targeted_dense",
+        "seek_l3"
+      ],
+      "perceptual_hash": "00001f1f002060ff",
+      "sha256": "5bdec04f6fa8af59395b65425edef231839696aae8166615d544d61d21938c86",
+      "change_from_previous": 1,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0008",
+      "file": "frames/f_000000002016.jpg",
+      "source_seconds": 2.016,
+      "source_time": "00:00:02.016",
+      "clip_seconds": 2.016,
+      "reasons": [
+        "targeted_dense",
+        "seek_l3"
+      ],
+      "perceptual_hash": "00001f1f006060ff",
+      "sha256": "f95e115724bc9d9cd1afea845a72d76fb24aa3967041b7158a6061a712f9740c",
+      "change_from_previous": 1,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0009",
+      "file": "frames/f_000000002304.jpg",
+      "source_seconds": 2.304,
+      "source_time": "00:00:02.304",
+      "clip_seconds": 2.304,
+      "reasons": [
+        "targeted_dense",
+        "seek_l3"
+      ],
+      "perceptual_hash": "00001f1f006060ff",
+      "sha256": "dbe1151f2b712244d397bf9a7a65fb81cfdbcd9481fc594367dcf53cc2e3d941",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0010",
+      "file": "frames/f_000000002592.jpg",
+      "source_seconds": 2.592,
+      "source_time": "00:00:02.592",
+      "clip_seconds": 2.592,
+      "reasons": [
+        "targeted_dense",
+        "seek_l3"
+      ],
+      "perceptual_hash": "00001f1f006060ff",
+      "sha256": "f95e115724bc9d9cd1afea845a72d76fb24aa3967041b7158a6061a712f9740c",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0011",
+      "file": "frames/f_000000002880.jpg",
+      "source_seconds": 2.88,
+      "source_time": "00:00:02.880",
+      "clip_seconds": 2.88,
+      "reasons": [
+        "targeted_dense",
+        "seek_l3"
+      ],
+      "perceptual_hash": "00001f1f006060ff",
+      "sha256": "dbe1151f2b712244d397bf9a7a65fb81cfdbcd9481fc594367dcf53cc2e3d941",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0012",
+      "file": "frames/f_000000003168.jpg",
+      "source_seconds": 3.168,
+      "source_time": "00:00:03.168",
+      "clip_seconds": 3.168,
+      "reasons": [
+        "targeted_dense",
+        "seek_l3"
+      ],
+      "perceptual_hash": "00001f1f006060ff",
+      "sha256": "f2771aa9c472ef6cd63ed00b881c37c3d4d67f7c4b907e25a45b63f5bb567367",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0013",
+      "file": "frames/f_000000003456.jpg",
+      "source_seconds": 3.456,
+      "source_time": "00:00:03.456",
+      "clip_seconds": 3.456,
+      "reasons": [
+        "targeted_dense",
+        "seek_l3"
+      ],
+      "perceptual_hash": "00001f1f006060ff",
+      "sha256": "542f1b64ebd57812d3c6dafc0c3977c13d2b33fe43e85072acbaeb0191d1eb46",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0014",
+      "file": "frames/f_000000003744.jpg",
+      "source_seconds": 3.744,
+      "source_time": "00:00:03.744",
+      "clip_seconds": 3.744,
+      "reasons": [
+        "targeted_dense",
+        "seek_l3"
+      ],
+      "perceptual_hash": "00001f1f006060ff",
+      "sha256": "f2771aa9c472ef6cd63ed00b881c37c3d4d67f7c4b907e25a45b63f5bb567367",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0015",
+      "file": "frames/f_000000004032.jpg",
+      "source_seconds": 4.032,
+      "source_time": "00:00:04.032",
+      "clip_seconds": 4.032,
+      "reasons": [
+        "targeted_dense",
+        "seek_l3"
+      ],
+      "perceptual_hash": "00001f1f006060ff",
+      "sha256": "542f1b64ebd57812d3c6dafc0c3977c13d2b33fe43e85072acbaeb0191d1eb46",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0016",
+      "file": "frames/f_000000004320.jpg",
+      "source_seconds": 4.32,
+      "source_time": "00:00:04.320",
+      "clip_seconds": 4.32,
+      "reasons": [
+        "targeted_dense",
+        "seek_l3"
+      ],
+      "perceptual_hash": "00001f1f006060ff",
+      "sha256": "f2771aa9c472ef6cd63ed00b881c37c3d4d67f7c4b907e25a45b63f5bb567367",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    }
+  ],
+  "evidence_requests": [
+    {
+      "id": "seek-0001",
+      "created_unix": 1789869097.1344535,
+      "center_seconds": 2.16,
+      "center_time": "00:00:02.160",
+      "level": 3,
+      "level_name": "forensic",
+      "direction": "both",
+      "before_seconds": 2.16,
+      "after_seconds": 2.16,
+      "fps": 3.4722222222222223,
+      "reason": "Bounded relationship experiment; Zero confidence placeholders are uncalibrated, not evidence scores.; Forward replay checks sequence, not reproducibility.",
+      "requested_frames": 16,
+      "new_frames": 16
+    }
+  ],
+  "coverage": {
+    "extracted_frames": 16,
+    "dense_samples": 16,
+    "near_duplicates": 0
+  },
+  "bundle_fingerprint": "073554111ddfbb379cc6e53626f6098bb408b5162676e144500844bce4103e4f",
+  "visual_index_stale": false
+}
