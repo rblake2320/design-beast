@@ -128,6 +128,8 @@ def test_backwards_candidate_is_false_not_credit():
     from scripts.score_watch_relationships import grade
     report,truth=scoring_case()
     report['summary']['results'][1]['start_ms']=90
+    report['summary']['results'][1]['end_ms']=90
+    report['summary']['results'][1]['frame_refs'][0]['ms']=90
     truth['results'][0]['start_ms']=80
     result=grade(report,truth)
     assert result['temporal_pairs_correct']==0
@@ -194,3 +196,12 @@ def test_inventory_create_and_tamper_detection(tmp_path,monkeypatch):
     assert module.verify(proof,create=True)['files']==1
     (proof/'sample.txt').write_bytes(b'tampered')
     with pytest.raises(ValueError,match='hash mismatch'): module.verify(proof)
+
+
+@pytest.mark.parametrize('empty',[True,False])
+def test_result_credit_requires_consistent_references(empty):
+    from scripts.score_watch_relationships import grade
+    report,truth=scoring_case()
+    if empty: report['summary']['results'][1]['frame_refs']=[]
+    else: report['summary']['results'][1]['end_ms']=500
+    with pytest.raises(ValueError,match='result interval'): grade(report,truth)

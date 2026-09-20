@@ -63,6 +63,9 @@ def grade(report: dict, truth: dict) -> dict:
     result_mapping: dict[int,int]={}
     used_results: set[int]=set()
     for pi,predicted in enumerate(summary['results']):
+        stamps=[r['ms'] for r in predicted['frame_refs']]
+        if not stamps or min(stamps)!=predicted['start_ms'] or max(stamps)!=predicted['end_ms']:
+            raise ValueError('result interval does not match retained references')
         if predicted['identity'].lower()=='idle': continue
         for ti,actual in enumerate(truth['results']):
             actual_identity=actual['identity'].removeprefix('Status: ')
