@@ -32,9 +32,14 @@ chains or publication approvals. Scores count each case once, not repeated hits
 on the same held input. Semantic checking of emitted frame references remains
 part of the independent evaluation.
 
-Identical per-arm caps:16requests,16decodes,16OCRcalls,0VLMtokens;60seconds for
-sampling and60seconds for OCR. Actual unique work is reported, not equated with
-the cap. This experiment introduces real OCR, not GPU/model performance claims.
+Identical per-arm caps: 16 charged requested output-frame timestamps, 16 OCR
+calls, 0 VLM tokens; 60 seconds for sampling and 60 seconds for OCR. Repeated
+endpoints are charged again; unique retained frames and OCR calls are reported
+separately. Internal decoder frames are not measured or capped. FFmpeg's single
+output-frame request does not count internal frames processed during seeking or
+codec reconstruction. This experiment introduces real OCR, not GPU/model
+performance claims. See the append-only [budget correction](../proofs/watch-positive-controls/BUDGET-CORRECTION.md)
+for the original wording and unchanged historical receipts.
 The private ground truth files remain absent from scheduler/observer inputs.
 
 Current frozen run: both arms recover all3positive input-indicator cases and
