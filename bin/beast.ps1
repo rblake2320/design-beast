@@ -20,6 +20,7 @@ switch ($Cmd) {
     'watch-seek' { python (Join-Path $Repo 'scripts\watch_seek.py') @Rest }
     'watch-perceive' { python (Join-Path $Repo 'scripts\watch_perception.py') @Rest }
     'watch-training' { python (Join-Path $Repo 'scripts\watch_training.py') @Rest; exit $LASTEXITCODE }
+    'watch-narrate' { python (Join-Path $Repo 'scripts\narrate_watch_training.py') @Rest; exit $LASTEXITCODE }
     'watch-ui-regions' { python (Join-Path $Repo 'scripts\watch_ui_regions.py') @Rest }
     'watch-fuse' { python (Join-Path $Repo 'scripts\fuse_watch_state.py') @Rest }
     'watch-temporal' {

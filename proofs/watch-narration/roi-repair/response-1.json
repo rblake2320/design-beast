@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-19T07:41:50.1343132Z",
+  "message": {
+    "role": "assistant",
+    "content": "{ \"caption\": \"The viewport view changed from 'User Perspective (Local)' to 'Right Orthographic (Local)', altering the camera angle while keeping the model centered.\", \"uncertainty\": \"None; view label explicitly changed and model appearance remains identical.\" }"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 3933978300,
+  "load_duration": 3461506900,
+  "prompt_eval_count": 997,
+  "prompt_eval_duration": 141168000,
+  "eval_count": 53,
+  "eval_duration": 300551000
+}

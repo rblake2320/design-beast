@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-19T07:37:43.780298Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D viewport in Blender\",\n  \"view\": \"User Perspective (Local) showing a side view of a humanoid model.\",\n  \"content\": \"A low-poly humanoid model with purple torso, green neck, and teal legs. The model is centered in the viewport.\",\n  \"overlays\": \"White pencil cursor near the model's midsection. No active selection highlights or drawn marks visible.\",\n  \"visible_text\": \"User Perspective (Local), Female 2, Sculpting, Global, Radius: 55 px, Factor: 0.750, Drag: Select Box, Scene Collection, ViewLayer, Scene, Units, Gravity, Simulation, Keying Sets, Rigid Body World, Light Probes, Custom Properties.\",\n  \"uncertainty\": \"No uncertainty. All visible elements are clearly defined in the screenshot.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4881168800,
+  "load_duration": 3290879300,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 446411000,
+  "eval_count": 179,
+  "eval_duration": 1092691000
+}

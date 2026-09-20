@@ -1,0 +1,14 @@
+{
+  "source_sha256": "bdff86f233b398474b4ebe2029b2fa6425417b11b6996355e91d717c156e6f2c",
+  "crop_box": [
+    0,
+    0,
+    640,
+    240
+  ],
+  "scale": 3,
+  "inverted": true,
+  "derived_sha256": "4dcef1a00e5a7b822a50827ee82ebc9762c3d771c0df79b0a7533f069bae3970",
+  "text": "% file\r\n\r\nEdn\r\n\r\nRender\r\n\r\nWindow Help\r\n\r\nLayout\r\n\r\nModeling\r\n\r\nSculpting\r\n\r\nU\r\n\r\nV Editing\r\n\r\nTexture Paint\r\n\r\nShading\r\n\r\nAnimatio\r\n\r\nRendering\r\n\r\nCo\r\n\r\n2\r\n\r\n+\u201d\r\n\r\n(B\u00ae Object Mode v\r\n\r\nView Select Add Object\r\n\r\nL, cova \u00bb Ov Bt- &\r\n\r\nAnnotation: | Note\r\n\r\nv Placement: }e{ 3DCursor v\r\n\r\nStabilize Stroke\r\n\r\nRadits\r\n\r\n35 px\r\n\r\nFactor\r\n\r\n0,750\r\n\r\nDrag:\r\n\r\nSelec\r\n\r\nUser Perspective (Local)\r\n\r\n(1) Female 2\r\n\r\nvt\r\n\r\nAG\r\n\r\n--)\r\n\r\n--\r\n\r\nwy\r\n\r\na!\r\n\r\n\u00ae\r\n",
+  "evidence_class": "unverified_ocr"
+}

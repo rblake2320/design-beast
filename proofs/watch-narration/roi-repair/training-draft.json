@@ -1,0 +1,60 @@
+{
+  "schema_version": "beast.watch.training-draft/v1",
+  "source_sha256": "46ca6a61fa8cd4802284014fa091570e933403da1767d03f92108a6d4a78b8b1",
+  "source_duration_ms": 30000,
+  "visual_policy": "original_source_only",
+  "publication_allowed": false,
+  "steps": [
+    {
+      "start_ms": 500,
+      "end_ms": 2500,
+      "caption": "The viewport view changed from 'User Perspective (Local)' to 'Front Orthographic (Local)', altering the camera angle while keeping the model centered. The input or cause is not established by these frames.",
+      "frame_refs": [
+        {
+          "clip_ms": 1000,
+          "sha256": "bdff86f233b398474b4ebe2029b2fa6425417b11b6996355e91d717c156e6f2c"
+        },
+        {
+          "clip_ms": 2000,
+          "sha256": "f5a895fb96ba3a770751902b9b8288dc1745d74fc8d68896fcc68c4ed31c02c6"
+        }
+      ],
+      "review_state": "uncertain",
+      "requires_human_approval": true
+    },
+    {
+      "start_ms": 3500,
+      "end_ms": 5500,
+      "caption": "The viewport view changed from 'User Perspective (Local)' to 'Right Orthographic (Local)', altering the camera angle while keeping the model centered. The input or cause is not established by these frames.",
+      "frame_refs": [
+        {
+          "clip_ms": 4000,
+          "sha256": "a314f422407011c47e11a73c1a1fd1d15f8284d0b06c04cffa3ff9c8e15809ac"
+        },
+        {
+          "clip_ms": 5000,
+          "sha256": "18c26e0118c9f01299a6a80da8a366d764cbdd4aefcfd6faca492e0f8dd7258c"
+        }
+      ],
+      "review_state": "uncertain",
+      "requires_human_approval": true
+    },
+    {
+      "start_ms": 16500,
+      "end_ms": 18500,
+      "caption": "The interface switches from a 3D modeling view to a full-screen instructional slide. The input or cause is not established by these frames.",
+      "frame_refs": [
+        {
+          "clip_ms": 17000,
+          "sha256": "25b630074aa92179629c520ca8103fb29444d227627996ecb5d6e302a6a878cf"
+        },
+        {
+          "clip_ms": 18000,
+          "sha256": "478a9a299cb4867715501e9b17edf3e52d5a4158c532226888988f56a07a1fc5"
+        }
+      ],
+      "review_state": "uncertain",
+      "requires_human_approval": true
+    }
+  ]
+}
