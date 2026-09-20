@@ -1,0 +1,18 @@
+{
+  "review_data_sha256": "e543720985f172c92342bdaf4f45dee86b6fbe56cad22a8aa7a0d875df199a2b",
+  "probe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "width": 1280,
+        "height": 720,
+        "avg_frame_rate": "25/1"
+      }
+    ],
+    "format": {
+      "duration": "4.320000"
+    }
+  },
+  "boundary": "actual browser recording; sparse frame review, not pixel-state analysis"
+}

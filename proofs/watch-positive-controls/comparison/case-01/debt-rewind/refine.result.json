@@ -1,0 +1,80 @@
+{
+  "status": "completed",
+  "intent_sha256": "86b5ae329319a6ac1b6b541e3dbef4c0e0b329c98d3a215a48b20cb6be17e7b3",
+  "elapsed_seconds": 0.5202531000250019,
+  "charged_frames": 11,
+  "provider_cost": 0,
+  "request": {
+    "id": "seek-0002",
+    "created_unix": 1789843859.4796078,
+    "center_seconds": 1.531,
+    "center_time": "00:00:01.531",
+    "level": 3,
+    "level_name": "forensic",
+    "direction": "both",
+    "before_seconds": 0.21899999999999986,
+    "after_seconds": 0.21900000000000008,
+    "fps": 22.831050228310502,
+    "reason": "Refine highest measured pixel-change interval; action and control still unresolved.; Zero confidence placeholders are uncalibrated, not evidence scores.; Forward replay checks sequence, not reproducibility.",
+    "requested_frames": 11,
+    "new_frames": 9
+  },
+  "frames": [
+    {
+      "source_seconds": 1.312,
+      "file": "frames/f_000000001312.jpg",
+      "sha256": "796c7451f2043f748ba39346724cef8e30ce69523faf59a53d86ff9401fc1073"
+    },
+    {
+      "source_seconds": 1.356,
+      "file": "frames/f_000000001356.jpg",
+      "sha256": "d33a8846a43aa91d10bb348df3ff5a535a9ff070ed8181ede48e5f12ba3917d2"
+    },
+    {
+      "source_seconds": 1.4,
+      "file": "frames/f_000000001400.jpg",
+      "sha256": "796c7451f2043f748ba39346724cef8e30ce69523faf59a53d86ff9401fc1073"
+    },
+    {
+      "source_seconds": 1.443,
+      "file": "frames/f_000000001443.jpg",
+      "sha256": "2c3ff1e439a450c60842691a395ac9a871350717adf7ef430afb336c0d20cee9"
+    },
+    {
+      "source_seconds": 1.487,
+      "file": "frames/f_000000001487.jpg",
+      "sha256": "be109979fdd68939e9d13bfd113c1fdb76281e047205652bcdd8910c66131e13"
+    },
+    {
+      "source_seconds": 1.531,
+      "file": "frames/f_000000001531.jpg",
+      "sha256": "4e58fb6ec29b60e2615b55791b1e14ac532c93f8d36721d4483b1ee7a77bc297"
+    },
+    {
+      "source_seconds": 1.575,
+      "file": "frames/f_000000001575.jpg",
+      "sha256": "4e58fb6ec29b60e2615b55791b1e14ac532c93f8d36721d4483b1ee7a77bc297"
+    },
+    {
+      "source_seconds": 1.619,
+      "file": "frames/f_000000001619.jpg",
+      "sha256": "04053a1c93bc6f624fa5d8ca4a77000be191fdeb847e5976c4b85a332a7d035c"
+    },
+    {
+      "source_seconds": 1.662,
+      "file": "frames/f_000000001662.jpg",
+      "sha256": "7fb675c819ef9e3c29e6b298aca08fe6dd05e13179374152eb3521ff3c409578"
+    },
+    {
+      "source_seconds": 1.706,
+      "file": "frames/f_000000001706.jpg",
+      "sha256": "a0432f31c299b1f8215b80a290f19ec4b8500df2cf2ca7f59ea62bae9c15aab9"
+    },
+    {
+      "source_seconds": 1.75,
+      "file": "frames/f_000000001750.jpg",
+      "sha256": "8feeb34457035a3240e2f7b873192e36850e9b3fdea92818dd3d8e9734008430"
+    }
+  ],
+  "timeline_after_sha256": "00e8bce1295853ad97921a0fdef20e6a5a2e93bea4f31e06cc4edcf4b910bceb"
+}

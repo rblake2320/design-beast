@@ -2,6 +2,15 @@
 
 ### OPP-20260918-03 — Replaceable Watch inspection-policy contract
 
+-2026-09-19 visible-input controls: actual isolated browser capture and pixel-only
+  OCR now test recoverable source input indicators. Frozen blind labels cover
+  mouse, keyboard, delayed result and matched missing-input footage. Both Watch
+  arms recover3/3positive cases and abstain on the negative; rewind graduation
+  FAILS because recovery ties. Evidence: `proofs/watch-positive-controls/PROOF.md`.
+  Value is a reusable positive/negative fixture harness for Beast and potentially
+  Vigil; no standalone extraction or general click/causality claim. Playwright
+  event/video capture and Tesseract are existing components, no novelty assertion.
+
 -2026-09-19 consequence-first continuation: separate frontier branch reuses Watch
   inspection execution to allocate a fixed frame budget around a known visible
   result. Five coarse samples select a pixel-change interval for dense sampling.

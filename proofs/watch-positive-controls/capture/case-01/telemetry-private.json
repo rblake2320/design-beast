@@ -1,0 +1,38 @@
+{
+  "events": [
+    {
+      "kind": "pointerdown",
+      "time": 1238.6000000238419,
+      "trusted": true,
+      "key": null,
+      "x": 176.19000244140625,
+      "y": 475
+    },
+    {
+      "kind": "pointerup",
+      "time": 1607.2000000178814,
+      "trusted": true,
+      "key": null,
+      "x": 176.19000244140625,
+      "y": 475
+    },
+    {
+      "kind": "save_requested",
+      "time": 1607.300000011921,
+      "trusted": true,
+      "key": null,
+      "x": 176,
+      "y": 475
+    },
+    {
+      "kind": "result_visible",
+      "time": 1858.9000000059605,
+      "trusted": false,
+      "key": null,
+      "x": null,
+      "y": null
+    }
+  ],
+  "timeOrigin": 1789843607370.8,
+  "elapsed": 3070.800000011921
+}
