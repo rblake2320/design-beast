@@ -3,25 +3,20 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import sys
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from watch.inspection_runtime import retain
-
-
-def iou(a: list | tuple | None, b: list | tuple | None) -> float:
-    if a is None or b is None: return 0.0
-    x,y=max(a[0],b[0]),max(a[1],b[1])
-    right,bottom=min(a[0]+a[2],b[0]+b[2]),min(a[1]+a[3],b[1]+b[3])
-    overlap=max(0,right-x)*max(0,bottom-y)
-    union=a[2]*a[3]+b[2]*b[3]-overlap
-    return overlap/union if union else 0.0
+from watch.relationships import box_iou as iou
 
 
 def grade(report: dict, truth: dict) -> dict:
     if report['status']!='completed' or report['source_sha256']!=truth['source_sha256']:
         raise ValueError('incomplete or foreign source')
-    if report['frame_requests']>16 or report['ocr_calls']>16 or report['wall_seconds']>120 or report['model_tokens']:
+    if (any(type(report[k]) is not int or not 0 <= report[k] <= 16 for k in ('frame_requests','ocr_calls'))
+            or type(report['wall_seconds']) not in (int,float) or not math.isfinite(report['wall_seconds'])
+            or not 0 <= report['wall_seconds'] <= 120 or report['model_tokens']):
         raise ValueError('budget exceeded')
     summary=report['summary']
     if summary['accepted_causal_chains'] or summary['publication_allowed']:
@@ -30,7 +25,11 @@ def grade(report: dict, truth: dict) -> dict:
     used: set[int]=set()
     controls=0
     boxes=0
+    correct_targets: set[int]=set()
     for pi,predicted in enumerate(summary['events']):
+        stamps=[r['ms'] for r in predicted['frame_refs']]
+        if not stamps or min(stamps)!=predicted['start_ms'] or max(stamps)!=predicted['end_ms']:
+            raise ValueError('event interval does not match retained references')
         for ti,actual in enumerate(truth['events']):
             if ti in used or (predicted['modality'],predicted['key'])!=(actual['modality'],actual['key']): continue
             if any(actual['start_ms']-40<=ref['ms']<=actual['end_ms']+40 for ref in predicted['frame_refs']):
@@ -38,13 +37,16 @@ def grade(report: dict, truth: dict) -> dict:
                 used.add(ti)
                 controls+=predicted['control']==actual['control'] and actual['control'] is not None
                 boxes+=iou(predicted['control_bounds'],actual['control_bounds'])>=0.5
+                if predicted['control']==actual['control'] and actual['control'] is not None and iou(predicted['control_bounds'],actual['control_bounds'])>=0.5:
+                    correct_targets.add(pi)
                 break
     result_mapping: dict[int,int]={}
     used_results: set[int]=set()
     for pi,predicted in enumerate(summary['results']):
         if predicted['identity'].lower()=='idle': continue
         for ti,actual in enumerate(truth['results']):
-            if ti not in used_results and predicted['identity']==actual['identity'] and actual['start_ms']-40<=predicted['start_ms']<=actual['end_ms']+40:
+            actual_identity=actual['identity'].removeprefix('Status: ')
+            if ti not in used_results and predicted['identity']==actual_identity and actual['start_ms']-40<=predicted['start_ms']<=actual['end_ms']+40:
                 result_mapping[pi]=ti
                 used_results.add(ti)
                 break
@@ -52,8 +54,12 @@ def grade(report: dict, truth: dict) -> dict:
     matched=set()
     false_pairs=0
     for pair in summary['temporal_candidates']:
+        ei,ri=pair['event_index'],pair['result_index']
+        if type(ei) is not int or type(ri) is not int or not 0<=ei<len(summary['events']) or not 0<=ri<len(summary['results']):
+            raise ValueError('invalid relationship reference')
         key=(mapping.get(pair['event_index'],-1),result_mapping.get(pair['result_index'],-1))
-        if key in allowed and key not in matched: matched.add(key)
+        ordered=summary['events'][ei]['end_ms']<summary['results'][ri]['start_ms']
+        if ordered and key in allowed and key not in matched and pair['event_index'] in correct_targets: matched.add(key)
         else: false_pairs+=1
     return {'expected_events':len(truth['events']),'recovered_events':len(used),
         'false_event_extras':len(summary['events'])-len(used),'control_identity_correct':int(controls),

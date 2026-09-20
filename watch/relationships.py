@@ -4,6 +4,13 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field
 
 
+def box_iou(a: list | tuple | None, b: list | tuple | None) -> float:
+    if a is None or b is None: return 0.0
+    overlap=max(0,min(a[0]+a[2],b[0]+b[2])-max(a[0],b[0]))*max(0,min(a[1]+a[3],b[1]+b[3])-max(a[1],b[1]))
+    union=a[2]*a[3]+b[2]*b[3]-overlap
+    return overlap/union if union else 0.0
+
+
 class FrameObservation(BaseModel):
     model_config = ConfigDict(extra='forbid', frozen=True)
     ms: int = Field(ge=0)
@@ -13,6 +20,8 @@ class FrameObservation(BaseModel):
     key: str | None = None
     control: str | None = None
     control_bounds: tuple[int, int, int, int] | None = None
+    control_reference_ms: int | None = None
+    control_reference_sha256: str | None = None
     pointer: tuple[int, int] | None = None
     result: str | None = None
 
@@ -31,6 +40,7 @@ def summarize(observations: list[FrameObservation]) -> dict:
                 events.append({'start_ms':row.ms,'end_ms':row.ms,'modality':row.modality,
                     'key':row.key,'control':row.control,'control_bounds':row.control_bounds,
                     'pointer':row.pointer,'frame_refs':[], 'unsampled_continuity':'unknown'})
+                events[-1]['control_reference']={'ms':row.control_reference_ms,'sha256':row.control_reference_sha256}
             events[-1]['end_ms'] = row.ms
             events[-1]['frame_refs'].append({'ms':row.ms,'sha256':row.sha256,'file':row.file})
         previous = row

@@ -17,8 +17,42 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from scripts.observe_watch_input_overlays import parse_overlay
 from watch.inspection import Confidence, InspectionContext, Interval
 from watch.inspection_runtime import digest, execute_inspection, retain
-from watch.relationships import FrameObservation, summarize, needs_rewind
+from watch.relationships import FrameObservation, summarize, needs_rewind, box_iou
 from watch.rewind import ChangeSample, budget_fps, refinement, request
+
+
+def ocr_mosaic(image: np.ndarray) -> tuple[bytes, list[tuple[int,int,int,int,int]]]:
+    """Append border-free panel crops, with exact source-coordinate mappings."""
+    white=((image[:,:,0]>225)&(image[:,:,1]>225)&(image[:,:,2]>225)).astype('uint8')*255
+    contours,_=cv2.findContours(white,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+    rectangles=[]
+    for contour in contours:
+        x,y,w,h=cv2.boundingRect(contour)
+        if w>=80 and 60<=h<=300 and w*h<image.shape[0]*image.shape[1]/2:
+            rectangles.append((x+7,y+7,w-14,h-14))
+    gold=((image[:,:,0]>180)&(image[:,:,1]>130)&(image[:,:,2]<120)).astype('uint8')*255
+    joined=cv2.morphologyEx(gold,cv2.MORPH_CLOSE,np.ones((5,30),dtype='uint8'))
+    lines,_=cv2.findContours(joined,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+    for contour in lines:
+        x,y,w,h=cv2.boundingRect(contour)
+        if w>40 and 10<=h<=45:
+            x0,y0=max(0,x-10),max(0,y-10)
+            rectangles.append((x0,y0,min(image.shape[1]-x0,w+20),min(image.shape[0]-y0,h+20)))
+    rectangles=sorted(rectangles,key=lambda r:(r[1],r[0]))
+    height=image.shape[0]+sum(h+30 for x,y,w,h in rectangles)
+    canvas=Image.new('RGB',(image.shape[1],height),'white')
+    canvas.paste(Image.fromarray(image),(0,0))
+    mappings=[]
+    top=image.shape[0]+15
+    for x,y,w,h in rectangles:
+        crop=cv2.cvtColor(image[y:y+h,x:x+w],cv2.COLOR_RGB2GRAY)
+        if float(np.median(crop))<128: crop=255-crop
+        canvas.paste(Image.fromarray(crop).convert('RGB'),(15,top))
+        mappings.append((top,x,y,w,h))
+        top+=h+30
+    data=io.BytesIO()
+    canvas.save(data,format='PNG')
+    return data.getvalue(),mappings
 
 
 def snapshot_changes(snapshots: dict[int, bytes]) -> tuple[ChangeSample, ...]:
@@ -36,20 +70,30 @@ def snapshot_changes(snapshots: dict[int, bytes]) -> tuple[ChangeSample, ...]:
 def inspect_pixels(pixels: bytes, frame: dict, tesseract: str, timeout: float) -> tuple[FrameObservation, list[dict]]:
     if hashlib.sha256(pixels).hexdigest() != frame['sha256']:
         raise ValueError('frame snapshot hash mismatch')
-    completed = subprocess.run([tesseract,'stdin','stdout','--psm','11','tsv'], input=pixels,
+    image = np.asarray(Image.open(io.BytesIO(pixels)).convert('RGB'))
+    ocr_pixels,mappings=ocr_mosaic(image)
+    completed = subprocess.run([tesseract,'stdin','stdout','--psm','11','tsv'], input=ocr_pixels,
         capture_output=True,check=True,timeout=timeout)
     rows = list(csv.DictReader(io.StringIO(completed.stdout.decode('utf-8')),delimiter='\t'))
     words = [{'text':r['text'],'box':[int(r[k]) for k in ('left','top','width','height')],
               'line':[r['block_num'],r['par_num'],r['line_num']]} for r in rows if r.get('text','').strip()]
+    for word in words:
+        word['origin']='global'
+        for top,x,y,w,h in mappings:
+            if top<=word['box'][1]<top+h:
+                word['box'][0]+=x-15
+                word['box'][1]+=y-top
+                word['origin']='border_free_crop'
+                word['panel_box']=[x,y,w,h]
+                break
     detected = parse_overlay(' '.join(w['text'] for w in words))
-    image = np.asarray(Image.open(io.BytesIO(pixels)).convert('RGB'))
     mask = ((image[:,:,0]>190)&(image[:,:,1]>135)&(image[:,:,1]<235)&(image[:,:,2]<110)).astype('uint8')
     count, _, stats, _ = cv2.connectedComponentsWithStats(mask)
     targets = []
     for x,y,w,h,area in stats[1:]:
         if area < 3000: continue
         text = ' '.join(item['text'] for item in words
-            if x <= item['box'][0]+item['box'][2]/2 <= x+w and y <= item['box'][1]+item['box'][3]/2 <= y+h)
+            if item['origin']=='border_free_crop' and x <= item['box'][0]+item['box'][2]/2 <= x+w and y <= item['box'][1]+item['box'][3]/2 <= y+h)
         if text: targets.append((text, (int(x),int(y),int(w),int(h))))
     control, bounds = targets[0] if detected and len(targets)==1 else (None,None)
     pointer_mask = (image[:,:,0]>180)&(image[:,:,1]<125)&(image[:,:,2]>160)
@@ -57,7 +101,7 @@ def inspect_pixels(pixels: bytes, frame: dict, tesseract: str, timeout: float) -
     pointer = (round(float(xs.mean())),round(float(ys.mean()))) if len(xs)>30 else None
     result = None
     for index, word in enumerate(words[:-1]):
-        if word['text'].rstrip(':').lower() == 'status' and word['line'] == words[index+1]['line']:
+        if word['origin']=='border_free_crop' and word['text'].rstrip(':').lower() == 'status' and word['line'] == words[index+1]['line']:
             result = words[index+1]['text'].strip('.,:')
     return FrameObservation(ms=round(frame['source_seconds']*1000),sha256=frame['sha256'],file=frame['file'],
         modality=detected['kind'] if detected else None,key=detected['key'] if detected else None,
@@ -65,6 +109,7 @@ def inspect_pixels(pixels: bytes, frame: dict, tesseract: str, timeout: float) -
 
 
 def arm(source: Path, output: Path, mode: str, duration_ms: int, tesseract: str, expected_source_hash: str) -> dict:
+    started = time.monotonic()
     output.mkdir(parents=True,exist_ok=False)
     source_hash = digest(source)
     if source_hash != expected_source_hash: raise ValueError('case source identity changed between arms')
@@ -75,9 +120,9 @@ def arm(source: Path, output: Path, mode: str, duration_ms: int, tesseract: str,
     span = Interval(start_ms=0,end_ms=duration_ms)
     context = InspectionContext(source_interval=span,candidate_interval=span,
         confidence=Confidence(perception=0,transition=0,procedure=0))
-    started = time.monotonic()
     observations: dict[int,FrameObservation] = {}
     snapshots: dict[int,bytes] = {}
+    known_controls: dict[tuple[int,int,int,int], tuple[str,int,str]] = {}
     charged = 0
     ocr_calls = 0
     def inspect(interval: Interval, cap: int, phase: str) -> list[dict]:
@@ -99,6 +144,18 @@ def arm(source: Path, output: Path, mode: str, duration_ms: int, tesseract: str,
             pixels = path.read_bytes()
             ocr_calls += 1
             observation, words = inspect_pixels(pixels,frame,tesseract,min(30,left))
+            if observation.modality and observation.control_bounds:
+                matches=[value for box,value in known_controls.items() if box_iou(box,observation.control_bounds)>=0.5]
+                if len(matches)==1:
+                    name,prior_ms,prior_hash=matches[0]
+                    observation=observation.model_copy(update={'control':name,
+                        'control_reference_ms':prior_ms,'control_reference_sha256':prior_hash})
+            if observation.modality is None:
+                panels={tuple(w['panel_box']) for w in words if w.get('panel_box')}
+                for box in panels:
+                    labels=[w['text'] for w in words if tuple(w.get('panel_box',()))==box]
+                    if len(labels)==1 and labels[0].isalpha():
+                        known_controls[box]=(labels[0],ms,frame['sha256'])
             snapshots[ms] = pixels
             observations[ms] = observation
             retain(output/f'ocr-{ms:06d}.json',{'observation':observation.model_dump(),'words':words})
@@ -116,13 +173,15 @@ def arm(source: Path, output: Path, mode: str, duration_ms: int, tesseract: str,
                 if decision:
                     routing = 'rewind_unresolved_temporal_candidate'
                     inspect(decision.target_interval,16-charged,'rewind')
+        if digest(source) != source_hash: raise ValueError('source changed')
         elapsed = time.monotonic()-started
         if elapsed > 120: raise TimeoutError('shared wall budget exceeded')
-        if digest(source) != source_hash: raise ValueError('source changed')
         report = {'mode':mode,'source_sha256':source_hash,'summary':summarize(list(observations.values())),
             'observations':[o.model_dump() for o in sorted(observations.values(),key=lambda o:o.ms)],
             'routing':routing,'frame_requests':charged,'ocr_calls':ocr_calls,'wall_seconds':elapsed,
             'gpu_seconds':0,'model_tokens':0,'internal_codec_decodes':None,'status':'completed'}
+        report['inspection_interval_ms']=[0,duration_ms]
+        report['wall_scope']='arm entry through final source verification; final report write excluded'
         retain(output/'report.json',report)
         return report
     except Exception as exc:
