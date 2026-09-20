@@ -1,0 +1,19 @@
+{
+  "schema": "watch.relationship-experiment/v1",
+  "base_pr": 42,
+  "base_commit": "4a7207b8ef758d7a4f14e0339cfb09239ec05283",
+  "cases": 10,
+  "budgets_per_arm": {"frame_requests": 16, "ocr_calls": 16, "model_tokens": 0, "wall_seconds": 120},
+  "initial_requests": 5,
+  "baseline": "uniform 16 samples across retained source",
+  "conditional": "same 5 coarse samples; if input/control/new-result temporal candidates are absent or ambiguous, spend remaining 11 in largest pixel-change interval; otherwise stop",
+  "stop_scope": "candidate temporal relationship completeness only; causal sufficiency stays unknown",
+  "event_grouping": "same modality/key/control in consecutive inspected DOWN frames; any inspected UP/absent or changed target separates events; unsampled gaps are explicitly uncertain",
+  "metrics": ["input_event_recall", "control_identity", "result_identity", "temporal_candidate_precision", "causal_sufficiency", "abstention", "frame_requests", "ocr_calls", "wall_seconds"],
+  "graduation": "at least two additional independently labeled input events recovered, no additional incorrect temporal candidates, same caps; causal-sufficiency success scored separately, never inferred from temporal order",
+  "labels": "independent visual labels frozen and hashed before observers; recorder telemetry withheld until visual labels freeze",
+  "constraints": ["no narration", "no accepted causal chains", "no procedure promotion", "no post-result input linked backward", "no tuning frozen run after seeing scores"],
+  "sampling_caveat": "16 requested output frames does not imply 16 internal codec frames decoded; internal decode work is unmeasured, not a matched decode claim",
+  "one_frame_caveat": "40ms requested hold is a brief-input intent, not verified single-native-frame visibility; label actual retained presentations",
+  "scope": "instrumented local browser UI with visible pressed color and input indicators, not arbitrary third-party footage"
+}
