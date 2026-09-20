@@ -1,0 +1,194 @@
+{
+  "cases": [
+    {
+      "case": "case-01",
+      "source_sha256": "29714052b6f5f4898bf93807225dcc543294efe05022048c28375527a03eb064",
+      "events": [
+        {
+          "start_ms": 1080,
+          "end_ms": 1400,
+          "modality": "mouse_down",
+          "key": null,
+          "control": "Save",
+          "control_bounds": [
+            60,
+            400,
+            141,
+            105
+          ],
+          "pointer": [
+            131,
+            455
+          ]
+        }
+      ],
+      "results": [
+        {
+          "start_ms": 1680,
+          "end_ms": 4200,
+          "identity": "Saved"
+        }
+      ],
+      "permitted_temporal_pairs": [
+        {
+          "event_index": 0,
+          "result_index": 0
+        }
+      ],
+      "causal_sufficiency": "unknown",
+      "required_abstention": true,
+      "notes": "Visible mouse-down on Save precedes Saved. Temporal ordering alone does not exclude an unseen timer or another cause."
+    },
+    {
+      "case": "case-02",
+      "source_sha256": "606bd2671734764efaefafcf837e96a2071497b7b460927dc915a4d7021f7d1f",
+      "events": [
+        {
+          "start_ms": 1240,
+          "end_ms": 1560,
+          "modality": "mouse_down",
+          "key": null,
+          "control": "Reset",
+          "control_bounds": [
+            280,
+            400,
+            152,
+            105
+          ],
+          "pointer": [
+            357,
+            455
+          ]
+        }
+      ],
+      "results": [
+        {
+          "start_ms": 1880,
+          "end_ms": 4400,
+          "identity": "Reset"
+        }
+      ],
+      "permitted_temporal_pairs": [
+        {
+          "event_index": 0,
+          "result_index": 0
+        }
+      ],
+      "causal_sufficiency": "unknown",
+      "required_abstention": true,
+      "notes": "Visible mouse-down on Reset precedes Reset status. Matching words do not exclude alternative causes."
+    },
+    {
+      "case": "case-03",
+      "source_sha256": "3c10e847d3327a48f4f33c21652c6888e384ff4c1e2a84222390e005ae800b15",
+      "events": [
+        {
+          "start_ms": 1240,
+          "end_ms": 1560,
+          "modality": "mouse_down",
+          "key": null,
+          "control": "Save",
+          "control_bounds": [
+            60,
+            400,
+            141,
+            105
+          ],
+          "pointer": [
+            131,
+            455
+          ]
+        }
+      ],
+      "results": [
+        {
+          "start_ms": 1840,
+          "end_ms": 4320,
+          "identity": "Rejected"
+        }
+      ],
+      "permitted_temporal_pairs": [
+        {
+          "event_index": 0,
+          "result_index": 0
+        }
+      ],
+      "causal_sufficiency": "unknown",
+      "required_abstention": true,
+      "notes": "The actual control is Save and the later status is Rejected. Do not substitute the intended save action for the observed result."
+    },
+    {
+      "case": "case-04",
+      "source_sha256": "19bf8da3f98f280a2f812d107f2750413ff04a45ed5c16d1c09bde0ceed790a9",
+      "events": [
+        {
+          "start_ms": 1240,
+          "end_ms": 1560,
+          "modality": "mouse_down",
+          "key": null,
+          "control": "Inspect",
+          "control_bounds": [
+            520,
+            400,
+            171,
+            105
+          ],
+          "pointer": [
+            608,
+            455
+          ]
+        }
+      ],
+      "results": [
+        {
+          "start_ms": 2120,
+          "end_ms": 4360,
+          "identity": "Saved"
+        }
+      ],
+      "permitted_temporal_pairs": [
+        {
+          "event_index": 0,
+          "result_index": 0
+        }
+      ],
+      "causal_sufficiency": "unknown",
+      "required_abstention": true,
+      "notes": "Inspect is visibly pressed; Saved later appears. Temporal candidate only: the mismatch cannot establish Inspect caused saving, nor can Saved be used to relabel the pressed control as Save."
+    },
+    {
+      "case": "case-05",
+      "source_sha256": "b1b7bea4492e8d44099e357764d31370f48c1d61eeee4a1c603d37732433edf9",
+      "events": [
+        {
+          "start_ms": 1840,
+          "end_ms": 2160,
+          "modality": "mouse_down",
+          "key": null,
+          "control": "Save",
+          "control_bounds": [
+            60,
+            400,
+            141,
+            105
+          ],
+          "pointer": [
+            131,
+            455
+          ]
+        }
+      ],
+      "results": [
+        {
+          "start_ms": 800,
+          "end_ms": 4360,
+          "identity": "Saved"
+        }
+      ],
+      "permitted_temporal_pairs": [],
+      "causal_sufficiency": "unknown",
+      "required_abstention": true,
+      "notes": "Saved first appears before mouse-down on Save and persists unchanged across it. No order-compatible event-to-result pair; the later press cannot explain the earlier result onset."
+    }
+  ]
+}
