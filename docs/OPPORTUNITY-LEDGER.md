@@ -2,6 +2,17 @@
 
 ### OPP-20260918-03 — Replaceable Watch inspection-policy contract
 
+-2026-09-19 relationship continuation: ten real25FPS instrumented browser clips
+  received frozen independent native-frame labels before observer execution.
+  Initial result OCR failed; retained known-case repairs recover10/11inputs,
+  all10associated controls/results and9/10order-compatible pairs with no false
+  final temporal pairs in either arm. Comparative graduation remains FAIL (tie),
+  and causal sufficiency remains unknown. Evidence: `proofs/watch-relationships/PROOF.md`.
+  Border-free crop OCR, source-coordinate mapping and time-bounded control memory
+  could serve Beast or Vigil evidence review; no separate project or Vigil change.
+  Prior art: Tesseract segmentation/cropping and OpenCV connected components,
+  linked in `docs/WATCH-RELATIONSHIPS.md`; no novelty or arbitrary-video claim.
+
 -2026-09-19 visible-input controls: actual isolated browser capture and pixel-only
   OCR now test recoverable source input indicators. Frozen blind labels cover
   mouse, keyboard, delayed result and matched missing-input footage. Both Watch

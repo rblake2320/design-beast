@@ -1,0 +1,68 @@
+{
+  "events": [
+    {
+      "kind": "down",
+      "time": 920.6999999880791,
+      "trusted": true,
+      "target": "inspect",
+      "key": null,
+      "x": 605.5800170898438,
+      "y": 452.5
+    },
+    {
+      "kind": "up",
+      "time": 1280.8999999761581,
+      "trusted": true,
+      "target": "inspect",
+      "key": null,
+      "x": 605.5800170898438,
+      "y": 452.5
+    },
+    {
+      "kind": "activate",
+      "time": 1280.8999999761581,
+      "trusted": true,
+      "target": "inspect",
+      "key": null,
+      "x": 605,
+      "y": 452
+    },
+    {
+      "kind": "down",
+      "time": 1926.0999999940395,
+      "trusted": true,
+      "target": "save",
+      "key": null,
+      "x": 130.4600067138672,
+      "y": 452.5
+    },
+    {
+      "kind": "up",
+      "time": 2290.699999988079,
+      "trusted": true,
+      "target": "save",
+      "key": null,
+      "x": 130.4600067138672,
+      "y": 452.5
+    },
+    {
+      "kind": "activate",
+      "time": 2290.699999988079,
+      "trusted": true,
+      "target": "save",
+      "key": null,
+      "x": 130,
+      "y": 452
+    },
+    {
+      "kind": "result:Saved",
+      "time": 2542.0999999940395,
+      "trusted": false,
+      "target": null,
+      "key": null,
+      "x": null,
+      "y": null
+    }
+  ],
+  "origin": 1789868294596.8
+}

@@ -1,0 +1,16 @@
+{
+  "observation": {
+    "ms": 0,
+    "sha256": "6391e85917141a3714307651527bbe8ce965b11abf54cda8c446da8a626fa399",
+    "file": "frames/f_000000000000.jpg",
+    "modality": null,
+    "key": null,
+    "control": null,
+    "control_bounds": null,
+    "control_reference_ms": null,
+    "control_reference_sha256": null,
+    "pointer": null,
+    "result": null
+  },
+  "words": []
+}

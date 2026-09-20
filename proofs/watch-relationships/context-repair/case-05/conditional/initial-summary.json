@@ -1,0 +1,71 @@
+{
+  "events": [
+    {
+      "start_ms": 2160,
+      "end_ms": 2160,
+      "modality": "mouse_down",
+      "key": null,
+      "control": "Save",
+      "control_bounds": [
+        64,
+        404,
+        132,
+        96
+      ],
+      "pointer": [
+        132,
+        454
+      ],
+      "frame_refs": [
+        {
+          "ms": 2160,
+          "sha256": "ab9f0fcf556712d4d3ad6238b0de173afd1fadc7fd42a369f0006b239ed0fc23",
+          "file": "frames/f_000000002160.jpg"
+        }
+      ],
+      "unsampled_continuity": "unknown",
+      "control_reference": {
+        "ms": 1080,
+        "sha256": "6346e3dc90ecd6b8c76c7cd4b0a6a77f3c2063d224e315f449f41eb493756219"
+      }
+    }
+  ],
+  "results": [
+    {
+      "identity": "Saved",
+      "start_ms": 1080,
+      "end_ms": 4320,
+      "frame_refs": [
+        {
+          "ms": 1080,
+          "sha256": "6346e3dc90ecd6b8c76c7cd4b0a6a77f3c2063d224e315f449f41eb493756219",
+          "file": "frames/f_000000001080.jpg"
+        },
+        {
+          "ms": 2160,
+          "sha256": "ab9f0fcf556712d4d3ad6238b0de173afd1fadc7fd42a369f0006b239ed0fc23",
+          "file": "frames/f_000000002160.jpg"
+        },
+        {
+          "ms": 3240,
+          "sha256": "eb7bee2d87d1134fc785d10dae5006793a709839930942b40ed51ec22e6d86e4",
+          "file": "frames/f_000000003240.jpg"
+        },
+        {
+          "ms": 4320,
+          "sha256": "1e6e0d939b9cdfc6bcf321ceb222acff108a037b67fa6c27c47d7499f288c0b2",
+          "file": "frames/f_000000004320.jpg"
+        }
+      ]
+    }
+  ],
+  "temporal_candidates": [],
+  "causal_sufficiency": "unknown",
+  "accepted_causal_chains": [],
+  "publication_allowed": false,
+  "confidence": {
+    "perception": null,
+    "transition": null,
+    "procedure": null
+  }
+}

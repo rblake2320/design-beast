@@ -1,0 +1,48 @@
+{
+  "events": [],
+  "results": [
+    {
+      "identity": "Idle",
+      "start_ms": 1090,
+      "end_ms": 1090,
+      "frame_refs": [
+        {
+          "ms": 1090,
+          "sha256": "7417cc64c17ae468474c006c7ddd1a8a71709bfbdcff45e9b882c532456282d1",
+          "file": "frames/f_000000001090.jpg"
+        }
+      ]
+    },
+    {
+      "identity": "Saved",
+      "start_ms": 2180,
+      "end_ms": 4360,
+      "frame_refs": [
+        {
+          "ms": 2180,
+          "sha256": "199012e95bf083129b4559c7aa11064fbf0857aee2f2e87d7bbd9ebd86bf1c22",
+          "file": "frames/f_000000002180.jpg"
+        },
+        {
+          "ms": 3270,
+          "sha256": "960fc02454f547e87630e6da6c469856697ac6b449dba4aa01a515634b87ab7d",
+          "file": "frames/f_000000003270.jpg"
+        },
+        {
+          "ms": 4360,
+          "sha256": "38d388e5f767b5c15ec1dcdc9a5fc2da2e941733e602afe091956b89c45438a9",
+          "file": "frames/f_000000004360.jpg"
+        }
+      ]
+    }
+  ],
+  "temporal_candidates": [],
+  "causal_sufficiency": "unknown",
+  "accepted_causal_chains": [],
+  "publication_allowed": false,
+  "confidence": {
+    "perception": null,
+    "transition": null,
+    "procedure": null
+  }
+}

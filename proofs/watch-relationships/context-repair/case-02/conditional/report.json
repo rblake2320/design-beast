@@ -1,0 +1,395 @@
+{
+  "mode": "conditional",
+  "source_sha256": "606bd2671734764efaefafcf837e96a2071497b7b460927dc915a4d7021f7d1f",
+  "summary": {
+    "events": [
+      {
+        "start_ms": 1226,
+        "end_ms": 1499,
+        "modality": "mouse_down",
+        "key": null,
+        "control": "Reset",
+        "control_bounds": [
+          284,
+          404,
+          144,
+          96
+        ],
+        "pointer": [
+          358,
+          454
+        ],
+        "frame_refs": [
+          {
+            "ms": 1226,
+            "sha256": "18554880c745554ab4e86912ebfef6621fe416eb3c79925af53603a86b0c2e5e",
+            "file": "frames/f_000000001226.jpg"
+          },
+          {
+            "ms": 1363,
+            "sha256": "992731c380e497e59560bcaee98696336ebb0f87a6401ea343701e00b1080996",
+            "file": "frames/f_000000001363.jpg"
+          },
+          {
+            "ms": 1499,
+            "sha256": "9bb60c17361bffd57a50d086a9aab9ee8796d6af939ee312fc55517887e8bf80",
+            "file": "frames/f_000000001499.jpg"
+          }
+        ],
+        "unsampled_continuity": "unknown",
+        "control_reference": {
+          "ms": 1090,
+          "sha256": "7417cc64c17ae468474c006c7ddd1a8a71709bfbdcff45e9b882c532456282d1"
+        }
+      }
+    ],
+    "results": [
+      {
+        "identity": "Idle",
+        "start_ms": 272,
+        "end_ms": 1771,
+        "frame_refs": [
+          {
+            "ms": 272,
+            "sha256": "61ac15d69e8f8b17e479119cce5164b508f53b4c99b6282cccaa274013554c24",
+            "file": "frames/f_000000000272.jpg"
+          },
+          {
+            "ms": 817,
+            "sha256": "47e588d939a639647f9167f45505033a34f6398a0ede58865368dca065d5f5b8",
+            "file": "frames/f_000000000817.jpg"
+          },
+          {
+            "ms": 1090,
+            "sha256": "7417cc64c17ae468474c006c7ddd1a8a71709bfbdcff45e9b882c532456282d1",
+            "file": "frames/f_000000001090.jpg"
+          },
+          {
+            "ms": 1226,
+            "sha256": "18554880c745554ab4e86912ebfef6621fe416eb3c79925af53603a86b0c2e5e",
+            "file": "frames/f_000000001226.jpg"
+          },
+          {
+            "ms": 1363,
+            "sha256": "992731c380e497e59560bcaee98696336ebb0f87a6401ea343701e00b1080996",
+            "file": "frames/f_000000001363.jpg"
+          },
+          {
+            "ms": 1499,
+            "sha256": "9bb60c17361bffd57a50d086a9aab9ee8796d6af939ee312fc55517887e8bf80",
+            "file": "frames/f_000000001499.jpg"
+          },
+          {
+            "ms": 1635,
+            "sha256": "51e850fb5a377dfad5d84f2e00aa8cb7592daab019ddd9ee97f436cd98c1185a",
+            "file": "frames/f_000000001635.jpg"
+          },
+          {
+            "ms": 1771,
+            "sha256": "56f4c2587944097e002e8177d66d398d3e7be253817506785f63edc6f2cd073e",
+            "file": "frames/f_000000001771.jpg"
+          }
+        ]
+      },
+      {
+        "identity": "Reset",
+        "start_ms": 1907,
+        "end_ms": 4360,
+        "frame_refs": [
+          {
+            "ms": 1907,
+            "sha256": "617dd83d86631e2e555d22095d94d21958ea62bb07173ca24c919286c51bf393",
+            "file": "frames/f_000000001907.jpg"
+          },
+          {
+            "ms": 2044,
+            "sha256": "c575895997e99123536e5d9dacbe04cf6435478732872776f124066807ab8d7a",
+            "file": "frames/f_000000002044.jpg"
+          },
+          {
+            "ms": 2180,
+            "sha256": "86a58c553586854db857297649fe52f354841f40d6b0bc2fa6ab0d40683b5e54",
+            "file": "frames/f_000000002180.jpg"
+          },
+          {
+            "ms": 3270,
+            "sha256": "dcd031a81a7f5c78942ac1fe713725b1fd92c0154fb68a215f2075a26b412511",
+            "file": "frames/f_000000003270.jpg"
+          },
+          {
+            "ms": 4360,
+            "sha256": "75ded72df3fb337fe1f2c73483a9616dca4b6f1b40c3af679f052ebf008093f9",
+            "file": "frames/f_000000004360.jpg"
+          }
+        ]
+      }
+    ],
+    "temporal_candidates": [
+      {
+        "event_index": 0,
+        "result_index": 1,
+        "relationship": "temporal_candidate",
+        "causal_sufficiency": "unknown"
+      }
+    ],
+    "causal_sufficiency": "unknown",
+    "accepted_causal_chains": [],
+    "publication_allowed": false,
+    "confidence": {
+      "perception": null,
+      "transition": null,
+      "procedure": null
+    }
+  },
+  "observations": [
+    {
+      "ms": 0,
+      "sha256": "6391e85917141a3714307651527bbe8ce965b11abf54cda8c446da8a626fa399",
+      "file": "frames/f_000000000000.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": null,
+      "result": null
+    },
+    {
+      "ms": 272,
+      "sha256": "61ac15d69e8f8b17e479119cce5164b508f53b4c99b6282cccaa274013554c24",
+      "file": "frames/f_000000000272.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        10,
+        89
+      ],
+      "result": "Idle"
+    },
+    {
+      "ms": 817,
+      "sha256": "47e588d939a639647f9167f45505033a34f6398a0ede58865368dca065d5f5b8",
+      "file": "frames/f_000000000817.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        9,
+        88
+      ],
+      "result": "Idle"
+    },
+    {
+      "ms": 1090,
+      "sha256": "7417cc64c17ae468474c006c7ddd1a8a71709bfbdcff45e9b882c532456282d1",
+      "file": "frames/f_000000001090.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        9,
+        88
+      ],
+      "result": "Idle"
+    },
+    {
+      "ms": 1226,
+      "sha256": "18554880c745554ab4e86912ebfef6621fe416eb3c79925af53603a86b0c2e5e",
+      "file": "frames/f_000000001226.jpg",
+      "modality": "mouse_down",
+      "key": null,
+      "control": "Reset",
+      "control_bounds": [
+        284,
+        404,
+        144,
+        96
+      ],
+      "control_reference_ms": 1090,
+      "control_reference_sha256": "7417cc64c17ae468474c006c7ddd1a8a71709bfbdcff45e9b882c532456282d1",
+      "pointer": [
+        358,
+        454
+      ],
+      "result": "Idle"
+    },
+    {
+      "ms": 1363,
+      "sha256": "992731c380e497e59560bcaee98696336ebb0f87a6401ea343701e00b1080996",
+      "file": "frames/f_000000001363.jpg",
+      "modality": "mouse_down",
+      "key": null,
+      "control": "Reset",
+      "control_bounds": [
+        284,
+        404,
+        144,
+        96
+      ],
+      "control_reference_ms": 1090,
+      "control_reference_sha256": "7417cc64c17ae468474c006c7ddd1a8a71709bfbdcff45e9b882c532456282d1",
+      "pointer": [
+        358,
+        454
+      ],
+      "result": "Idle"
+    },
+    {
+      "ms": 1499,
+      "sha256": "9bb60c17361bffd57a50d086a9aab9ee8796d6af939ee312fc55517887e8bf80",
+      "file": "frames/f_000000001499.jpg",
+      "modality": "mouse_down",
+      "key": null,
+      "control": "Reset",
+      "control_bounds": [
+        284,
+        404,
+        144,
+        96
+      ],
+      "control_reference_ms": 1090,
+      "control_reference_sha256": "7417cc64c17ae468474c006c7ddd1a8a71709bfbdcff45e9b882c532456282d1",
+      "pointer": [
+        358,
+        454
+      ],
+      "result": "Idle"
+    },
+    {
+      "ms": 1635,
+      "sha256": "51e850fb5a377dfad5d84f2e00aa8cb7592daab019ddd9ee97f436cd98c1185a",
+      "file": "frames/f_000000001635.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        357,
+        455
+      ],
+      "result": "Idle"
+    },
+    {
+      "ms": 1771,
+      "sha256": "56f4c2587944097e002e8177d66d398d3e7be253817506785f63edc6f2cd073e",
+      "file": "frames/f_000000001771.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        357,
+        455
+      ],
+      "result": "Idle"
+    },
+    {
+      "ms": 1907,
+      "sha256": "617dd83d86631e2e555d22095d94d21958ea62bb07173ca24c919286c51bf393",
+      "file": "frames/f_000000001907.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        358,
+        455
+      ],
+      "result": "Reset"
+    },
+    {
+      "ms": 2044,
+      "sha256": "c575895997e99123536e5d9dacbe04cf6435478732872776f124066807ab8d7a",
+      "file": "frames/f_000000002044.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        358,
+        455
+      ],
+      "result": "Reset"
+    },
+    {
+      "ms": 2180,
+      "sha256": "86a58c553586854db857297649fe52f354841f40d6b0bc2fa6ab0d40683b5e54",
+      "file": "frames/f_000000002180.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        357,
+        455
+      ],
+      "result": "Reset"
+    },
+    {
+      "ms": 3270,
+      "sha256": "dcd031a81a7f5c78942ac1fe713725b1fd92c0154fb68a215f2075a26b412511",
+      "file": "frames/f_000000003270.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        358,
+        455
+      ],
+      "result": "Reset"
+    },
+    {
+      "ms": 4360,
+      "sha256": "75ded72df3fb337fe1f2c73483a9616dca4b6f1b40c3af679f052ebf008093f9",
+      "file": "frames/f_000000004360.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        357,
+        455
+      ],
+      "result": "Reset"
+    }
+  ],
+  "routing": "rewind_unresolved_temporal_candidate",
+  "frame_requests": 16,
+  "ocr_calls": 14,
+  "wall_seconds": 3.1719999999913853,
+  "gpu_seconds": 0,
+  "model_tokens": 0,
+  "internal_codec_decodes": null,
+  "status": "completed",
+  "inspection_interval_ms": [
+    0,
+    4360
+  ],
+  "wall_scope": "arm entry through final source verification; final report write excluded"
+}

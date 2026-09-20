@@ -1,0 +1,48 @@
+{
+  "events": [],
+  "results": [
+    {
+      "identity": "Idle",
+      "start_ms": 1070,
+      "end_ms": 1070,
+      "frame_refs": [
+        {
+          "ms": 1070,
+          "sha256": "240ff20ff6c8d13d7fcc665cfea1a769b5f3d688a96a3f320adbfdede19a4cef",
+          "file": "frames/f_000000001070.jpg"
+        }
+      ]
+    },
+    {
+      "identity": "Rejected",
+      "start_ms": 2140,
+      "end_ms": 4280,
+      "frame_refs": [
+        {
+          "ms": 2140,
+          "sha256": "fdc020824655cbba9daed54c73a33059336cbd5e85662daf94244f808de4546c",
+          "file": "frames/f_000000002140.jpg"
+        },
+        {
+          "ms": 3210,
+          "sha256": "c07be06b1cf7f716fa409895c5fd43aa24e3a3b132f9b9658b119bad3f018db1",
+          "file": "frames/f_000000003210.jpg"
+        },
+        {
+          "ms": 4280,
+          "sha256": "c07be06b1cf7f716fa409895c5fd43aa24e3a3b132f9b9658b119bad3f018db1",
+          "file": "frames/f_000000004280.jpg"
+        }
+      ]
+    }
+  ],
+  "temporal_candidates": [],
+  "causal_sufficiency": "unknown",
+  "accepted_causal_chains": [],
+  "publication_allowed": false,
+  "confidence": {
+    "perception": null,
+    "transition": null,
+    "procedure": null
+  }
+}

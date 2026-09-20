@@ -1,0 +1,28 @@
+<!doctype html><meta charset="utf-8"><title>Relationship recording workspace</title>
+<style>
+body{margin:0;background:#15202a;color:white;font:26px Arial}header{padding:24px;background:#213544}
+button{position:absolute;top:400px;padding:30px;font:32px Arial;background:#355a76;color:white;border:4px solid white}
+#save{left:60px}#reset{left:280px}#inspect{left:520px}button.down{background:#ffcc44;color:#111}
+#status{position:absolute;left:830px;top:130px;border:3px solid white;padding:30px}
+#input{position:absolute;left:50px;top:640px;font:28px monospace;color:#ffdf6c}
+#pointer{position:absolute;width:16px;height:16px;background:#f040f0;border:2px solid white;border-radius:50%;pointer-events:none}
+</style><header>Local workflow</header>
+<button id="save">Save</button><button id="reset">Reset</button><button id="inspect">Inspect</button>
+<div id="status">Status: Idle</div><div id="input"></div><div id="pointer"></div>
+<script>
+const config=new URLSearchParams(location.search), delay=Number(config.get('delay')||250);
+window.events=[]; const input=document.querySelector('#input'), status=document.querySelector('#status');
+function log(kind,e,target){events.push({kind,time:performance.now(),trusted:e?.isTrusted??false,target:target??null,key:e?.key??null,x:e?.clientX??null,y:e?.clientY??null});}
+function result(value){status.textContent='Status: '+value;log('result:'+value,null,null);}
+function activate(id,e){log('activate',e,id);if(config.get('disabled')===id)return;
+ if(id==='inspect')return;setTimeout(()=>result(id==='reset'?'Reset':(config.get('outcome')||'Saved')),delay);}
+document.addEventListener('pointermove',e=>{let p=document.querySelector('#pointer');p.style.left=(e.clientX-8)+'px';p.style.top=(e.clientY-8)+'px';});
+for(const b of document.querySelectorAll('button')){
+ b.addEventListener('pointerdown',e=>{b.classList.add('down');input.textContent='Mouse button DOWN';log('down',e,b.id);});
+ b.addEventListener('pointerup',e=>{b.classList.remove('down');input.textContent='';log('up',e,b.id);});
+ b.addEventListener('click',e=>activate(b.id,e));
+}
+document.addEventListener('keydown',e=>{if(e.key==='s'){document.querySelector('#save').classList.add('down');input.textContent='Key S DOWN';log('down',e,'save');}});
+document.addEventListener('keyup',e=>{if(e.key==='s'){document.querySelector('#save').classList.remove('down');input.textContent='';log('up',e,'save');activate('save',e);}});
+if(config.has('timer'))setTimeout(()=>result('Saved'),Number(config.get('timer')));
+</script>

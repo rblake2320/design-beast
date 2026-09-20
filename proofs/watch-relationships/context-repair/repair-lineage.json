@@ -1,0 +1,6 @@
+{
+  "baseline_from": "watched\\relationship-comparison-repair-01",
+  "baseline_intent_sha256": "44eaf871cd548c419cf952178cabd6024b84e882fe7077d73506207d5b799237",
+  "classification": "known-case routing repair, not fresh blind graduation or paired timing",
+  "changes": "two budgeted early unoccluded-control frames, then result bracket; prior label time guard; conflicting OCR does not split held spatial event"
+}
