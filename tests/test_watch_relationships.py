@@ -178,3 +178,19 @@ def test_scorer_rejects_frame_escape_before_read(tmp_path):
     report={'observations':[{'ms':0,'sha256':'a'*64,'file':'../outside.jpg'}],
         'summary':{'events':[],'results':[]}}
     with pytest.raises(ValueError,match='escape'): verify_refs(report,tmp_path)
+
+
+def test_inventory_create_and_tamper_detection(tmp_path,monkeypatch):
+    import hashlib
+    from types import SimpleNamespace
+    from scripts import verify_watch_relationships as module
+    proof=tmp_path/'proofs'
+    proof.mkdir()
+    (proof/'sample.txt').write_bytes(b'evidence')
+    blob=hashlib.sha1(b'blob 8\0evidence').hexdigest()
+    monkeypatch.setattr(module,'__file__',str(tmp_path/'scripts'/'verify.py'))
+    monkeypatch.setattr(module.subprocess,'run',lambda *a,**k:SimpleNamespace(
+        stdout=f'100644 {blob} 0\tproofs/sample.txt\0'.encode()))
+    assert module.verify(proof,create=True)['files']==1
+    (proof/'sample.txt').write_bytes(b'tampered')
+    with pytest.raises(ValueError,match='hash mismatch'): module.verify(proof)

@@ -29,12 +29,15 @@ def verify(proof: Path, create: bool = False) -> dict:
             if not path.resolve().is_relative_to(proof): raise ValueError('artifact escape')
             data=path.read_bytes()
             expected_blob=hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()
-            if expected_blob!=blob.decode(): raise ValueError('working bytes differ from staged Git blob: '+str(path))
+            if expected_blob!=blob: raise ValueError('working bytes differ from staged Git blob: '+str(path))
             entries.append({'path':path.relative_to(proof).as_posix(),'sha256':hashlib.sha256(data).hexdigest(),
                 'git_blob':expected_blob,'bytes':len(data)})
+        if not entries: raise ValueError('no staged proof artifacts')
         retain(index,{'schema':'watch.relationship-artifacts/v1','files':entries,
             'scope':'inventory excludes itself and later appended review reports; execution receipts retain their own code hashes'})
     manifest=json.loads(index.read_bytes())
+    if not manifest['files'] or len({r['path'] for r in manifest['files']})!=len(manifest['files']):
+        raise ValueError('empty or duplicate artifact inventory')
     for row in manifest['files']:
         path=(proof/row['path']).resolve()
         if not path.is_relative_to(proof): raise ValueError('artifact escape')
