@@ -27,3 +27,7 @@ Executed against local candidate b626095, containing the two previously reviewed
 - [Tesseract license](https://raw.githubusercontent.com/tesseract-ocr/tesseract/main/LICENSE): Apache-2.0 code.
 
 These observations support targeted engineering and license review, not a legal opinion granting permission. No third-party rights were assumed, no private artifact uploaded, and no historical receipts edited.
+
+## Dedicated temporal environment follow-up
+
+Read-only importlib.metadata inspection of `D:/content/design-beast-inspection/.venv-watch-temporal/Scripts/python.exe` returned transformers4.57.1, tokenizers0.22.2, torch2.10.0+cu128 and torchvision0.25.0+cu128. Thus the two declared temporal versions do match in the dedicated environment; the main-interpreter mismatches above must not be reported as defects in that dedicated installation. No model package was imported and no inference ran. A clean install/release lock remains a different test.
