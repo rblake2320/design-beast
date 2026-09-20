@@ -17,7 +17,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from scripts.observe_watch_input_overlays import parse_overlay
 from watch.inspection import Confidence, InspectionContext, Interval
 from watch.inspection_runtime import digest, execute_inspection, retain
-from watch.relationships import FrameObservation, summarize, needs_rewind, prior_control
+from watch.relationships import FrameObservation, summarize, needs_rewind, prior_control, contains_pointer
 from watch.rewind import ChangeSample, budget_fps, refinement, request
 
 
@@ -102,7 +102,7 @@ def inspect_pixels(pixels: bytes, frame: dict, tesseract: str, timeout: float) -
         if area < 3000: continue
         text = ' '.join(item['text'] for item in words
             if item['origin']=='border_free_crop' and x <= item['box'][0]+item['box'][2]/2 <= x+w and y <= item['box'][1]+item['box'][3]/2 <= y+h)
-        if text: targets.append((text, (int(x),int(y),int(w),int(h))))
+        targets.append((text or None, (int(x),int(y),int(w),int(h))))
     control, bounds = targets[0] if detected and len(targets)==1 else (None,None)
     pointer_mask = (image[:,:,0]>180)&(image[:,:,1]<125)&(image[:,:,2]>160)
     ys,xs = np.where(pointer_mask)
@@ -158,11 +158,13 @@ def arm(source: Path, output: Path, mode: str, duration_ms: int, tesseract: str,
                     name,prior_ms,prior_hash=match
                     observation=observation.model_copy(update={'control':name,
                         'control_reference_ms':prior_ms,'control_reference_sha256':prior_hash})
+                elif contains_pointer(observation.control_bounds,observation.pointer):
+                    observation=observation.model_copy(update={'control':None})
             if observation.modality is None:
                 panels={tuple(w['panel_box']) for w in words if w.get('panel_box')}
                 for box in panels:
                     labels=[w['text'] for w in words if tuple(w.get('panel_box',()))==box]
-                    if len(labels)==1 and labels[0].isalpha():
+                    if len(labels)==1 and labels[0].isalpha() and not contains_pointer(box,observation.pointer):
                         known_controls.append((box,labels[0],ms,frame['sha256']))
             snapshots[ms] = pixels
             observations[ms] = observation
@@ -176,6 +178,17 @@ def arm(source: Path, output: Path, mode: str, duration_ms: int, tesseract: str,
             retain(output/'initial-summary.json',initial)
             routing = 'stop_temporal_candidate_complete'
             if needs_rewind(initial):
+                # Two cheap early context frames can recover unoccluded labels.
+                # They consume the SAME remaining budget, not extra free work.
+                first_gap=duration_ms//4
+                inspect(Interval(start_ms=max(1,first_gap//4),end_ms=3*first_gap//4),2,'control-context')
+                for stamp,observation in list(observations.items()):
+                    if observation.modality and observation.control_bounds:
+                        match=prior_control(known_controls,observation.control_bounds,stamp)
+                        if match:
+                            name,prior_ms,prior_hash=match
+                            observations[stamp]=observation.model_copy(update={'control':name,
+                                'control_reference_ms':prior_ms,'control_reference_sha256':prior_hash})
                 bracket=result_bracket(list(observations.values()))
                 decision = request(bracket,'Known-case repair: prioritize observed result transition bracket') if bracket else refinement(span,snapshot_changes(snapshots))
                 routing = 'no_pixel_change_preserve_uncertainty'
@@ -212,7 +225,7 @@ def run(root: Path, labels_a: Path, labels_b: Path, output: Path, tesseract: str
         retain(output/'repair-lineage.json',{'baseline_from':str(baseline_from),
             'baseline_intent_sha256':digest(baseline_from/'intent.json'),
             'classification':'known-case routing repair, not fresh blind graduation or paired timing',
-            'changes':'first observed result bracket before MAD fallback; prior label time guard; conflicting OCR does not split held spatial event'})
+            'changes':'two budgeted early unoccluded-control frames, then result bracket; prior label time guard; conflicting OCR does not split held spatial event'})
     for i in range(1,11):
         source = root/f'case-{i:02d}'/'source.webm'
         probe=json.loads(subprocess.run(['ffprobe','-v','error','-show_entries','format=duration',

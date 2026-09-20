@@ -19,6 +19,10 @@ def prior_control(history: list[tuple[tuple[int,int,int,int],str,int,str]], boun
     return selected.pop() if len(selected)==1 else None
 
 
+def contains_pointer(bounds: tuple | list | None, pointer: tuple | None) -> bool:
+    return bool(bounds and pointer and bounds[0]<=pointer[0]<=bounds[0]+bounds[2] and bounds[1]<=pointer[1]<=bounds[1]+bounds[3])
+
+
 class FrameObservation(BaseModel):
     model_config = ConfigDict(extra='forbid', frozen=True)
     ms: int = Field(ge=0)

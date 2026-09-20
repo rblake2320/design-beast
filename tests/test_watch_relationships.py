@@ -156,3 +156,10 @@ def test_result_bracket_ignores_startup_pixel_magnitude():
     from scripts.evaluate_watch_relationships import result_bracket
     bracket=result_bracket([frame(0,result=None),frame(1000),frame(2000,result='Saved')])
     assert (bracket.start_ms,bracket.end_ms)==(1000,2000)
+
+
+def test_pointer_occluded_label_requires_other_evidence():
+    from watch.relationships import contains_pointer
+    assert contains_pointer((60,400,140,100),(130,450))
+    assert not contains_pointer((60,400,140,100),(800,100))
+    assert not contains_pointer(None,(130,450))
