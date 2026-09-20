@@ -16,3 +16,9 @@
 /tests/test_watch_relationships.py text eol=lf
 /tests/fixtures/watch-relationship-lab.html text eol=lf
 /bench/watch-relationships-v1.json text eol=lf
+/proofs/watch-representation-closure/** -text
+/proofs/watch-distribution-audit/** -text
+/scripts/verify_watch_receipt_representations.py text eol=lf
+/scripts/audit_watch_distribution.py text eol=lf
+/tests/test_watch_receipt_representations.py text eol=lf
+/tests/test_watch_distribution_inventory.py text eol=lf
