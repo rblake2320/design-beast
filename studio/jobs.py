@@ -19,6 +19,7 @@ import resource_guard
 DB_PATH = Path(__file__).resolve().parent / "jobs.db"
 _LOCAL = threading.local()
 _WRITE_LOCK = threading.Lock()
+JOB_ID_ATTEMPTS = 3
 
 # ---- GPU scheduling (durable, SQLite-backed) ----
 # Resource classes: 'heavy' (cinema video / 3D — exclusive, nothing else may
@@ -119,21 +120,30 @@ def create(kind: str, model: str, brief: str, params: dict,
            idempotency_key: str = None) -> tuple[str, bool]:
     """Returns (job_id, created). If the idempotency key exists, returns the
     existing job id with created=False."""
-    if idempotency_key:
-        row = _db().execute("SELECT id FROM jobs WHERE idempotency_key=?",
-                            (idempotency_key,)).fetchone()
-        if row:
-            return row["id"], False
-    jid = f"{time.strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:4]}"
-    now = time.time()
     with _WRITE_LOCK:
-        _db().execute(
-            "INSERT INTO jobs (id, kind, model, brief, params, idempotency_key, "
-            "created, deadline) VALUES (?,?,?,?,?,?,?,?)",
-            (jid, kind, model, brief[:500], json.dumps(params), idempotency_key,
-             now, now + DEADLINES.get(kind, DEFAULT_DEADLINE_S)))
-        _db().commit()
-    return jid, True
+        db = _db()
+        with db:  # commit on success; roll back every exceptional exit
+            # Serialize lookup + insert across connections, not just threads.
+            db.execute("BEGIN IMMEDIATE")
+            if idempotency_key is not None:
+                row = db.execute("SELECT id FROM jobs WHERE idempotency_key=?",
+                                 (idempotency_key,)).fetchone()
+                if row:
+                    return row["id"], False
+            now = time.time()
+            for _ in range(JOB_ID_ATTEMPTS):
+                jid = f"{time.strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex}"
+                inserted = db.execute(
+                    "INSERT INTO jobs (id, kind, model, brief, params, idempotency_key, "
+                    "created, deadline) VALUES (?,?,?,?,?,?,?,?) "
+                    "ON CONFLICT(id) DO NOTHING",
+                    (jid, kind, model, brief[:500], json.dumps(params), idempotency_key,
+                     now, now + DEADLINES.get(kind, DEFAULT_DEADLINE_S)))
+                # Only the named ID constraint is retried. Other constraints
+                # and database errors propagate without being reclassified.
+                if inserted.rowcount == 1:
+                    return jid, True
+            raise RuntimeError("job ID collision retry budget exhausted")
 
 
 def set_phase(jid: str, phase: str, error: str = None, error_code: str = None,
