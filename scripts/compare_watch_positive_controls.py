@@ -12,7 +12,10 @@ from watch.inspection_runtime import digest,retain
 def run(root: Path, seeds: Path, output: Path, tesseract: str) -> None:
     output.mkdir(parents=True,exist_ok=False)
     retain(output/'protocol.json',{'frozen_labels_sha256':digest(seeds/'BLIND-LABELS.json'),
-        'request_cap_per_arm':16,'decode_cap_per_arm':16,'ocr_cap_per_arm':16,'model_token_cap':0,
+        'request_cap_per_arm':16,'requested_output_frame_cap_per_arm':16,
+        'frame_charge_unit':'requested output-frame timestamp; repeated endpoints are charged again',
+        'internal_decoder_frames_measured':False,'internal_decoder_frame_cap':None,
+        'ocr_cap_per_arm':16,'model_token_cap':0,
         'sampling_seconds_cap':60,'ocr_seconds_cap':60,'cases':4,
         'input':'videos, reviewed result anchors; no DOM, private telemetry or blind-label contents',
         'graduation':'more independently labeled input events recovered than baseline, no additional false input events',
