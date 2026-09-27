@@ -77,3 +77,22 @@ hashes. Narrow .gitattributes rules preserve proof bytes across checkouts.
 Next candidate experiment: spatial V-JEPA 2.1 features versus this stronger pixel
 baseline on a newly frozen set, targeting recovered input/control/result evidence.
 This result does not justify replacing the pixel baseline.
+
+## Review follow-up
+
+The independent reviewer reproduced all coverage counts, checked 142 source blobs
+and recomputed perceptual hashes from all 122 JPEGs. Its original review is retained.
+The PLAN resume-path typo is corrected with an explicit erratum. The original
+run-01 source was reconstructed from the one subsequent accounting-only change;
+`run-01/implementation.py` hashes exactly to its original intent's
+`c759b07107b32445e539660843d39dd1db877886c4c180df6f792b2a7e187c07`.
+It is historical source evidence, not a standalone runnable entrypoint from that
+archive location. Use the current script for replay.
+
+Six additional tests cover the case-level storage path and hostile inputs plus
+real Git failure retention/output collision. Those tests use synthetic storage
+fixtures, not real model inference; the two source-backed replays above are the
+real-artifact checks. Latest Watch suite: **55 passed**, retained separately in
+watch-tests-reviewed.xml. The original 49-test receipt is not overwritten.
+Reference-table transcription remains manually independently verified; no claim
+of an automated natural-language reference parser is made.

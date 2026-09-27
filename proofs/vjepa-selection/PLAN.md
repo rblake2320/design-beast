@@ -43,4 +43,8 @@ clone is ignored and no checkpoint from that clone has been executed.
 
 Resume: run scripts/benchmark_vjepa_selection.py --source-repo <checkout containing
 the input commit> --output <new directory>. Existing outputs are never overwritten.
-Then run scripts/tests/test_vjepa_selection.py and obtain independent review.
+Then run watch/tests/test_vjepa_selection.py and obtain independent review.
+
+Review erratum: the original committed plan named the wrong tests directory.
+Only that resume path was corrected after run-02; protocol and scores unchanged.
+Original protocol bytes referenced by run intents remain in commit f4591a3.
