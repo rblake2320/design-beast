@@ -83,3 +83,31 @@ make this retrospective selection experiment blind.
 No correctness defect was found in the frozen 6/10/8 arithmetic. Only these two
 known clips and the specified 32 image-presentation selection budget were tested.
 No model performance generalization or downstream visual review was performed.
+
+## Bounded addendum: review follow-up, 2026-09-27
+
+Inspected the follow-up working-tree changes and independently reran the focused
+suite: `python -m pytest watch/tests/test_vjepa_selection.py -q`, exit 0,
+21 passed in 0.62 seconds. The six added cases cover a complete synthetic-storage
+case, four frame/member/distance/clock mutations, and a real failed Git read with
+failure receipt and collision/non-overwrite assertions. Five use synthetic
+storage; the sixth invokes the actual Git error path. No inference is mocked or
+performed. This substantially addresses finding 2; malformed JSON/schema and a
+successful complete `run` remain without automated integration regressions.
+
+Read `watch-tests-reviewed.xml`: it records 55 tests, zero failures/errors/skips,
+including all six additions. That full-suite receipt is builder execution
+evidence; the independent rerun here was the 21-test focused suite.
+
+Verified the reconstructed `run-01/implementation.py` SHA-256 is exactly
+`c759b07107b32445e539660843d39dd1db877886c4c180df6f792b2a7e187c07`, matching
+the historical run-01 intent. Its source custody gap (finding 4) is addressed;
+no historical rerun was performed. Current scorer SHA-256 remains
+`a16ee0f527febc17e6846671d2251bf3c7b13f61facd8ae8e13e57ee5f66dbde`, matching
+run-02, so the previously reproduced selection result is unchanged.
+
+PLAN.md now corrects the test path and explicitly labels the erratum, preserving
+the original protocol in f4591a3 (finding 1 addressed). Manual reference mapping
+and pixel-hash correspondence remain independently verified evidence, without
+new automatic enforcement. The 6/10/8 result and FAIL conclusion remain scoped
+as above. This addendum grants no approval, readiness status, or merge authority.
