@@ -1,0 +1,398 @@
+{
+  "cases": {
+    "blender": {
+      "selections": {
+        "uniform": [
+          2,
+          5
+        ],
+        "pixel_change": [
+          4,
+          3
+        ],
+        "vjepa": [
+          3,
+          2
+        ]
+      },
+      "vjepa_scores": {
+        "1": 0.01832669334265047,
+        "2": 0.12189746151672654,
+        "3": 0.17482565265468253,
+        "4": 0.044825478788902196,
+        "5": 0.056913905245970176,
+        "6": 0.007342884792373883
+      },
+      "pixel_scores": {
+        "1": 1.0,
+        "2": 0.0,
+        "3": 4.0,
+        "4": 4.333333333333333,
+        "5": 0.26666666666666666,
+        "6": 0.0
+      },
+      "historical_encoder_report": {
+        "windows": [
+          {
+            "window": 0,
+            "start_ms": 0,
+            "end_ms": 7500,
+            "distance_from_previous": null
+          },
+          {
+            "window": 1,
+            "start_ms": 4000,
+            "end_ms": 11500,
+            "distance_from_previous": 0.01832669973373413
+          },
+          {
+            "window": 2,
+            "start_ms": 8000,
+            "end_ms": 15500,
+            "distance_from_previous": 0.12189745903015137
+          },
+          {
+            "window": 3,
+            "start_ms": 12000,
+            "end_ms": 19500,
+            "distance_from_previous": 0.17482566833496094
+          },
+          {
+            "window": 4,
+            "start_ms": 16000,
+            "end_ms": 23500,
+            "distance_from_previous": 0.04482549428939819
+          },
+          {
+            "window": 5,
+            "start_ms": 20000,
+            "end_ms": 27500,
+            "distance_from_previous": 0.056913912296295166
+          },
+          {
+            "window": 6,
+            "start_ms": 22500,
+            "end_ms": 30000,
+            "distance_from_previous": 0.007342815399169922
+          }
+        ],
+        "model": "facebook/vjepa2-vitl-fpc64-256",
+        "revision": "b3c1679b7c34d3255ef3547f27c7b226aefab26f",
+        "elapsed_seconds": 84.46800000000803,
+        "peak_allocated_mib": 686.89697265625,
+        "semantic_acceptances": 0,
+        "procedure_promotions": 0,
+        "provider_cost_usd": 0
+      },
+      "encoder_image_presentations": 112,
+      "encoder_unique_images": 61,
+      "pixel_preprocessing_images": 61,
+      "reference_intervals": [
+        [
+          1,
+          2.5
+        ],
+        [
+          2.5,
+          6
+        ],
+        [
+          6.5,
+          9.5
+        ],
+        [
+          9.5,
+          10
+        ],
+        [
+          10.5,
+          12.5
+        ],
+        [
+          12.5,
+          13
+        ],
+        [
+          14,
+          14.5
+        ],
+        [
+          15.5,
+          16
+        ],
+        [
+          16.5,
+          17.5
+        ],
+        [
+          19,
+          21
+        ]
+      ],
+      "coverage": {
+        "uniform": {
+          "windows_seconds": [
+            [
+              8.0,
+              15.5
+            ],
+            [
+              20.0,
+              27.5
+            ]
+          ],
+          "reference_hits": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "count": 4,
+          "total": 10,
+          "review_presentations": 32,
+          "unique_review_images": 32,
+          "union_seconds": 15.0
+        },
+        "pixel_change": {
+          "windows_seconds": [
+            [
+              16.0,
+              23.5
+            ],
+            [
+              12.0,
+              19.5
+            ]
+          ],
+          "reference_hits": [
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "count": 5,
+          "total": 10,
+          "review_presentations": 32,
+          "unique_review_images": 24,
+          "union_seconds": 11.5
+        },
+        "vjepa": {
+          "windows_seconds": [
+            [
+              12.0,
+              19.5
+            ],
+            [
+              8.0,
+              15.5
+            ]
+          ],
+          "reference_hits": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "count": 6,
+          "total": 10,
+          "review_presentations": 32,
+          "unique_review_images": 24,
+          "union_seconds": 11.5
+        }
+      }
+    },
+    "heldout": {
+      "selections": {
+        "uniform": [
+          2,
+          5
+        ],
+        "pixel_change": [
+          3,
+          4
+        ],
+        "vjepa": [
+          2,
+          5
+        ]
+      },
+      "vjepa_scores": {
+        "1": 0.00685168012251669,
+        "2": 0.1301170441051035,
+        "3": 0.07892992757131534,
+        "4": 0.06975149961392768,
+        "5": 0.08193656379821157,
+        "6": 0.0220972043898241
+      },
+      "pixel_scores": {
+        "1": 0.26666666666666666,
+        "2": 2.933333333333333,
+        "3": 10.533333333333333,
+        "4": 9.733333333333333,
+        "5": 2.0,
+        "6": 0.13333333333333333
+      },
+      "historical_encoder_report": {
+        "windows": [
+          {
+            "window": 0,
+            "start_ms": 0,
+            "end_ms": 7500,
+            "distance_from_previous": null
+          },
+          {
+            "window": 1,
+            "start_ms": 4000,
+            "end_ms": 11500,
+            "distance_from_previous": 0.006851673126220703
+          },
+          {
+            "window": 2,
+            "start_ms": 8000,
+            "end_ms": 15500,
+            "distance_from_previous": 0.13011693954467773
+          },
+          {
+            "window": 3,
+            "start_ms": 12000,
+            "end_ms": 19500,
+            "distance_from_previous": 0.07892990112304688
+          },
+          {
+            "window": 4,
+            "start_ms": 16000,
+            "end_ms": 23500,
+            "distance_from_previous": 0.06975150108337402
+          },
+          {
+            "window": 5,
+            "start_ms": 20000,
+            "end_ms": 27500,
+            "distance_from_previous": 0.0819365382194519
+          },
+          {
+            "window": 6,
+            "start_ms": 22500,
+            "end_ms": 30000,
+            "distance_from_previous": 0.022097229957580566
+          }
+        ],
+        "model": "facebook/vjepa2-vitl-fpc64-256",
+        "revision": "b3c1679b7c34d3255ef3547f27c7b226aefab26f",
+        "elapsed_seconds": 2.9689999999973224,
+        "peak_allocated_mib": 686.89697265625,
+        "semantic_acceptances": 0,
+        "procedure_promotions": 0,
+        "provider_cost_usd": 0
+      },
+      "encoder_image_presentations": 112,
+      "encoder_unique_images": 61,
+      "pixel_preprocessing_images": 61,
+      "reference_intervals": [
+        [
+          14.5,
+          15
+        ],
+        [
+          15,
+          16
+        ],
+        [
+          16,
+          17
+        ],
+        [
+          17,
+          17.5
+        ],
+        [
+          20,
+          20.5
+        ]
+      ],
+      "coverage": {
+        "uniform": {
+          "windows_seconds": [
+            [
+              8.0,
+              15.5
+            ],
+            [
+              20.0,
+              27.5
+            ]
+          ],
+          "reference_hits": [
+            1,
+            5
+          ],
+          "count": 2,
+          "total": 5,
+          "review_presentations": 32,
+          "unique_review_images": 32,
+          "union_seconds": 15.0
+        },
+        "pixel_change": {
+          "windows_seconds": [
+            [
+              12.0,
+              19.5
+            ],
+            [
+              16.0,
+              23.5
+            ]
+          ],
+          "reference_hits": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "count": 5,
+          "total": 5,
+          "review_presentations": 32,
+          "unique_review_images": 24,
+          "union_seconds": 11.5
+        },
+        "vjepa": {
+          "windows_seconds": [
+            [
+              8.0,
+              15.5
+            ],
+            [
+              20.0,
+              27.5
+            ]
+          ],
+          "reference_hits": [
+            1,
+            5
+          ],
+          "count": 2,
+          "total": 5,
+          "review_presentations": 32,
+          "unique_review_images": 32,
+          "union_seconds": 15.0
+        }
+      }
+    }
+  },
+  "total_reference_coverage": {
+    "uniform": 6,
+    "pixel_change": 10,
+    "vjepa": 8
+  },
+  "vjepa_selection_graduation": "FAIL",
+  "reference_total": 15,
+  "replay_wall_seconds": 6.646577800041996,
+  "new_gpu_calls": 0,
+  "semantic_verdicts": 0,
+  "procedure_promotions": 0,
+  "provider_cost_usd": 0
+}
