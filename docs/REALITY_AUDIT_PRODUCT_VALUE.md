@@ -25,7 +25,8 @@ many image/3D/game generation backends, installers or the full repository.
 
 ## Fresh end-to-end measurements
 
-Source: existing retained 30-second Blender screen recording; known-case test,
+Source: existing retained 31-second Blender screen recording (fresh FFprobe
+duration31.000000; prior semantic reference spans0–30s); known-case test,
 not an unseen holdout. Source hash is recorded in proofs/product-value-audit.
 Research checkout: 5f13b24. Main checkout: 1a7f7ab.
 
@@ -105,11 +106,14 @@ report. Paths refer to the research checkout:
 | Confabulation | Historical semantic errors remain; source hashes validate custody, not explanation truth. |
 | Source/distribution | Existing audit identifies font, codec/model notices and rights decisions; legal clearance not inferred. |
 
-Harness failures retained separately: initial direct-MP4 navigation waited for
+Harness diagnostic history: initial direct-MP4 navigation waited for
 networkidle and timed out. Continuing in the already-loaded video element proved
 playback. Continuation initially failed to locate FFmpeg via a child-only PATH;
 an explicit executable path resolved this. Neither failure was counted as a
 product-quality result. Successful intake/render were not repeated to hide them.
+The timeout is described in the continuation intent and session tool output;
+byte-exact failed harness revisions and standalone traceback files were not
+retained. Current harness scripts include the navigation/executable corrections.
 Raw recordings, screenshots, fonts and full private working outputs remain in
 `watched/value-audit-01`; only allowlisted JSON receipts accompany this report.
 
