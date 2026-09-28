@@ -154,3 +154,12 @@ Record willingness to use/pay separately from technical quality.
 This requires people, their consent and a target audience; no synthetic agent
 rating will be relabeled as customer demand. No invitations or publication were
 sent. The audit does not start product repairs automatically.
+
+## Independent review
+
+`proofs/product-value-audit/INDEPENDENT-REVIEW.md` accepts the bounded technical
+conclusion and independently matches source/output hashes. Its source-duration
+and partial failure-retention findings are corrected/clarified above. It also
+notes native video controls overlap the caption band in the playback screenshot;
+the decoded frame has legible captions. Playback success is not a complete
+caption-usability pass. No approval to merge or claim commercial value follows.
