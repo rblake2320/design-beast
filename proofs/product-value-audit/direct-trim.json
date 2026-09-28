@@ -1,0 +1,29 @@
+{
+  "argv": [
+    "C:\\Users\\techai\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0-full_build\\bin\\ffmpeg.exe",
+    "-v",
+    "error",
+    "-nostdin",
+    "-n",
+    "-ss",
+    "9",
+    "-i",
+    "D:\\content\\design-beast-value-audit\\watched\\value-audit-01\\prepared\\review\\media\\source.mp4",
+    "-t",
+    "2",
+    "-an",
+    "-c:v",
+    "libx264",
+    "-threads",
+    "2",
+    "-preset",
+    "fast",
+    "-crf",
+    "18",
+    "D:\\content\\design-beast-value-audit\\watched\\value-audit-01\\media-continuation-02\\direct-trim.mp4"
+  ],
+  "seconds": 0.409103799960576,
+  "returncode": 0,
+  "stdout": "",
+  "stderr": ""
+}

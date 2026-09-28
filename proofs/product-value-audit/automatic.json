@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "C:\\Python312\\python.exe",
+    "scripts/watch_training.py",
+    "auto",
+    "--review",
+    "D:\\content\\design-beast-value-audit\\watched\\value-audit-01\\prepared\\review",
+    "--count",
+    "1",
+    "--output",
+    "D:\\content\\design-beast-value-audit\\watched\\value-audit-01\\media-continuation-02\\automatic"
+  ],
+  "seconds": 2.7668377000372857,
+  "returncode": 2,
+  "stdout": "",
+  "stderr": "{\"error\": \"<urlopen error [WinError 10061] No connection could be made because the target machine actively refused it>\", \"type\": \"URLError\"}\r\n"
+}

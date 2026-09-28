@@ -1,0 +1,2 @@
+/proofs/product-value-audit/** -text
+/scripts/audit_product_*.py text eol=lf
