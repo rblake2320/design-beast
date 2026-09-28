@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "C:\\Python312\\python.exe",
+    "scripts/beast_core.py",
+    "resource-check",
+    "judge"
+  ],
+  "seconds": 0.3084580999566242,
+  "returncode": 0,
+  "stdout": "{\r\n  \"admitted\": true,\r\n  \"automatic_process_termination\": false,\r\n  \"class\": \"light\",\r\n  \"protected_reserve_mib\": 4096,\r\n  \"reasons\": [\r\n    \"live free VRAM satisfies workload budget and protected reserve\"\r\n  ],\r\n  \"requested_mib\": 6144,\r\n  \"required_free_mib\": 10240,\r\n  \"schema\": \"beast.resource-admission/v1\",\r\n  \"snapshot\": {\r\n    \"available\": true,\r\n    \"free_mib\": 11797,\r\n    \"measured_unix\": 1790604693.189093,\r\n    \"name\": \"NVIDIA GeForce RTX 5090\",\r\n    \"total_mib\": 32607,\r\n    \"used_mib\": 20391,\r\n    \"utilization_percent\": 1\r\n  },\r\n  \"workload\": \"judge\"\r\n}\r\n",
+  "stderr": ""
+}

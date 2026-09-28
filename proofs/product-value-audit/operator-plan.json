@@ -1,0 +1,34 @@
+{
+  "schema_version": "beast.watch.training-draft/v1",
+  "source_sha256": "46ca6a61fa8cd4802284014fa091570e933403da1767d03f92108a6d4a78b8b1",
+  "source_duration_ms": 31000,
+  "visual_policy": "original_source_only",
+  "publication_allowed": false,
+  "steps": [
+    {
+      "start_ms": 9000,
+      "end_ms": 11000,
+      "caption": "The model and annotation become smaller on screen.",
+      "frame_refs": [
+        {
+          "clip_ms": 9250,
+          "sha256": "32db475fedb585ce1309befe70c6eb47d0965ab472e90b63c4518e62c91729c3"
+        },
+        {
+          "clip_ms": 9750,
+          "sha256": "05db5c4514c548462452a6243f64dfc642563f105b9b2e6ce5527b4059b1bfa7"
+        },
+        {
+          "clip_ms": 10250,
+          "sha256": "e3c54213513bafc2a5269c06fe199bb71f4d4f141780d26c1211ee23e7e586ee"
+        },
+        {
+          "clip_ms": 10750,
+          "sha256": "935be877f1d0368e63ceb31e5cfe3385209de802c3fe6c4878eeede2e383ec82"
+        }
+      ],
+      "review_state": "uncertain",
+      "requires_human_approval": true
+    }
+  ]
+}
