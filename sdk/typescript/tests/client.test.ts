@@ -335,3 +335,29 @@ test("streamEvents() contains malformed and oversized data", async () => {
     });
   }
 });
+
+test("wait() does not wait for an unresponsive transport cleanup", async () => {
+  let cancellationRequested = false;
+  const fetchImpl = (async () => new Response(new ReadableStream({
+    start(controller) {
+      controller.enqueue(new TextEncoder().encode('data: {"phase":"done"}\n\n'));
+    },
+    cancel() {
+      cancellationRequested = true;
+      return new Promise<void>(() => {});
+    },
+  }))) as typeof fetch;
+  let watchdog: ReturnType<typeof setTimeout> | undefined;
+  try {
+    const result = await Promise.race([
+      new BeastStudioClient({ fetchImpl }).wait("x", { timeoutMs: 100 }),
+      new Promise<never>((_, reject) => {
+        watchdog = setTimeout(() => reject(new Error("cleanup blocked wait")), 400);
+      }),
+    ]);
+    assert.equal(result.phase, "done");
+    assert.equal(cancellationRequested, true);
+  } finally {
+    clearTimeout(watchdog);
+  }
+});

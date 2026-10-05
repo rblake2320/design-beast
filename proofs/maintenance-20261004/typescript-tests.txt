@@ -1,38 +1,35 @@
-
-> beast-studio-client@1.0.0 test
-> node --test tests/client.test.ts
-
-✔ recipes() issues a GET to /api/recipes (4.6546ms)
-✔ upload() posts name/data body (1.3559ms)
-✔ backend() posts name/action body (0.4742ms)
-✔ backend() timeout covers synchronous NIM warmup and supports override (1.414ms)
-✔ refine() defaults allow_cloud_fallback to false (0.5106ms)
-✔ animate() defaults allow_cloud_fallback to false, honors explicit true (0.6231ms)
-✔ to3d() defaults allow_hosted_fallback to false (0.4433ms)
-✔ run() defaults model to the free local backend (0.4182ms)
-✔ run() sends the idempotency key as a header (0.3943ms)
-✔ toUe() posts {file} (0.5417ms)
-✔ status() GETs /api/run/{id} (0.7403ms)
-✔ cancel() POSTs /api/job/{id}/cancel (0.6251ms)
-✔ retry() POSTs /api/job/{id}/retry (0.2761ms)
-✔ eventsUrl() builds the SSE URL without a network call (0.1908ms)
-✔ run IDs are encoded as one path segment (0.2498ms)
-✔ network failure raises BeastStudioError (1.1509ms)
-✔ API-level error is returned, not thrown, by default (0.4824ms)
-✔ raiseForStatus opts into throwing on HTTP error status (0.2601ms)
-✔ streamEvents() parses real SSE frames and stops at a terminal phase (65.1309ms)
-✔ wait() resolves from a real SSE stream at the terminal event (9.1864ms)
-✔ wait() falls back to polling when the SSE connection fails (2.9476ms)
-✔ streamEvents() accepts split CRLF and multiline data (19.3815ms)
-✔ wait() enforces its deadline on a silent SSE connection (107.4244ms)
-✔ request timeout covers a stalled JSON body after response headers (109.0112ms)
-✔ wait() classifies null status payloads (0.4748ms)
-✔ streamEvents() contains malformed and oversized data (25.8018ms)
-ℹ tests 26
+✔ recipes() issues a GET to /api/recipes (5.706ms)
+✔ upload() posts name/data body (0.4133ms)
+✔ backend() posts name/action body (0.5454ms)
+✔ backend() timeout covers synchronous NIM warmup and supports override (2.2816ms)
+✔ refine() defaults allow_cloud_fallback to false (0.8604ms)
+✔ animate() defaults allow_cloud_fallback to false, honors explicit true (0.8201ms)
+✔ to3d() defaults allow_hosted_fallback to false (0.3926ms)
+✔ run() defaults model to the free local backend (0.8559ms)
+✔ run() sends the idempotency key as a header (0.511ms)
+✔ toUe() posts {file} (0.6615ms)
+✔ status() GETs /api/run/{id} (0.3445ms)
+✔ cancel() POSTs /api/job/{id}/cancel (0.6553ms)
+✔ retry() POSTs /api/job/{id}/retry (0.265ms)
+✔ eventsUrl() builds the SSE URL without a network call (0.1023ms)
+✔ run IDs are encoded as one path segment (0.2558ms)
+✔ network failure raises BeastStudioError (0.5142ms)
+✔ API-level error is returned, not thrown, by default (0.2828ms)
+✔ raiseForStatus opts into throwing on HTTP error status (0.2824ms)
+✔ streamEvents() parses real SSE frames and stops at a terminal phase (69.3746ms)
+✔ wait() resolves from a real SSE stream at the terminal event (9.1376ms)
+✔ wait() falls back to polling when the SSE connection fails (1.1147ms)
+✔ streamEvents() accepts split CRLF and multiline data (36.4279ms)
+✔ wait() enforces its deadline on a silent SSE connection (117.9669ms)
+✔ request timeout covers a stalled JSON body after response headers (105.9228ms)
+✔ wait() classifies null status payloads (0.5699ms)
+✔ streamEvents() contains malformed and oversized data (22.7956ms)
+✔ wait() does not wait for an unresponsive transport cleanup (1.67ms)
+ℹ tests 27
 ℹ suites 0
-ℹ pass 26
+ℹ pass 27
 ℹ fail 0
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 530.0859
+ℹ duration_ms 585.5483

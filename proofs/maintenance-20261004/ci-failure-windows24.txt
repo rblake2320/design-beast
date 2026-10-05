@@ -1,0 +1,244 @@
+﻿2026-10-05T04:41:08.3407101Z Current runner version: '2.337.0'
+2026-10-05T04:41:08.3428850Z ##[group]Runner Image Provisioner
+2026-10-05T04:41:08.3429500Z Hosted Compute Agent
+2026-10-05T04:41:08.3429989Z Version: 20260901.588
+2026-10-05T04:41:08.3430464Z Commit: f88ec8081b781fac6c440065ac7ff9e710ce3d0b
+2026-10-05T04:41:08.3431067Z Build Date: 2026-09-01T19:56:44Z
+2026-10-05T04:41:08.3431636Z Worker ID: {4a337e32-2420-46ee-89ea-ac6be89ab8a0}
+2026-10-05T04:41:08.3432220Z Azure Region: centralus
+2026-10-05T04:41:08.3432680Z ##[endgroup]
+2026-10-05T04:41:08.3433804Z ##[group]Operating System
+2026-10-05T04:41:08.3434293Z Microsoft Windows Server 2025
+2026-10-05T04:41:08.3434825Z 10.0.26100
+2026-10-05T04:41:08.3435204Z Datacenter
+2026-10-05T04:41:08.3435594Z ##[endgroup]
+2026-10-05T04:41:08.3435998Z ##[group]Runner Image
+2026-10-05T04:41:08.3436437Z Image: windows-2025-vs2026
+2026-10-05T04:41:08.3436938Z Version: 20260925.250.1
+2026-10-05T04:41:08.3438243Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20260925.250/images/windows/Windows2025-VS2026-Readme.md
+2026-10-05T04:41:08.3439755Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20260925.250
+2026-10-05T04:41:08.3440572Z ##[endgroup]
+2026-10-05T04:41:08.3441498Z ##[group]GITHUB_TOKEN Permissions
+2026-10-05T04:41:08.3442983Z Contents: read
+2026-10-05T04:41:08.3443423Z Metadata: read
+2026-10-05T04:41:08.3443854Z ##[endgroup]
+2026-10-05T04:41:08.3445507Z Secret source: Actions
+2026-10-05T04:41:08.3446797Z Cache mode: write
+2026-10-05T04:41:08.3448002Z Prepare workflow directory
+2026-10-05T04:41:08.3712388Z Prepare all required actions
+2026-10-05T04:41:08.3742800Z Getting action download info
+2026-10-05T04:41:08.5784861Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-10-05T04:41:08.6524548Z Download action repository 'actions/setup-node@820762786026740c76f36085b0efc47a31fe5020' (SHA:820762786026740c76f36085b0efc47a31fe5020)
+2026-10-05T04:41:08.8234766Z Complete job name: typescript-sdk (windows-latest, 24)
+2026-10-05T04:41:08.9328976Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-10-05T04:41:08.9329742Z with:
+2026-10-05T04:41:08.9329959Z   repository: rblake2320/design-beast
+2026-10-05T04:41:08.9331910Z   token: ***
+2026-10-05T04:41:08.9332112Z   ssh-strict: true
+2026-10-05T04:41:08.9332319Z   ssh-user: git
+2026-10-05T04:41:08.9332531Z   persist-credentials: true
+2026-10-05T04:41:08.9332768Z   clean: true
+2026-10-05T04:41:08.9332983Z   sparse-checkout-cone-mode: true
+2026-10-05T04:41:08.9333232Z   fetch-depth: 1
+2026-10-05T04:41:08.9333438Z   fetch-tags: false
+2026-10-05T04:41:08.9333780Z   show-progress: true
+2026-10-05T04:41:08.9333991Z   lfs: false
+2026-10-05T04:41:08.9334185Z   submodules: false
+2026-10-05T04:41:08.9334403Z   set-safe-directory: true
+2026-10-05T04:41:08.9334649Z   allow-unsafe-pr-checkout: false
+2026-10-05T04:41:08.9334989Z ##[endgroup]
+2026-10-05T04:41:09.0270778Z Syncing repository: rblake2320/design-beast
+2026-10-05T04:41:09.0271817Z ##[group]Getting Git version info
+2026-10-05T04:41:09.0272139Z Working directory is 'D:\a\design-beast\design-beast'
+2026-10-05T04:41:09.0725156Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-05T04:41:09.4254099Z git version 2.55.0.windows.5
+2026-10-05T04:41:09.4294691Z ##[endgroup]
+2026-10-05T04:41:09.4306458Z Temporarily overriding HOME='D:\a\_temp\408cb2f0-5eb2-4e48-a8a4-33b82fdc4019' before making global git config changes
+2026-10-05T04:41:09.4307695Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-05T04:41:09.4314778Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\design-beast\design-beast
+2026-10-05T04:41:09.4990910Z Deleting the contents of 'D:\a\design-beast\design-beast'
+2026-10-05T04:41:09.4994366Z ##[group]Determining repository object format
+2026-10-05T04:41:09.4995489Z ##[endgroup]
+2026-10-05T04:41:09.4998118Z ##[group]Initializing the repository
+2026-10-05T04:41:09.5001333Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\design-beast\design-beast
+2026-10-05T04:41:09.5689185Z Initialized empty Git repository in D:/a/design-beast/design-beast/.git/
+2026-10-05T04:41:09.5716418Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/rblake2320/design-beast
+2026-10-05T04:41:09.6216017Z ##[endgroup]
+2026-10-05T04:41:09.6216547Z ##[group]Disabling automatic garbage collection
+2026-10-05T04:41:09.6216990Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-10-05T04:41:09.6386030Z ##[endgroup]
+2026-10-05T04:41:09.6386517Z ##[group]Setting up auth
+2026-10-05T04:41:09.6386940Z Removing SSH command configuration
+2026-10-05T04:41:09.6392774Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-05T04:41:09.6564223Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-05T04:41:10.9290027Z Removing HTTP extra header
+2026-10-05T04:41:10.9296957Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-05T04:41:10.9472714Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-05T04:41:11.2947060Z Removing includeIf entries pointing to credentials config files
+2026-10-05T04:41:11.2947525Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-05T04:41:11.3129299Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-05T04:41:11.6479615Z [command]"C:\Program Files\Git\bin\git.exe" config --file D:\a\_temp\git-credentials-d31d0761-45b3-4a4b-9f0c-db10c55ba90f.config http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-10-05T04:41:11.6678754Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:D:/a/design-beast/design-beast/.git.path D:\a\_temp\git-credentials-d31d0761-45b3-4a4b-9f0c-db10c55ba90f.config
+2026-10-05T04:41:11.6860535Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:D:/a/design-beast/design-beast/.git/worktrees/*.path D:\a\_temp\git-credentials-d31d0761-45b3-4a4b-9f0c-db10c55ba90f.config
+2026-10-05T04:41:11.7085501Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-d31d0761-45b3-4a4b-9f0c-db10c55ba90f.config
+2026-10-05T04:41:11.7258642Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-d31d0761-45b3-4a4b-9f0c-db10c55ba90f.config
+2026-10-05T04:41:11.7436698Z ##[endgroup]
+2026-10-05T04:41:11.7437040Z ##[group]Fetching the repository
+2026-10-05T04:41:11.7447520Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +82f819b554eb83d9d21478d85e9b0fe617894653:refs/remotes/pull/47/merge
+2026-10-05T04:41:13.1941408Z From https://github.com/rblake2320/design-beast
+2026-10-05T04:41:13.1941926Z  * [new ref]         82f819b554eb83d9d21478d85e9b0fe617894653 -> pull/47/merge
+2026-10-05T04:41:13.1970397Z ##[endgroup]
+2026-10-05T04:41:13.1970738Z ##[group]Determining the checkout info
+2026-10-05T04:41:13.1971093Z ##[endgroup]
+2026-10-05T04:41:13.1977565Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-10-05T04:41:13.2289381Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-10-05T04:41:13.2464006Z ##[group]Checking out the ref
+2026-10-05T04:41:13.2469114Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force refs/remotes/pull/47/merge
+2026-10-05T04:41:13.4238473Z Note: switching to 'refs/remotes/pull/47/merge'.
+2026-10-05T04:41:13.4238724Z 
+2026-10-05T04:41:13.4238917Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-05T04:41:13.4239303Z changes and commit them, and you can discard any commits you make in this
+2026-10-05T04:41:13.4239679Z state without impacting any branches by switching back to a branch.
+2026-10-05T04:41:13.4239906Z 
+2026-10-05T04:41:13.4240048Z If you want to create a new branch to retain commits you create, you may
+2026-10-05T04:41:13.4240411Z do so (now or later) by using -c with the switch command. Example:
+2026-10-05T04:41:13.4240629Z 
+2026-10-05T04:41:13.4240749Z   git switch -c <new-branch-name>
+2026-10-05T04:41:13.4240906Z 
+2026-10-05T04:41:13.4240989Z Or undo this operation with:
+2026-10-05T04:41:13.4241116Z 
+2026-10-05T04:41:13.4241247Z   git switch -
+2026-10-05T04:41:13.4241345Z 
+2026-10-05T04:41:13.4241550Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-05T04:41:13.4241818Z 
+2026-10-05T04:41:13.4257726Z HEAD is now at 82f819b Merge f9c2e5f43dbf6e45aa9f65de388a85c8b968423c into 1edb5c22745a115d850edf9624f9817251a8a434
+2026-10-05T04:41:13.4404042Z ##[endgroup]
+2026-10-05T04:41:13.4708106Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-10-05T04:41:13.4871022Z 82f819b554eb83d9d21478d85e9b0fe617894653
+2026-10-05T04:41:13.5216136Z ##[group]Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+2026-10-05T04:41:13.5216386Z with:
+2026-10-05T04:41:13.5216488Z   node-version: 24
+2026-10-05T04:41:13.5216603Z   cache: npm
+2026-10-05T04:41:13.5216743Z   cache-dependency-path: sdk/typescript/package-lock.json
+2026-10-05T04:41:13.5216910Z   check-latest: false
+2026-10-05T04:41:13.5218109Z   token: ***
+2026-10-05T04:41:13.5218214Z   package-manager-cache: true
+2026-10-05T04:41:13.5218351Z ##[endgroup]
+2026-10-05T04:41:13.6231403Z Found in cache @ C:\hostedtoolcache\windows\node\24.21.0\x64
+2026-10-05T04:41:13.6235185Z ##[group]Environment details
+2026-10-05T04:41:18.3192299Z node: v24.21.0
+2026-10-05T04:41:18.3192522Z npm: 11.19.0
+2026-10-05T04:41:18.3192632Z yarn: 1.22.22
+2026-10-05T04:41:18.3193085Z ##[endgroup]
+2026-10-05T04:41:18.3463307Z [command]C:\Windows\system32\cmd.exe /D /S /C "C:\hostedtoolcache\windows\node\24.21.0\x64\npm.cmd config get cache"
+2026-10-05T04:41:18.7181843Z C:\npm\cache
+2026-10-05T04:41:18.9611015Z npm cache is not found
+2026-10-05T04:41:18.9815857Z ##[group]Run npm ci
+2026-10-05T04:41:18.9816043Z [36;1mnpm ci[0m
+2026-10-05T04:41:19.0320795Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-05T04:41:19.0320985Z ##[endgroup]
+2026-10-05T04:41:24.6724121Z 
+2026-10-05T04:41:24.6729747Z added 4 packages, and audited 5 packages in 5s
+2026-10-05T04:41:24.6730000Z 
+2026-10-05T04:41:24.6730151Z found 0 vulnerabilities
+2026-10-05T04:41:25.9512754Z ##[group]Run npm run typecheck
+2026-10-05T04:41:25.9512955Z [36;1mnpm run typecheck[0m
+2026-10-05T04:41:25.9556724Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-05T04:41:25.9556914Z ##[endgroup]
+2026-10-05T04:41:26.4102530Z 
+2026-10-05T04:41:26.4103009Z > beast-studio-client@1.0.0 typecheck
+2026-10-05T04:41:26.4103248Z > tsc --noEmit
+2026-10-05T04:41:26.4103356Z 
+2026-10-05T04:41:26.6315315Z ##[group]Run npm test
+2026-10-05T04:41:26.6315475Z [36;1mnpm test[0m
+2026-10-05T04:41:26.6358443Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-05T04:41:26.6358630Z ##[endgroup]
+2026-10-05T04:41:27.0622516Z 
+2026-10-05T04:41:27.0622970Z > beast-studio-client@1.0.0 test
+2026-10-05T04:41:27.0623206Z > node --test tests/client.test.ts
+2026-10-05T04:41:27.0623308Z 
+2026-10-05T04:41:30.6646511Z ✔ recipes() issues a GET to /api/recipes (33.2411ms)
+2026-10-05T04:41:30.6647135Z ✔ upload() posts name/data body (0.4272ms)
+2026-10-05T04:41:30.6655661Z ✔ backend() posts name/action body (0.3563ms)
+2026-10-05T04:41:30.6656579Z ✔ backend() timeout covers synchronous NIM warmup and supports override (0.8156ms)
+2026-10-05T04:41:30.6657357Z ✔ refine() defaults allow_cloud_fallback to false (0.4616ms)
+2026-10-05T04:41:30.6657909Z ✔ animate() defaults allow_cloud_fallback to false, honors explicit true (0.5518ms)
+2026-10-05T04:41:30.6658497Z ✔ to3d() defaults allow_hosted_fallback to false (0.2505ms)
+2026-10-05T04:41:30.6658887Z ✔ run() defaults model to the free local backend (0.3765ms)
+2026-10-05T04:41:30.6659263Z ✔ run() sends the idempotency key as a header (0.2688ms)
+2026-10-05T04:41:30.6659586Z ✔ toUe() posts {file} (0.3563ms)
+2026-10-05T04:41:30.6659858Z ✔ status() GETs /api/run/{id} (0.2384ms)
+2026-10-05T04:41:30.6660170Z ✔ cancel() POSTs /api/job/{id}/cancel (0.15ms)
+2026-10-05T04:41:30.6660491Z ✔ retry() POSTs /api/job/{id}/retry (0.118ms)
+2026-10-05T04:41:30.6660890Z ✔ eventsUrl() builds the SSE URL without a network call (0.0551ms)
+2026-10-05T04:41:30.6661293Z ✔ run IDs are encoded as one path segment (0.1217ms)
+2026-10-05T04:41:30.6661647Z ✔ network failure raises BeastStudioError (0.7192ms)
+2026-10-05T04:41:30.6662062Z ✔ API-level error is returned, not thrown, by default (0.1774ms)
+2026-10-05T04:41:30.6662517Z ✔ raiseForStatus opts into throwing on HTTP error status (0.1529ms)
+2026-10-05T04:41:30.6970481Z ✔ streamEvents() parses real SSE frames and stops at a terminal phase (51.7766ms)
+2026-10-05T04:41:30.7059523Z ✔ wait() resolves from a real SSE stream at the terminal event (10.7026ms)
+2026-10-05T04:41:30.7234686Z ✔ wait() falls back to polling when the SSE connection fails (16.4595ms)
+2026-10-05T04:41:30.7541709Z ✔ streamEvents() accepts split CRLF and multiline data (31.0052ms)
+2026-10-05T04:41:31.5717508Z ✖ wait() enforces its deadline on a silent SSE connection (803.7007ms)
+2026-10-05T04:41:31.6776139Z ✔ request timeout covers a stalled JSON body after response headers (119.0563ms)
+2026-10-05T04:41:31.6777260Z ✔ wait() classifies null status payloads (0.3119ms)
+2026-10-05T04:41:31.6959222Z ✔ streamEvents() contains malformed and oversized data (19.0553ms)
+2026-10-05T04:41:31.7184736Z ℹ tests 26
+2026-10-05T04:41:31.7185447Z ℹ suites 0
+2026-10-05T04:41:31.7185609Z ℹ pass 25
+2026-10-05T04:41:31.7185761Z ℹ fail 1
+2026-10-05T04:41:31.7185920Z ℹ cancelled 0
+2026-10-05T04:41:31.7186105Z ℹ skipped 0
+2026-10-05T04:41:31.7186262Z ℹ todo 0
+2026-10-05T04:41:31.7186384Z ℹ duration_ms 4566.2948
+2026-10-05T04:41:31.7191303Z 
+2026-10-05T04:41:31.7191568Z ✖ failing tests:
+2026-10-05T04:41:31.7191773Z 
+2026-10-05T04:41:31.7192090Z test at tests\client.test.ts:276:1
+2026-10-05T04:41:31.7192534Z ✖ wait() enforces its deadline on a silent SSE connection (803.7007ms)
+2026-10-05T04:41:31.7192958Z   AssertionError [ERR_ASSERTION]: silent stream exceeded wait budget
+2026-10-05T04:41:31.7193553Z       at TestContext.<anonymous> (file:///D:/a/design-beast/design-beast/sdk/typescript/tests/client.test.ts:292:12)
+2026-10-05T04:41:31.7194164Z       at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+2026-10-05T04:41:31.7194603Z       at async Test.run (node:internal/test_runner/test:1409:7)
+2026-10-05T04:41:31.7195021Z       at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+2026-10-05T04:41:31.7195329Z     generatedMessage: false,
+2026-10-05T04:41:31.7197657Z     code: 'ERR_ASSERTION',
+2026-10-05T04:41:31.7198003Z     actual: false,
+2026-10-05T04:41:31.7198192Z     expected: true,
+2026-10-05T04:41:31.7198386Z     operator: '==',
+2026-10-05T04:41:31.7198552Z     diff: 'simple'
+2026-10-05T04:41:31.7198710Z   }
+2026-10-05T04:41:31.8309141Z ##[error]Process completed with exit code 1.
+2026-10-05T04:41:31.8476165Z Post job cleanup.
+2026-10-05T04:41:31.9555621Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-05T04:41:31.9747297Z git version 2.55.0.windows.5
+2026-10-05T04:41:31.9790753Z Temporarily overriding HOME='D:\a\_temp\9804f64b-05f6-4450-9af1-35f66e2d14c8' before making global git config changes
+2026-10-05T04:41:31.9791646Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-05T04:41:31.9796894Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\design-beast\design-beast
+2026-10-05T04:41:31.9979254Z Removing SSH command configuration
+2026-10-05T04:41:31.9985175Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-05T04:41:32.0182734Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-05T04:41:32.5143860Z Removing HTTP extra header
+2026-10-05T04:41:32.5151798Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-05T04:41:32.5384709Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-05T04:41:33.0050492Z Removing includeIf entries pointing to credentials config files
+2026-10-05T04:41:33.0059490Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-05T04:41:33.0253137Z includeif.gitdir:D:/a/design-beast/design-beast/.git.path
+2026-10-05T04:41:33.0253594Z includeif.gitdir:D:/a/design-beast/design-beast/.git/worktrees/*.path
+2026-10-05T04:41:33.0253963Z includeif.gitdir:/github/workspace/.git.path
+2026-10-05T04:41:33.0254339Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-05T04:41:33.0281175Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:D:/a/design-beast/design-beast/.git.path
+2026-10-05T04:41:33.0458966Z D:\a\_temp\git-credentials-d31d0761-45b3-4a4b-9f0c-db10c55ba90f.config
+2026-10-05T04:41:33.0485793Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:D:/a/design-beast/design-beast/.git.path D\:\\a\\_temp\\git\-credentials\-d31d0761\-45b3\-4a4b\-9f0c\-db10c55ba90f\.config
+2026-10-05T04:41:33.0805552Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:D:/a/design-beast/design-beast/.git/worktrees/*.path
+2026-10-05T04:41:33.0989429Z D:\a\_temp\git-credentials-d31d0761-45b3-4a4b-9f0c-db10c55ba90f.config
+2026-10-05T04:41:33.1013754Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:D:/a/design-beast/design-beast/.git/worktrees/*.path D\:\\a\\_temp\\git\-credentials\-d31d0761\-45b3\-4a4b\-9f0c\-db10c55ba90f\.config
+2026-10-05T04:41:33.1206528Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-05T04:41:33.1381313Z /github/runner_temp/git-credentials-d31d0761-45b3-4a4b-9f0c-db10c55ba90f.config
+2026-10-05T04:41:33.1405015Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-d31d0761\-45b3\-4a4b\-9f0c\-db10c55ba90f\.config
+2026-10-05T04:41:33.1599816Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-05T04:41:33.1796182Z /github/runner_temp/git-credentials-d31d0761-45b3-4a4b-9f0c-db10c55ba90f.config
+2026-10-05T04:41:33.1830436Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-d31d0761\-45b3\-4a4b\-9f0c\-db10c55ba90f\.config
+2026-10-05T04:41:33.2067871Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-05T04:41:34.3516397Z Removing credentials config 'D:\a\_temp\git-credentials-d31d0761-45b3-4a4b-9f0c-db10c55ba90f.config'
+2026-10-05T04:41:34.3682847Z Cleaning up orphan processes

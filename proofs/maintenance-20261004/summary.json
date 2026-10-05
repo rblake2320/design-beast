@@ -16,10 +16,10 @@
   },
   "artifacts": {
     "beast_studio_client-1.0.0-py3-none-any.whl": "e317108f86fce4fdae4eb7c873523cd7a3683d904bf94bfcb6ffe76957192021",
-    "beast-studio-client-1.0.0.tgz": "5f0a242d65aa997f2dded8eaf110605c4fbdab357f370af7f5d00b59857ab762"
+    "beast-studio-client-1.0.0.tgz": "4155961a9735561ea7302ab3ab152ac8e6b2ac552ed39888c9117f4786f83697"
   },
   "python_tests": 276,
-  "typescript_tests": 26,
+  "typescript_tests": 27,
   "gpu_tests_excluded": 7,
   "browser": {
     "console_errors": 0,

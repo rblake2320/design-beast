@@ -28,3 +28,23 @@ Raw original failed observations remain recorded in the distinct probes and this
 Registry candidate, deduplicated read-only against REGISTRY.md: verify total deadlines against both slow trickles and late data followed by silence, preserve healthy responses inside the budget, and assert server-observed cleanup separately from caller return. No existing matching inactivity/wall-deadline/body-timeout/OpenAPI orphan entry was found. Builder captures the candidate under the constitution.
 
 Final UI diff was also reviewed read-only: hosted-engine disclosure, form accessible names, hint colors, focus visibility, reduced-motion rules, and mobile target sizing. No new actionable implementation issue found. Browser viewport/console/target-size measurements were performed by the builder and are separate evidence. Final `git diff --check` passed.
+
+## Hosted Windows Node24 timeout follow-up
+
+The retained CI log (`ci-failure-windows24.txt`) contains an observed Failed result: 100ms silent-SSE deadline exceeded its original 600ms acceptance threshold; test duration was 803.7007ms on Windows Server 2025, Node24.21.0. This is a real failed gate. The log contains no abort/read/cancel/event-loop timing, so attributing this particular CI event to starvation or cancellation latency remains UNPROVEN.
+
+Independent instrumented runs with the verified Node24.21 executable and actual loopback HTTP retained timelines in `independent-ci-timeout-probe.jsonl`:
+
+- Worked, native transport: wait rejected at 111.37ms, 104.21ms and 117.48ms. The cancel promise settled within 0.02–0.12ms; server closure was also observed.
+- Failed under deliberate 700ms event-loop block: timer due at100ms ran at759.57ms; wait rejected at761.14ms; measured event-loop max lag701ms. This reproduces the symptom via measured starvation while cancellation remained immediate.
+- Failed under deliberately delayed custom reader.cancel: the abort timer ran at104.47ms and read rejected105.15ms, but wait did not reject until819.91ms. Lag was26ms; socket already closed120.56ms. Awaiting cancellation can structurally delay the result, but native cancellation did not exhibit that delay in the observed local runs.
+
+Recommendation: retain the original600ms acceptance gate. A rerun can measure repeatability, while per-case diagnostics of abort/read/cancel/lag are needed to distinguish mechanisms on the hosted runner if it recurs. No threshold was changed and no runtime code was edited by the reviewer.
+
+## Final cancellation barrier repair review
+
+Reviewed the final delta changing streamEvents cleanup to abort the controller and request reader.cancel with a handled rejection, without awaiting cancellation. Cancellation is still requested; an unresponsive cancellation promise no longer blocks the returned result or deadline. No new actionable correctness finding.
+
+Independent official Node24.21 verification: 27 tests passed in509.6419ms, including the original600ms silent-SSE gate (108.1645ms) and the never-resolving cancel regression (1.5213ms). Typecheck, build, and installed-package real HTTP plus silent-SSE verification passed. Real servers still observed connection closure after terminal completion (27ms) and a100ms timeout (108ms).
+
+The same deliberately delayed-cancel timeline now returns the timeout at107.59ms while cancellation remains pending; server closure occurs108.04ms. Post-repair machine timelines are retained separately in independent-ci-timeout-after.jsonl. The deliberate700ms event-loop stall continues to exceed600ms, as expected; the timeout threshold was not relaxed. The original hosted event's root cause remains unproven even though the builder reports its unchanged rerun passed.

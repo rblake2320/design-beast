@@ -290,15 +290,9 @@ export class BeastStudioClient {
       throw new BeastStudioError(`GET /api/events/${runId} interrupted or malformed`, e);
     } finally {
       controller.abort();
-      // cancel (not just releaseLock) so an early return — e.g. we already
-      // saw the terminal phase — tells the server to stop sending and the
-      // socket can close immediately instead of idling until some other
-      // timeout fires.
-      try {
-        await reader.cancel();
-      } catch {
-        // already closed/errored — nothing to do
-      }
+      // Request cancellation so an early return closes the transport. Cleanup
+      // must not delay the result or deadline if a transport never settles it.
+      void reader.cancel().catch(() => {});
     }
   }
 

@@ -12,6 +12,7 @@ does not merge those branches or claim their capabilities on `main`.
 | --- | --- | --- |
 | Install TypeScript package into a consumer's node_modules | Failed: `ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING` | Worked: compiled JavaScript/declarations tarball installs, imports, calls real HTTP, and times out silent SSE; `npm run test:package` |
 | 100 ms TypeScript deadline with silent SSE or stalled JSON body | Failed: ~900 ms, ending only when the watchdog closed the server | Worked: ~100 ms with abort and server-observed closure; real HTTP SDK tests |
+| Terminal SSE event with a cancellation promise that never settles | Failed: 405 ms watchdog, call remained blocked | Worked: 1.67 ms, cancellation requested without delaying the result; deterministic regression |
 | SSE split CRLF, multiline JSON, malformed/null/oversized events | Failed: split CRLF produced no terminal events | Worked: parsers join data lines, contain errors, cap incomplete events; transport regressions |
 | Python heartbeat followed by silence with 400 ms deadline | Failed in first repair: 750 ms | Worked: caller returns around 406 ms; finite worker closes the socket within its inactivity budget and per-byte reads contain trickles; repeated-call cleanup regression |
 | Healthy Python response delayed 150 ms within 800 ms budget | Failed in intermediate repair: read timeout after 125 ms | Worked: ~156 ms success; healthy-delay regression retained alongside timeout cases |
@@ -79,7 +80,7 @@ failure state. It is not a repeated card accent. No detector suppression was add
 
 ## Validation and review
 
-Worked: baseline 266 Python tests; final 276 Python tests; 26 TypeScript tests;
+Worked: baseline 266 Python tests; final 276 Python tests; 27 TypeScript tests;
 typecheck/build; installed tarball and wheel; fatal lint; OpenAPI drift check;
 capability graph; actual API/media/speech checks; independent review.
 Tests mix deterministic mocks with real SQLite, subprocesses, HTTP sockets,
@@ -88,6 +89,14 @@ retain the mocked request-contract tests; real transport tests specifically cove
 the escaped failures. Seven pre-existing generation/GPU tests remain excluded
 by the repository's default test policy. This maintenance changes SDK/runtime
 behavior, not generation quality or Watch action recovery.
+
+The first hosted Windows/Node 24 silent-stream check failed at 803.7 ms; its
+unchanged 600 ms gate passed on rerun. Instrumented local Node 24.21 runs returned
+in 104-117 ms with immediate native cancellation. Deliberate event-loop starvation
+and delayed custom cancellation separately reproduced excessive delays; the
+original hosted log cannot distinguish their cause. The cancellation barrier was
+then independently reproduced and repaired, retaining its red test. No deadline
+threshold was relaxed. Hosted logs, rerun results and probe timelines are retained.
 
 Independent findings, original failures, artifact hashes and exact versions are
 retained in this directory. Builders publish draft PRs and do not merge their
