@@ -60,33 +60,33 @@ export class BeastStudioClient {
 
   private async request<T>(method: string, path: string, body?: unknown,
                            headers?: Record<string, string>,
-                           timeoutMs = this.timeoutMs): Promise<T> {
+                           timeoutMs = this.timeoutMs, signal?: AbortSignal): Promise<T> {
     const url = `${this.baseUrl}${path}`;
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
-    let res: Response;
     try {
-      res = await this.fetchImpl(url, {
+      const res = await this.fetchImpl(url, {
         method,
         headers: body !== undefined
           ? { "Content-Type": "application/json", ...(headers ?? {}) }
           : headers,
         body: body !== undefined ? JSON.stringify(body) : undefined,
-        signal: controller.signal,
+        signal: signal ? AbortSignal.any([controller.signal, signal]) : controller.signal,
       });
+      if (this.raiseForStatus && !res.ok) {
+        throw new BeastStudioError(`${method} ${path} returned HTTP ${res.status}`);
+      }
+      try {
+        return (await res.json()) as T;
+      } catch (e) {
+        throw new BeastStudioError(
+          `${method} ${path} returned non-JSON or interrupted body (status ${res.status})`, e);
+      }
     } catch (e) {
+      if (e instanceof BeastStudioError) throw e;
       throw new BeastStudioError(`${method} ${path} failed: ${(e as Error).message}`, e);
     } finally {
       clearTimeout(timer);
-    }
-    if (this.raiseForStatus && !res.ok) {
-      throw new BeastStudioError(`${method} ${path} returned HTTP ${res.status}`);
-    }
-    try {
-      return (await res.json()) as T;
-    } catch (e) {
-      throw new BeastStudioError(
-        `${method} ${path} returned non-JSON (status ${res.status})`, e);
     }
   }
 
@@ -237,13 +237,23 @@ export class BeastStudioClient {
   /** Yield each JSON status snapshot as the server emits it over SSE,
    * stopping after a terminal phase (done/failed/cancelled) or when the
    * stream closes. No EventSource dependency — works in Node and browsers. */
-  async *streamEvents(runId: string): AsyncGenerator<JobStatus> {
+  async *streamEvents(runId: string, options: { signal?: AbortSignal } = {}): AsyncGenerator<JobStatus> {
     let res: Response;
+    const controller = new AbortController();
+    const signal = options.signal
+      ? AbortSignal.any([controller.signal, options.signal]) : controller.signal;
+    const timer = setTimeout(() => controller.abort(), this.timeoutMs);
     try {
-      res = await this.fetchImpl(this.eventsUrl(runId));
+      res = await this.fetchImpl(this.eventsUrl(runId), { signal });
     } catch (e) {
       throw new BeastStudioError(
         `GET /api/events/${runId} failed: ${(e as Error).message}`, e);
+    } finally {
+      clearTimeout(timer);
+    }
+    if (!res.ok) {
+      controller.abort();
+      throw new BeastStudioError(`GET /api/events/${runId} returned HTTP ${res.status}`);
     }
     if (!res.body) {
       throw new BeastStudioError(`GET /api/events/${runId} returned no body`);
@@ -256,30 +266,33 @@ export class BeastStudioClient {
         const { done, value } = await reader.read();
         if (done) break;
         buf += decoder.decode(value, { stream: true });
-        let idx: number;
-        while ((idx = buf.indexOf("\n\n")) !== -1) {
-          const rawEvent = buf.slice(0, idx);
-          buf = buf.slice(idx + 2);
-          for (const line of rawEvent.split("\n")) {
-            if (!line.startsWith("data:")) continue;
-            const payload = line.slice("data:".length).trim();
-            if (!payload) continue;
-            const snap = JSON.parse(payload) as JobStatus;
-            yield snap;
-            if (snap.phase && TERMINAL_PHASES.includes(snap.phase)) return;
+        let boundary: RegExpExecArray | null;
+        while ((boundary = /\r?\n\r?\n/.exec(buf)) !== null) {
+          const rawEvent = buf.slice(0, boundary.index);
+          buf = buf.slice(boundary.index + boundary[0].length);
+          if (rawEvent.length > 1_048_576) throw new BeastStudioError("SSE event exceeds 1MiB");
+          const payload = rawEvent.split(/\r?\n/)
+            .filter((line) => line.startsWith("data:"))
+            .map((line) => line.slice(5).replace(/^ /, "")).join("\n");
+          if (!payload.trim()) continue;
+          const snap = JSON.parse(payload) as JobStatus;
+          if (!snap || typeof snap !== "object" || Array.isArray(snap)
+              || typeof snap.phase !== "string") {
+            throw new BeastStudioError("SSE event is not a job status snapshot");
           }
+          yield snap;
+          if (TERMINAL_PHASES.includes(snap.phase)) return;
         }
+        if (buf.length > 1_048_576) throw new BeastStudioError("SSE event exceeds 1MiB");
       }
+    } catch (e) {
+      if (e instanceof BeastStudioError) throw e;
+      throw new BeastStudioError(`GET /api/events/${runId} interrupted or malformed`, e);
     } finally {
-      // cancel (not just releaseLock) so an early return — e.g. we already
-      // saw the terminal phase — tells the server to stop sending and the
-      // socket can close immediately instead of idling until some other
-      // timeout fires.
-      try {
-        await reader.cancel();
-      } catch {
-        // already closed/errored — nothing to do
-      }
+      controller.abort();
+      // Request cancellation so an early return closes the transport. Cleanup
+      // must not delay the result or deadline if a transport never settles it.
+      void reader.cancel().catch(() => {});
     }
   }
 
@@ -290,31 +303,62 @@ export class BeastStudioClient {
     pollIntervalMs?: number; timeoutMs?: number; useSse?: boolean;
   } = {}): Promise<JobStatus> {
     const pollIntervalMs = options.pollIntervalMs ?? 3000;
-    const useSse = options.useSse ?? true;
-    const t0 = Date.now();
-    const timedOut = () => options.timeoutMs !== undefined && Date.now() - t0 > options.timeoutMs;
-
-    if (useSse) {
-      try {
-        let last: JobStatus | undefined;
-        for await (const snap of this.streamEvents(runId)) {
-          last = snap;
-          if (timedOut()) break;
-        }
-        if (last && last.phase && TERMINAL_PHASES.includes(last.phase)) return last;
-      } catch {
-        // fall through to polling
-      }
+    if (!Number.isFinite(pollIntervalMs) || pollIntervalMs < 0
+        || (options.timeoutMs !== undefined
+            && (!Number.isFinite(options.timeoutMs) || options.timeoutMs < 0))) {
+      throw new BeastStudioError("wait intervals and timeout must be finite and nonnegative");
     }
-    while (true) {
-      const snap = await this.status(runId);
-      if (snap.phase && TERMINAL_PHASES.includes(snap.phase)) return snap;
-      if (timedOut()) {
-        throw new BeastStudioError(
-          `job ${runId} did not reach a terminal phase within ${options.timeoutMs}ms `
-          + `(last phase: ${snap.phase})`);
+    const controller = new AbortController();
+    const deadline = options.timeoutMs === undefined ? Infinity : performance.now() + options.timeoutMs;
+    const timer = options.timeoutMs === undefined ? undefined
+      : setTimeout(() => controller.abort(), options.timeoutMs);
+    const expired = () => controller.signal.aborted || performance.now() >= deadline;
+    const timeoutError = () => new BeastStudioError(
+      `job ${runId} did not reach a terminal phase within ${options.timeoutMs}ms`);
+    try {
+      if (expired()) throw timeoutError();
+      if (options.useSse ?? true) {
+        try {
+          for await (const snap of this.streamEvents(runId, { signal: controller.signal })) {
+            if (expired()) throw timeoutError();
+            if (snap.phase && TERMINAL_PHASES.includes(snap.phase)) return snap;
+          }
+        } catch (e) {
+          if (expired()) throw timeoutError();
+          // Recover an unavailable or malformed stream by reading durable status.
+        }
       }
-      await new Promise((r) => setTimeout(r, pollIntervalMs));
+      while (true) {
+        if (expired()) throw timeoutError();
+        let snap: JobStatus;
+        try {
+          snap = await this.request<JobStatus>("GET", `/api/run/${encodeURIComponent(runId)}`,
+            undefined, undefined, this.timeoutMs, controller.signal);
+        } catch (e) {
+          if (expired()) throw timeoutError();
+          throw e;
+        }
+        if (expired()) throw timeoutError();
+        if (!snap || typeof snap !== "object" || Array.isArray(snap)) {
+          throw new BeastStudioError(`job ${runId} returned an invalid status snapshot`);
+        }
+        if (snap.phase && TERMINAL_PHASES.includes(snap.phase)) return snap;
+        if (typeof snap.phase !== "string") {
+          throw new BeastStudioError(`job ${runId} returned no phase: ${JSON.stringify(snap)}`);
+        }
+        await new Promise<void>((resolve) => {
+          const finish = () => {
+            clearTimeout(delay);
+            controller.signal.removeEventListener("abort", finish);
+            resolve();
+          };
+          const delay = setTimeout(finish, Math.min(pollIntervalMs, Math.max(0, deadline - performance.now())));
+          controller.signal.addEventListener("abort", finish, { once: true });
+        });
+      }
+    } finally {
+      clearTimeout(timer);
+      controller.abort();
     }
   }
 }

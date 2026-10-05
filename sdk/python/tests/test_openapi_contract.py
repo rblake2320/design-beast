@@ -13,6 +13,24 @@ OPENAPI_JSON = REPO / "openapi.json"
 
 sys.path.insert(0, str(REPO / "scripts"))
 import generate_openapi  # noqa: E402
+import pytest  # noqa: E402
+
+
+@pytest.fixture
+def isolated_jobs(tmp_path, monkeypatch):
+    import threading
+
+    sys.path.insert(0, str(REPO / "studio"))
+    import jobs
+
+    monkeypatch.setattr(jobs, "_LOCAL", threading.local())
+    monkeypatch.setattr(jobs, "DB_PATH", tmp_path / "caller.db")
+    monkeypatch.setattr(jobs, "EXTERNAL_GPU_GUARD", False)
+    jobs.init()
+    yield jobs
+    if hasattr(jobs._LOCAL, "conn"):
+        jobs._LOCAL.conn.close()
+        del jobs._LOCAL.conn
 
 # Every path+method Beast Studio exposes that an agent/client is meant to
 # call, mapped to the Python SDK method that covers it. "/" (index.html) is
@@ -61,7 +79,7 @@ def test_openapi_json_matches_fresh_generation():
         "and check in the result")
 
 
-def test_openapi_generation_restores_caller_database():
+def test_openapi_generation_restores_caller_database(isolated_jobs):
     """Schema generation must not poison tests or servers sharing jobs.py."""
     import jobs
 
@@ -71,6 +89,35 @@ def test_openapi_generation_restores_caller_database():
     assert jobs._db().execute(
         "SELECT name FROM sqlite_master WHERE type='table' AND name='jobs'"
     ).fetchone()
+
+
+def test_openapi_generation_preserves_active_jobs_and_leases(monkeypatch, isolated_jobs):
+    import jobs
+
+    monkeypatch.setattr(jobs, "EXTERNAL_GPU_GUARD", False)
+    jid, _ = jobs.create("create", "test", "schema must be read only", {})
+    jobs.set_phase(jid, "running")
+    assert jobs._try_acquire_gpu(jid, jid, "light")
+    try:
+        before = jobs.get(jid)
+        leases = jobs.gpu_leases()
+        generate_openapi.generate()
+        assert jobs.get(jid) == before
+        assert jobs.gpu_leases() == leases
+    finally:
+        jobs.release_gpu(jid)
+
+
+def test_openapi_generation_does_not_create_caller_database(tmp_path, monkeypatch, isolated_jobs):
+    import jobs
+
+    if hasattr(jobs._LOCAL, "conn"):
+        jobs._LOCAL.conn.close()
+        del jobs._LOCAL.conn
+    missing = tmp_path / "must-not-exist.db"
+    monkeypatch.setattr(jobs, "DB_PATH", missing)
+    generate_openapi.generate()
+    assert not missing.exists()
 
 
 def test_every_documented_endpoint_has_sdk_coverage():

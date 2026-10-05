@@ -15,7 +15,7 @@ c = BeastStudioClient()  # defaults to http://127.0.0.1:8787
 expanded = c.expand("a cozy reading nook")
 job = c.run(brief="a cozy reading nook", prompt=expanded["prompt"],
             variations=expanded["variations"])
-final = c.wait(job["id"])          # blocks until done/failed/cancelled
+final = c.wait(job["id"], timeout=120)          # blocks until done/failed/cancelled
 if final["phase"] == "done":
     print("winner:", final["final"])
 else:
@@ -44,3 +44,13 @@ GPU-free, no live server: `test_client.py` mocks `requests.Session`;
 `test_openapi_contract.py` regenerates the OpenAPI schema against a
 throwaway DB and checks it against the checked-in `openapi.json` and against
 `BeastStudioClient`'s method coverage.
+
+Finite `wait` deadlines bound the caller even when a peer stalls or slowly drips
+bytes. A bounded worker closes its transport after timeout within its finite socket
+inactivity budget (at most the smaller of the client timeout and wait budget). Existing custom requests.Session use is preserved.
+Timeout is in seconds and polling intervals must be nonnegative finite values.
+
+`test_transport_http.py` exercises real local sockets: silent streams, a heartbeat
+followed by silence, unfinished JSON bodies, repeated-call cleanup, multiline CRLF
+SSE, and null status payloads. Schema generation runs in a disposable subprocess;
+it preserves existing jobs, leases, connections, and missing database paths.

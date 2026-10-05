@@ -1,0 +1,65 @@
+{
+  "ok": true,
+  "python": "3.12.10",
+  "checks": [
+    {
+      "scenario": "installed Python wheel talks to actual Studio",
+      "status": "Worked",
+      "detail": {
+        "response": {
+          "ok": true,
+          "db": true,
+          "disk_free_gb": 579,
+          "active_jobs": []
+        },
+        "sdk_source": "installed wheel"
+      },
+      "seconds": 0.0
+    },
+    {
+      "scenario": "Studio serves browser interface",
+      "status": "Worked",
+      "detail": {
+        "status": 200,
+        "html_bytes": 29429
+      },
+      "seconds": 0.094
+    },
+    {
+      "scenario": "image upload and HTTP download preserve pixels",
+      "status": "Worked",
+      "detail": {
+        "decoded_size": [
+          64,
+          64
+        ],
+        "pixel": [
+          12,
+          80,
+          140
+        ]
+      },
+      "seconds": 0.047
+    },
+    {
+      "scenario": "invalid inputs fail without submitting generation jobs",
+      "status": "Worked",
+      "detail": {
+        "bad_image": 422,
+        "bad_brief": 422,
+        "unknown_job": 404
+      },
+      "seconds": 0.078
+    },
+    {
+      "scenario": "updated Kokoro synthesizes decodable local speech",
+      "status": "Worked",
+      "detail": {
+        "sample_rate": 24000,
+        "samples": 52736,
+        "duration_seconds": 2.197
+      },
+      "seconds": 1.75
+    }
+  ]
+}
