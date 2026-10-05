@@ -14,6 +14,9 @@ does not itself enforce (backend-sharing etiquette, VRAM contention).
 from __future__ import annotations
 
 import json
+import math
+import queue
+import threading
 import time
 from typing import Any, Dict, Iterator, List, Optional
 from urllib.parse import quote
@@ -29,6 +32,22 @@ NIM_BACKENDS = frozenset(
 BACKEND_START_TIMEOUTS = {"nim-wan": 2130.0}
 DEFAULT_NIM_START_TIMEOUT = 510.0
 NIM_STOP_TIMEOUT = 150.0
+
+
+def _bounded_lines(response, deadline):
+    """Check the wall deadline even when a peer drips an unfinished line."""
+    line = bytearray()
+    for chunk in response.iter_content(chunk_size=1):
+        if deadline is not None and time.monotonic() >= deadline:
+            raise BeastStudioError("SSE stream exceeded its deadline")
+        if not chunk:
+            continue
+        line.extend(chunk)
+        if len(line) > 1_048_576:
+            raise BeastStudioError("SSE line exceeds 1MiB")
+        if chunk == b"\n":
+            yield line.decode("utf-8").rstrip("\r\n")
+            line.clear()
 
 
 class BeastStudioError(RuntimeError):
@@ -51,11 +70,29 @@ class BeastStudioClient:
     # ---- transport ----
 
     def _request(self, method: str, path: str, *, json_body: Any = None,
-                 headers: Optional[dict] = None, timeout: Optional[float] = None) -> Any:
+                 headers: Optional[dict] = None, timeout: Optional[float] = None,
+                 deadline: Optional[float] = None) -> Any:
         url = f"{self.base_url}{path}"
         try:
+            if deadline is not None:
+                budget = max(0.001, min(self.timeout, deadline - time.monotonic()))
+                with self.session.request(method, url, json=json_body, headers=headers,
+                                          timeout=(budget, budget), stream=True) as r:
+                    if self.raise_for_status:
+                        r.raise_for_status()
+                    body = bytearray()
+                    for chunk in r.iter_content(chunk_size=1):
+                        if time.monotonic() >= deadline:
+                            raise BeastStudioError(f"{method} {path} exceeded wait deadline")
+                        body.extend(chunk)
+                        if len(body) > 1_048_576:
+                            raise BeastStudioError("job status exceeds 1MiB")
+                    try:
+                        return json.loads(body)
+                    except ValueError as e:
+                        raise BeastStudioError(f"{method} {path} returned non-JSON") from e
             r = self.session.request(method, url, json=json_body, headers=headers,
-                                     timeout=timeout or self.timeout)
+                                     timeout=self.timeout if timeout is None else timeout)
         except requests.RequestException as e:
             raise BeastStudioError(f"{method} {path} failed: {e}") from e
         if self.raise_for_status:
@@ -197,47 +234,120 @@ class BeastStudioClient:
     def stream_events(self, run_id: str) -> Iterator[Dict[str, Any]]:
         """Yield each JSON status snapshot as the server emits it over SSE,
         stopping after a terminal phase (done/failed/cancelled) or when the
-        stream closes. No external SSE dependency — parses `data: ` lines."""
+        stream closes. Supports multiline data and CRLF; malformed events
+        raise BeastStudioError. Use wait(timeout=...) for a total deadline."""
+        return self._stream_events(run_id)
+
+    def _stream_events(self, run_id: str, timeout: Optional[float] = None) -> Iterator[Dict[str, Any]]:
+        deadline = None if timeout is None else time.monotonic() + timeout
+        read_timeout = self.timeout if timeout is None else min(self.timeout, timeout)
         try:
-            resp_ctx = self.session.get(self.events_url(run_id), stream=True,
-                                        timeout=(self.timeout, None))
-        except requests.RequestException as e:
-            raise BeastStudioError(f"GET /api/events/{run_id} failed: {e}") from e
-        with resp_ctx as r:
-            for raw in r.iter_lines(decode_unicode=True):
-                if not raw or not raw.startswith("data:"):
-                    continue
-                payload = raw[len("data:"):].strip()
-                if not payload:
-                    continue
-                snap = json.loads(payload)
-                yield snap
-                if snap.get("phase") in TERMINAL_PHASES:
-                    return
+            with self.session.get(self.events_url(run_id), stream=True,
+                                  timeout=(read_timeout, read_timeout)) as r:
+                if r.status_code >= 400:
+                    raise BeastStudioError(f"GET /api/events/{run_id} returned HTTP {r.status_code}")
+                data_lines = []
+                event_size = 0
+                for raw in _bounded_lines(r, deadline):
+                    if deadline is not None and time.monotonic() >= deadline:
+                        raise BeastStudioError(f"GET /api/events/{run_id} timed out")
+                    if raw.startswith("data:"):
+                        value = raw[len("data:"):]
+                        value = value[1:] if value.startswith(" ") else value
+                        event_size += len(value)
+                        if event_size > 1_048_576:
+                            raise BeastStudioError("SSE event exceeds 1MiB")
+                        data_lines.append(value)
+                        continue
+                    if raw or not data_lines:
+                        continue
+                    payload = "\n".join(data_lines)
+                    data_lines.clear()
+                    event_size = 0
+                    if not payload.strip():
+                        continue
+                    snap = json.loads(payload)
+                    if not isinstance(snap, dict) or not isinstance(snap.get("phase"), str):
+                        raise BeastStudioError("SSE event is not a job status snapshot")
+                    yield snap
+                    if snap.get("phase") in TERMINAL_PHASES:
+                        return
+        except (requests.RequestException, ValueError) as e:
+            raise BeastStudioError(f"GET /api/events/{run_id} interrupted or malformed: {e}") from e
 
     def wait(self, run_id: str, poll_interval: float = 3,
              timeout: Optional[float] = None, use_sse: bool = True) -> Dict[str, Any]:
+        """Wait for terminal status. A finite timeout bounds the whole call,
+        including transport reads; timed-out reads close in the worker using
+        finite socket inactivity timeouts and per-byte deadline checks.
+        """
+        if not math.isfinite(poll_interval) or poll_interval < 0 or (
+                timeout is not None and (not math.isfinite(timeout) or timeout < 0)):
+            raise BeastStudioError("wait intervals and timeout must be finite and nonnegative")
+        if timeout is None:
+            return self._wait_impl(run_id, poll_interval, None, use_sse)
+        if timeout == 0:
+            raise BeastStudioError(f"job {run_id} did not reach a terminal phase within 0s")
+        deadline = time.monotonic() + timeout
+        result = queue.Queue(maxsize=1)
+
+        def worker():
+            try:
+                value = self._wait_impl(run_id, poll_interval,
+                                        max(0, deadline - time.monotonic()), use_sse)
+                result.put((True, value))
+            except Exception as error:
+                result.put((False, error))
+
+        threading.Thread(target=worker, daemon=True, name="beast-bounded-wait").start()
+        try:
+            ok, value = result.get(timeout=max(0, deadline - time.monotonic()))
+        except queue.Empty as e:
+            raise BeastStudioError(
+                f"job {run_id} did not reach a terminal phase within {timeout}s") from e
+        if not ok:
+            raise value
+        return value
+
+    def _wait_impl(self, run_id: str, poll_interval: float,
+                   timeout: Optional[float], use_sse: bool) -> Dict[str, Any]:
         """Block until the job reaches a terminal phase, return its final
         status. Prefers SSE (one connection, pushed updates); falls back to
         polling status() if use_sse=False or the stream errors."""
         t0 = time.monotonic()
+        if not math.isfinite(poll_interval) or poll_interval < 0 or (
+                timeout is not None and (not math.isfinite(timeout) or timeout < 0)):
+            raise BeastStudioError("wait intervals and timeout must be finite and nonnegative")
+
+        def remaining():
+            if timeout is None:
+                return None
+            value = timeout - (time.monotonic() - t0)
+            if value <= 0:
+                raise BeastStudioError(
+                    f"job {run_id} did not reach a terminal phase within {timeout}s")
+            return value
+
         if use_sse:
             try:
                 last = None
-                for snap in self.stream_events(run_id):
+                for snap in self._stream_events(run_id, timeout=remaining()):
                     last = snap
-                    if timeout is not None and time.monotonic() - t0 > timeout:
-                        break
+                    remaining()
                 if last is not None and last.get("phase") in TERMINAL_PHASES:
                     return last
             except BeastStudioError:
                 pass  # fall through to polling
         while True:
-            snap = self.status(run_id)
+            budget = remaining()
+            snap = self.status(run_id) if budget is None else self._request(
+                "GET", f"/api/run/{quote(run_id, safe='')}",
+                timeout=min(self.timeout, budget), deadline=t0 + timeout)
+            remaining()
+            if not isinstance(snap, dict):
+                raise BeastStudioError(f"job {run_id} returned invalid status: {snap}")
             if snap.get("phase") in TERMINAL_PHASES:
                 return snap
-            if timeout is not None and time.monotonic() - t0 > timeout:
-                raise BeastStudioError(
-                    f"job {run_id} did not reach a terminal phase within {timeout}s "
-                    f"(last phase: {snap.get('phase')})")
-            time.sleep(poll_interval)
+            if not isinstance(snap.get("phase"), str):
+                raise BeastStudioError(f"job {run_id} returned no phase: {snap}")
+            time.sleep(poll_interval if budget is None else min(poll_interval, remaining()))

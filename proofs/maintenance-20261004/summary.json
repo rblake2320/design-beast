@@ -1,0 +1,31 @@
+{
+  "baseline_commit": "1edb5c2",
+  "versions": {
+    "fastapi": "0.142.2",
+    "starlette": "1.7.0",
+    "pydantic": "2.13.5",
+    "requests": "2.34.2",
+    "uvicorn": "0.54.0",
+    "Pillow": "12.3.0",
+    "kokoro-onnx": "0.6.1",
+    "soundfile": "0.14.0",
+    "pytest": "9.1.1",
+    "httpx": "0.28.1",
+    "ruff": "0.16.10",
+    "pip-audit": "2.10.1"
+  },
+  "artifacts": {
+    "beast_studio_client-1.0.0-py3-none-any.whl": "e317108f86fce4fdae4eb7c873523cd7a3683d904bf94bfcb6ffe76957192021",
+    "beast-studio-client-1.0.0.tgz": "5f0a242d65aa997f2dded8eaf110605c4fbdab357f370af7f5d00b59857ab762"
+  },
+  "python_tests": 276,
+  "typescript_tests": 26,
+  "gpu_tests_excluded": 7,
+  "browser": {
+    "console_errors": 0,
+    "mobile_viewport_width": 390,
+    "mobile_document_width": 380,
+    "visible_buttons_under_44px": 0
+  },
+  "independent_review": "no remaining actionable findings"
+}
