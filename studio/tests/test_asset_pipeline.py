@@ -133,6 +133,16 @@ def test_cross_origin_write_is_rejected(api):
     assert response.status_code == 400
 
 
+@pytest.mark.parametrize("headers", [{"Origin": "https://["},
+    {"Origin": "https://[invalid]"}, {"Host": "[invalid]"}])
+def test_malformed_origin_and_host_are_contained(api, headers):
+    client, _, _ = api
+    result = client.post("/api/assets/upload", json={"data": base64.b64encode(glb()).decode()},
+                         headers=headers)
+    assert result.status_code == 400
+    assert "Malformed" in result.json()["error"]
+
+
 def test_failed_blender_spawn_becomes_terminal_failure(api, monkeypatch):
     client, uploads, runs = api
     (uploads / "model.glb").write_bytes(glb())

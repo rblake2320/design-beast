@@ -41,11 +41,19 @@ class UnrealImport(BaseModel):
 
 
 def local_request(request: Request):
-    if request.url.hostname not in ("127.0.0.1", "localhost", "::1", "testserver"):
-        raise pipeline.AssetError("Asset tools require the local Studio host")
-    origin = request.headers.get("origin")
-    if origin and urlsplit(origin).netloc != request.url.netloc:
-        raise pipeline.AssetError("Cross-origin asset requests are not allowed")
+    try:
+        allowed = ("127.0.0.1", "localhost", "::1", "testserver")
+        authority = urlsplit("http://" + request.headers.get("host", request.url.netloc))
+        authority.port  # Validate malformed/non-numeric port input as well.
+        if authority.username or authority.password or authority.path or authority.query or authority.fragment:
+            raise ValueError("invalid host authority")
+        if request.url.hostname not in allowed or authority.hostname not in allowed:
+            raise pipeline.AssetError("Asset tools require the local Studio host")
+        origin = request.headers.get("origin")
+        if origin and urlsplit(origin).netloc != authority.netloc:
+            raise pipeline.AssetError("Cross-origin asset requests are not allowed")
+    except (ValueError, TypeError):
+        raise pipeline.AssetError("Malformed local request origin or host") from None
 
 
 def register(app, *, runs, uploads, resolve, new_run, status):

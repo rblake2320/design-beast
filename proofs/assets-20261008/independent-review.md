@@ -81,3 +81,11 @@ The receiving viewport receipt names UE5.8.1, the dedicated visual-check level a
 Review closeout: no remaining actionable implementation/harness findings. Independent results include292 full Python tests,26 focused tests with plugin autoload disabled,21 TypeScript tests/typecheck, ownership/cancellation, malformed GLB, MIME, consent-guard mutation, unknown-submission replay, receipt identity, schema preservation and import-refresh logic. Updated asset CI explicitly keeps plugin autoload disabled. Builder's final live browser refresh and hosted CI are separate execution gates; this reviewer did not claim to perform them.
 
 External acceptance remains explicit: the existing Meshy-task lists were empty in the builder's real account check, so there was no completed provider task to retrieve. A real four-candidate paid batch requires the owner's explicit120-credit authorization. All reviewer provider calls were stubbed; no generation credits were spent by this review. The source/Blender/UE/viewport checks above use retained owned control assets and do not masquerade as a completed Meshy generation run.
+
+## Final header-only follow-up
+
+Reviewed only the closing local_request/header delta: explicit raw Host authority parsing, numeric-port validation, rejection of userinfo/path/query/fragment in Host, loopback URL/authority checks, Origin authority comparison and a ValueError/TypeError -> AssetError fault barrier.
+
+Worked — independently reran the three new valid-GLB malformed-header controls (unmatchedIPv6 Origin, invalidIPv6 Origin, invalidIPv6 Host), plus the existing cross-origin control, with pytest plugin autoload disabled. All4 passed in0.48s; retained transcript `3d-independent-header-controls.txt`. Malformed headers are contained as HTTP400 JSON errors. `git diff --check` passed. No additional actionable finding in this final delta.
+
+Builder reports the completed live browser reload/keyboard orbit,5 restored exports and UE receipt. The earlier PR48 head had all6 hosted jobs green; the final header head requires its own CI rerun. Those reported execution gates remain distinguished from this reviewer's direct controls. No Meshy credits were used by the reviewer; the paid-budget authorization request remains separate.

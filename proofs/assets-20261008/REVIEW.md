@@ -18,16 +18,18 @@ No Meshy generation credits were spent.
 | Cancellation and process ownership | Worked: owned tree/grandchild terminated within 0.797 s in independent measurement; unrelated control process completed |
 | Receiving receipt for another job/asset, stale receipt, failed spawn | Worked: rejected or terminal failure; no stale-file success fallback |
 | Schema generation during an active asset job | Worked: row/connection/lease preserved by disposable subprocess generation |
-| Clean test environment without plugin preloading | Worked: 26 focused tests after fixture isolation repair |
+| Clean test environment without plugin preloading | Worked: 29 focused tests after fixture isolation repair |
 
-Validation: 292 Python tests passed, seven pre-existing GPU generation tests
-excluded by repository policy; 26 focused asset tests; 21 TypeScript tests and
+Validation: 295 Python tests passed, seven pre-existing GPU generation tests
+excluded by repository policy; 29 focused asset tests; 21 TypeScript tests and
 typecheck; fatal lint; OpenAPI drift and capability-graph checks. Hosted CI is
 recorded separately once available. Tests include deterministic provider stubs
 and real SQLite/process/HTTP/browser/Blender/Unreal execution; paid provider
 submission stubs are not counted as live Meshy generation.
 
 Original failures remain in this bundle and the independent review:
+
+- malformed Origin/Host headers escaped parsing or were accepted; validated local authority parsing now contains all three retained controls;
 
 - malformed GLB shapes were accepted or escaped as raw exceptions; strict
   geometry/container/buffer validation now rejects them;
