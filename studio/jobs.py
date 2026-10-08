@@ -34,7 +34,7 @@ EXTERNAL_GPU_GUARD = True
 # wait). Exceeding one fails the job with E_TIMEOUT at the next checkpoint or
 # lease wait; it never triggers cloud-credit retries.
 DEADLINES = {"create": 1800, "refine": 900, "animate": 3600, "3d": 2400,
-             "unreal": 1800}
+             "unreal": 1800, "asset": 2400, "asset-unreal": 1800}
 DEFAULT_DEADLINE_S = 1800
 
 TERMINAL = ("done", "failed", "cancelled")

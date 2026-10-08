@@ -80,6 +80,27 @@ class BeastStudioClient:
     def recipes(self) -> List[Dict[str, str]]:
         return self._get("/api/recipes")
 
+    def asset_tools(self) -> Dict[str, Any]:
+        return self._get("/api/assets/tools")
+
+    def meshy_tasks(self) -> Dict[str, Any]:
+        return self._get("/api/assets/meshy-tasks")
+
+    def upload_asset(self, data: str) -> Dict[str, Any]:
+        return self._post("/api/assets/upload", {"data": data})
+
+    def prepare_asset(self, *, source: str = "local", file: str = "",
+                      task_id: str = "", task_type: str = "image-to-3d",
+                      max_triangles: int = 30000, allow_cloud: bool = False,
+                      max_credits: int = 0, idempotency_key: Optional[str] = None) -> Dict[str, Any]:
+        headers = {"Idempotency-Key": idempotency_key} if idempotency_key else None
+        return self._post("/api/assets/prepare", {"source": source, "file": file,
+            "task_id": task_id, "task_type": task_type, "max_triangles": max_triangles,
+            "allow_cloud": allow_cloud, "max_credits": max_credits}, headers=headers)
+
+    def import_asset_unreal(self, file: str) -> Dict[str, Any]:
+        return self._post("/api/assets/unreal", {"file": file})
+
     def upload(self, name: str, data: str) -> Dict[str, Any]:
         """`data` is a dataURL or raw base64 string."""
         return self._post("/api/upload", {"name": name, "data": data})

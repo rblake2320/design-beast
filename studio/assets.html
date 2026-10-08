@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3D assets · Beast Studio</title>
+<script type="module" src="/asset-viewer/model-viewer.min.js"></script>
+<style>
+:root{color-scheme:dark;--bg:#100e0a;--surface:#191611;--line:#494136;--text:#ece5d8;--muted:#b7ac9a;--accent:#f5a623;--focus:#4fd8e0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,sans-serif}a{color:var(--focus)}
+header{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.3rem 2rem;border-bottom:1px solid var(--line)}
+header a{text-decoration:none}h1{font-size:1.25rem;margin:0}h2{font-size:1.15rem;margin:0 0 .7rem}p{margin:.4rem 0 1rem;color:var(--muted);max-width:65ch}
+main{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(300px,1fr);gap:2rem;max-width:1450px;margin:auto;padding:2rem}
+.viewer{min-width:0}model-viewer{width:100%;height:540px;background:#242019;border:1px solid var(--line)}
+.empty{min-height:540px;border:1px solid var(--line);display:grid;place-content:center;text-align:center;padding:2rem}.empty h2{font-size:1.8rem}
+.empty[hidden],model-viewer[hidden]{display:none}.sources{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+button,input,select{font:inherit;border-radius:4px;border:1px solid var(--line);background:var(--surface);color:var(--text);min-height:44px;padding:.6rem .8rem}
+button{cursor:pointer}button:hover:not(:disabled){border-color:var(--focus)}button[aria-selected="true"]{border-color:var(--accent);color:var(--accent)}
+button:disabled{opacity:.5;cursor:wait}.primary{background:var(--accent);color:#18120a;border-color:var(--accent);font-weight:700;width:100%;margin-top:1rem}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+label{display:block;margin:.9rem 0 .4rem;font-size:.9rem;font-weight:600}input:not([type=checkbox]),select{width:100%}
+.check{display:flex;align-items:flex-start;gap:.6rem;font-weight:400}.check input{min-height:24px;width:24px;flex:none}
+section+section{margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--line)}#error{color:#ffaca3;white-space:pre-wrap}#status{min-height:1.5em;color:var(--muted)}
+#tools{font-size:.8rem;color:var(--muted)}#candidates{display:flex;gap:.8rem;margin:1rem 0;overflow-x:auto}#candidates button{width:140px;flex:none;padding:.3rem}
+#candidates img{width:100%;display:block}#details{color:var(--muted);font-size:.9rem}#downloads{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem}
+.actions{display:flex;gap:1rem;align-items:center;margin-top:1.5rem}.actions button{flex:1}#cancel{margin-top:.8rem;width:100%}.note{font-size:.85rem}
+@media(max-width:800px){header{padding:1rem}main{grid-template-columns:1fr;padding:1rem;gap:1.5rem}model-viewer,.empty{height:360px;min-height:360px}.controls{grid-row:1}.viewer{grid-row:2}}
+</style></head><body>
+<!-- THESIS: one static asset travels through inspection and explicit handoffs.
+OWN-WORLD: extend Studio's warm dark production surface, amber actions and cyan links.
+STORY: choose a source, inspect prepared candidates, download or import the selected asset.
+FIRST VIEWPORT: source controls beside a large orbitable asset viewport; local upload is default.
+FORM: fixed task flow inside the established Studio identity; no visual-world replacement. -->
+<header><a href="/">Beast Studio</a><h1>3D assets</h1><span id="tools">Checking tools…</span></header>
+<main>
+<div class="viewer">
+ <div class="empty" id="empty"><h2>Bring an asset to life</h2><p>Prepare a static GLB or retrieve a finished Meshy task.<br>Inspect it here, then send your selection to Unreal 5.8.</p></div>
+ <model-viewer id="model" hidden camera-controls touch-action="pan-y" shadow-intensity="1" alt="Prepared static 3D asset. Drag to orbit, scroll to zoom."></model-viewer>
+ <div id="candidates" aria-label="Prepared candidates"></div>
+ <div id="details"></div><div id="downloads"></div>
+ <div class="actions"><button id="unreal" disabled>Import selection into Unreal 5.8</button></div>
+ <p class="note">Imports use a dedicated BeastAssets workspace. Confirm appearance and reuse rights before importing. Rigs and animation use a separate workflow.</p>
+</div>
+<div class="controls">
+ <section><h2>Choose your source</h2>
+ <div class="sources" role="tablist" aria-label="Asset source">
+ <button role="tab" aria-selected="true" data-source="local">Local GLB</button>
+ <button role="tab" aria-selected="false" data-source="meshy-task">Meshy task</button>
+ <button role="tab" aria-selected="false" data-source="meshy-generate">Image → Meshy</button></div>
+ <div id="local"><label for="glb">Static GLB · up to 50 MiB</label><input type="file" id="glb" accept=".glb"><p class="note">Blender preserves scale, embeds textures, and prepares GLB, FBX, editable source, and a preview.</p></div>
+ <div id="meshy-task" hidden><button id="refresh">Load existing Meshy tasks</button><label for="task">Finished task</label><select id="task"><option value="">Load tasks to choose an asset</option></select><p class="note">Retrieval uses existing output. It does not generate, remesh, or consume generation credits.</p></div>
+ <div id="meshy-generate" hidden><label for="image">Concept image</label><input id="image" type="file" accept="image/png,image/jpeg,image/webp"><p>Meshy 7.1 · four textured draft candidates · <strong>120 credits</strong>.</p><label class="check"><input id="cloud" type="checkbox">I permit sending this image to Meshy.</label><label class="check"><input id="spend" type="checkbox">I approve this 120-credit batch. These drafts require visual review.</label><p class="note">A failed or uncertain submission is never automatically retried. Known task IDs remain available for retrieval.</p></div>
+ <label for="budget">Triangle budget per candidate</label><select id="budget"><option value="10000">10,000 · mobile prop</option><option value="30000" selected>30,000 · general asset</option><option value="100000">100,000 · desktop hero</option></select>
+ <button class="primary" id="prepare">Prepare local asset</button><button id="cancel" hidden>Cancel local job</button>
+ </section>
+ <section><h2>Job status</h2><div id="status" role="status" aria-live="polite">Choose a source to begin.</div><p id="error" role="alert"></p><div id="receipt"></div></section>
+</div></main>
+<script>
+const $=id=>document.getElementById(id);let source='local',run='',selected='',timer=null,busy=false;
+const safeError=e=>{$('error').textContent=e.message||String(e)};
+async function api(path,body,key){const response=await fetch(path,{method:body?'POST':'GET',headers:{'Content-Type':'application/json',...(key?{'Idempotency-Key':key}:{})},body:body?JSON.stringify(body):undefined});const value=await response.json();if(!response.ok||value.error)throw Error(value.error||'Request failed');return value;}
+function setBusy(value){busy=value;$('prepare').disabled=value;$('cancel').hidden=!value;$('unreal').disabled=value||!selected;}
+document.querySelectorAll('[data-source]').forEach(button=>button.onclick=()=>{if(busy)return;source=button.dataset.source;document.querySelectorAll('[data-source]').forEach(b=>b.setAttribute('aria-selected',String(b===button)));['local','meshy-task','meshy-generate'].forEach(id=>$(id).hidden=id!==source);$('prepare').textContent=source==='local'?'Prepare local asset':source==='meshy-task'?'Retrieve and prepare asset':'Generate 4 drafts · 120 credits';$('error').textContent='';});
+function dataURL(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(Error('File could not be read'));reader.readAsDataURL(file);});}
+$('refresh').onclick=async()=>{try{$('refresh').disabled=true;const out=await api('/api/assets/meshy-tasks');$('task').replaceChildren();const empty=document.createElement('option');empty.value='';empty.textContent='Choose a finished task';$('task').append(empty);out.tasks.filter(t=>t.status==='SUCCEEDED').forEach(t=>{const option=document.createElement('option');option.value=t.id;option.dataset.type=t.type;option.textContent=`${t.type} · ${t.id}`;$('task').append(option);});if($('task').options.length===1)$('status').textContent='No finished Meshy tasks are available. Use a local GLB or approve a new batch.';}catch(e){safeError(e)}finally{$('refresh').disabled=false;}};
+$('prepare').onclick=async()=>{try{$('error').textContent='';setBusy(true);let body={source,max_triangles:Number($('budget').value)};
+if(source==='local'){const file=$('glb').files[0];if(!file)throw Error('Choose a GLB first');if(file.size>50*1024*1024)throw Error('GLB exceeds 50 MiB');const uploaded=await api('/api/assets/upload',{data:(await dataURL(file)).split(',')[1]});body.file=uploaded.file;}
+else if(source==='meshy-task'){if(!$('task').value)throw Error('Choose a finished task');body.task_id=$('task').value;body.task_type=$('task').selectedOptions[0].dataset.type;}
+else{const file=$('image').files[0];if(!file)throw Error('Choose a concept image');if(!$('cloud').checked||!$('spend').checked)throw Error('Confirm image upload and the 120-credit batch');if(file.size>10*1024*1024)throw Error('Image exceeds 10 MiB');const uploaded=await api('/api/upload',{name:file.name,data:await dataURL(file)});body.file=uploaded.file;body.allow_cloud=true;body.max_credits=120;}
+const job=await api('/api/assets/prepare',body,crypto.randomUUID());watch(job.id);}catch(e){safeError(e);setBusy(false);}};
+function link(label,path){const a=document.createElement('a');a.textContent=label;a.href=path;a.download='';return a;}
+function choose(id,candidate){selected=`runs/${id}/${candidate.file}`;$('empty').hidden=true;$('model').hidden=false;$('model').src='/'+selected;$('model').poster=`/runs/${id}/${candidate.preview}`;$('unreal').disabled=busy;const r=candidate.receipt||{};$('details').textContent=`${(r.triangles||0).toLocaleString()} triangles · ${r.material_slots||0} material slots · Blender ${r.blender_version||''} · meters`;
+const folder=candidate.file.slice(0,candidate.file.lastIndexOf('/')+1);$('downloads').replaceChildren(...['model.glb','asset.fbx','asset.blend','preview.png','asset-receipt.json'].map(name=>link(name,`/runs/${id}/${folder}${name}`)));document.querySelectorAll('#candidates button').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.index)===candidate.i)));}
+function hydrateSelection(asset){selected=asset.reference;$('empty').hidden=true;$('model').hidden=false;$('model').src=asset.url;$('model').poster=asset.preview||'';const r=asset.blender||{};$('details').textContent=r.triangles?`${r.triangles.toLocaleString()} triangles · ${r.material_slots} material slots · Blender ${r.blender_version} · meters`:'Selected static asset';$('downloads').replaceChildren(...asset.downloads.map(item=>link(item.label,item.url)));$('unreal').disabled=busy;}
+async function render(){try{const job=await api('/api/run/'+encodeURIComponent(run));$('status').textContent=job.asset_stage||job.phase;const active=!['done','failed','cancelled'].includes(job.phase);setBusy(active);if(job.error)$('error').textContent=job.error;
+const candidates=job.candidates||[];if(candidates.length!==$('candidates').children.length){$('candidates').replaceChildren(...candidates.map(c=>{const button=document.createElement('button');button.dataset.index=c.i;button.setAttribute('aria-label',`Inspect candidate ${c.i}`);const image=document.createElement('img');image.src=`/runs/${run}/${c.preview}`;image.alt=`Candidate ${c.i} rendered preview`;button.append(image,document.createTextNode(`Candidate ${c.i}`));button.onclick=()=>choose(run,c);return button;}));}
+if(candidates.length&&!selected)choose(run,candidates[0]);if(job.selected_asset&&!selected)hydrateSelection(job.selected_asset);if(job.unreal_receipt){const r=job.unreal_receipt;$('receipt').replaceChildren(document.createTextNode(`${r.meshes.length} mesh(es) loaded in UE ${r.engine_version}. `),link('Import receipt',`/runs/${run}/unreal-receipt.json`));}if(!active){clearInterval(timer);timer=null;} }catch(e){safeError(e);clearInterval(timer);setBusy(false);}}
+function watch(id){clearInterval(timer);run=id;selected='';$('candidates').replaceChildren();$('downloads').replaceChildren();$('receipt').replaceChildren();history.replaceState(null,'','?run='+encodeURIComponent(id));render();timer=setInterval(render,1000);}
+$('cancel').onclick=async()=>{try{await api('/api/job/'+encodeURIComponent(run)+'/cancel',{});$('status').textContent='Cancellation requested. Provider jobs already submitted may continue on Meshy.';}catch(e){safeError(e)}};
+$('unreal').onclick=async()=>{try{setBusy(true);const job=await api('/api/assets/unreal',{file:selected});watch(job.id);}catch(e){safeError(e);setBusy(false)}};
+api('/api/assets/tools').then(t=>{$('tools').textContent=`Meshy ${t.meshy?'configured':'needs key'} · Blender ${t.blender?'installed':'unavailable'} · Unreal 5.8 ${t.unreal58?'installed':'unavailable'}`;}).catch(safeError);
+const saved=new URLSearchParams(location.search).get('run');if(saved)watch(saved);
+addEventListener('beforeunload',()=>clearInterval(timer));
+</script></body></html>

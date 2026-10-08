@@ -1,0 +1,8 @@
+{
+  "source": "control.glb",
+  "credits_spent": 0,
+  "checks": [],
+  "outcome": "Failed",
+  "error": "blender.log failed (exit 1); see retained log",
+  "elapsed_seconds": 3.141
+}

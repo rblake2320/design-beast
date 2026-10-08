@@ -1,0 +1,4 @@
+{"scenario": "asset-list", "validation": {"accepted": false, "error_type": "AssetError", "error": "Malformed GLB structure or geometry"}, "upload_status": 400, "upload_body": "{\"error\":\"Malformed GLB structure or geometry\"}"}
+{"scenario": "meshes-string", "validation": {"accepted": false, "error_type": "AssetError", "error": "GLB has no meshes"}, "upload_status": 400, "upload_body": "{\"error\":\"GLB has no meshes\"}"}
+{"scenario": "empty-primitives", "validation": {"accepted": false, "error_type": "AssetError", "error": "GLB has no embedded geometry buffer"}, "upload_status": 400, "upload_body": "{\"error\":\"GLB has no embedded geometry buffer\"}"}
+{"scenario": "buffers-null", "validation": {"accepted": false, "error_type": "AssetError", "error": "Malformed GLB structure or geometry"}, "upload_status": 400, "upload_body": "{\"error\":\"Malformed GLB structure or geometry\"}"}

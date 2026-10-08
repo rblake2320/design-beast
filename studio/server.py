@@ -715,10 +715,11 @@ def _status(run_dir: Path, **updates):
         try:
             job = jobs.get(run_dir.name) or {}
             artifacts = [
-                path.name for path in sorted(run_dir.iterdir())
+                path.relative_to(run_dir).as_posix() for path in sorted(run_dir.rglob("*"))
                 if path.is_file() and path.name not in ("status.json", "manifest.json")
-                and path.suffix.lower() in (".png", ".jpg", ".jpeg", ".webp",
-                                            ".mp4", ".wav", ".glb", ".fbx")
+                and (path.suffix.lower() in (".png", ".jpg", ".jpeg", ".webp",
+                                            ".mp4", ".wav", ".glb", ".fbx", ".blend")
+                     or path.name in ("asset-receipt.json", "blender-receipt.json", "unreal-receipt.json"))
             ]
             candidate_meta = [
                 {key: cand[key] for key in
@@ -737,7 +738,8 @@ def _status(run_dir: Path, **updates):
                       if "i" in row and "seed" in row},
                 workflow=f"{job.get('kind') or view.get('kind', 'unknown')}:v1",
                 outcome={"phase": view.get("phase"), "error": view.get("error"),
-                         "trusted": view.get("phase") == "done"},
+                         "trusted": view.get("phase") == "done" and job.get("kind") != "asset",
+                         **({"review_required": True} if job.get("kind") == "asset" else {})},
                 environment=env_snapshot.load(run_dir),
             )
             manifest_doc = json.loads(
@@ -1833,6 +1835,10 @@ def list_runs():
     out.sort(key=lambda r: r["id"], reverse=True)  # ids are timestamped
     return out[:30]
 
+
+import asset_api  # noqa: E402 — bind after the authoritative server helpers exist
+asset_api.register(app, runs=RUNS, uploads=UPLOADS, resolve=_resolve,
+                   new_run=_new_run, status=_status)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8787)

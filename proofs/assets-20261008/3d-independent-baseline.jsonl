@@ -1,0 +1,3 @@
+{"scenario": "stale-receipt", "phase": "done", "cancel_requested": 0, "tool_calls": ["blender", "ue"], "thread_errors": [], "accepted_invalid_glb": true}
+{"scenario": "cancel-after-blender", "phase": "cancelled", "cancel_requested": 1, "tool_calls": ["blender", "ue"], "thread_errors": [], "accepted_invalid_glb": true}
+{"scenario": "spawn-failure", "phase": "running", "cancel_requested": 0, "tool_calls": ["blender"], "thread_errors": ["FileNotFoundError"], "accepted_invalid_glb": true}

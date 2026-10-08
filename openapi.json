@@ -43,6 +43,78 @@
         "title": "AnimateReq",
         "type": "object"
       },
+      "AssetPrepare": {
+        "properties": {
+          "allow_cloud": {
+            "default": false,
+            "title": "Allow Cloud",
+            "type": "boolean"
+          },
+          "file": {
+            "default": "",
+            "maxLength": 500,
+            "title": "File",
+            "type": "string"
+          },
+          "max_credits": {
+            "default": 0,
+            "maximum": 120.0,
+            "minimum": 0.0,
+            "title": "Max Credits",
+            "type": "integer"
+          },
+          "max_triangles": {
+            "default": 30000,
+            "maximum": 100000.0,
+            "minimum": 100.0,
+            "title": "Max Triangles",
+            "type": "integer"
+          },
+          "source": {
+            "default": "local",
+            "enum": [
+              "local",
+              "meshy-task",
+              "meshy-generate"
+            ],
+            "title": "Source",
+            "type": "string"
+          },
+          "task_id": {
+            "default": "",
+            "maxLength": 64,
+            "pattern": "^[a-zA-Z0-9-]*$",
+            "title": "Task Id",
+            "type": "string"
+          },
+          "task_type": {
+            "default": "image-to-3d",
+            "enum": [
+              "image-to-3d",
+              "text-to-3d"
+            ],
+            "title": "Task Type",
+            "type": "string"
+          }
+        },
+        "title": "AssetPrepare",
+        "type": "object"
+      },
+      "AssetUpload": {
+        "properties": {
+          "data": {
+            "maxLength": 73400320,
+            "minLength": 1,
+            "title": "Data",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "AssetUpload",
+        "type": "object"
+      },
       "BackendReq": {
         "properties": {
           "action": {
@@ -267,6 +339,21 @@
         "title": "TtsReq",
         "type": "object"
       },
+      "UnrealImport": {
+        "properties": {
+          "file": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "File",
+            "type": "string"
+          }
+        },
+        "required": [
+          "file"
+        ],
+        "title": "UnrealImport",
+        "type": "object"
+      },
       "UploadReq": {
         "properties": {
           "data": {
@@ -388,6 +475,164 @@
           }
         },
         "summary": "Animate"
+      }
+    },
+    "/api/assets/meshy-tasks": {
+      "get": {
+        "operationId": "meshy_tasks_api_assets_meshy_tasks_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Meshy Tasks"
+      }
+    },
+    "/api/assets/prepare": {
+      "post": {
+        "operationId": "prepare_asset_api_assets_prepare_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssetPrepare"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Prepare Asset"
+      }
+    },
+    "/api/assets/tools": {
+      "get": {
+        "operationId": "asset_tools_api_assets_tools_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Asset Tools"
+      }
+    },
+    "/api/assets/unreal": {
+      "post": {
+        "operationId": "unreal_import_api_assets_unreal_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnrealImport"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Unreal Import"
+      }
+    },
+    "/api/assets/upload": {
+      "post": {
+        "operationId": "upload_asset_api_assets_upload_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssetUpload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Upload Asset"
       }
     },
     "/api/backend": {

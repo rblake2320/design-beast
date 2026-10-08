@@ -105,6 +105,33 @@ export class BeastStudioClient {
     return this.get("/api/recipes");
   }
 
+  assetTools(): Promise<Record<string, unknown>> {
+    return this.get("/api/assets/tools");
+  }
+
+  meshyTasks(): Promise<Record<string, unknown>> {
+    return this.get("/api/assets/meshy-tasks");
+  }
+
+  uploadAsset(data: string): Promise<Record<string, unknown>> {
+    return this.post("/api/assets/upload", { data });
+  }
+
+  prepareAsset(options: {
+    source?: "local" | "meshy-task" | "meshy-generate"; file?: string;
+    task_id?: string; task_type?: "image-to-3d" | "text-to-3d";
+    max_triangles?: number; allow_cloud?: boolean; max_credits?: number;
+    idempotencyKey?: string;
+  }): Promise<Record<string, unknown>> {
+    const { idempotencyKey, ...body } = options;
+    return this.post("/api/assets/prepare", body,
+      idempotencyKey ? { "Idempotency-Key": idempotencyKey } : undefined);
+  }
+
+  importAssetUnreal(file: string): Promise<Record<string, unknown>> {
+    return this.post("/api/assets/unreal", { file });
+  }
+
   /** `data` is a dataURL or raw base64 string. */
   upload(name: string, data: string): Promise<{ file: string } | { error: string }> {
     return this.post("/api/upload", { name, data });
