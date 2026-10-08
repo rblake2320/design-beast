@@ -101,7 +101,7 @@
     border-color:var(--amber); color:var(--ink); font:700 .95rem var(--disp);
     letter-spacing:.12em; text-transform:uppercase; }
   .primary:hover { background:var(--amber-hot); color:var(--ink);
-    box-shadow:0 0 22px rgba(245,166,35,.35); }
+    box-shadow:0 8px 22px rgba(0,0,0,.35); }
   .row { display:flex; gap:.5rem; align-items:stretch; }
   .hint { color:var(--faint); font-size:.68rem; margin-top:.45rem; line-height:1.5; }
 
@@ -158,7 +158,7 @@
   .cell .sc { position:absolute; top:.45rem; left:.45rem; background:rgba(8,7,5,.85);
     color:var(--cyan); font-weight:600; font-size:.78rem; padding:.1rem .5rem;
     border:1px solid rgba(79,216,224,.35); }
-  .cell.win { border-color:var(--amber); box-shadow:0 0 18px rgba(245,166,35,.18); }
+  .cell.win { border-color:var(--amber); box-shadow:0 6px 18px rgba(0,0,0,.18); }
   .cell.win .sc { color:var(--amber-hot); border-color:var(--amber-dim); }
   .cell.win::after { content:'WINNER'; position:absolute; top:.5rem; right:-1.6rem;
     background:var(--amber); color:var(--ink); font-size:.6rem; font-weight:700;
@@ -179,7 +179,7 @@
 
   /* ---------- right rail ---------- */
   .led { width:9px; height:9px; border-radius:50%; background:var(--faint); flex:none; }
-  .led.on { background:var(--green); box-shadow:0 0 8px rgba(105,217,126,.7); }
+  .led.on { background:var(--green); }
   .led.warm { background:var(--amber); animation:blink 1s steps(2) infinite; }
   .brow { display:flex; align-items:center; gap:.6rem; padding:.5rem 0;
     border-bottom:1px dashed var(--line); font-size:.76rem; }
@@ -199,7 +199,7 @@
 <body>
 <header>
   <div class="wordmark"><span class="ox">🦬</span>BEAST <em>STUDIO</em></div>
-  <div class="tagline">local production floor · RTX 5090 · nothing leaves this machine</div>
+  <div class="tagline">local production floor · hosted engines send selected inputs off device</div>
   <div id="phase">standing by</div>
 </header>
 
@@ -218,6 +218,7 @@
         <button id="brefine" title="FLUX Kontext local edit">🛠 refine</button>
         <button id="banimate" title="Wan 2.2 local video">🎬 motion</button>
         <button id="b3d" title="TRELLIS image-to-3D">🧊 mesh</button>
+        <a href="/assets" style="align-self:center;color:var(--cyan)">3D assets → Meshy · Blender · Unreal</a>
       </div>
       <div id="judgeout"></div>
 
@@ -527,7 +528,7 @@ async function render(id, snapshot = null) {
     stage.innerHTML = `<div class="idle"><span class="ox">🎮</span>
       <p>asset landed in Unreal</p>
       <p style="font-size:.75rem;color:var(--cyan);margin-top:.5rem">${s.ue_asset}</p></div>
-      <div class="plate">unreal · routerush</div>`;
+      <div class="plate">unreal · ${s.unreal_receipt ? '5.8 · BeastAssets' : 'RouteRush'}</div>`;
   } else if (s.glb) {
     stage.innerHTML = `<div class="idle"><span class="ox">🧊</span>
       <p>mesh ready</p></div>
@@ -564,7 +565,7 @@ async function render(id, snapshot = null) {
   if (!busy) { stopWatch(); $('go').disabled = false; loadHistory(); }
 }
 async function toUE(file) {
-  const j = await api('/api/to_ue', { file });
+  const j = await api('/api/assets/unreal', { file });
   if (j) watch(j.id);
 }
 function stageSwap(src) {

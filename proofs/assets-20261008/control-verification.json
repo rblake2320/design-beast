@@ -1,0 +1,108 @@
+{
+  "source": "control.glb",
+  "credits_spent": 0,
+  "checks": [
+    {
+      "scenario": "real Blender preparation",
+      "outcome": "Worked",
+      "receipt": {
+        "source": {
+          "bytes": 2008,
+          "sha256": "3febfc528ea286397774a46ff25c41ebd458d8a93261ab788afe9408c21cc9b7",
+          "meshes": 1,
+          "triangles": 12,
+          "units": "meters"
+        },
+        "export": {
+          "bytes": 2008,
+          "sha256": "3febfc528ea286397774a46ff25c41ebd458d8a93261ab788afe9408c21cc9b7",
+          "meshes": 1,
+          "triangles": 12,
+          "units": "meters"
+        },
+        "blender": {
+          "blender_version": "5.1.2",
+          "source_sha256": "3febfc528ea286397774a46ff25c41ebd458d8a93261ab788afe9408c21cc9b7",
+          "triangles_before": 12,
+          "triangles": 12,
+          "mesh_objects": 1,
+          "material_slots": 1,
+          "bounds_m": {
+            "min": [
+              -0.5,
+              -1.0,
+              0.0
+            ],
+            "max": [
+              0.5,
+              1.0,
+              1.0
+            ]
+          },
+          "source_bounds_m": {
+            "min": [
+              -0.5,
+              -1.0,
+              0.0
+            ],
+            "max": [
+              0.5,
+              1.0,
+              1.0
+            ]
+          },
+          "units": "meters",
+          "unit_scale": 1.0
+        }
+      }
+    },
+    {
+      "scenario": "GLB reopened in fresh Blender",
+      "outcome": "Worked",
+      "max_bounds_difference_m": 0.0
+    },
+    {
+      "scenario": "Unreal 5.8 import and asset readback",
+      "outcome": "Worked",
+      "receipt": {
+        "engine_version": "5.8.1-56057345+++UE5+Release-5.8",
+        "project": "C:/Users/techai/Documents/Codex/2026-10-04/https-github-com-rblake2320-design-beast-3/work/design-beast-3d/.beast/unreal-assets/BeastAssets.uproject",
+        "run_id": "asset-proof-003",
+        "source_sha256": "3febfc528ea286397774a46ff25c41ebd458d8a93261ab788afe9408c21cc9b7",
+        "destination": "/Game/BeastAssets/Run_asset-proof-003",
+        "meshes": [
+          {
+            "asset": "/Game/BeastAssets/Run_asset-proof-003/model/StaticMeshes/model.model",
+            "bounds_extent_cm": [
+              50.0,
+              100.0,
+              50.0
+            ],
+            "material_slots": 1,
+            "lods": 1
+          }
+        ],
+        "reloaded": true,
+        "verification_process": false
+      }
+    },
+    {
+      "scenario": "saved meshes reloaded in separate Unreal process",
+      "outcome": "Worked",
+      "meshes": [
+        {
+          "asset": "/Game/BeastAssets/Run_asset-proof-003/model/StaticMeshes/model.model",
+          "bounds_extent_cm": [
+            50.0,
+            100.0,
+            50.0
+          ],
+          "material_slots": 1,
+          "lods": 1
+        }
+      ]
+    }
+  ],
+  "outcome": "Worked",
+  "elapsed_seconds": 37.063
+}

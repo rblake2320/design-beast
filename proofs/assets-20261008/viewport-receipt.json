@@ -1,0 +1,9 @@
+{
+  "outcome": "Worked",
+  "engine_version": "5.8.1-56057345+++UE5+Release-5.8",
+  "level": "/Game/BeastAssets/Run_asset-proof-textured-001/VisualCheck_08a13817",
+  "assets": [
+    "/Game/BeastAssets/Run_asset-proof-textured-001/model/StaticMeshes/model.model"
+  ],
+  "screenshot": "unreal-viewport.png"
+}

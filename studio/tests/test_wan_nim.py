@@ -205,8 +205,12 @@ def _wait_manifest(run_dir: Path, timeout=3):
     path = run_dir / "manifest.json"
     end = time.time() + timeout
     while time.time() < end:
-        if path.exists():
+        try:
             return json.loads(path.read_text())
+        except (OSError, json.JSONDecodeError):
+            # Terminal DB state can precede the atomic manifest replacement;
+            # Windows may briefly deny readers while a replacement is pending.
+            pass
         time.sleep(0.01)
     raise AssertionError(f"manifest was not exported for {run_dir.name}")
 
