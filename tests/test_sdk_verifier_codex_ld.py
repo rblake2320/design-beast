@@ -64,7 +64,9 @@ def test_node_incomplete_required_inventory_is_rejected(tmp_path, status):
               second.replace("deadline: beta", "deadline: beta-changed"))
     fixture = tmp_path / "controls.mjs"
     fixture.write_text(header + first + broken)
-    result = subprocess.run([node, "--test", "--test-isolation=none", "--test-reporter=tap", str(fixture)], cwd=tmp_path,
+    # Direct node:test execution keeps one owned process and also works on the
+    # hosted Python job's Node version, which lacks --test-isolation.
+    result = subprocess.run([node, "--test-reporter=tap", str(fixture)], cwd=tmp_path,
                             env=verifier.isolated_test_env(), capture_output=True, text=True, timeout=20)
     (tmp_path / "incomplete.tap").write_text(result.stdout + result.stderr)
     marker = "# pass 2" if status == "renamed" else f"# {'skipped' if status == 'skip' else 'todo'} 1"
@@ -72,7 +74,7 @@ def test_node_incomplete_required_inventory_is_rejected(tmp_path, status):
     with pytest.raises(RuntimeError, match="inventory"):
         verifier.verify_node_deadlines(result.stdout, required)
     fixture.write_text(source)
-    result = subprocess.run([node, "--test", "--test-isolation=none", "--test-reporter=tap", str(fixture)], cwd=tmp_path,
+    result = subprocess.run([node, "--test-reporter=tap", str(fixture)], cwd=tmp_path,
                             env=verifier.isolated_test_env(), capture_output=True, text=True, timeout=20)
     (tmp_path / "complete.tap").write_text(result.stdout + result.stderr)
     assert result.returncode == 0, result.stdout + result.stderr
