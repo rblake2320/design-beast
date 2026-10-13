@@ -13,6 +13,7 @@ does not itself enforce (backend-sharing etiquette, VRAM contention).
 """
 from __future__ import annotations
 
+import copy
 import ipaddress
 import json
 import math
@@ -31,6 +32,7 @@ from urllib3.connectionpool import HTTPConnectionPool, HTTPSConnectionPool
 from urllib3.exceptions import ConnectTimeoutError, NewConnectionError
 from urllib3.poolmanager import ProxyManager
 from urllib3.util.connection import allowed_gai_family
+from urllib3.util.retry import Retry
 
 from .models import AnimateDuration, AnimateQuality, AspectRatio, BackendAction, ImageModel
 
@@ -262,6 +264,38 @@ class _TrackedHTTPSPool(HTTPSConnectionPool):
 
 
 _TRACKED_POOLS = {"http": _TrackedHTTPPool, "https": _TrackedHTTPSPool}
+
+
+class _DeadlineRetry(Retry):
+    """The caller's urllib3 retry policy, unchanged, except that no delay may
+    outlast the wait deadline. A delay that fits is slept as usual; one that
+    would cross the deadline expires the wait at once instead of sleeping
+    (Retry.new() keeps this class across attempts)."""
+
+    def sleep(self, response=None):
+        delay = 0.0
+        if self.respect_retry_after_header and response:
+            delay = self.get_retry_after(response) or 0.0
+        if not delay:
+            delay = max(0.0, self.get_backoff_time())
+        scope = getattr(_ACTIVE_SCOPE, "scope", None)
+        if scope is None:
+            return super().sleep(response)
+        if delay >= scope.remaining():  # raises once the deadline has passed
+            scope.expire()
+            raise socket.timeout(f"retry delay {delay:.3f}s exceeds the wait deadline")
+        if delay:
+            time.sleep(delay)
+
+
+def _deadline_retries(retries, prefix):
+    if type(retries) is not Retry:
+        raise BeastStudioError(
+            f"wait(timeout=...) cannot bound the custom retry policy {type(retries).__name__} mounted at "
+            f"{prefix!r}; nothing was sent. Use wait() without a timeout, or urllib3's Retry.")
+    bounded = copy.copy(retries)
+    bounded.__class__ = _DeadlineRetry
+    return bounded
 
 
 class _DeadlineAdapter(requests.adapters.HTTPAdapter):
@@ -564,12 +598,13 @@ class BeastStudioClient:
                     f"wait(timeout=...) cannot enforce its deadline through the custom transport adapter "
                     f"{type(adapter).__name__} mounted at {prefix!r}; nothing was sent. Use wait() without "
                     "a timeout, or a standard requests HTTPAdapter.")
+            _deadline_retries(adapter.max_retries, prefix)  # refuse before anything is built or sent
         private = requests.Session()
         private.adapters.clear()
         for prefix, adapter in base.adapters.items():
             private.mount(prefix, _DeadlineAdapter(
                 pool_connections=adapter._pool_connections, pool_maxsize=adapter._pool_maxsize,
-                max_retries=adapter.max_retries, pool_block=adapter._pool_block))
+                max_retries=_deadline_retries(adapter.max_retries, prefix), pool_block=adapter._pool_block))
         for name in ("headers", "cookies", "auth", "proxies", "hooks", "params",
                      "verify", "cert", "trust_env", "max_redirects"):
             setattr(private, name, getattr(base, name))
