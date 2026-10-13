@@ -120,3 +120,31 @@ def test_same_name_uploads_keep_both_originals(base_url):
     assert body_a["file"].endswith("_same.png") and body_b["file"].endswith("_same.png")
     assert (uploads / body_a["file"]).read_bytes() == first
     assert (uploads / body_b["file"]).read_bytes() == second
+
+
+def test_alphabet_invalid_prefix_is_422_and_writes_nothing(base_url):
+    base, uploads = base_url
+    before = _files(uploads)
+    payload = "!!!!" + base64.b64encode(_png_bytes((9, 9, 9))).decode("ascii")
+    status, body = _post(base, {"name": "owned-invalid.png", "data": payload})
+    assert status == 422
+    assert body["code"] == server.E_VALIDATION
+    assert _files(uploads) == before
+
+
+def test_non_ascii_data_is_422_and_writes_nothing(base_url):
+    base, uploads = base_url
+    before = _files(uploads)
+    status, body = _post(base, {"name": "owned-unicode.png", "data": "\u2603"})
+    assert status == 422
+    assert body["code"] == server.E_VALIDATION
+    assert _files(uploads) == before
+
+
+def test_data_url_with_valid_base64_is_still_accepted(base_url):
+    base, uploads = base_url
+    raw = _png_bytes((0, 200, 0))
+    data_url = "data:image/png;base64," + base64.b64encode(raw).decode("ascii")
+    status, body = _post(base, {"name": "owned-dataurl.png", "data": data_url})
+    assert status == 200
+    assert (uploads / body["file"]).read_bytes() == raw
