@@ -6,6 +6,7 @@ Create: brief → expand → N candidates → judge → graded winner.
 Plus: upload/drop any image → judge (free) / refine (ref edit) / animate (i2v).
 """
 import base64
+import binascii
 import http.client
 import ipaddress
 import io
@@ -1166,20 +1167,24 @@ class UploadReq(BaseModel):
 
 @app.post("/api/upload")
 def upload(req: UploadReq):
-    raw = base64.b64decode(req.data.split(",")[-1])
+    try:
+        raw = base64.b64decode(req.data.split(",")[-1])
+    except (binascii.Error, ValueError):
+        return JSONResponse({"error": "data is not valid base64",
+                             "code": E_VALIDATION}, 422)
     if len(raw) > 30 * 1024 * 1024:
         return JSONResponse({"error": "upload exceeds 30MB limit",
                              "code": E_VALIDATION}, 413)
+    # Verify the image in memory first so a rejected upload never touches disk.
+    try:
+        from PIL import Image
+        Image.open(io.BytesIO(raw)).verify()
+    except Exception:  # noqa: BLE001
+        return JSONResponse({"error": "not a decodable image",
+                             "code": E_VALIDATION}, 422)
     safe = re.sub(r"[^\w.\-]", "_", req.name) or "upload.png"
     fname = f"{time.strftime('%H%M%S')}_{safe}"
     (UPLOADS / fname).write_bytes(raw)
-    try:
-        from PIL import Image
-        Image.open(UPLOADS / fname).verify()
-    except Exception:  # noqa: BLE001
-        (UPLOADS / fname).unlink(missing_ok=True)
-        return JSONResponse({"error": "not a decodable image",
-                             "code": E_VALIDATION}, 422)
     return {"file": fname}
 
 
