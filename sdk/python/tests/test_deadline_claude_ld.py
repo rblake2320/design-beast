@@ -327,3 +327,49 @@ def test_deadline_reaps_a_proxy_connect_tunnel_that_drips_headers():
         proxy.shutdown()
         proxy.server_close()
         session.close()
+
+
+def test_deadline_bounds_a_stalled_name_lookup_without_accumulating_threads(monkeypatch):
+    """getaddrinfo cannot be interrupted: the caller must still return at its deadline, repeated waits must share one
+    in-flight lookup, and that lookup must end when the resolver answers. The stall is injected into this process's
+    resolver for a reserved .invalid name only; no DNS query is sent."""
+    import socket
+
+    release = threading.Event()
+    entered = threading.Event()
+    original = socket.getaddrinfo
+
+    def stalled(host, *args, **kwargs):
+        if host == "owned-deadline.invalid":
+            entered.set()
+            release.wait(10)
+            raise socket.gaierror("owned resolver fixture released")
+        return original(host, *args, **kwargs)
+
+    monkeypatch.setattr(socket, "getaddrinfo", stalled)
+    client = BeastStudioClient("http://owned-deadline.invalid:9")
+    client.session.trust_env = False
+    try:
+        for _ in range(3):
+            box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=0.3, poll_interval=0.05))
+            assert finished and isinstance(box.get("error"), BeastStudioError), box
+            assert "terminal phase within" in str(box["error"]), box["error"]
+            assert elapsed < 0.3 + SLACK, elapsed
+        assert entered.is_set(), "fault was not injected: the resolver was never entered"
+        assert sdk_threads().count("beast-wait-resolver") <= 1, sdk_threads()
+    finally:
+        release.set()
+    limit = time.monotonic() + 1.0
+    while "beast-wait-resolver" in sdk_threads() and time.monotonic() < limit:
+        time.sleep(0.02)
+    assert "beast-wait-resolver" not in sdk_threads(), sdk_threads()
+
+
+def test_bounded_lookup_keeps_multi_address_fallback(studio):
+    """Positive control: 'localhost' may resolve to ::1 first; the bounded connect must fall back to 127.0.0.1."""
+    routes, url = studio
+    routes["/api/events/"] = broken_sse
+    routes["/api/run/"] = json_reply({"phase": "done"})
+    local = url.replace("127.0.0.1", "localhost")
+    box, elapsed, finished = bounded(lambda: BeastStudioClient(local).wait("r1", timeout=5, poll_interval=0.05))
+    assert finished and box.get("value") == {"phase": "done"}, box
