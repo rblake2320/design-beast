@@ -16,7 +16,10 @@ from __future__ import annotations
 import ipaddress
 import json
 import math
+import os
 import socket
+import subprocess
+import sys
 import threading
 import time
 from typing import Any, Dict, Iterator, List, Optional
@@ -57,13 +60,16 @@ def _bounded_lines(response, deadline):
 
 
 class _DeadlineScope:
-    """Sockets a bounded wait is blocked on. When the deadline passes they are
-    shut down, so a peer that trickles headers or body cannot keep a read (or a
-    thread) alive after wait() has returned."""
+    """Everything one bounded wait() can block on. At the deadline every
+    connection's socket is shut down and the resolver child is killed, so
+    nothing the call started outlives it. All connections come from the wait's
+    private pool, so none belongs to another caller."""
 
     def __init__(self, timeout):
         self._lock = threading.Lock()
-        self._sockets = set()
+        self._sockets = []
+        self._child = None
+        self.addresses = {}
         self.expired = False
         self.deadline = time.monotonic() + timeout
 
@@ -73,40 +79,71 @@ class _DeadlineScope:
             raise socket.timeout("wait deadline reached")
         return left
 
-    def add(self, sock):
+    def add(self, connection, sock):
+        entry = (connection, sock, sock.fileno())
         with self._lock:
             if not self.expired:
-                self._sockets.add(sock)
+                self._sockets.append(entry)
                 return
-        _shutdown(sock)
+        _reap(entry)
+
+    def discard(self, sock):
+        """Forget a socket the caller closed itself, so its handle is never touched again."""
+        with self._lock:
+            self._sockets = [entry for entry in self._sockets if entry[1] is not sock]
+
+    def attach_child(self, child):
+        with self._lock:
+            self._child = child
+            if not self.expired:
+                return
+        child.kill()
 
     def expire(self):
         with self._lock:
             self.expired = True
-            sockets, self._sockets = self._sockets, set()
-        for sock in sockets:
-            _shutdown(sock)
+            sockets, child = list(self._sockets), self._child
+        for entry in sockets:
+            _reap(entry)
+        if child is not None:
+            child.kill()
+
+    def close(self):
+        with self._lock:
+            self._sockets = []
 
 
-def _shutdown(sock):
+def _reap(entry):
+    """Shut down the live socket of a registered connection. TLS wrapping
+    detaches the raw socket object and hands its handle to an SSLSocket; while
+    that connect() is still in progress the handle is shut down directly,
+    through a non-owning wrapper that is detached again, never closed."""
+    connection, raw, handle = entry
+    target = connection.sock if connection.sock is not None else raw
     try:
-        sock.shutdown(socket.SHUT_RDWR)
+        if target.fileno() != -1:
+            target.shutdown(socket.SHUT_RDWR)
+        elif getattr(connection, "_beast_connecting", False):
+            borrowed = socket.socket(fileno=handle)
+            try:
+                borrowed.shutdown(socket.SHUT_RDWR)
+            finally:
+                borrowed.detach()
     except OSError:
         pass  # already closed by the peer or by urllib3
 
 
 _ACTIVE_SCOPE = threading.local()
 
-
-_RESOLVING = {}
-_RESOLVING_LOCK = threading.Lock()
+# getaddrinfo cannot be interrupted inside this process, so a bounded wait
+# resolves names in an owned child it can kill and reap at the deadline.
+_RESOLVER_CHILD = ("import json, socket, sys; "
+                   "print(json.dumps(socket.getaddrinfo(sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), "
+                   "socket.SOCK_STREAM)))")
+_RESOLVER_ENV = ("SYSTEMROOT", "WINDIR", "PATH", "TEMP", "TMP", "HOSTALIASES", "RES_OPTIONS", "LOCALDOMAIN")
 
 
 def _resolve(host, port, scope):
-    """getaddrinfo cannot be interrupted, so it runs off the caller's thread and
-    the caller stops waiting at the deadline. Concurrent lookups of one name
-    share a single in-flight resolver thread, so a stalled resolver cannot
-    accumulate threads across repeated waits."""
     family = allowed_gai_family()
     try:
         ipaddress.ip_address(host)
@@ -114,28 +151,28 @@ def _resolve(host, port, scope):
     except ValueError:
         pass
     key = (host, port, family)
-    with _RESOLVING_LOCK:
-        pending = _RESOLVING.get(key)
-        if pending is None:
-            pending = _RESOLVING[key] = (threading.Event(), {})
-
-            def lookup(done=pending[0], box=pending[1]):
-                try:
-                    box["addresses"] = socket.getaddrinfo(host, port, family, socket.SOCK_STREAM)
-                except OSError as error:
-                    box["error"] = error
-                finally:
-                    with _RESOLVING_LOCK:
-                        _RESOLVING.pop(key, None)
-                    done.set()
-
-            threading.Thread(target=lookup, name="beast-wait-resolver", daemon=True).start()
-    done, box = pending
-    if not done.wait(scope.remaining()):
+    if key in scope.addresses:
+        return scope.addresses[key]
+    child = subprocess.Popen(
+        [sys.executable, "-I", "-c", _RESOLVER_CHILD, host, str(port), str(int(family))],
+        stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+        env={k: v for k, v in os.environ.items() if k.upper() in _RESOLVER_ENV},
+        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+    scope.attach_child(child)
+    try:
+        out, err = child.communicate(timeout=scope.remaining())
+    except (subprocess.TimeoutExpired, socket.timeout):
+        child.kill()
+        child.communicate()
         raise socket.timeout(f"resolving {host} exceeded the wait deadline")
-    if "error" in box:
-        raise box["error"]
-    return box["addresses"]
+    if scope.expired:
+        raise socket.timeout(f"resolving {host} exceeded the wait deadline")
+    if child.returncode:
+        raise socket.gaierror(f"could not resolve {host}: {err.strip().splitlines()[-1:] or child.returncode}")
+    addresses = [(family_, kind, proto, name, tuple(address))
+                 for family_, kind, proto, name, address in json.loads(out)]
+    scope.addresses[key] = addresses
+    return addresses
 
 
 def _bounded_new_conn(connection, scope):
@@ -146,9 +183,10 @@ def _bounded_new_conn(connection, scope):
     try:
         addresses = _resolve(host, connection.port, scope)
         error = OSError("getaddrinfo returns an empty list")
-        for family, kind, proto, _, address in addresses:
+        for entry in list(addresses):
+            family, kind, proto, _, address = entry
             sock = socket.socket(family, kind, proto)
-            scope.add(sock)
+            scope.add(connection, sock)
             try:
                 for option in connection.socket_options or ():
                     sock.setsockopt(*option)
@@ -157,9 +195,13 @@ def _bounded_new_conn(connection, scope):
                 if connection.source_address:
                     sock.bind(connection.source_address)
                 sock.connect(address)
+                if addresses and addresses[0] is not entry:  # later connections of this wait try it first
+                    addresses.remove(entry)
+                    addresses.insert(0, entry)
                 return sock
             except OSError as attempt:
                 error = attempt
+                scope.discard(sock)
                 sock.close()
         raise error
     except socket.timeout as e:
@@ -168,11 +210,10 @@ def _bounded_new_conn(connection, scope):
         raise NewConnectionError(connection, f"Failed to establish a new connection: {e}") from e
 
 
-def _track(sock):
+def _track(connection):
     scope = getattr(_ACTIVE_SCOPE, "scope", None)
-    if scope is not None and sock is not None:
-        scope.add(sock)
-    return sock
+    if scope is not None and connection.sock is not None:
+        scope.add(connection, connection.sock)
 
 
 class _TrackedHTTPConnection(HTTPConnection):
@@ -183,8 +224,15 @@ class _TrackedHTTPConnection(HTTPConnection):
         scope = getattr(_ACTIVE_SCOPE, "scope", None)
         return super()._new_conn() if scope is None else _bounded_new_conn(self, scope)
 
+    def connect(self):
+        self._beast_connecting = True
+        try:
+            return super().connect()
+        finally:
+            self._beast_connecting = False
+
     def getresponse(self, *args, **kwargs):
-        _track(self.sock)
+        _track(self)
         return super().getresponse(*args, **kwargs)
 
 
@@ -193,8 +241,15 @@ class _TrackedHTTPSConnection(HTTPSConnection):
         scope = getattr(_ACTIVE_SCOPE, "scope", None)
         return super()._new_conn() if scope is None else _bounded_new_conn(self, scope)
 
+    def connect(self):
+        self._beast_connecting = True
+        try:
+            return super().connect()
+        finally:
+            self._beast_connecting = False
+
     def getresponse(self, *args, **kwargs):
-        _track(self.sock)
+        _track(self)
         return super().getresponse(*args, **kwargs)
 
 
@@ -454,10 +509,10 @@ class BeastStudioClient:
              timeout: Optional[float] = None, use_sse: bool = True) -> Dict[str, Any]:
         """Wait for terminal status. A finite timeout bounds the whole call,
         including transport reads: the call runs in the caller's thread and, at
-        the deadline, every socket it is blocked on is shut down, so nothing
-        keeps running after wait() returns. Reaping covers requests.Session
-        sessions (the default); a duck-typed session is used as-is and is
-        bounded only by its own per-read timeouts.
+        the deadline, every socket it is blocked on is shut down and any name
+        lookup child is killed, so nothing keeps running after wait() returns.
+        A finite timeout needs a requests.Session with standard adapters; any
+        other transport is refused before a request is sent.
         """
         if not math.isfinite(poll_interval) or poll_interval < 0 or (
                 timeout is not None and (not math.isfinite(timeout) or timeout < 0)):
@@ -467,6 +522,7 @@ class BeastStudioClient:
         if timeout == 0:
             raise BeastStudioError(f"job {run_id} did not reach a terminal phase within 0s")
         scope = _DeadlineScope(timeout)
+        http = self._deadline_session()  # refuses before anything is sent
         timer = threading.Timer(timeout, scope.expire)
         timer.name = "beast-wait-deadline"
         timer.daemon = True
@@ -474,33 +530,50 @@ class BeastStudioClient:
         _ACTIVE_SCOPE.scope = scope
         timer.start()
         try:
-            return self._wait_impl(run_id, poll_interval, timeout, use_sse, self._deadline_session())
+            return self._wait_impl(run_id, poll_interval, timeout, use_sse, http)
         except BeastStudioError as error:
-            if scope.expired:
+            if scope.expired or time.monotonic() >= scope.deadline:
                 raise BeastStudioError(
                     f"job {run_id} did not reach a terminal phase within {timeout}s") from error
             raise
         finally:
             timer.cancel()
+            timer.join()
             _ACTIVE_SCOPE.scope = outer
+            http.close()
+            scope.close()
 
     def _deadline_session(self) -> Any:
-        """A session whose connections register with the active deadline scope,
-        sharing the caller's session state (headers, cookies, auth, proxies, TLS)."""
+        """A private session and connection pool for one bounded wait, so one
+        wait's deadline can never cut a connection another call borrowed.
+
+        It carries the caller's session state (headers, cookies, auth, proxies,
+        TLS settings) and reproduces every standard requests HTTPAdapter mount at
+        its prefix with the same retry and pool settings. A transport the
+        deadline cannot reach (a custom adapter or a non-requests session) is
+        refused here, before any request is sent, rather than silently replaced
+        or left unbounded."""
         base = self.session
         if not isinstance(base, requests.Session):
-            return base
-        tracked = getattr(self, "_tracked_session", None)
-        if tracked is None or tracked.base is not base:
-            tracked = requests.Session()
-            tracked.mount("http://", _DeadlineAdapter())
-            tracked.mount("https://", _DeadlineAdapter())
-            tracked.base = base
-            self._tracked_session = tracked
+            raise BeastStudioError(
+                "wait(timeout=...) needs a requests.Session to enforce its deadline; "
+                f"got {type(base).__name__}. Use wait() without a timeout for a custom session.")
+        for prefix, adapter in base.adapters.items():
+            if type(adapter) is not requests.adapters.HTTPAdapter:
+                raise BeastStudioError(
+                    f"wait(timeout=...) cannot enforce its deadline through the custom transport adapter "
+                    f"{type(adapter).__name__} mounted at {prefix!r}; nothing was sent. Use wait() without "
+                    "a timeout, or a standard requests HTTPAdapter.")
+        private = requests.Session()
+        private.adapters.clear()
+        for prefix, adapter in base.adapters.items():
+            private.mount(prefix, _DeadlineAdapter(
+                pool_connections=adapter._pool_connections, pool_maxsize=adapter._pool_maxsize,
+                max_retries=adapter.max_retries, pool_block=adapter._pool_block))
         for name in ("headers", "cookies", "auth", "proxies", "hooks", "params",
                      "verify", "cert", "trust_env", "max_redirects"):
-            setattr(tracked, name, getattr(base, name))
-        return tracked
+            setattr(private, name, getattr(base, name))
+        return private
 
     def _wait_impl(self, run_id: str, poll_interval: float,
                    timeout: Optional[float], use_sse: bool, http: Any = None) -> Dict[str, Any]:
