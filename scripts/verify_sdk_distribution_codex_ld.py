@@ -69,11 +69,22 @@ def upload():
     require(response.status_code == 200 and response.content == raw, "uploaded bytes served unchanged")
     return {"file": name, "sha256": hashlib.sha256(response.content).hexdigest()}
 check("upload_and_download", upload)
+def duplicate_names():
+    second = pathlib.Path(png).with_name("owned2.png").read_bytes()
+    one = c.upload("same-name.png", base64.b64encode(raw).decode())["file"]
+    two = c.upload("same-name.png", base64.b64encode(second).decode())["file"]
+    require(one != two, "each upload needs its own immutable URI")
+    for name, content in ((one, raw), (two, second)):
+        response = c.session.get(url + "/uploads/" + name, timeout=3)
+        require(response.status_code == 200 and response.content == content, "both same-name originals retained")
+    return {"files": [one, two]}
+check("same_name_artifact_integrity", duplicate_names)
 check("missing_status", lambda: require("error" in c.status("distribution-missing"), "missing status JSON refused"))
 check("missing_cancel", lambda: require("error" in c.cancel("distribution-missing"), "missing cancel JSON refused"))
 check("missing_retry", lambda: require("error" in c.retry("distribution-missing"), "missing retry JSON refused"))
 check("invalid_image", lambda: require("error" in c.upload("invalid.png", base64.b64encode(b"not an image").decode()), "invalid image JSON refused"))
 check("malformed_base64", lambda: require("error" in c.upload("bad-base64.png", "x"), "malformed base64 JSON refused"))
+check("invalid_base64_alphabet", lambda: require("error" in c.upload("invalid-alphabet.png", "!!!!" + base64.b64encode(raw).decode()), "out-of-alphabet data JSON refused"))
 check("server_after_refusals", lambda: require(c.health()["db"] is True, "server healthy after refusals"))
 package = pathlib.Path(beast_studio_client.__file__).parent
 pathlib.Path(output).write_text(json.dumps({"checks": rows, "version": importlib.metadata.version("beast-studio-client"), "module": beast_studio_client.__file__, "files_sha256": {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in package.glob("*.py")}}, indent=2))
@@ -84,6 +95,7 @@ NODE_PROBE = r'''
 import assert from "node:assert/strict";
 import { readFileSync, writeFileSync } from "node:fs";
 import { createHash } from "node:crypto";
+import { join, dirname } from "node:path";
 import { BeastStudioClient, VERSION } from "beast-studio-client";
 const [url, png, output] = process.argv.slice(2);
 const checks = [];
@@ -109,11 +121,24 @@ await check("upload_and_download", async () => {
   assert.deepEqual(Buffer.from(await response.arrayBuffer()), raw);
   return { file:result.file, sha256:createHash("sha256").update(raw).digest("hex") };
 });
+await check("same_name_artifact_integrity", async () => {
+  const second = readFileSync(join(dirname(png), "owned2.png"));
+  const one = await c.upload("same-name-node.png", raw.toString("base64"));
+  const two = await c.upload("same-name-node.png", second.toString("base64"));
+  assert.notEqual(one.file, two.file);
+  for (const [result, original] of [[one, raw], [two, second]]) {
+    const response = await fetch(url + "/uploads/" + result.file);
+    assert.equal(response.status, 200);
+    assert.deepEqual(Buffer.from(await response.arrayBuffer()), original);
+  }
+  return { files:[one.file, two.file] };
+});
 await check("missing_status", async () => assert.ok((await c.status("distribution-missing")).error));
 await check("missing_cancel", async () => assert.ok((await c.cancel("distribution-missing")).error));
 await check("missing_retry", async () => assert.ok((await c.retry("distribution-missing")).error));
 await check("invalid_image", async () => assert.ok((await c.upload("invalid.png", Buffer.from("not an image").toString("base64"))).error));
 await check("malformed_base64", async () => assert.ok((await c.upload("bad-base64.png", "x")).error));
+await check("invalid_base64_alphabet", async () => assert.ok((await c.upload("invalid-alphabet.png", "!!!!" + raw.toString("base64"))).error));
 await check("server_after_refusals", async () => assert.equal((await c.health()).db, true));
 writeFileSync(output, JSON.stringify({checks, node:process.version, entry:import.meta.resolve("beast-studio-client")}, null, 2));
 process.exitCode = checks.some(r => r.status !== "worked") ? 1 : 0;
@@ -181,6 +206,7 @@ def main() -> int:
         Image.new("RGB", (3, 2), (30, 90, 150)).save(image_bytes, format="PNG")
         png = out / "owned.png"
         png.write_bytes(image_bytes.getvalue())
+        Image.new("RGB", (3, 2), (80, 90, 100)).save(out / "owned2.png", format="PNG")
         bootstrap = out / "server-bootstrap.py"
         bootstrap.write_text(BOOTSTRAP)
         ready = out / "ready.json"
