@@ -1,0 +1,18 @@
+✖ wait() does not wait for an unresponsive transport cleanup (405.3106ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 607.2448
+
+✖ failing tests:
+
+test at tests\client.test.ts:339:1
+✖ wait() does not wait for an unresponsive transport cleanup (405.3106ms)
+  Error: cleanup blocked wait
+      at Timeout.<anonymous> (file:///C:/Users/techai/Documents/Codex/2026-10-04/https-github-com-rblake2320-design-beast-3/work/design-beast/sdk/typescript/tests/client.test.ts:355:44)
+      at listOnTimeout (node:internal/timers:605:17)
+      at process.processTimers (node:internal/timers:541:7)

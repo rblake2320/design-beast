@@ -35,3 +35,10 @@ beast.config.json
 watched/
 studio/.beast_model_hashes.json
 node_modules/
+
+# SDK distribution artifacts
+sdk/typescript/dist/
+*.tgz
+
+.beast/package/
+.beast/runtime/

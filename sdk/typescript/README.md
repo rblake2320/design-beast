@@ -3,28 +3,23 @@
 Lightweight TypeScript/JavaScript client for Beast Studio. Zero runtime
 dependencies — uses the platform `fetch`.
 
-## Distribution model: source-only, no build step
+## Distribution: compiled JavaScript and declarations
 
-This package ships `.ts` source and imports its own siblings with `.ts`
-extensions (`allowImportingTsExtensions` in `tsconfig.json`). It runs
-directly, unbuilt, on any TypeScript-native runtime:
+`npm pack` builds `dist/` with TypeScript's `rewriteRelativeImportExtensions`.
+The installed package exports JavaScript plus type declarations, so ordinary
+Node resolves it from `node_modules` without TypeScript stripping or build tools.
+The supported Node minimum is 22.18; CI exercises Node 22 and 24 on Windows and Linux.
+Source scripts can still import `src/index.ts` directly from a checkout.
 
-- **Node 22.6+** — `node --experimental-strip-types` (or unflagged on newer
-  Node; this repo was verified against Node 24) runs `.ts` files directly.
-- **Deno / Bun** — native `.ts` execution, no config needed.
-- **Older Node, or a browser bundle** — run your own `tsc`/esbuild/swc over
-  `src/` first; `allowImportingTsExtensions` requires `noEmit` (or
-  `emitDeclarationOnly`) in the *consuming* tsconfig, matching this
-  package's own — see `tsconfig.json` here as a starting point, and rewrite
-  the `.ts` import specifiers to `.js` if your bundler needs classic
-  NodeNext-style output.
+```bash
+npm ci
+npm run typecheck
+npm test
+npm run test:package
+```
 
-This tradeoff was made deliberately for this environment (no network access
-to install a `typescript` devDependency at generation time) and to keep the
-package genuinely zero-dependency for the common case (a Node 22+ agent
-script). If your environment prefers a pre-built `dist/`, run `tsc` with
-`allowImportingTsExtensions: false` and `.js`-suffixed imports instead — the
-source is otherwise standard TS with no other exotic syntax.
+`test:package` builds a real tarball, installs it into an unrelated directory,
+and imports and executes the installed package with Node. No package is published.
 
 ## Usage
 
@@ -39,7 +34,7 @@ const job = await c.run({
   brief: "a cozy reading nook", prompt: expanded.prompt,
   variations: expanded.variations,
 });
-const final = await c.wait(job.id); // blocks until done/failed/cancelled
+const final = await c.wait(job.id, { timeoutMs: 120_000 }); // blocks until done/failed/cancelled
 if (final.phase === "done") console.log("winner:", final.final);
 else console.log("failed:", final.error);
 
@@ -66,3 +61,8 @@ endpoints are tested against a fake `fetch`; `streamEvents()`/`wait()` are
 tested end-to-end against a real, tiny local `http` server (no external
 dependency) so the SSE frame-parsing is genuinely exercised, not just
 mocked.
+
+Finite `wait` deadlines cover connection setup, SSE reads, JSON body reads, and
+polling sleeps. Expired waits close their transport. `streamEvents(id, { signal })`
+accepts an AbortSignal for caller cancellation. Malformed or oversized events
+raise BeastStudioError; an unavailable stream can fall back to durable polling.

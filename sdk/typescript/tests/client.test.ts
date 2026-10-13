@@ -259,3 +259,105 @@ test("wait() falls back to polling when the SSE connection fails", async () => {
   assert.deepEqual(out, { phase: "done" });
   assert.equal(calls, 2);
 });
+
+test("streamEvents() accepts split CRLF and multiline data", async () => {
+  await withSseServer([
+    ': heartbeat\r', '\n\r\n',
+    'data: {"phase":\r', '\ndata: "done"}\r\n\r\n',
+  ], async (baseUrl) => {
+    const events = [];
+    for await (const snap of new BeastStudioClient({ baseUrl }).streamEvents("x")) {
+      events.push(snap);
+    }
+    assert.deepEqual(events, [{ phase: "done" }]);
+  });
+});
+
+test("wait() enforces its deadline on a silent SSE connection", async () => {
+  const server = http.createServer((req, res) => {
+    if (req.url?.includes("events")) {
+      res.writeHead(200, { "Content-Type": "text/event-stream" });
+      res.flushHeaders();
+    } else {
+      res.end(JSON.stringify({ phase: "running" }));
+    }
+  });
+  await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+  const port = (server.address() as { port: number }).port;
+  const watchdog = setTimeout(() => server.closeAllConnections(), 900);
+  try {
+    const c = new BeastStudioClient({ baseUrl: `http://127.0.0.1:${port}` });
+    const start = performance.now();
+    await assert.rejects(() => c.wait("x", { timeoutMs: 100 }), BeastStudioError);
+    assert.ok(performance.now() - start < 600, "silent stream exceeded wait budget");
+  } finally {
+    clearTimeout(watchdog);
+    server.closeAllConnections();
+    await new Promise<void>((resolve) => server.close(() => resolve()));
+  }
+});
+
+test("request timeout covers a stalled JSON body after response headers", async () => {
+  const server = http.createServer((req, res) => {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.flushHeaders();
+  });
+  await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+  const port = (server.address() as { port: number }).port;
+  const watchdog = setTimeout(() => server.closeAllConnections(), 900);
+  try {
+    const c = new BeastStudioClient({ baseUrl: `http://127.0.0.1:${port}`, timeoutMs: 100 });
+    const start = performance.now();
+    await assert.rejects(() => c.health(), BeastStudioError);
+    assert.ok(performance.now() - start < 600, "body read exceeded request budget");
+  } finally {
+    clearTimeout(watchdog);
+    server.closeAllConnections();
+    await new Promise<void>((resolve) => server.close(() => resolve()));
+  }
+});
+
+test("wait() classifies null status payloads", async () => {
+  const { fetchImpl } = fakeFetch(() => ({ json: null }));
+  await assert.rejects(
+    () => new BeastStudioClient({ fetchImpl }).wait("x", { useSse: false }),
+    BeastStudioError,
+  );
+});
+
+test("streamEvents() contains malformed and oversized data", async () => {
+  for (const frame of ['data: null\n\n', 'data: {bad}\n\n', 'data: ' + 'x'.repeat(1_048_577)]) {
+    await withSseServer([frame], async (baseUrl) => {
+      const c = new BeastStudioClient({ baseUrl });
+      await assert.rejects(async () => {
+        for await (const snap of c.streamEvents("x")) assert.fail(JSON.stringify(snap));
+      }, BeastStudioError);
+    });
+  }
+});
+
+test("wait() does not wait for an unresponsive transport cleanup", async () => {
+  let cancellationRequested = false;
+  const fetchImpl = (async () => new Response(new ReadableStream({
+    start(controller) {
+      controller.enqueue(new TextEncoder().encode('data: {"phase":"done"}\n\n'));
+    },
+    cancel() {
+      cancellationRequested = true;
+      return new Promise<void>(() => {});
+    },
+  }))) as typeof fetch;
+  let watchdog: ReturnType<typeof setTimeout> | undefined;
+  try {
+    const result = await Promise.race([
+      new BeastStudioClient({ fetchImpl }).wait("x", { timeoutMs: 100 }),
+      new Promise<never>((_, reject) => {
+        watchdog = setTimeout(() => reject(new Error("cleanup blocked wait")), 400);
+      }),
+    ]);
+    assert.equal(result.phase, "done");
+    assert.equal(cancellationRequested, true);
+  } finally {
+    clearTimeout(watchdog);
+  }
+});

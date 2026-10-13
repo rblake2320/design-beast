@@ -1,0 +1,90 @@
+✔ recipes() issues a GET to /api/recipes (5.0043ms)
+✔ upload() posts name/data body (0.5689ms)
+✔ backend() posts name/action body (1.5784ms)
+✔ backend() timeout covers synchronous NIM warmup and supports override (0.9573ms)
+✔ refine() defaults allow_cloud_fallback to false (0.4612ms)
+✔ animate() defaults allow_cloud_fallback to false, honors explicit true (0.7434ms)
+✔ to3d() defaults allow_hosted_fallback to false (0.4709ms)
+✔ run() defaults model to the free local backend (0.3461ms)
+✔ run() sends the idempotency key as a header (0.3332ms)
+✔ toUe() posts {file} (0.3426ms)
+✔ status() GETs /api/run/{id} (0.3203ms)
+✔ cancel() POSTs /api/job/{id}/cancel (0.2896ms)
+✔ retry() POSTs /api/job/{id}/retry (0.1967ms)
+✔ eventsUrl() builds the SSE URL without a network call (0.1206ms)
+✔ run IDs are encoded as one path segment (0.2855ms)
+✔ network failure raises BeastStudioError (0.6589ms)
+✔ API-level error is returned, not thrown, by default (0.2846ms)
+✔ raiseForStatus opts into throwing on HTTP error status (0.2403ms)
+✔ streamEvents() parses real SSE frames and stops at a terminal phase (62.9525ms)
+✔ wait() resolves from a real SSE stream at the terminal event (7.8117ms)
+✔ wait() falls back to polling when the SSE connection fails (2.6589ms)
+✖ streamEvents() accepts split CRLF and multiline data (28.6008ms)
+✖ wait() enforces its deadline on a silent SSE connection (912.049ms)
+✖ request timeout covers a stalled JSON body after response headers (921.2721ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 21
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2159.8579
+
+✖ failing tests:
+
+test at tests\client.test.ts:263:1
+✖ streamEvents() accepts split CRLF and multiline data (28.6008ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + []
+  - [
+  -   {
+  -     phase: 'done'
+  -   }
+  - ]
+  
+      at file:///C:/Users/techai/Documents/Codex/2026-10-04/https-github-com-rblake2320-design-beast-3/work/design-beast/sdk/typescript/tests/client.test.ts:272:12
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async withSseServer (file:///C:/Users/techai/Documents/Codex/2026-10-04/https-github-com-rblake2320-design-beast-3/work/design-beast/sdk/typescript/tests/client.test.ts:215:5)
+      at async TestContext.<anonymous> (file:///C:/Users/techai/Documents/Codex/2026-10-04/https-github-com-rblake2320-design-beast-3/work/design-beast/sdk/typescript/tests/client.test.ts:264:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { phase: 'done' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests\client.test.ts:276:1
+✖ wait() enforces its deadline on a silent SSE connection (912.049ms)
+  AssertionError [ERR_ASSERTION]: silent stream exceeded wait budget
+      at TestContext.<anonymous> (file:///C:/Users/techai/Documents/Codex/2026-10-04/https-github-com-rblake2320-design-beast-3/work/design-beast/sdk/typescript/tests/client.test.ts:292:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests\client.test.ts:300:1
+✖ request timeout covers a stalled JSON body after response headers (921.2721ms)
+  AssertionError [ERR_ASSERTION]: body read exceeded request budget
+      at TestContext.<anonymous> (file:///C:/Users/techai/Documents/Codex/2026-10-04/https-github-com-rblake2320-design-beast-3/work/design-beast/sdk/typescript/tests/client.test.ts:312:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

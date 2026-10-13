@@ -1,0 +1,13 @@
+
+> beast-studio-client@1.0.0 test:package
+> node tests/package-smoke.mjs
+
+
+> beast-studio-client@1.0.0 prepack
+> npm run build
+
+
+> beast-studio-client@1.0.0 build
+> tsc -p tsconfig.build.json
+
+Installed tarball imported, called real HTTP, and enforced SSE deadline

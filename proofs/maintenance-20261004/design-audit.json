@@ -1,0 +1,12 @@
+[
+  {
+    "antipattern": "side-tab",
+    "name": "Side-tab accent border",
+    "description": "Thick colored border on one side of a card — the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "C:\\Users\\techai\\Documents\\Codex\\2026-10-04\\https-github-com-rblake2320-design-beast-3\\work\\design-beast\\studio\\index.html",
+    "line": 178,
+    "snippet": "border-left-width:4px"
+  }
+]
