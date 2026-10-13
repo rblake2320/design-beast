@@ -5,7 +5,7 @@ from exporters.skill_bundle import compile_skill_bundle
 from review.evidence_gate import validate_claim
 
 OK_SOURCE = {"authorization_status": "authorized_owned"}
-GOOD = {"step_id": "1", "review_state": "verified_by_execution", "replay_result": {"success": True}}
+GOOD = {"step_id": "1", "description": "step", "evidence_event_ids": ["ev-1"], "review_state": "verified_by_execution", "replay_result": {"success": True}}
 
 
 @pytest.mark.parametrize("replay", [{"success": False}, {}, None, {"success": "true"}, {"success": 1}])

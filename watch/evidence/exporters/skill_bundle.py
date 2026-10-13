@@ -12,14 +12,17 @@ from review.provenance_gate import check_source_authorized
 
 
 def compile_skill_bundle(procedure_claims: list[dict], source_manifest: dict, output_path: str) -> dict:
-    if not procedure_claims:
+    if not isinstance(procedure_claims, list) or not procedure_claims:
         raise ValueError("no procedure claims: an empty bundle carries no evidence and cannot be exported")
-    if not check_source_authorized(source_manifest or {})["authorized"]:
+    if not check_source_authorized(source_manifest)["authorized"]:
         raise ValueError("source is not authorized for export (authorization_status must be one of the canonical authorized_* states)")
-    invalid = [(c.get("step_id"), validate_claim(c)["errors"]) for c in procedure_claims]
+    invalid = [(c.get("step_id") if isinstance(c, dict) else None, validate_claim(c)["errors"]) for c in procedure_claims]
     invalid = [(step, errs) for step, errs in invalid if errs]
     if invalid:
         raise ValueError(f"{len(invalid)} claims fail the review gate; first: {invalid[0]}")
+    step_ids = [c["step_id"] for c in procedure_claims]
+    if len(set(step_ids)) != len(step_ids):
+        raise ValueError("duplicate step_id: references would be ambiguous")
 
     bundle = {
         "source_manifest": source_manifest,
