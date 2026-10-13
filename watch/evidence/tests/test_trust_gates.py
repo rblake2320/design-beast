@@ -53,3 +53,19 @@ def test_valid_bundle_exports_with_its_claims(tmp_path):
                                     "authorized_public_domain", "authorized_fair_use_research"])
 def test_each_canonical_authorized_state_exports(tmp_path, status):
     compile_skill_bundle([GOOD], {"authorization_status": status}, str(tmp_path / "out.json"))
+
+
+def test_non_serializable_claim_writes_nothing(tmp_path):
+    claim = dict(GOOD, bad=object())
+    out = tmp_path / "unserializable.json"
+    with pytest.raises(ValueError, match="nothing written"):
+        compile_skill_bundle([claim], OK_SOURCE, str(out))
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_non_finite_number_writes_nothing(tmp_path):
+    claim = dict(GOOD, replay_result={"success": True, "exit_code": float("nan")})
+    out = tmp_path / "nan.json"
+    with pytest.raises(ValueError, match="nothing written"):
+        compile_skill_bundle([claim], OK_SOURCE, str(out))
+    assert list(tmp_path.iterdir()) == []

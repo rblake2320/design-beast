@@ -5,7 +5,8 @@ output already shipped, so this plugs into that instead of inventing a
 second skill format.
 """
 import json
-
+import os
+import tempfile
 
 from review.evidence_gate import validate_claim
 from review.provenance_gate import check_source_authorized
@@ -30,6 +31,22 @@ def compile_skill_bundle(procedure_claims: list[dict], source_manifest: dict, ou
         "evidence_backed": True,
         "hard_proof_boundary": True,
     }
-    with open(output_path, "w") as f:
-        json.dump(bundle, f, indent=2)
+    # Serialize fully before touching the filesystem: a non-JSON value must refuse with no output file.
+    try:
+        text = json.dumps(bundle, indent=2, allow_nan=False)
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"bundle is not serializable as JSON; nothing written: {exc}") from exc
+    # Write to a temp file in the destination directory, then atomically replace: no partial output.
+    directory = os.path.dirname(os.path.abspath(output_path))
+    fd, temporary = tempfile.mkstemp(dir=directory, prefix=".bundle-", suffix=".tmp")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            handle.write(text)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, output_path)
+    except BaseException:
+        if os.path.exists(temporary):
+            os.unlink(temporary)
+        raise
     return bundle
