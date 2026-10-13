@@ -6,6 +6,8 @@ The process uses this checkout's SQLite database and uploads, never a live clone
 from __future__ import annotations
 
 import argparse
+import ast
+from collections import Counter
 import hashlib
 import io
 import json
@@ -17,6 +19,70 @@ import subprocess
 import sys
 import time
 import xml.etree.ElementTree as ET
+
+
+def python_deadline_inventory(source: str) -> list[str]:
+    names = []
+    for node in ast.parse(source).body:
+        if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) or not node.name.startswith("test_"):
+            continue
+        parameters = [d for d in node.decorator_list if isinstance(d, ast.Call)
+                      and isinstance(d.func, ast.Attribute) and d.func.attr == "parametrize"]
+        if len(parameters) > 1:
+            raise RuntimeError("Deadline inventory requires one explicit parametrization per test")
+        if parameters:
+            value = next((k.value for k in parameters[0].keywords if k.arg == "ids"), None)
+            ids = ast.literal_eval(value) if value is not None else None
+            if value is None:
+                argname = ast.literal_eval(parameters[0].args[0])
+                values = ast.literal_eval(parameters[0].args[1])
+                if (not isinstance(argname, str) or "," in argname
+                        or not isinstance(values, (list, tuple))
+                        or any(type(item) not in (str, int, float, bool, type(None)) for item in values)):
+                    raise RuntimeError("Complex deadline parameters require explicit string IDs")
+                ids = [str(item) for item in values]
+            if not isinstance(ids, (list, tuple)) or not ids or not all(isinstance(i, str) for i in ids):
+                raise RuntimeError("Deadline parametrization requires explicit string IDs")
+            names.extend(f"{node.name}[{ident}]" for ident in ids)
+        else:
+            names.append(node.name)
+    if not names or len(names) != len(set(names)):
+        raise RuntimeError("Python deadline inventory must be nonempty and unique")
+    return names
+
+
+def verify_python_deadlines(junit: Path, expected: list[str]) -> int:
+    cases = list(ET.parse(junit).iter("testcase"))
+    if Counter(case.get("name") for case in cases) != Counter(expected) or any(
+            case.find(tag) is not None for case in cases for tag in ("failure", "error", "skipped")):
+        raise RuntimeError("Installed Python deadline inventory must all run and pass")
+    return len(cases)
+
+
+def node_deadline_inventory(source: str) -> list[str]:
+    names = [m.group(2) for m in re.finditer(
+        r'''\btest(?:\.(?:skip|todo))?\(\s*(["'])((?:deadline:|deadline control:|unbounded streamEvents)[^"']+)\1''', source)]
+    if not names or len(names) != len(set(names)):
+        raise RuntimeError("Node deadline inventory must be nonempty and unique")
+    return names
+
+
+def verify_node_deadlines(log: str, expected: list[str]) -> int:
+    counts = {name: int(value) for name, value in re.findall(
+        r"^# (tests|pass|fail|cancelled|skipped|todo) (\d+)$", log, re.MULTILINE)}
+    names = re.findall(r"^ok \d+ - (.+?)(?:\s+#.*)?$", log, re.MULTILINE)
+    if (counts != {"tests": len(expected), "pass": len(expected), "fail": 0,
+                   "cancelled": 0, "skipped": 0, "todo": 0}
+            or Counter(names) != Counter(expected)):
+        raise RuntimeError("Installed Node deadline inventory must all run and pass")
+    return len(names)
+
+
+def isolated_test_env() -> dict[str, str]:
+    env = {key: value for key, value in os.environ.items()
+           if not key.upper().startswith("PYTEST_") and key.upper() not in ("NODE_OPTIONS", "NODE_TEST_CONTEXT")}
+    env["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] = "1"
+    return env
 
 
 BOOTSTRAP = r'''
@@ -166,11 +232,13 @@ def main() -> int:
     sources = [repo / "studio/server.py", repo / "bin/beast.ps1", *sorted((repo / "sdk/python/beast_studio_client").glob("*.py")), *sorted((repo / "sdk/typescript/src").glob("*.ts")), repo / "sdk/typescript/package.json", repo / "sdk/typescript/tsconfig.build.json"]
     report["source_files_sha256"] = {p.relative_to(repo).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in sources if p.exists()}
 
-    def run(name: str, argv: list[str], cwd: Path, *, required: bool = True) -> subprocess.CompletedProcess:
+    def run(name: str, argv: list[str], cwd: Path, *, required: bool = True,
+            env: dict[str, str] | None = None) -> subprocess.CompletedProcess:
         started = time.monotonic()
         log = out / f"{name}.log"
         with log.open("w", encoding="utf-8") as stream:
-            result = subprocess.run(argv, cwd=cwd, stdout=stream, stderr=subprocess.STDOUT, timeout=180, check=False)
+            result = subprocess.run(argv, cwd=cwd, stdout=stream, stderr=subprocess.STDOUT,
+                                    timeout=180, check=False, env=env)
         commands.append({"name": name, "argv": argv, "cwd": str(cwd), "exit_code": result.returncode, "seconds": time.monotonic()-started, "log": str(log)})
         print(name, result.returncode, flush=True)
         if required and result.returncode:
@@ -229,6 +297,11 @@ def main() -> int:
             probe.write_text(PYTHON_PROBE)
             run("python-live", [str(pypath), "-I", str(probe), url, str(png), str(out / "python-controls.json")], out, required=False)
             report["python_controls"] = json.loads((out / "python-controls.json").read_text())
+            expected_python = {Path(name).name: digest for name, digest in report["source_files_sha256"].items()
+                               if name.startswith("sdk/python/beast_studio_client/")}
+            if report["python_controls"]["files_sha256"] != expected_python:
+                raise RuntimeError("Installed Python package differs from candidate source bytes")
+            report["python_source_identity"] = True
         probe = consumer / "probe.mjs"
         probe.write_text(NODE_PROBE)
         run("node-live", [shutil.which("node") or "node", str(probe), url, str(png), str(out / "node-controls.json")], consumer, required=False)
@@ -241,35 +314,39 @@ def main() -> int:
             checks = out / "installed-deadlines"
             checks.mkdir()
             source_test = repo / "sdk/python/tests/test_deadline_claude_ld.py"
+            expected = python_deadline_inventory(source_test.read_text())
             copied_test = checks / source_test.name
             shutil.copyfile(source_test, copied_test)
+            fixtures = source_test.parent / "fixtures"
+            if fixtures.exists():
+                shutil.copytree(fixtures, checks / "fixtures")
             config = checks / "pytest.ini"
             config.write_text("[pytest]\n")
             junit = checks / "python.xml"
             run("python-installed-deadlines", [str(pypath), "-I", "-m", "pytest", "-q", "-c", str(config),
-                "--confcutdir", str(checks), str(copied_test), f"--junitxml={junit}"], checks)
-            cases = list(ET.parse(junit).iter("testcase"))
-            if not cases or any(case.find(tag) is not None for case in cases for tag in ("failure", "error", "skipped")):
-                raise RuntimeError("Installed Python deadline controls must all run and pass")
+                "--confcutdir", str(checks), str(copied_test), f"--junitxml={junit}"], checks, env=isolated_test_env())
+            passed = verify_python_deadlines(junit, expected)
             report["installed_deadlines"]["python"] = {
-                "passed": len(cases), "junit": str(junit),
+                "passed": passed, "required_inventory": expected, "junit": str(junit),
                 "test_sha256": hashlib.sha256(copied_test.read_bytes()).hexdigest(),
+                "fixtures_sha256": {p.relative_to(checks).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
+                                    for p in sorted((checks / "fixtures").rglob("*")) if p.is_file()},
                 "scope": "permanent real HTTP controls; installed wheel; isolated interpreter"}
         source_test = repo / "sdk/typescript/tests/client.test.ts"
         test_text = source_test.read_text()
+        expected = node_deadline_inventory(test_text)
         old_import = 'from "../src/client.ts"'
         if test_text.count(old_import) != 1:
             raise RuntimeError("Cannot bind TypeScript deadline tests to the installed tarball")
         copied_test = consumer / "installed-deadlines.ts"
         copied_test.write_text(test_text.replace(old_import, 'from "beast-studio-client"'))
-        run("node-installed-deadlines", [shutil.which("node") or "node", "--test", "--test-reporter=tap",
-            "--test-name-pattern=^deadline:|^deadline control:|^unbounded streamEvents", str(copied_test)], consumer)
+        run("node-installed-deadlines", [shutil.which("node") or "node", "--test", "--test-isolation=none", "--test-reporter=tap",
+            "--test-name-pattern=^deadline:|^deadline control:|^unbounded streamEvents", str(copied_test)], consumer,
+            env=isolated_test_env())
         deadline_log = (out / "node-installed-deadlines.log").read_text()
-        passed = re.search(r"^# pass (\d+)$", deadline_log, re.MULTILINE)
-        if passed is None or int(passed[1]) == 0:
-            raise RuntimeError("No installed TypeScript deadline controls executed")
+        passed = verify_node_deadlines(deadline_log, expected)
         report["installed_deadlines"]["node"] = {
-            "passed": int(passed[1]), "log": str(out / "node-installed-deadlines.log"),
+            "passed": passed, "required_inventory": expected, "log": str(out / "node-installed-deadlines.log"),
             "test_sha256": hashlib.sha256(copied_test.read_bytes()).hexdigest(),
             "scope": "permanent real HTTP deadline controls; installed npm tarball"}
         rows = [r for key in ("python_controls", "node_controls") if key in report for r in report[key]["checks"]]
