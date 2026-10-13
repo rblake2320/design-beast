@@ -25,11 +25,18 @@ def compile_skill_bundle(procedure_claims: list[dict], source_manifest: dict, ou
     if len(set(step_ids)) != len(step_ids):
         raise ValueError("duplicate step_id: references would be ambiguous")
 
+    # Declared scope, not proof: the gate checked shape, authorization status and review_state rules.
+    # Authorization is a declaration, references are not resolved against an evidence store, and
+    # execution fields are reported receipts that have not been independently verified.
     bundle = {
         "source_manifest": source_manifest,
         "procedure_claims": procedure_claims,
-        "evidence_backed": True,
-        "hard_proof_boundary": True,
+        "review_gate_passed": True,
+        "verification_scope": {
+            "authorization": "declared",
+            "references": "IDs_present_unresolved",
+            "execution": "reported_receipts_not_independently_verified",
+        },
     }
     # Serialize fully before touching the filesystem: a non-JSON value must refuse with no output file.
     try:
