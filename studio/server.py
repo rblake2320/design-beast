@@ -1169,7 +1169,9 @@ class UploadReq(BaseModel):
 @app.post("/api/upload")
 def upload(req: UploadReq):
     try:
-        raw = base64.b64decode(req.data.split(",")[-1])
+        # validate=True rejects any character outside the base64 alphabet
+        # instead of silently discarding it.
+        raw = base64.b64decode(req.data.split(",")[-1], validate=True)
     except (binascii.Error, ValueError):
         return JSONResponse({"error": "data is not valid base64",
                              "code": E_VALIDATION}, 422)
