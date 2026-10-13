@@ -6,7 +6,8 @@ The NVCF test runs against a real local HTTP server that never completes.
 import threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-import pytest  # noqa: E402  (path + DB redirect done in conftest.py)
+import pytest  # noqa: E402
+import requests  # noqa: E402  (path + DB redirect done in conftest.py)
 import server  # noqa: E402
 from pydantic import ValidationError  # noqa: E402
 
@@ -45,6 +46,11 @@ def test_zero_or_four_variations_are_accepted():
 
 class _AlwaysPending(BaseHTTPRequestHandler):
     def _pending(self):
+        # Consume any request body first: answering with an unread body can
+        # make Windows reset the connection and fail the client early.
+        n = int(self.headers.get("Content-Length") or 0)
+        if n:
+            self.rfile.read(n)
         self.send_response(202)
         self.send_header("NVCF-REQID", "req-1")
         self.send_header("Content-Length", "0")
@@ -75,6 +81,9 @@ def test_nvcf_poll_gives_up_within_its_timeout():
 class _SlowStatus(BaseHTTPRequestHandler):
     """POST returns 202; each status GET takes 2s and then returns 200."""
     def do_POST(self):
+        n = int(self.headers.get("Content-Length") or 0)
+        if n:
+            self.rfile.read(n)
         self.send_response(202)
         self.send_header("NVCF-REQID", "req-2")
         self.send_header("Content-Length", "0")
@@ -101,7 +110,10 @@ def test_nvcf_slow_status_cannot_overrun_deadline():
     try:
         base = f"http://127.0.0.1:{httpd.server_port}"
         start = _t.monotonic()
-        with pytest.raises(TimeoutError):
+        # Windows can surface the client-side cutoff as a socket abort
+        # (ConnectionError) rather than a read timeout; the contract under
+        # test is the deadline bound, so either failure class is accepted.
+        with pytest.raises((TimeoutError, requests.exceptions.RequestException)):
             server._nim_invoke(f"{base}/invoke", {}, {}, timeout=1,
                                poll_base=f"{base}/status", poll_interval=0.01)
         elapsed = _t.monotonic() - start
@@ -109,3 +121,17 @@ def test_nvcf_slow_status_cannot_overrun_deadline():
     finally:
         httpd.shutdown()
         httpd.server_close()
+
+
+# ---- whole-operation deadline holds for a stalled DNS lookup ----------------
+
+def test_nvcf_dns_stall_cannot_overrun_deadline(monkeypatch):
+    import time as _t
+    # Fault: the resolver child is a real process that stalls for 5 seconds.
+    monkeypatch.setattr(server, "_RESOLVE_CHILD", "import time; time.sleep(5)")
+    start = _t.monotonic()
+    with pytest.raises(TimeoutError):
+        server._nim_invoke("http://nonexistent-host-for-deadline-test.invalid/invoke",
+                           {}, {}, timeout=1, poll_base="http://x/status", poll_interval=0.01)
+    elapsed = _t.monotonic() - start
+    assert elapsed < 1.5, f"DNS stall overran the deadline: {elapsed:.3f}s with timeout=1"
