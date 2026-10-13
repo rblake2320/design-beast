@@ -583,15 +583,32 @@ class BeastStudioClient:
 
         It carries the caller's session state (headers, cookies, auth, proxies,
         TLS settings) and reproduces every standard requests HTTPAdapter mount at
-        its prefix with the same retry and pool settings. A transport the
-        deadline cannot reach (a custom adapter or a non-requests session) is
-        refused here, before any request is sent, rather than silently replaced
-        or left unbounded."""
+        its prefix with the same retry and pool settings. Anything the deadline
+        cannot reach (a custom adapter or Retry class, custom auth callable,
+        session hooks or cookie jar, a Session subclass or non-requests
+        session) is refused here, before any
+        callback runs or request is sent, rather than silently replaced or left
+        unbounded."""
         base = self.session
-        if not isinstance(base, requests.Session):
+        if type(base) is not requests.Session:  # a subclass may override request/send with its own policy
             raise BeastStudioError(
-                "wait(timeout=...) needs a requests.Session to enforce its deadline; "
-                f"got {type(base).__name__}. Use wait() without a timeout for a custom session.")
+                "wait(timeout=...) needs a plain requests.Session to enforce its deadline; got "
+                f"{type(base).__name__}; nothing was sent. Use wait() without a timeout for a custom session.")
+        if type(base.cookies) is not requests.cookies.RequestsCookieJar:
+            raise BeastStudioError(
+                f"wait(timeout=...) cannot bound the custom cookie jar {type(base.cookies).__name__}; "
+                "nothing was sent. Use wait() without a timeout for a custom session.")
+        auth = base.auth
+        if not (auth is None or type(auth) is requests.auth.HTTPBasicAuth or (
+                isinstance(auth, tuple) and len(auth) == 2)):
+            raise BeastStudioError(
+                f"wait(timeout=...) cannot bound the custom session auth {type(auth).__name__}; nothing was "
+                "sent and it was not called. Use wait() without a timeout, a (user, password) tuple, or HTTPBasicAuth.")
+        hooked = sorted(event for event, callbacks in base.hooks.items() if callbacks)
+        if hooked:
+            raise BeastStudioError(
+                f"wait(timeout=...) cannot bound session {', '.join(hooked)} hooks; nothing was sent and they "
+                "were not called. Use wait() without a timeout for a session with hooks.")
         for prefix, adapter in base.adapters.items():
             if type(adapter) is not requests.adapters.HTTPAdapter:
                 raise BeastStudioError(

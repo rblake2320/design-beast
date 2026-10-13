@@ -726,3 +726,107 @@ def test_custom_retry_policy_class_is_refused_before_anything_is_sent(studio):
     assert finished and isinstance(box.get("error"), BeastStudioError), box
     assert "OwnRetry" in str(box["error"]) and "nothing was sent" in str(box["error"]), box["error"]
     assert seen == []
+
+
+# ---- caller callbacks the deadline cannot interrupt ----
+# A custom auth callable runs before any HTTP and a response hook after it; either can block for as long as it
+# likes in the caller's thread. The bounded path refuses them before calling them or sending anything, and keeps
+# ordinary basic auth.
+
+def sleeping_callbacks(kind, entered):
+    import requests
+
+    session = requests.Session()
+    session.trust_env = False
+    if kind == "auth":
+        class SlowAuth(requests.auth.AuthBase):
+            def __call__(self, request):
+                entered.append("auth")
+                time.sleep(1)
+                return request
+        session.auth = SlowAuth()
+    else:
+        def slow_hook(response, *args, **kwargs):
+            entered.append("hook")
+            time.sleep(1)
+        session.hooks["response"].append(slow_hook)
+    return session
+
+
+@pytest.mark.parametrize("kind,use_sse", [
+    ("auth", True),
+    ("auth", False),
+    ("hook", True),
+    ("hook", False),
+], ids=["sse-auth", "polling-auth", "sse-response-hook", "polling-response-hook"])
+def test_blocking_session_callbacks_are_refused_before_they_run(studio, kind, use_sse):
+    routes, url = studio
+    received = []
+
+    def record(handler, stop):
+        received.append(handler.path)
+        json_reply({"phase": "done"})(handler, stop)
+
+    routes["/api/"] = record
+    entered = []
+    client = BeastStudioClient(url, session=sleeping_callbacks(kind, entered))
+    box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=0.2, use_sse=use_sse, poll_interval=0.05))
+    assert finished and isinstance(box.get("error"), BeastStudioError), box
+    assert "nothing was sent" in str(box["error"]), box["error"]
+    assert elapsed < 0.2 + 0.3, elapsed
+    assert entered == [] and received == [], (entered, received)
+
+
+@pytest.mark.parametrize("auth", ["tuple", "HTTPBasicAuth"])
+def test_ordinary_basic_auth_still_reaches_the_server(studio, auth):
+    """Positive control: a (user, password) tuple and requests' HTTPBasicAuth pass through the bounded path."""
+    import base64
+
+    import requests
+
+    routes, url = studio
+    seen = []
+
+    def status(handler, stop):
+        seen.append(handler.headers.get("Authorization"))
+        json_reply({"phase": "done"})(handler, stop)
+
+    routes["/api/events/"] = broken_sse
+    routes["/api/run/"] = status
+    session = requests.Session()
+    session.trust_env = False
+    session.auth = ("owner", "test-only") if auth == "tuple" else requests.auth.HTTPBasicAuth("owner", "test-only")
+    box, elapsed, finished = bounded(lambda: BeastStudioClient(url, session=session).wait("r1", timeout=5))
+    assert finished and box.get("value") == {"phase": "done"}, box
+    assert seen and seen[-1] == "Basic " + base64.b64encode(b"owner:test-only").decode(), seen
+
+
+@pytest.mark.parametrize("custom", ["session-subclass", "cookie-jar"])
+def test_custom_session_classes_are_refused_before_anything_is_sent(studio, custom):
+    """A Session subclass may override request/send with its own policy, and a custom cookie jar runs caller code
+    per request; the bounded path cannot carry either faithfully, so it refuses them without contact."""
+    import requests
+
+    routes, url = studio
+    received = []
+    routes["/api/"] = lambda handler, stop: received.append(handler.path)
+    denied = []
+
+    class DenySession(requests.Session):
+        def request(self, *args, **kwargs):
+            denied.append(args)
+            raise requests.RequestException("caller transport policy refuses requests")
+
+    class OwnJar(requests.cookies.RequestsCookieJar):
+        pass
+
+    if custom == "session-subclass":
+        session = DenySession()
+    else:
+        session = requests.Session()
+        session.cookies = OwnJar()
+    session.trust_env = False
+    box, elapsed, finished = bounded(lambda: BeastStudioClient(url, session=session).wait("r1", timeout=2))
+    assert finished and isinstance(box.get("error"), BeastStudioError), box
+    assert "nothing was sent" in str(box["error"]), box["error"]
+    assert received == [] and denied == [], (received, denied)
