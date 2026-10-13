@@ -13,6 +13,7 @@ does not itself enforce (backend-sharing etiquette, VRAM contention).
 """
 from __future__ import annotations
 
+import collections
 import copy
 import http.cookiejar
 import ipaddress
@@ -28,6 +29,9 @@ from typing import Any, Dict, Iterator, List, Optional
 from urllib.parse import quote
 
 import requests
+import urllib3
+import urllib3._collections
+import urllib3.util.url
 from urllib3.connection import HTTPConnection, HTTPSConnection
 from urllib3.connectionpool import HTTPConnectionPool, HTTPSConnectionPool
 from urllib3.exceptions import ConnectTimeoutError, NewConnectionError
@@ -294,52 +298,168 @@ _SESSION_STATE = frozenset({"adapters", "auth", "cert", "cookies", "headers", "h
 
 
 def _shadowed(obj, cls):
-    """Instance attributes that replace a method of cls: caller code the bounded copy would drop or bypass."""
-    return sorted(name for name in vars(obj) if callable(getattr(cls, name, None)))
+    """Instance attributes that replace a method of cls: caller code the bounded copy would drop or bypass.
+    Only call this once type(obj) is cls, so vars() is the plain instance dict."""
+    names = list(vars(obj))
+    if any(type(name) is not str for name in names):
+        return ["<non-string attribute>"]
+    return sorted(name for name in names if callable(getattr(cls, name, None)))
+
+
+_SCALARS = (type(None), bool, int, float, str, bytes)
+_COLLECTIONS = (tuple, list, set, frozenset)
+
+
+def _plain(value, depth=0):
+    """True if value is built only from exact builtin scalar and collection types, checked by type()
+    before anything is iterated, so inspecting it can never run caller code."""
+    kind = type(value)
+    if kind in _SCALARS:
+        return True
+    if depth < 3 and kind in _COLLECTIONS:
+        return all(_plain(item, depth + 1) for item in value)
+    if depth < 3 and kind is dict:
+        return all(_plain(key, depth + 1) and _plain(item, depth + 1) for key, item in value.items())
+    return False
+
+
+_PROXY_POOL_KEYS = frozenset({"_proxy", "_proxy_headers", "_proxy_config"})  # set by urllib3 from the proxy URL
+_PROXY_STATE = frozenset({"proxy", "proxy_headers", "proxy_ssl_context", "proxy_config"})
+
+
+def _same_table(table, default):
+    """An exact dict of str keys whose values are the very objects of the stock table (no caller functions)."""
+    return (type(table) is dict and all(type(key) is str for key in table) and set(table) == set(default)
+            and all(table[key] is default[key] for key in table))
+
+
+def _pool_problem(manager, reference, cls, label):
+    """A pool manager the private copy rebuilds must hold exactly a stock manager's state: same attribute set,
+    equal plain settings, and the stock pool-class and pool-key function tables by identity. Its live pools are
+    not reused and not inspected; urllib3's own proxy metadata is checked by type only."""
+    if type(manager) is not cls or _shadowed(manager, cls):
+        return f"the custom {label} {type(manager).__name__}"
+    state = vars(manager)
+    default = vars(reference.poolmanager)
+    allowed = _PROXY_STATE if cls is ProxyManager else frozenset()
+    if any(type(name) is not str for name in state) or set(state) - allowed != set(default):
+        return f"customized {label} attributes"
+    if type(state["pools"]) is not urllib3._collections.RecentlyUsedContainer:
+        return f"a custom {label} pool container"
+    if not _same_table(state["pool_classes_by_scheme"], default["pool_classes_by_scheme"]):
+        return f"customized {label} pool classes"
+    if not _same_table(state["key_fn_by_scheme"], default["key_fn_by_scheme"]):
+        return f"customized {label} pool-key functions"
+    if not (_plain(state["headers"]) and state["headers"] == default["headers"]):
+        return f"customized {label} headers"
+    kw = state["connection_pool_kw"]
+    if type(kw) is not dict or not all(type(key) is str for key in kw):
+        return f"customized {label} settings"
+    own = {key: value for key, value in kw.items() if not (cls is ProxyManager and key in _PROXY_POOL_KEYS)}
+    if not (_plain(own) and own == default["connection_pool_kw"]):
+        return f"customized {label} settings {sorted(own)}"
+    if cls is ProxyManager and (state["proxy_ssl_context"] is not None or not _plain(state["proxy_headers"])
+                                or type(state["proxy"]) is not urllib3.util.url.Url
+                                or type(state["proxy_config"]) is not urllib3.poolmanager.ProxyConfig):
+        return f"customized {label} proxy settings"
+    return None
 
 
 def _caller_policy_problem(session):
-    """Why the bounded path cannot carry this session faithfully, or None. Every object the private session
-    rebuilds or reuses must be the exact standard type with no per-instance method overrides, and carry no
-    configuration a fresh standard object would lose."""
+    """Why the bounded path cannot carry this session faithfully, or None.
+
+    Every object the private session rebuilds or reuses must be the exact standard type with no per-instance
+    method overrides and carry no configuration a fresh standard object would lose. Each value's exact type is
+    established with type() before any of its methods are called, so this check itself never runs caller code."""
     if type(session) is not requests.Session:
         return f"the Session subclass {type(session).__name__}"
-    extra = sorted(set(vars(session)) - _SESSION_STATE)
+    state = vars(session)
+    if any(type(name) is not str for name in state):
+        return "non-string Session attributes"
+    extra = sorted(name for name in state if name not in _SESSION_STATE)
     if extra:
         return f"per-instance Session attributes {extra}"
-    if type(session.headers) not in (requests.structures.CaseInsensitiveDict, dict):
-        return f"the custom header mapping {type(session.headers).__name__}"
-    for name in ("proxies", "params"):
-        if type(getattr(session, name)) is not dict:
-            return f"the custom {name} mapping {type(getattr(session, name)).__name__}"
-    hooked = sorted(event for event, callbacks in session.hooks.items() if callbacks)
-    if type(session.hooks) is not dict or hooked:
-        return f"session hooks {hooked or type(session.hooks).__name__}"
-    auth = session.auth
-    if auth is not None and not (isinstance(auth, tuple) and len(auth) == 2) and not (
-            type(auth) is requests.auth.HTTPBasicAuth and not _shadowed(auth, requests.auth.HTTPBasicAuth)):
-        return f"the custom session auth {type(auth).__name__}"
-    jar = session.cookies
+    for name in ("stream", "verify", "cert", "max_redirects", "trust_env", "proxies", "params"):
+        if not _plain(state.get(name)):
+            return f"the custom session {name} value {type(state.get(name)).__name__}"
+    if type(state.get("proxies")) is not dict or type(state.get("params")) is not dict:
+        return "a custom proxies or params mapping"
+    headers = state.get("headers")
+    if type(headers) is requests.structures.CaseInsensitiveDict:
+        if _shadowed(headers, requests.structures.CaseInsensitiveDict):
+            return "an overridden header mapping"
+        store = vars(headers).get("_store")
+        if type(store) is not collections.OrderedDict or not all(
+                type(entry) is tuple and _plain(entry) for entry in store.values()):
+            return "custom header values"
+    elif not (type(headers) is dict and _plain(headers)):
+        return f"the custom header mapping {type(headers).__name__}"
+    hooks = state.get("hooks")
+    if type(hooks) is not dict:
+        return f"the custom hooks container {type(hooks).__name__}"
+    for event, callbacks in hooks.items():
+        if type(event) is not str or type(callbacks) is not list or callbacks:
+            return "session hooks"
+    auth = state.get("auth")
+    if auth is not None:
+        if type(auth) is tuple:
+            if len(auth) != 2 or not all(type(part) in (str, bytes) for part in auth):
+                return "a custom session auth tuple"
+        elif type(auth) is requests.auth.HTTPBasicAuth:
+            if _shadowed(auth, requests.auth.HTTPBasicAuth) or not all(
+                    type(vars(auth).get(part)) in (str, bytes) for part in ("username", "password")):
+                return "a customized HTTPBasicAuth"
+        else:
+            return f"the custom session auth {type(auth).__name__}"
+    jar = state.get("cookies")
     if type(jar) is not requests.cookies.RequestsCookieJar or _shadowed(jar, requests.cookies.RequestsCookieJar):
         return f"the custom cookie jar {type(jar).__name__}"
-    policy = jar._policy
+    policy = vars(jar).get("_policy")
     if type(policy) is not http.cookiejar.DefaultCookiePolicy or _shadowed(policy, http.cookiejar.DefaultCookiePolicy):
         return f"the custom cookie policy {type(policy).__name__}"
-    for prefix, adapter in session.adapters.items():
+    if not _plain(vars(policy)):
+        return "customized cookie policy settings"
+    domains = vars(jar).get("_cookies")
+    if type(domains) is not dict:
+        return "a custom cookie store"
+    for paths in domains.values():
+        if type(paths) is not dict:
+            return "a custom cookie store"
+        for names in paths.values():
+            if type(names) is not dict:
+                return "a custom cookie store"
+            for cookie in names.values():
+                if type(cookie) is not http.cookiejar.Cookie or _shadowed(cookie, http.cookiejar.Cookie) or not _plain(
+                        vars(cookie)):
+                    return "a custom cookie"
+    adapters = state.get("adapters")
+    if type(adapters) is not collections.OrderedDict:
+        return f"the custom adapter mapping {type(adapters).__name__}"
+    for prefix, adapter in adapters.items():
+        if type(prefix) is not str:
+            return "a custom adapter prefix"
         if type(adapter) is not requests.adapters.HTTPAdapter or _shadowed(adapter, requests.adapters.HTTPAdapter):
             return f"the custom transport adapter {type(adapter).__name__} mounted at {prefix!r}"
-        reference = requests.adapters.HTTPAdapter(pool_connections=adapter._pool_connections,
-                                                  pool_maxsize=adapter._pool_maxsize, pool_block=adapter._pool_block)
-        manager = adapter.poolmanager
-        if (type(manager) is not PoolManager or _shadowed(manager, PoolManager) or adapter.config
-                or manager.connection_pool_kw != reference.poolmanager.connection_pool_kw
-                or manager.pool_classes_by_scheme != reference.poolmanager.pool_classes_by_scheme):
-            return f"a customized connection pool on the adapter mounted at {prefix!r}"
-        for proxy, proxy_manager in adapter.proxy_manager.items():
-            if type(proxy_manager) is not ProxyManager or _shadowed(proxy_manager, ProxyManager):
-                return f"the custom proxy manager {type(proxy_manager).__name__} for {proxy!r}"
-        retries = adapter.max_retries
-        if type(retries) is not Retry or _shadowed(retries, Retry):
+        settings = vars(adapter)
+        sizes = [settings.get(name) for name in ("_pool_connections", "_pool_maxsize", "_pool_block")]
+        config = settings.get("config")
+        if not all(type(size) in (int, bool) for size in sizes) or type(config) is not dict or config:
+            return f"customized pool settings on the adapter mounted at {prefix!r}"
+        reference = requests.adapters.HTTPAdapter(*sizes[:2], pool_block=sizes[2])
+        problem = _pool_problem(settings.get("poolmanager"), reference, PoolManager, "connection pool")
+        if problem:
+            return f"{problem} on the adapter mounted at {prefix!r}"
+        proxies = settings.get("proxy_manager")
+        if type(proxies) is not dict:
+            return f"a custom proxy-manager mapping on the adapter mounted at {prefix!r}"
+        for proxy, manager in proxies.items():
+            if type(proxy) is not str:
+                return "a custom proxy key"
+            problem = _pool_problem(manager, reference, ProxyManager, "proxy manager")
+            if problem:
+                return f"{problem} for {proxy!r}"
+        retries = settings.get("max_retries")
+        if type(retries) is not Retry or _shadowed(retries, Retry) or not _plain(vars(retries)):
             return f"the custom retry policy {type(retries).__name__} mounted at {prefix!r}"
     return None
 

@@ -927,3 +927,85 @@ def test_ordinary_session_state_on_a_used_session_still_reaches_the_server(studi
     assert finished and box.get("value") == {"phase": "done"}, box
     header, auth, cookie = seen[-1]
     assert header == "owned-test" and auth and auth.startswith("Basic ") and cookie == "studio=owned", seen
+
+
+# ---- the policy check itself must never run caller code ----
+# Each case hides a slow caller method in a container or table the bounded copy would read; the check has to
+# establish exact types before touching any of them, so the refusal arrives inside the budget with nothing entered.
+
+def container_session(case, entered):
+    import collections
+
+    import requests
+    from requests.structures import CaseInsensitiveDict
+    from urllib3.util.retry import Retry
+
+    def slow(name):
+        def method(self, *args, **kwargs):
+            entered.append(name)
+            time.sleep(1)
+            return getattr(super(type(self), self), name)(*args, **kwargs)
+        return method
+
+    session = requests.Session()
+    session.trust_env = False
+    if case == "hooks-dict-subclass":
+        session.hooks = type("SlowHooks", (dict,), {"items": slow("items")})(session.hooks)
+    elif case == "headers-instance-items":
+        headers = CaseInsensitiveDict(session.headers)
+        headers.items = lambda: (entered.append("items"), time.sleep(1), [])[2]
+        session.headers = headers
+    elif case == "headers-dict-subclass":
+        session.headers = type("SlowHeaders", (dict,), {"items": slow("items")})({"Accept": "*/*"})
+    elif case == "header-value-str-subclass":
+        session.headers["X-Owned"] = type("SlowStr", (str,), {"encode": slow("encode")})("value")
+    elif case == "adapters-dict-subclass":
+        session.adapters = type("SlowAdapters", (collections.OrderedDict,), {"items": slow("items")})(session.adapters)
+    elif case == "proxy-manager-map-subclass":
+        adapter = session.adapters["http://"]
+        adapter.proxy_manager = type("SlowProxies", (dict,), {"items": slow("items")})()
+    elif case == "poolmanager-key-function":
+        manager = session.adapters["http://"].poolmanager
+        default = manager.key_fn_by_scheme["http"]
+        manager.key_fn_by_scheme = dict(manager.key_fn_by_scheme,
+                                        http=lambda *a, **k: (entered.append("key_fn"), default(*a, **k))[1])
+    elif case == "poolmanager-pool-classes":
+        manager = session.adapters["http://"].poolmanager
+        manager.pool_classes_by_scheme = type("SlowClasses", (dict,), {"items": slow("items")})(
+            manager.pool_classes_by_scheme)
+    elif case == "auth-tuple-subclass":
+        session.auth = type("SlowAuth", (tuple,), {"__len__": slow("__len__")})(("owner", "test-only"))
+    elif case == "auth-part-str-subclass":
+        session.auth = (type("SlowUser", (str,), {"encode": slow("encode")})("owner"), "test-only")
+    elif case == "retry-forcelist-container":
+        forcelist = type("SlowSet", (set,), {"__contains__": slow("__contains__")})({503})
+        session.mount("http://", requests.adapters.HTTPAdapter(max_retries=Retry(
+            total=1, status_forcelist=forcelist, allowed_methods=["GET"])))
+    elif case == "cookie-store-subclass":
+        session.cookies._cookies = type("SlowStore", (dict,), {"values": slow("values")})()
+    return session
+
+
+@pytest.mark.parametrize("case", [
+    "hooks-dict-subclass", "headers-instance-items", "headers-dict-subclass", "header-value-str-subclass",
+    "adapters-dict-subclass", "proxy-manager-map-subclass", "poolmanager-key-function", "poolmanager-pool-classes",
+    "auth-tuple-subclass", "auth-part-str-subclass", "retry-forcelist-container", "cookie-store-subclass",
+])
+def test_policy_check_refuses_custom_containers_without_calling_them(studio, case):
+    routes, url = studio
+    received = []
+
+    def record(handler, stop):
+        received.append(handler.path)
+        json_reply({"phase": "done"})(handler, stop)
+
+    routes["/api/"] = record
+    for use_sse in (True, False):
+        entered = []
+        client = BeastStudioClient(url, session=container_session(case, entered))
+        box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=0.2, use_sse=use_sse, poll_interval=0.05))
+        assert finished and isinstance(box.get("error"), BeastStudioError), box
+        assert "nothing was sent" in str(box["error"]), box["error"]
+        assert elapsed < 0.2 + 0.3, (use_sse, elapsed)
+        assert entered == [], (use_sse, entered)
+    assert received == [], received
