@@ -116,3 +116,44 @@ def evaluate(
 def admission(workload: str, *, use_cache: bool = True) -> dict[str, Any]:
     policy = load_policy()
     return evaluate(measure_gpu(use_cache=use_cache), policy, workload)
+
+
+EXECUTION_TARGETS = ("local", "remote")
+
+
+def evaluate_stage(
+    local_snapshot: dict[str, Any],
+    remote_snapshot: dict[str, Any] | None,
+    policy: dict[str, Any],
+    workload: str,
+) -> dict[str, Any]:
+    """Stage-aware admission. Local workloads keep the exact local gate.
+
+    A workload declares ``"execution": "remote"`` when its VRAM is consumed on
+    another host (for example a spark-hosted backend reached through a tunnel).
+    Such workloads are judged only on a fresh measurement from that remote host
+    against ``policy["remote_gpu"]``. The local GPU is never consulted for them,
+    and a missing or unreadable remote measurement is a refusal, never an allow.
+    """
+    if workload not in policy["workloads"]:
+        raise ValueError(f"unknown workload: {workload}")
+    execution = policy["workloads"][workload].get("execution", "local")
+    if execution not in EXECUTION_TARGETS:
+        raise ValueError(f"unknown execution target for {workload}: {execution}")
+
+    if execution == "local":
+        result = evaluate(local_snapshot, policy, workload)
+        result["execution"] = "local"
+        return result
+
+    if "remote_gpu" not in policy:
+        raise ValueError(f"{workload} is remote but policy has no remote_gpu section")
+    if remote_snapshot is None or not remote_snapshot.get("available"):
+        error = (remote_snapshot or {}).get("error", "no remote measurement supplied")
+        remote_policy = {**policy, "gpu": {**policy["remote_gpu"], "unknown_state_policy": "deny"}}
+        result = evaluate({"available": False, "error": error}, remote_policy, workload)
+    else:
+        result = evaluate(remote_snapshot, {**policy, "gpu": policy["remote_gpu"]}, workload)
+    result["execution"] = "remote"
+    result["reasons"].insert(0, "judged on remote host measurement; local GPU not consulted")
+    return result
