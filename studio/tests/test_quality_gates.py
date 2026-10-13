@@ -68,3 +68,44 @@ def test_nvcf_poll_gives_up_within_its_timeout():
     finally:
         httpd.shutdown()
         httpd.server_close()
+
+
+# ---- whole-operation deadline holds for slow status responses ---------------
+
+class _SlowStatus(BaseHTTPRequestHandler):
+    """POST returns 202; each status GET takes 2s and then returns 200."""
+    def do_POST(self):
+        self.send_response(202)
+        self.send_header("NVCF-REQID", "req-2")
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+
+    def do_GET(self):
+        import time as _t
+        _t.sleep(2)
+        body = b'{"artifacts": []}'
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def log_message(self, *args):
+        pass
+
+
+def test_nvcf_slow_status_cannot_overrun_deadline():
+    import time as _t
+    httpd = HTTPServer(("127.0.0.1", 0), _SlowStatus)
+    threading.Thread(target=httpd.serve_forever, daemon=True).start()
+    try:
+        base = f"http://127.0.0.1:{httpd.server_port}"
+        start = _t.monotonic()
+        with pytest.raises(TimeoutError):
+            server._nim_invoke(f"{base}/invoke", {}, {}, timeout=1,
+                               poll_base=f"{base}/status", poll_interval=0.01)
+        elapsed = _t.monotonic() - start
+        assert elapsed < 1.5, f"deadline overrun: returned after {elapsed:.3f}s with timeout=1"
+    finally:
+        httpd.shutdown()
+        httpd.server_close()

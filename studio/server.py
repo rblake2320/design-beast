@@ -124,13 +124,35 @@ def _nim_invoke(url: str, payload: dict, headers: dict, timeout: int = 600,
     completes raises TimeoutError instead of blocking its worker forever.
     """
     deadline = time.monotonic() + timeout
-    r = requests.post(url, headers=headers, json=payload, timeout=(15, timeout))
+
+    def _left() -> float:
+        return deadline - time.monotonic()
+
+    def _expired() -> TimeoutError:
+        return TimeoutError(f"NVCF request still pending after {timeout}s; giving up")
+
+    # Every blocking call is capped to the time left, so a slow server cannot
+    # hold the worker past the deadline.
+    try:
+        r = requests.post(url, headers=headers, json=payload,
+                          timeout=(min(15, max(_left(), 0.001)), max(_left(), 0.001)))
+    except requests.exceptions.Timeout:
+        raise _expired()
     while r.status_code == 202:
-        if time.monotonic() >= deadline:
-            raise TimeoutError(f"NVCF request still pending after {timeout}s; giving up")
+        if _left() <= 0:
+            raise _expired()
         rid = r.headers.get("NVCF-REQID")
-        time.sleep(poll_interval)
-        r = requests.get(f"{poll_base}/{rid}", headers=headers, timeout=(15, 120))
+        time.sleep(min(poll_interval, _left()))
+        if _left() <= 0:
+            raise _expired()
+        try:
+            r = requests.get(f"{poll_base}/{rid}", headers=headers,
+                             timeout=(min(15, max(_left(), 0.001)), max(_left(), 0.001)))
+        except requests.exceptions.Timeout:
+            raise _expired()
+    if _left() < 0:
+        # A completion that arrives after the deadline is refused, not accepted.
+        raise _expired()
     r.raise_for_status()
     return r.json()
 
