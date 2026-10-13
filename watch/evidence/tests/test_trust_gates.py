@@ -4,7 +4,8 @@ import pytest
 from exporters.skill_bundle import compile_skill_bundle
 from review.evidence_gate import validate_claim
 
-OK_SOURCE = {"authorization_status": "authorized_owned"}
+OK_SOURCE = {"source_id": "synthetic-src", "sha256": "0" * 64,
+             "ingested_at": "2026-10-12T00:00:00+00:00", "authorization_status": "authorized_owned"}
 GOOD = {"step_id": "1", "description": "step", "evidence_event_ids": ["ev-1"], "review_state": "verified_by_execution", "replay_result": {"success": True}}
 
 
@@ -52,7 +53,7 @@ def test_valid_bundle_exports_with_its_claims(tmp_path):
 @pytest.mark.parametrize("status", ["authorized_owned", "authorized_licensed",
                                     "authorized_public_domain", "authorized_fair_use_research"])
 def test_each_canonical_authorized_state_exports(tmp_path, status):
-    compile_skill_bundle([GOOD], {"authorization_status": status}, str(tmp_path / "out.json"))
+    compile_skill_bundle([GOOD], dict(OK_SOURCE, authorization_status=status), str(tmp_path / "out.json"))
 
 
 def test_non_serializable_claim_writes_nothing(tmp_path):
@@ -64,7 +65,7 @@ def test_non_serializable_claim_writes_nothing(tmp_path):
 
 
 def test_non_finite_number_writes_nothing(tmp_path):
-    claim = dict(GOOD, replay_result={"success": True, "exit_code": float("nan")})
+    claim = dict(GOOD, provider_metadata={"measurement": float("nan")})
     out = tmp_path / "nan.json"
     with pytest.raises(ValueError, match="nothing written"):
         compile_skill_bundle([claim], OK_SOURCE, str(out))

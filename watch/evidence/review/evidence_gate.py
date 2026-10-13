@@ -33,4 +33,6 @@ def validate_claim(claim) -> dict:
             errors.append("verified_by_execution requires a replay_result record")
         elif replay.get("success") is not True:
             errors.append("verified_by_execution requires replay_result.success == true")
+        elif "exit_code" in replay and not (type(replay["exit_code"]) is int and replay["exit_code"] == 0):
+            errors.append("replay_result.exit_code contradicts success == true")
     return {"valid": len(errors) == 0, "errors": errors}
