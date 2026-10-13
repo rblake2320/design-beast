@@ -773,6 +773,26 @@ def _new_run(brief: str, model: str, kind: str, params: dict = None,
     return run_dir, created
 
 
+def _guarded(run_dir: Path, work):
+    """Worker-thread guard: every non-create job must reach a terminal phase.
+
+    Without this, an exception escaping a worker (e.g. the judge raising) kills
+    the thread silently and the job stays 'running' until a server restart.
+    """
+    def run():
+        try:
+            work()
+        except JobCancelled:
+            _status(run_dir, phase="cancelled", error="cancelled by request", candidates=[])
+        except JobTimeout:
+            _status(run_dir, phase="failed",
+                    error="exceeded the server-enforced deadline", candidates=[])
+        except Exception as exc:  # noqa: BLE001 — a job must always end in a terminal phase
+            _status(run_dir, phase="failed", candidates=[],
+                    error=f"{type(exc).__name__}: {str(exc)[:250]}")
+    return run
+
+
 # ---------- create loop ----------
 
 MODEL_CHOICES = Literal["local:flux.1-schnell", "local:flux.2-klein",
@@ -1117,7 +1137,7 @@ def refine(req: RefineReq):
         _status(run_dir, phase="done", candidates=[cand], winner=1,
                 final=final.name if final.exists() else "cand1.png")
 
-    threading.Thread(target=work, daemon=True).start()
+    threading.Thread(target=_guarded(run_dir, work), daemon=True).start()
     return {"id": run_dir.name}
 
 
@@ -1459,7 +1479,7 @@ def animate(req: AnimateReq):
                 ("seed", "source", "steps", "size", "seconds") if key in r}}],
             final="clip.mp4", video=True)
 
-    threading.Thread(target=work, daemon=True).start()
+    threading.Thread(target=_guarded(run_dir, work), daemon=True).start()
     return {"id": run_dir.name}
 
 
@@ -1640,7 +1660,7 @@ def to_3d(req: To3DReq):
              **{key: r[key] for key in ("seed", "source") if key in r}}],
             final="model.glb", glb=True)
 
-    threading.Thread(target=work, daemon=True).start()
+    threading.Thread(target=_guarded(run_dir, work), daemon=True).start()
     return {"id": run_dir.name}
 
 
@@ -1717,7 +1737,7 @@ def to_ue(req: ToUEReq):
             {"i": 1, "state": "done", "fix": f"in RouteRush at {asset}"}],
             ue_asset=asset)
 
-    threading.Thread(target=work, daemon=True).start()
+    threading.Thread(target=_guarded(run_dir, work), daemon=True).start()
     return {"id": run_dir.name}
 
 
