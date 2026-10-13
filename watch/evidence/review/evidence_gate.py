@@ -14,6 +14,10 @@ def validate_claim(claim: dict) -> dict:
         errors.append(f"invalid review_state: {claim.get('review_state')}")
     if claim.get("review_state") in ("inferred", "uncertain") and not claim.get("requires_human_approval"):
         errors.append("inferred/uncertain claims MUST set requires_human_approval=True")
-    if claim.get("review_state") == "verified_by_execution" and not claim.get("replay_result"):
-        errors.append("verified_by_execution requires a replay_result record")
+    if claim.get("review_state") == "verified_by_execution":
+        replay = claim.get("replay_result")
+        if not isinstance(replay, dict):
+            errors.append("verified_by_execution requires a replay_result record")
+        elif replay.get("success") is not True:
+            errors.append("verified_by_execution requires replay_result.success == true")
     return {"valid": len(errors) == 0, "errors": errors}
