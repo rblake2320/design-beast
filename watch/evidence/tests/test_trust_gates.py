@@ -4,7 +4,7 @@ import pytest
 from exporters.skill_bundle import compile_skill_bundle
 from review.evidence_gate import validate_claim
 
-OK_SOURCE = {"authorization_status": "authorized"}
+OK_SOURCE = {"authorization_status": "authorized_owned"}
 GOOD = {"step_id": "1", "review_state": "verified_by_execution", "replay_result": {"success": True}}
 
 
@@ -26,11 +26,12 @@ def test_empty_claims_are_never_exported(tmp_path, claims):
 
 
 @pytest.mark.parametrize("source", [
-    {"authorization_status": "unverified_do_not_use"}, {"authorization_status": ""}, {}, None,
+    {"authorization_status": "unverified_do_not_use"}, {"authorization_status": "authorized"},
+    {"authorization_status": ""}, {}, None,
 ])
 def test_unauthorized_source_is_refused_fail_closed(tmp_path, source):
     out = tmp_path / "out.json"
-    with pytest.raises(ValueError, match="not explicitly authorized"):
+    with pytest.raises(ValueError, match="not authorized for export"):
         compile_skill_bundle([GOOD], source, str(out))
     assert not out.exists()
 
@@ -46,3 +47,9 @@ def test_valid_bundle_exports_with_its_claims(tmp_path):
     bundle = compile_skill_bundle([GOOD], OK_SOURCE, str(out))
     assert json.loads(out.read_text())["procedure_claims"] == [GOOD]
     assert bundle["evidence_backed"] is True
+
+
+@pytest.mark.parametrize("status", ["authorized_owned", "authorized_licensed",
+                                    "authorized_public_domain", "authorized_fair_use_research"])
+def test_each_canonical_authorized_state_exports(tmp_path, status):
+    compile_skill_bundle([GOOD], {"authorization_status": status}, str(tmp_path / "out.json"))
