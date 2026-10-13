@@ -100,3 +100,23 @@ def test_decodable_base64_that_is_not_an_image_is_422_with_no_residue(base_url):
     assert status == 422
     assert body["code"] == server.E_VALIDATION
     assert _files(uploads) == before
+
+
+def _png_bytes(color) -> bytes:
+    buf = io.BytesIO()
+    Image.new("RGB", (4, 4), color).save(buf, format="PNG")
+    return buf.getvalue()
+
+
+def test_same_name_uploads_keep_both_originals(base_url):
+    base, uploads = base_url
+    first = _png_bytes((255, 0, 0))
+    second = _png_bytes((0, 0, 255))
+    assert first != second
+    status_a, body_a = _post(base, {"name": "same.png", "data": base64.b64encode(first).decode()})
+    status_b, body_b = _post(base, {"name": "same.png", "data": base64.b64encode(second).decode()})
+    assert status_a == 200 and status_b == 200
+    assert body_a["file"] != body_b["file"]
+    assert body_a["file"].endswith("_same.png") and body_b["file"].endswith("_same.png")
+    assert (uploads / body_a["file"]).read_bytes() == first
+    assert (uploads / body_b["file"]).read_bytes() == second

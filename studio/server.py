@@ -22,6 +22,7 @@ import threading
 import time
 import urllib.parse
 import urllib.request
+import uuid
 from contextlib import contextmanager
 from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait as futures_wait
 from pathlib import Path
@@ -1183,8 +1184,11 @@ def upload(req: UploadReq):
         return JSONResponse({"error": "not a decodable image",
                              "code": E_VALIDATION}, 422)
     safe = re.sub(r"[^\w.\-]", "_", req.name) or "upload.png"
-    fname = f"{time.strftime('%H%M%S')}_{safe}"
-    (UPLOADS / fname).write_bytes(raw)
+    # Random prefix so two uploads with the same name never share a path; the
+    # exclusive create refuses to overwrite even if one ever collides.
+    fname = f"{uuid.uuid4().hex}_{safe}"
+    with open(UPLOADS / fname, "xb") as out:
+        out.write(raw)
     return {"file": fname}
 
 
