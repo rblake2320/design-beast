@@ -636,3 +636,85 @@ def test_standard_adapter_mounts_keep_their_prefix_and_retry_settings(studio):
     box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=5, poll_interval=0.05))
     assert finished and box.get("value") == {"phase": "done"}, box
     assert len(attempts) == 2, attempts
+
+
+# ---- caller retry policy under a deadline ----
+# urllib3 sleeps between retries with time.sleep, which no socket shutdown can interrupt; the bounded path
+# must keep the caller's Retry policy but never let a Retry-After or backoff delay outlast the deadline.
+
+def retrying_session(**retry):
+    import requests
+    from urllib3.util.retry import Retry
+
+    session = requests.Session()
+    session.trust_env = False
+    session.mount("http://", requests.adapters.HTTPAdapter(max_retries=Retry(
+        status_forcelist=[503], allowed_methods=["GET"], **retry)))
+    return session
+
+
+def unavailable(requests_seen, retry_after=None, recover_after=None):
+    def behaviour(handler, stop):
+        requests_seen.append(handler.path)
+        if recover_after is not None and len(requests_seen) > recover_after:
+            json_reply({"phase": "done"})(handler, stop)
+            return
+        handler.send_response(503)
+        if retry_after is not None:
+            handler.send_header("Retry-After", str(retry_after))
+        handler.send_header("Content-Length", "0")
+        handler.end_headers()
+    return behaviour
+
+
+@pytest.mark.parametrize("use_sse", [True, False], ids=["sse", "polling"])
+@pytest.mark.parametrize("delay", ["retry-after", "backoff"])
+def test_retry_delays_never_outlast_the_wait_deadline(studio, use_sse, delay):
+    routes, url = studio
+    seen = []
+    retry_after = 2 if delay == "retry-after" else None
+    routes["/api/events/"] = unavailable(seen, retry_after)
+    routes["/api/run/"] = unavailable(seen, retry_after)
+    session = retrying_session(total=2, backoff_factor=1 if delay == "backoff" else 0)
+    client = BeastStudioClient(url, session=session)
+    box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=0.3, use_sse=use_sse, poll_interval=0.05))
+    assert seen, "fault was not injected: the server saw no request"
+    assert finished and isinstance(box.get("error"), BeastStudioError), box
+    assert "terminal phase within" in str(box["error"]), box["error"]
+    assert elapsed < 0.3 + 0.3, elapsed
+
+
+@pytest.mark.parametrize("use_sse", [True, False], ids=["sse", "polling"])
+def test_retry_delays_inside_the_budget_still_retry_and_succeed(studio, use_sse):
+    """Positive control: a Retry-After of 1 s and a short backoff that fit the budget are honoured, and the retried
+    request returns the terminal status."""
+    routes, url = studio
+    for retry, backoff in ((1, 0), (None, 0.2)):
+        seen = []
+        routes["/api/events/"] = broken_sse
+        routes["/api/run/"] = unavailable(seen, retry_after=retry, recover_after=1)
+        client = BeastStudioClient(url, session=retrying_session(total=2, backoff_factor=backoff))
+        box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=5, use_sse=use_sse, poll_interval=0.05))
+        assert finished and box.get("value") == {"phase": "done"}, box
+        assert len(seen) == 2, seen
+        if retry:
+            assert elapsed >= 1.0, elapsed  # the server's Retry-After was respected, not skipped
+
+
+def test_custom_retry_policy_class_is_refused_before_anything_is_sent(studio):
+    import requests
+    from urllib3.util.retry import Retry
+
+    class OwnRetry(Retry):
+        pass
+
+    routes, url = studio
+    seen = []
+    routes["/api/"] = lambda handler, stop: seen.append(handler.path)
+    session = requests.Session()
+    session.trust_env = False
+    session.mount("http://", requests.adapters.HTTPAdapter(max_retries=OwnRetry(total=1)))
+    box, elapsed, finished = bounded(lambda: BeastStudioClient(url, session=session).wait("r1", timeout=2))
+    assert finished and isinstance(box.get("error"), BeastStudioError), box
+    assert "OwnRetry" in str(box["error"]) and "nothing was sent" in str(box["error"]), box["error"]
+    assert seen == []
