@@ -11,10 +11,12 @@ import io
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
 import time
+import xml.etree.ElementTree as ET
 
 
 BOOTSTRAP = r'''
@@ -231,6 +233,45 @@ def main() -> int:
         probe.write_text(NODE_PROBE)
         run("node-live", [shutil.which("node") or "node", str(probe), url, str(png), str(out / "node-controls.json")], consumer, required=False)
         report["node_controls"] = json.loads((out / "node-controls.json").read_text())
+        # Run the permanent real-HTTP deadline controls against the artifacts
+        # just installed, isolated from source-tree imports and pytest settings.
+        report["installed_deadlines"] = {}
+        if not args.typescript_only:
+            run("deadline-test-runtime", [str(pypath), "-m", "pip", "install", "pytest==9.0.3"], out)
+            checks = out / "installed-deadlines"
+            checks.mkdir()
+            source_test = repo / "sdk/python/tests/test_deadline_claude_ld.py"
+            copied_test = checks / source_test.name
+            shutil.copyfile(source_test, copied_test)
+            config = checks / "pytest.ini"
+            config.write_text("[pytest]\n")
+            junit = checks / "python.xml"
+            run("python-installed-deadlines", [str(pypath), "-I", "-m", "pytest", "-q", "-c", str(config),
+                "--confcutdir", str(checks), str(copied_test), f"--junitxml={junit}"], checks)
+            cases = list(ET.parse(junit).iter("testcase"))
+            if not cases or any(case.find(tag) is not None for case in cases for tag in ("failure", "error", "skipped")):
+                raise RuntimeError("Installed Python deadline controls must all run and pass")
+            report["installed_deadlines"]["python"] = {
+                "passed": len(cases), "junit": str(junit),
+                "test_sha256": hashlib.sha256(copied_test.read_bytes()).hexdigest(),
+                "scope": "permanent real HTTP controls; installed wheel; isolated interpreter"}
+        source_test = repo / "sdk/typescript/tests/client.test.ts"
+        test_text = source_test.read_text()
+        old_import = 'from "../src/client.ts"'
+        if test_text.count(old_import) != 1:
+            raise RuntimeError("Cannot bind TypeScript deadline tests to the installed tarball")
+        copied_test = consumer / "installed-deadlines.ts"
+        copied_test.write_text(test_text.replace(old_import, 'from "beast-studio-client"'))
+        run("node-installed-deadlines", [shutil.which("node") or "node", "--test", "--test-reporter=tap",
+            "--test-name-pattern=^deadline:|^deadline control:|^unbounded streamEvents", str(copied_test)], consumer)
+        deadline_log = (out / "node-installed-deadlines.log").read_text()
+        passed = re.search(r"^# pass (\d+)$", deadline_log, re.MULTILINE)
+        if passed is None or int(passed[1]) == 0:
+            raise RuntimeError("No installed TypeScript deadline controls executed")
+        report["installed_deadlines"]["node"] = {
+            "passed": int(passed[1]), "log": str(out / "node-installed-deadlines.log"),
+            "test_sha256": hashlib.sha256(copied_test.read_bytes()).hexdigest(),
+            "scope": "permanent real HTTP deadline controls; installed npm tarball"}
         rows = [r for key in ("python_controls", "node_controls") if key in report for r in report[key]["checks"]]
         report["worked"] = sum(r["status"] == "worked" for r in rows)
         report["failed"] = sum(r["status"] != "worked" for r in rows)
