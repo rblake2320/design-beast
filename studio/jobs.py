@@ -118,22 +118,27 @@ def recover_orphans():
 def create(kind: str, model: str, brief: str, params: dict,
            idempotency_key: str = None) -> tuple[str, bool]:
     """Returns (job_id, created). If the idempotency key exists, returns the
-    existing job id with created=False."""
-    if idempotency_key:
-        row = _db().execute("SELECT id FROM jobs WHERE idempotency_key=?",
-                            (idempotency_key,)).fetchone()
-        if row:
-            return row["id"], False
-    jid = f"{time.strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:4]}"
+    existing job id with created=False.
+
+    The insert is a single statement that does nothing on a key conflict, so
+    concurrent callers with one key cannot race a SELECT-then-INSERT into a
+    UNIQUE violation. The winner is decided by SQLite, then read back."""
+    jid = f"{time.strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:12]}"
     now = time.time()
     with _WRITE_LOCK:
-        _db().execute(
+        con = _db()
+        cur = con.execute(
             "INSERT INTO jobs (id, kind, model, brief, params, idempotency_key, "
-            "created, deadline) VALUES (?,?,?,?,?,?,?,?)",
+            "created, deadline) VALUES (?,?,?,?,?,?,?,?) "
+            "ON CONFLICT(idempotency_key) DO NOTHING",
             (jid, kind, model, brief[:500], json.dumps(params), idempotency_key,
              now, now + DEADLINES.get(kind, DEFAULT_DEADLINE_S)))
-        _db().commit()
-    return jid, True
+        con.commit()
+        if cur.rowcount == 1:
+            return jid, True
+        row = con.execute("SELECT id FROM jobs WHERE idempotency_key=?",
+                          (idempotency_key,)).fetchone()
+        return row["id"], False
 
 
 def set_phase(jid: str, phase: str, error: str = None, error_code: str = None,
