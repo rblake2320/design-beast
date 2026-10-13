@@ -29,7 +29,7 @@ import uvicorn
 from fastapi import FastAPI, Header
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 import jobs
 from file_access import resolve_media
@@ -113,14 +113,24 @@ def hf_generate(model: str, prompt: str, out_file: Path, extra: list = None) -> 
     return {"url": urls[0], "file": out_file.name}
 
 
-def _nim_invoke(url: str, payload: dict, headers: dict, timeout: int = 600) -> dict:
-    """POST to a NIM endpoint; follow the NVCF 202-polling pattern if used."""
+NVCF_STATUS_BASE = "https://api.nvcf.nvidia.com/v2/nvcf/pexec/status"
+
+
+def _nim_invoke(url: str, payload: dict, headers: dict, timeout: int = 600,
+                poll_base: str = NVCF_STATUS_BASE, poll_interval: float = 3.0) -> dict:
+    """POST to a NIM endpoint; follow the NVCF 202-polling pattern if used.
+
+    The whole poll loop is bounded by `timeout` seconds; a job that never
+    completes raises TimeoutError instead of blocking its worker forever.
+    """
+    deadline = time.monotonic() + timeout
     r = requests.post(url, headers=headers, json=payload, timeout=(15, timeout))
     while r.status_code == 202:
+        if time.monotonic() >= deadline:
+            raise TimeoutError(f"NVCF request still pending after {timeout}s; giving up")
         rid = r.headers.get("NVCF-REQID")
-        time.sleep(3)
-        r = requests.get(f"https://api.nvcf.nvidia.com/v2/nvcf/pexec/status/{rid}",
-                         headers=headers, timeout=(15, 120))
+        time.sleep(poll_interval)
+        r = requests.get(f"{poll_base}/{rid}", headers=headers, timeout=(15, 120))
     r.raise_for_status()
     return r.json()
 
@@ -773,6 +783,26 @@ def _new_run(brief: str, model: str, kind: str, params: dict = None,
     return run_dir, created
 
 
+def _guarded(run_dir: Path, work):
+    """Worker-thread guard: every non-create job must reach a terminal phase.
+
+    Without this, an exception escaping a worker (e.g. the judge raising) kills
+    the thread silently and the job stays 'running' until a server restart.
+    """
+    def run():
+        try:
+            work()
+        except JobCancelled:
+            _status(run_dir, phase="cancelled", error="cancelled by request", candidates=[])
+        except JobTimeout:
+            _status(run_dir, phase="failed",
+                    error="exceeded the server-enforced deadline", candidates=[])
+        except Exception as exc:  # noqa: BLE001 — a job must always end in a terminal phase
+            _status(run_dir, phase="failed", candidates=[],
+                    error=f"{type(exc).__name__}: {str(exc)[:250]}")
+    return run
+
+
 # ---------- create loop ----------
 
 MODEL_CHOICES = Literal["local:flux.1-schnell", "local:flux.2-klein",
@@ -785,6 +815,14 @@ class RunReq(BaseModel):
     brief: str = Field(min_length=3, max_length=2000)
     prompt: str = Field("", max_length=4000)  # expanded prompt; falls back to brief
     variations: list[str] = Field(default=[], max_length=8)
+
+    @field_validator("variations")
+    @classmethod
+    def _min_four_candidates(cls, v: list[str]) -> list[str]:
+        # Quality loop: minimum 4 candidates. Empty means the server default of 4.
+        if v and len(v) < 4:
+            raise ValueError("provide 0 variations (server default of 4) or at least 4")
+        return v
     model: MODEL_CHOICES = "local:flux.1-schnell"  # default MUST be free/local
     aspect_ratio: Literal["1:1", "16:9", "9:16", "4:3", "3:4"] = "1:1"
     reference: str = ""         # filename in uploads/ — Higgsfield models only
@@ -861,6 +899,14 @@ def _generate_one_inner(cand: dict, run_dir: Path, i: int, prompt: str, req: Run
     return cand
 
 
+ACCEPT_SCORE = 7  # judge pass bar; matches scripts/judge_image.py exit code
+
+
+def _accepted(cand: dict) -> bool:
+    """A candidate may ship only when the judge scored it at or above ACCEPT_SCORE."""
+    return cand.get("state") == "done" and not cand.get("kill")         and isinstance(cand.get("score"), (int, float)) and cand["score"] >= ACCEPT_SCORE
+
+
 def _run_loop(run_dir: Path, req: RunReq):
     try:
         _run_loop_inner(run_dir, req)
@@ -913,12 +959,11 @@ def _run_loop_inner(run_dir: Path, req: RunReq):
     pool.shutdown(wait=not cancelled_early, cancel_futures=cancelled_early)
     cands = sorted((f.result() for f in done_futs), key=lambda c: c["i"])
     jobs.checkpoint(run_dir.name)
-    done = [c for c in cands if c["state"] == "done" and not c.get("kill")
-            and c.get("score", 0) > 3]
+    done = [c for c in cands if _accepted(c)]
     if not done:
         _status(run_dir, phase="failed", candidates=cands,
                 error=next((c.get("error") for c in cands if c.get("error")),
-                           "no candidate scored above 3/10 — rework the prompt"))
+                           f"no candidate reached the {ACCEPT_SCORE}/10 accept score — rework the prompt"))
         return
     winner = max(done, key=lambda c: c["score"])
 
@@ -1107,7 +1152,7 @@ def refine(req: RefineReq):
                 "score": v.get("score", 0), "kill": v.get("kill", False),
                 "fix": v.get("fix", ""),
                 **{key: r[key] for key in ("seed", "source") if key in r}}
-        if v.get("kill") or v.get("score", 0) <= 3:
+        if not _accepted(cand):
             _status(run_dir, phase="failed", candidates=[cand],
                     error=f"refine output rejected by judge ({v.get('score')}/10): "
                           f"{v.get('fix','')}")
@@ -1117,7 +1162,7 @@ def refine(req: RefineReq):
         _status(run_dir, phase="done", candidates=[cand], winner=1,
                 final=final.name if final.exists() else "cand1.png")
 
-    threading.Thread(target=work, daemon=True).start()
+    threading.Thread(target=_guarded(run_dir, work), daemon=True).start()
     return {"id": run_dir.name}
 
 
@@ -1459,7 +1504,7 @@ def animate(req: AnimateReq):
                 ("seed", "source", "steps", "size", "seconds") if key in r}}],
             final="clip.mp4", video=True)
 
-    threading.Thread(target=work, daemon=True).start()
+    threading.Thread(target=_guarded(run_dir, work), daemon=True).start()
     return {"id": run_dir.name}
 
 
@@ -1640,7 +1685,7 @@ def to_3d(req: To3DReq):
              **{key: r[key] for key in ("seed", "source") if key in r}}],
             final="model.glb", glb=True)
 
-    threading.Thread(target=work, daemon=True).start()
+    threading.Thread(target=_guarded(run_dir, work), daemon=True).start()
     return {"id": run_dir.name}
 
 
@@ -1717,7 +1762,7 @@ def to_ue(req: ToUEReq):
             {"i": 1, "state": "done", "fix": f"in RouteRush at {asset}"}],
             ue_asset=asset)
 
-    threading.Thread(target=work, daemon=True).start()
+    threading.Thread(target=_guarded(run_dir, work), daemon=True).start()
     return {"id": run_dir.name}
 
 
