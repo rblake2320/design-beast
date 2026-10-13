@@ -690,19 +690,23 @@ def test_retry_delays_never_outlast_the_wait_deadline(studio, use_sse, delay):
 
 @pytest.mark.parametrize("use_sse", [True, False], ids=["sse", "polling"])
 def test_retry_delays_inside_the_budget_still_retry_and_succeed(studio, use_sse):
-    """Positive control: a Retry-After of 1 s and a short backoff that fit the budget are honoured, and the retried
-    request returns the terminal status."""
+    """Positive control: a Retry-After of 1 s and a backoff that fit the budget are honoured, and the retried
+    request returns the terminal status. urllib3's first backoff is 0, so the backoff case fails twice: its second
+    retry sleeps factor 0.2 * 2 = 0.4 s."""
     routes, url = studio
     for retry, backoff in ((1, 0), (None, 0.2)):
         seen = []
+        failures = 1 if retry else 2
         routes["/api/events/"] = broken_sse
-        routes["/api/run/"] = unavailable(seen, retry_after=retry, recover_after=1)
+        routes["/api/run/"] = unavailable(seen, retry_after=retry, recover_after=failures)
         client = BeastStudioClient(url, session=retrying_session(total=2, backoff_factor=backoff))
         box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=5, use_sse=use_sse, poll_interval=0.05))
         assert finished and box.get("value") == {"phase": "done"}, box
-        assert len(seen) == 2, seen
+        assert len(seen) == failures + 1, seen
         if retry:
             assert elapsed >= 1.0, elapsed  # the server's Retry-After was respected, not skipped
+        else:
+            assert elapsed >= 0.35, elapsed  # the 0.4 s backoff was actually slept
 
 
 def test_custom_retry_policy_class_is_refused_before_anything_is_sent(studio):
