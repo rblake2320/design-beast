@@ -667,8 +667,12 @@ def unavailable(requests_seen, retry_after=None, recover_after=None):
     return behaviour
 
 
-@pytest.mark.parametrize("use_sse", [True, False], ids=["sse", "polling"])
-@pytest.mark.parametrize("delay", ["retry-after", "backoff"])
+@pytest.mark.parametrize("use_sse,delay", [
+    (True, "retry-after"),
+    (False, "retry-after"),
+    (True, "backoff"),
+    (False, "backoff"),
+], ids=["sse-retry-after", "polling-retry-after", "sse-backoff", "polling-backoff"])
 def test_retry_delays_never_outlast_the_wait_deadline(studio, use_sse, delay):
     routes, url = studio
     seen = []
