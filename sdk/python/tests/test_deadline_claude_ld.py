@@ -4,6 +4,7 @@ Each case runs the SDK call in a watchdog thread, so a client that ignores its d
 the suite. Successful terminal controls prove the bound does not come from refusing everything.
 """
 import json
+import socket
 import sys
 import threading
 import time
@@ -329,40 +330,150 @@ def test_deadline_reaps_a_proxy_connect_tunnel_that_drips_headers():
         session.close()
 
 
-def test_deadline_bounds_a_stalled_name_lookup_without_accumulating_threads(monkeypatch):
-    """getaddrinfo cannot be interrupted: the caller must still return at its deadline, repeated waits must share one
-    in-flight lookup, and that lookup must end when the resolver answers. The stall is injected into this process's
-    resolver for a reserved .invalid name only; no DNS query is sent."""
-    import socket
+def test_deadline_kills_stalled_resolver_children(monkeypatch, tmp_path):
+    """getaddrinfo cannot be interrupted in-process, so lookups run in an owned child. Fault injection replaces only
+    the child's code for reserved .invalid names: it records that it started, stalls, and would record an end if it
+    survived. Three distinct names: every caller returns at its deadline and every child is killed (no end marker)."""
+    import beast_studio_client.client as transport
 
-    release = threading.Event()
-    entered = threading.Event()
-    original = socket.getaddrinfo
+    marks = str(tmp_path).replace("\\", "/")
+    stall = ("import json, os, socket, sys, time; host = sys.argv[1]\n"
+             "if host.endswith('.owned-deadline.invalid'):\n"
+             f"    open('{marks}/start-' + str(os.getpid()), 'w').close(); time.sleep(2.0)\n"
+             f"    open('{marks}/end-' + str(os.getpid()), 'w').close(); sys.exit(1)\n"
+             "print(json.dumps(socket.getaddrinfo(host, int(sys.argv[2]), int(sys.argv[3]), socket.SOCK_STREAM)))")
+    monkeypatch.setattr(transport, "_RESOLVER_CHILD", stall)
+    before = sdk_threads()
+    for i in range(3):
+        client = BeastStudioClient(f"http://{i}.owned-deadline.invalid:9")
+        client.session.trust_env = False
+        # 1.5 s lets the child interpreter start (about 0.4 s here) and enter its stall before the deadline.
+        box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=1.5, poll_interval=0.05))
+        assert finished and isinstance(box.get("error"), BeastStudioError), box
+        assert "terminal phase within" in str(box["error"]), box["error"]
+        assert elapsed < 1.5 + SLACK, elapsed
+    time.sleep(2.5)  # a surviving child would have written its end marker by now
+    started = sorted(p.name for p in tmp_path.glob("start-*"))
+    ended = sorted(p.name for p in tmp_path.glob("end-*"))
+    assert len(started) >= 3, f"fault was not injected: {started}"
+    assert ended == [], f"resolver children survived the deadline: {ended}"
+    assert sdk_threads() == before, sdk_threads()
 
-    def stalled(host, *args, **kwargs):
-        if host == "owned-deadline.invalid":
-            entered.set()
-            release.wait(10)
-            raise socket.gaierror("owned resolver fixture released")
-        return original(host, *args, **kwargs)
 
-    monkeypatch.setattr(socket, "getaddrinfo", stalled)
-    client = BeastStudioClient("http://owned-deadline.invalid:9")
+def test_deadline_reaps_a_stalled_tls_handshake_through_a_proxy():
+    """The CONNECT tunnel opens, the real TLS ClientHello arrives, then the handshake stalls. TLS wrapping detaches
+    the original socket object, so the deadline must still reach the live connection. No certificate check is
+    bypassed and the target is never contacted."""
+    import requests
+
+    hello = threading.Event()
+    drips = Drips()
+    stop = threading.Event()
+
+    class Proxy(BaseHTTPRequestHandler):
+        def log_message(self, *args):
+            pass
+
+        def do_CONNECT(self):
+            drips.begin()
+            try:
+                time.sleep(0.4)
+                self.wfile.write(b"HTTP/1.1 200 Connection established\r\n\r\n")
+                self.wfile.flush()
+                self.connection.settimeout(0.05)
+                while not stop.is_set():
+                    try:
+                        if not self.connection.recv(4096):
+                            break
+                        hello.set()
+                    except socket.timeout:
+                        pass
+            except OSError:
+                pass
+            finally:
+                drips.end()
+
+    proxy = ThreadingHTTPServer(("127.0.0.1", 0), Proxy)
+    proxy.daemon_threads = True
+    threading.Thread(target=proxy.serve_forever, daemon=True).start()
+    session = requests.Session()
+    session.trust_env = False
+    session.proxies = {"https": f"http://127.0.0.1:{proxy.server_address[1]}"}
+    try:
+        client = BeastStudioClient("https://127.0.0.1:9", session=session, timeout=5)
+        before = sdk_threads()
+        box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=1.0, poll_interval=0.05))
+        assert hello.is_set(), "fault was not injected: no TLS ClientHello reached the stalled tunnel"
+        assert finished and isinstance(box.get("error"), BeastStudioError), box
+        assert elapsed < 1.0 + 0.4, elapsed
+        assert_reaped(drips, before)
+    finally:
+        stop.set()
+        proxy.shutdown()
+        proxy.server_close()
+        session.close()
+
+
+def test_short_deadline_never_cuts_a_concurrent_wait_on_the_same_client():
+    """Two waits share one client over HTTP/1.1 keep-alive: a short one that expires, and a long one whose status
+    answers after 0.7s. Each bounded wait owns its pool, so the short deadline cannot shut a connection the long
+    wait reuses."""
+    short_seen = threading.Event()
+    peers = []
+
+    class KeepAlive(BaseHTTPRequestHandler):
+        protocol_version = "HTTP/1.1"
+
+        def log_message(self, *args):
+            pass
+
+        def do_GET(self):
+            job = self.path.rsplit("/", 1)[-1]
+            peers.append((job, self.client_address))
+            if job == "long":
+                time.sleep(0.7)
+            body = json.dumps({"phase": "running" if job == "short" else "done"}).encode()
+            try:
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+                self.wfile.flush()
+            except OSError:
+                return
+            if job == "short":
+                short_seen.set()
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), KeepAlive)
+    server.daemon_threads = True
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    client = BeastStudioClient(f"http://127.0.0.1:{server.server_address[1]}")
     client.session.trust_env = False
     try:
-        for _ in range(3):
-            box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=0.3, poll_interval=0.05))
-            assert finished and isinstance(box.get("error"), BeastStudioError), box
-            assert "terminal phase within" in str(box["error"]), box["error"]
-            assert elapsed < 0.3 + SLACK, elapsed
-        assert entered.is_set(), "fault was not injected: the resolver was never entered"
-        assert sdk_threads().count("beast-wait-resolver") <= 1, sdk_threads()
+        for _ in range(5):
+            short_seen.clear()
+            results = {}
+
+            def call(job, budget):
+                try:
+                    results[job] = client.wait(job, use_sse=False, timeout=budget, poll_interval=1)
+                except BeastStudioError as error:
+                    results[job] = error
+
+            short = threading.Thread(target=call, args=("short", 0.3))
+            short.start()
+            assert short_seen.wait(2)
+            time.sleep(0.03)
+            long = threading.Thread(target=call, args=("long", 2.0))
+            long.start()
+            short.join(5)
+            long.join(5)
+            assert isinstance(results.get("short"), BeastStudioError), results
+            assert results.get("long") == {"phase": "done"}, results
     finally:
-        release.set()
-    limit = time.monotonic() + 1.0
-    while "beast-wait-resolver" in sdk_threads() and time.monotonic() < limit:
-        time.sleep(0.02)
-    assert "beast-wait-resolver" not in sdk_threads(), sdk_threads()
+        server.shutdown()
+        server.server_close()
 
 
 def test_bounded_lookup_keeps_multi_address_fallback(studio):
@@ -371,5 +482,157 @@ def test_bounded_lookup_keeps_multi_address_fallback(studio):
     routes["/api/events/"] = broken_sse
     routes["/api/run/"] = json_reply({"phase": "done"})
     local = url.replace("127.0.0.1", "localhost")
-    box, elapsed, finished = bounded(lambda: BeastStudioClient(local).wait("r1", timeout=5, poll_interval=0.05))
+    # Windows takes about 2 s to refuse ::1; this control proves the fallback works, not its speed.
+    box, elapsed, finished = bounded(lambda: BeastStudioClient(local).wait("r1", timeout=10, poll_interval=0.05))
     assert finished and box.get("value") == {"phase": "done"}, box
+
+
+# ---- TLS controls on the reaping path ----
+# A loopback HTTPS server with a self-signed test certificate (tests/fixtures, SAN localhost/127.0.0.1/::1,
+# test use only). The caller trusts it through its own requests.Session verify setting; without that the
+# default trust store must refuse it.
+
+FIXTURES = Path(__file__).resolve().parent / "fixtures"
+
+
+@pytest.fixture
+def tls_studio():
+    import ssl
+
+    class Handler(BaseHTTPRequestHandler):
+        def log_message(self, *args):
+            pass
+
+        def do_GET(self):
+            if self.path.startswith("/api/events/"):
+                self.send_error(503)
+                return
+            json_reply({"phase": "done"})(self, None)
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    server.daemon_threads = True
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+    context.load_cert_chain(FIXTURES / "loopback-cert.pem", FIXTURES / "loopback-key.pem")
+    server.socket = context.wrap_socket(server.socket, server_side=True)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    yield server.server_address[1]
+    server.shutdown()
+    server.server_close()
+
+
+@pytest.mark.parametrize("host", ["127.0.0.1", "localhost"])
+def test_healthy_tls_through_the_reaping_path_returns_terminal(tls_studio, host):
+    """Positive control: verified TLS (caller's own trust setting) by address and by hostname with fallback."""
+    import requests
+
+    session = requests.Session()
+    session.trust_env = False
+    session.verify = str(FIXTURES / "loopback-cert.pem")
+    client = BeastStudioClient(f"https://{host}:{tls_studio}", session=session)
+    before = sdk_threads()
+    # Windows takes about 2 s to refuse ::1 before localhost falls back to 127.0.0.1.
+    box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=10, poll_interval=0.05))
+    assert finished and box.get("value") == {"phase": "done"}, box
+    assert sdk_threads() == before, sdk_threads()
+
+
+def test_untrusted_certificate_is_refused_not_waited_out(tls_studio):
+    """Negative control: the reaping path keeps certificate verification; an untrusted server certificate fails
+    with a typed error well before the deadline instead of being accepted or timing out."""
+    import requests
+
+    session = requests.Session()
+    session.trust_env = False
+    client = BeastStudioClient(f"https://127.0.0.1:{tls_studio}", session=session)
+    box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=5, poll_interval=0.05))
+    assert finished and isinstance(box.get("error"), BeastStudioError), box
+    assert "CERTIFICATE_VERIFY_FAILED" in str(box["error"]), box["error"]
+    assert "terminal phase within" not in str(box["error"]), box["error"]
+    assert elapsed < 5, elapsed
+
+
+# ---- caller transport policy ----
+
+def test_custom_transport_adapter_is_refused_before_anything_is_sent(studio):
+    """A caller policy adapter is never silently replaced: wait(timeout=...) refuses with a typed error and the
+    server receives nothing, matching what the caller's own adapter does for status()."""
+    import requests
+
+    routes, url = studio
+    received = []
+
+    def record(handler, stop):
+        received.append(handler.path)
+        json_reply({"phase": "done"})(handler, stop)
+
+    routes["/api/"] = record
+    denied = []
+
+    class DenyAdapter(requests.adapters.HTTPAdapter):
+        def send(self, request, *args, **kwargs):
+            denied.append(request.url)
+            raise requests.RequestException("caller transport policy: no request allowed")
+
+    session = requests.Session()
+    session.trust_env = False
+    session.mount("http://", DenyAdapter())
+    client = BeastStudioClient(url, session=session)
+    with pytest.raises(BeastStudioError):
+        client.status("r1")  # the caller's policy, as the control
+    before = sdk_threads()
+    for use_sse in (True, False):
+        box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=2, use_sse=use_sse))
+        assert finished and isinstance(box.get("error"), BeastStudioError), box
+        assert "DenyAdapter" in str(box["error"]) and "nothing was sent" in str(box["error"]), box["error"]
+    assert received == [], received
+    assert len(denied) == 1, denied  # only the status() control reached the caller's adapter
+    assert sdk_threads() == before
+
+
+def test_non_requests_session_is_refused_before_anything_is_sent(studio):
+    routes, url = studio
+    received = []
+    routes["/api/"] = lambda handler, stop: received.append(handler.path)
+
+    class DuckSession:
+        headers = {}
+
+        def get(self, *args, **kwargs):
+            raise AssertionError("the SDK must not send through a session it cannot bound")
+
+        request = get
+
+    box, elapsed, finished = bounded(lambda: BeastStudioClient(url, session=DuckSession()).wait("r1", timeout=2))
+    assert finished and isinstance(box.get("error"), BeastStudioError), box
+    assert "requests.Session" in str(box["error"]), box["error"]
+    assert received == []
+
+
+def test_standard_adapter_mounts_keep_their_prefix_and_retry_settings(studio):
+    """Positive control: a standard HTTPAdapter mounted by the caller at a specific prefix with retries is
+    reproduced on the bounded path (the first status attempt is refused by the server, the retry succeeds)."""
+    import requests
+    from urllib3.util.retry import Retry
+
+    routes, url = studio
+    attempts = []
+
+    def flaky(handler, stop):
+        attempts.append(handler.path)
+        if len(attempts) == 1:
+            handler.send_response(503)
+            handler.send_header("Content-Length", "0")
+            handler.end_headers()
+            return
+        json_reply({"phase": "done"})(handler, stop)
+
+    routes["/api/events/"] = broken_sse
+    routes["/api/run/"] = flaky
+    session = requests.Session()
+    session.trust_env = False
+    session.mount(url + "/api/run/", requests.adapters.HTTPAdapter(
+        max_retries=Retry(total=2, status_forcelist=[503], backoff_factor=0, allowed_methods=["GET"])))
+    client = BeastStudioClient(url, session=session)
+    box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=5, poll_interval=0.05))
+    assert finished and box.get("value") == {"phase": "done"}, box
+    assert len(attempts) == 2, attempts
