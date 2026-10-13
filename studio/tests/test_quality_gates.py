@@ -1,0 +1,70 @@
+"""Quality-loop gates: accept bar, minimum candidates, bounded NVCF polling.
+
+Run: python -m pytest studio/tests/test_quality_gates.py -q
+The NVCF test runs against a real local HTTP server that never completes.
+"""
+import threading
+from http.server import BaseHTTPRequestHandler, HTTPServer
+
+import pytest  # noqa: E402  (path + DB redirect done in conftest.py)
+import server  # noqa: E402
+from pydantic import ValidationError  # noqa: E402
+
+
+# ---- accept bar -----------------------------------------------------------
+
+@pytest.mark.parametrize("cand, expected", [
+    ({"state": "done", "score": 6}, False),           # below bar: previously shipped (old bar was >3)
+    ({"state": "done", "score": 4}, False),
+    ({"state": "done", "score": 7}, True),            # judge pass
+    ({"state": "done", "score": 9}, True),
+    ({"state": "done", "score": 9, "kill": True}, False),
+    ({"state": "failed", "score": 9}, False),
+    ({"state": "done"}, False),                       # no score is not a pass
+    ({"state": "done", "score": "7"}, False),         # malformed score is not a pass
+])
+def test_only_judge_passing_candidates_are_accepted(cand, expected):
+    assert server.ACCEPT_SCORE == 7
+    assert server._accepted(cand) is expected
+
+
+# ---- minimum candidates -----------------------------------------------------
+
+def test_one_or_three_variations_are_refused():
+    for variations in (["a"], ["a", "b", "c"]):
+        with pytest.raises(ValidationError):
+            server.RunReq(brief="a brief", variations=variations)
+
+
+def test_zero_or_four_variations_are_accepted():
+    assert server.RunReq(brief="a brief").variations == []
+    assert len(server.RunReq(brief="a brief", variations=["a", "b", "c", "d"]).variations) == 4
+
+
+# ---- bounded NVCF polling (real local server, never completes) --------------
+
+class _AlwaysPending(BaseHTTPRequestHandler):
+    def _pending(self):
+        self.send_response(202)
+        self.send_header("NVCF-REQID", "req-1")
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+
+    do_POST = _pending
+    do_GET = _pending
+
+    def log_message(self, *args):  # keep test output quiet
+        pass
+
+
+def test_nvcf_poll_gives_up_within_its_timeout():
+    httpd = HTTPServer(("127.0.0.1", 0), _AlwaysPending)
+    threading.Thread(target=httpd.serve_forever, daemon=True).start()
+    try:
+        base = f"http://127.0.0.1:{httpd.server_port}"
+        with pytest.raises(TimeoutError, match="still pending"):
+            server._nim_invoke(f"{base}/invoke", {}, {}, timeout=1,
+                               poll_base=f"{base}/status", poll_interval=0.05)
+    finally:
+        httpd.shutdown()
+        httpd.server_close()
