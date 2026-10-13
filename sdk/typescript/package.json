@@ -15,7 +15,7 @@
     "node": ">=22.6.0"
   },
   "scripts": {
-    "test": "node --test tests/client.test.ts",
+    "test": "node --test tests/client.test.ts tests/distribution.test.mjs",
     "typecheck": "tsc --noEmit",
     "build": "tsc -p tsconfig.build.json",
     "prepack": "npm run build",

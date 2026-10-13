@@ -51,7 +51,7 @@ await c.animate({ file: "runs/x/final.png", motion: "slow push-in",
 ## Tests
 
 ```bash
-cd design-beast/sdk/typescript && node --test tests/
+cd design-beast/sdk/typescript && npm ci && npm test
 ```
 
 GPU-free, no live Beast Studio server. Sync/async-submit/status/cancel/retry
@@ -59,3 +59,16 @@ endpoints are tested against a fake `fetch`; `streamEvents()`/`wait()` are
 tested end-to-end against a real, tiny local `http` server (no external
 dependency) so the SSE frame-parsing is genuinely exercised, not just
 mocked.
+
+The distribution test packs the actual compiled SDK, installs it into an
+unrelated consumer, and imports it through `node_modules`. It runs with
+`npm test`, including CI. To exercise both installed SDKs against the actual
+Studio HTTP app without GPU or provider operations, use a disposable checkout
+with no existing Studio database:
+
+```bash
+python scripts/verify_sdk_distribution_codex_ld.py
+```
+
+That command builds fresh packages, installs the pinned Studio runtime,
+retains per-control receipts, and stops its owned loopback server.

@@ -19,7 +19,7 @@ import time
 
 BOOTSTRAP = r'''
 import asyncio, json, pathlib, sys
-repo, ready = map(pathlib.Path, sys.argv[1:])
+repo, ready, stop = map(pathlib.Path, sys.argv[1:])
 sys.path.insert(0, str(repo / "studio"))
 import server, uvicorn
 async def main():
@@ -32,6 +32,10 @@ async def main():
         await asyncio.sleep(.02)
     port = owner.servers[0].sockets[0].getsockname()[1]
     ready.write_text(json.dumps({"url": f"http://127.0.0.1:{port}", "db": str(server.jobs.DB_PATH), "pid": __import__("os").getpid()}))
+    while not running.done():
+        if stop.exists():
+            owner.should_exit = True
+        await asyncio.sleep(.05)
     await running
 asyncio.run(main())
 '''
@@ -182,7 +186,7 @@ def main() -> int:
         ready = out / "ready.json"
         server_log = (out / "server.log").open("w", encoding="utf-8")
         env = {key: os.environ[key] for key in ("PATH", "SYSTEMROOT", "WINDIR", "TEMP", "TMP", "USERPROFILE", "APPDATA", "LOCALAPPDATA", "PROGRAMFILES", "PROGRAMDATA", "COMSPEC") if key in os.environ}
-        owner = subprocess.Popen([str(pypath), "-I", str(bootstrap), str(repo), str(ready)], cwd=out, env=env, stdout=server_log, stderr=subprocess.STDOUT)
+        owner = subprocess.Popen([str(pypath), "-I", str(bootstrap), str(repo), str(ready), str(out / "STOP")], cwd=out, env=env, stdout=server_log, stderr=subprocess.STDOUT)
         deadline = time.monotonic()+25
         while not ready.exists():
             if owner.poll() is not None or time.monotonic() > deadline:
@@ -209,10 +213,12 @@ def main() -> int:
         report["error"] = f"{type(exc).__name__}: {exc}"
     finally:
         if owner is not None:
-            owner.terminate()
+            (out / "STOP").write_text("stop owned disposable server\n")
             try:
-                owner.wait(timeout=5)
+                owner.wait(timeout=15)
             except subprocess.TimeoutExpired:
+                report["status"] = "failed"
+                report["cleanup_error"] = "Owned server did not finish graceful stop"
                 owner.kill()
                 owner.wait(timeout=5)
             report["owned_server_exit"] = owner.returncode
@@ -224,7 +230,11 @@ def main() -> int:
             for name in ("jobs.db", "jobs.db-wal", "jobs.db-shm", "jobs.db-journal"):
                 own_db = repo / "studio" / name
                 if own_db.exists():
-                    own_db.rename(out / name)
+                    try:
+                        own_db.rename(out / name)
+                    except OSError as exc:
+                        report["status"] = "failed"
+                        report["cleanup_error"] = f"Owned database retention failed: {type(exc).__name__}"
         (out / "receipt.json").write_text(json.dumps(report, indent=2)+"\n")
     print(json.dumps({"status": report["status"], "worked": report.get("worked", 0), "failed": report.get("failed", 0), "receipt": str(out / "receipt.json")}))
     return int(report["status"] != "worked")
