@@ -13,6 +13,7 @@ does not itself enforce (backend-sharing etiquette, VRAM contention).
 """
 from __future__ import annotations
 
+import ipaddress
 import json
 import math
 import socket
@@ -24,7 +25,9 @@ from urllib.parse import quote
 import requests
 from urllib3.connection import HTTPConnection, HTTPSConnection
 from urllib3.connectionpool import HTTPConnectionPool, HTTPSConnectionPool
+from urllib3.exceptions import ConnectTimeoutError, NewConnectionError
 from urllib3.poolmanager import ProxyManager
+from urllib3.util.connection import allowed_gai_family
 
 from .models import AnimateDuration, AnimateQuality, AspectRatio, BackendAction, ImageModel
 
@@ -58,10 +61,17 @@ class _DeadlineScope:
     shut down, so a peer that trickles headers or body cannot keep a read (or a
     thread) alive after wait() has returned."""
 
-    def __init__(self):
+    def __init__(self, timeout):
         self._lock = threading.Lock()
         self._sockets = set()
         self.expired = False
+        self.deadline = time.monotonic() + timeout
+
+    def remaining(self):
+        left = self.deadline - time.monotonic()
+        if self.expired or left <= 0:
+            raise socket.timeout("wait deadline reached")
+        return left
 
     def add(self, sock):
         with self._lock:
@@ -88,6 +98,76 @@ def _shutdown(sock):
 _ACTIVE_SCOPE = threading.local()
 
 
+_RESOLVING = {}
+_RESOLVING_LOCK = threading.Lock()
+
+
+def _resolve(host, port, scope):
+    """getaddrinfo cannot be interrupted, so it runs off the caller's thread and
+    the caller stops waiting at the deadline. Concurrent lookups of one name
+    share a single in-flight resolver thread, so a stalled resolver cannot
+    accumulate threads across repeated waits."""
+    family = allowed_gai_family()
+    try:
+        ipaddress.ip_address(host)
+        return socket.getaddrinfo(host, port, family, socket.SOCK_STREAM)  # literal: no lookup
+    except ValueError:
+        pass
+    key = (host, port, family)
+    with _RESOLVING_LOCK:
+        pending = _RESOLVING.get(key)
+        if pending is None:
+            pending = _RESOLVING[key] = (threading.Event(), {})
+
+            def lookup(done=pending[0], box=pending[1]):
+                try:
+                    box["addresses"] = socket.getaddrinfo(host, port, family, socket.SOCK_STREAM)
+                except OSError as error:
+                    box["error"] = error
+                finally:
+                    with _RESOLVING_LOCK:
+                        _RESOLVING.pop(key, None)
+                    done.set()
+
+            threading.Thread(target=lookup, name="beast-wait-resolver", daemon=True).start()
+    done, box = pending
+    if not done.wait(scope.remaining()):
+        raise socket.timeout(f"resolving {host} exceeded the wait deadline")
+    if "error" in box:
+        raise box["error"]
+    return box["addresses"]
+
+
+def _bounded_new_conn(connection, scope):
+    """urllib3's create_connection with the lookup bounded and every socket
+    registered with the deadline scope before connect() can block."""
+    host = connection._dns_host
+    host = host.strip("[]") if host.startswith("[") else host
+    try:
+        addresses = _resolve(host, connection.port, scope)
+        error = OSError("getaddrinfo returns an empty list")
+        for family, kind, proto, _, address in addresses:
+            sock = socket.socket(family, kind, proto)
+            scope.add(sock)
+            try:
+                for option in connection.socket_options or ():
+                    sock.setsockopt(*option)
+                limit = connection.timeout if isinstance(connection.timeout, (int, float)) else None
+                sock.settimeout(scope.remaining() if limit is None else min(limit, scope.remaining()))
+                if connection.source_address:
+                    sock.bind(connection.source_address)
+                sock.connect(address)
+                return sock
+            except OSError as attempt:
+                error = attempt
+                sock.close()
+        raise error
+    except socket.timeout as e:
+        raise ConnectTimeoutError(connection, f"Connection to {connection.host} timed out: {e}") from e
+    except OSError as e:
+        raise NewConnectionError(connection, f"Failed to establish a new connection: {e}") from e
+
+
 def _track(sock):
     scope = getattr(_ACTIVE_SCOPE, "scope", None)
     if scope is not None and sock is not None:
@@ -96,11 +176,12 @@ def _track(sock):
 
 
 class _TrackedHTTPConnection(HTTPConnection):
-    # A new socket registers as soon as it exists, before any proxy CONNECT,
-    # TLS handshake or response read; a pooled socket registers again when it
-    # is reused for the next response.
+    # Inside a deadline scope a new socket registers before connect(), so the
+    # connect, any proxy CONNECT, TLS handshake and response reads all end at
+    # the deadline; a pooled socket registers again when reused.
     def _new_conn(self):
-        return _track(super()._new_conn())
+        scope = getattr(_ACTIVE_SCOPE, "scope", None)
+        return super()._new_conn() if scope is None else _bounded_new_conn(self, scope)
 
     def getresponse(self, *args, **kwargs):
         _track(self.sock)
@@ -109,7 +190,8 @@ class _TrackedHTTPConnection(HTTPConnection):
 
 class _TrackedHTTPSConnection(HTTPSConnection):
     def _new_conn(self):
-        return _track(super()._new_conn())
+        scope = getattr(_ACTIVE_SCOPE, "scope", None)
+        return super()._new_conn() if scope is None else _bounded_new_conn(self, scope)
 
     def getresponse(self, *args, **kwargs):
         _track(self.sock)
@@ -384,7 +466,7 @@ class BeastStudioClient:
             return self._wait_impl(run_id, poll_interval, None, use_sse)
         if timeout == 0:
             raise BeastStudioError(f"job {run_id} did not reach a terminal phase within 0s")
-        scope = _DeadlineScope()
+        scope = _DeadlineScope(timeout)
         timer = threading.Timer(timeout, scope.expire)
         timer.name = "beast-wait-deadline"
         timer.daemon = True
