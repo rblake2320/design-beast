@@ -88,21 +88,31 @@ def _shutdown(sock):
 _ACTIVE_SCOPE = threading.local()
 
 
-def _track(connection):
+def _track(sock):
     scope = getattr(_ACTIVE_SCOPE, "scope", None)
-    if scope is not None and connection.sock is not None:
-        scope.add(connection.sock)
+    if scope is not None and sock is not None:
+        scope.add(sock)
+    return sock
 
 
 class _TrackedHTTPConnection(HTTPConnection):
+    # A new socket registers as soon as it exists, before any proxy CONNECT,
+    # TLS handshake or response read; a pooled socket registers again when it
+    # is reused for the next response.
+    def _new_conn(self):
+        return _track(super()._new_conn())
+
     def getresponse(self, *args, **kwargs):
-        _track(self)  # registered before the status line and headers are read
+        _track(self.sock)
         return super().getresponse(*args, **kwargs)
 
 
 class _TrackedHTTPSConnection(HTTPSConnection):
+    def _new_conn(self):
+        return _track(super()._new_conn())
+
     def getresponse(self, *args, **kwargs):
-        _track(self)
+        _track(self.sock)
         return super().getresponse(*args, **kwargs)
 
 

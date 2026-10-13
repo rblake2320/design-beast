@@ -287,3 +287,43 @@ def test_reaping_keeps_session_state_and_terminal_results(studio):
     assert seen["auth"] == "owned-test-token"
     time.sleep(0.1)
     assert sdk_threads() == before
+
+
+def test_deadline_reaps_a_proxy_connect_tunnel_that_drips_headers():
+    """HTTPS through the caller's own requests.Session proxy: the CONNECT reply never ends, so the read is
+    blocked before TLS or any response; the socket must still be shut down at the deadline. The target
+    address is never contacted (the tunnel is never established)."""
+    import requests
+
+    drips = Drips()
+    stop = threading.Event()
+
+    class Proxy(BaseHTTPRequestHandler):
+        def log_message(self, *args):
+            pass
+
+        def do_CONNECT(self):
+            try:
+                dripping(drips, b"HTTP/1.1 200 Connection established\r\nX-Drip: ")(self, stop)
+            except (ConnectionError, OSError):
+                pass
+
+    proxy = ThreadingHTTPServer(("127.0.0.1", 0), Proxy)
+    proxy.daemon_threads = True
+    threading.Thread(target=proxy.serve_forever, daemon=True).start()
+    session = requests.Session()
+    session.trust_env = False
+    session.proxies = {"https": f"http://127.0.0.1:{proxy.server_address[1]}"}
+    try:
+        client = BeastStudioClient("https://127.0.0.1:9", session=session, timeout=2)
+        before = sdk_threads()
+        box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=0.3, poll_interval=0.05))
+        assert finished and isinstance(box.get("error"), BeastStudioError), box
+        assert "terminal phase within" in str(box["error"]), box["error"]
+        assert elapsed < 0.3 + SLACK, elapsed
+        assert_reaped(drips, before)  # also proves the caller's proxy setting was used
+    finally:
+        stop.set()
+        proxy.shutdown()
+        proxy.server_close()
+        session.close()
