@@ -14,6 +14,7 @@ does not itself enforce (backend-sharing etiquette, VRAM contention).
 from __future__ import annotations
 
 import copy
+import http.cookiejar
 import ipaddress
 import json
 import math
@@ -30,7 +31,7 @@ import requests
 from urllib3.connection import HTTPConnection, HTTPSConnection
 from urllib3.connectionpool import HTTPConnectionPool, HTTPSConnectionPool
 from urllib3.exceptions import ConnectTimeoutError, NewConnectionError
-from urllib3.poolmanager import ProxyManager
+from urllib3.poolmanager import PoolManager, ProxyManager
 from urllib3.util.connection import allowed_gai_family
 from urllib3.util.retry import Retry
 
@@ -286,6 +287,61 @@ class _DeadlineRetry(Retry):
             raise socket.timeout(f"retry delay {delay:.3f}s exceeds the wait deadline")
         if delay:
             time.sleep(delay)
+
+
+_SESSION_STATE = frozenset({"adapters", "auth", "cert", "cookies", "headers", "hooks", "max_redirects",
+                            "params", "proxies", "stream", "trust_env", "verify"})
+
+
+def _shadowed(obj, cls):
+    """Instance attributes that replace a method of cls: caller code the bounded copy would drop or bypass."""
+    return sorted(name for name in vars(obj) if callable(getattr(cls, name, None)))
+
+
+def _caller_policy_problem(session):
+    """Why the bounded path cannot carry this session faithfully, or None. Every object the private session
+    rebuilds or reuses must be the exact standard type with no per-instance method overrides, and carry no
+    configuration a fresh standard object would lose."""
+    if type(session) is not requests.Session:
+        return f"the Session subclass {type(session).__name__}"
+    extra = sorted(set(vars(session)) - _SESSION_STATE)
+    if extra:
+        return f"per-instance Session attributes {extra}"
+    if type(session.headers) not in (requests.structures.CaseInsensitiveDict, dict):
+        return f"the custom header mapping {type(session.headers).__name__}"
+    for name in ("proxies", "params"):
+        if type(getattr(session, name)) is not dict:
+            return f"the custom {name} mapping {type(getattr(session, name)).__name__}"
+    hooked = sorted(event for event, callbacks in session.hooks.items() if callbacks)
+    if type(session.hooks) is not dict or hooked:
+        return f"session hooks {hooked or type(session.hooks).__name__}"
+    auth = session.auth
+    if auth is not None and not (isinstance(auth, tuple) and len(auth) == 2) and not (
+            type(auth) is requests.auth.HTTPBasicAuth and not _shadowed(auth, requests.auth.HTTPBasicAuth)):
+        return f"the custom session auth {type(auth).__name__}"
+    jar = session.cookies
+    if type(jar) is not requests.cookies.RequestsCookieJar or _shadowed(jar, requests.cookies.RequestsCookieJar):
+        return f"the custom cookie jar {type(jar).__name__}"
+    policy = jar._policy
+    if type(policy) is not http.cookiejar.DefaultCookiePolicy or _shadowed(policy, http.cookiejar.DefaultCookiePolicy):
+        return f"the custom cookie policy {type(policy).__name__}"
+    for prefix, adapter in session.adapters.items():
+        if type(adapter) is not requests.adapters.HTTPAdapter or _shadowed(adapter, requests.adapters.HTTPAdapter):
+            return f"the custom transport adapter {type(adapter).__name__} mounted at {prefix!r}"
+        reference = requests.adapters.HTTPAdapter(pool_connections=adapter._pool_connections,
+                                                  pool_maxsize=adapter._pool_maxsize, pool_block=adapter._pool_block)
+        manager = adapter.poolmanager
+        if (type(manager) is not PoolManager or _shadowed(manager, PoolManager) or adapter.config
+                or manager.connection_pool_kw != reference.poolmanager.connection_pool_kw
+                or manager.pool_classes_by_scheme != reference.poolmanager.pool_classes_by_scheme):
+            return f"a customized connection pool on the adapter mounted at {prefix!r}"
+        for proxy, proxy_manager in adapter.proxy_manager.items():
+            if type(proxy_manager) is not ProxyManager or _shadowed(proxy_manager, ProxyManager):
+                return f"the custom proxy manager {type(proxy_manager).__name__} for {proxy!r}"
+        retries = adapter.max_retries
+        if type(retries) is not Retry or _shadowed(retries, Retry):
+            return f"the custom retry policy {type(retries).__name__} mounted at {prefix!r}"
+    return None
 
 
 def _deadline_retries(retries, prefix):
@@ -590,32 +646,15 @@ class BeastStudioClient:
         callback runs or request is sent, rather than silently replaced or left
         unbounded."""
         base = self.session
-        if type(base) is not requests.Session:  # a subclass may override request/send with its own policy
+        if not isinstance(base, requests.Session):
             raise BeastStudioError(
                 "wait(timeout=...) needs a plain requests.Session to enforce its deadline; got "
                 f"{type(base).__name__}; nothing was sent. Use wait() without a timeout for a custom session.")
-        if type(base.cookies) is not requests.cookies.RequestsCookieJar:
+        problem = _caller_policy_problem(base)
+        if problem:
             raise BeastStudioError(
-                f"wait(timeout=...) cannot bound the custom cookie jar {type(base.cookies).__name__}; "
-                "nothing was sent. Use wait() without a timeout for a custom session.")
-        auth = base.auth
-        if not (auth is None or type(auth) is requests.auth.HTTPBasicAuth or (
-                isinstance(auth, tuple) and len(auth) == 2)):
-            raise BeastStudioError(
-                f"wait(timeout=...) cannot bound the custom session auth {type(auth).__name__}; nothing was "
-                "sent and it was not called. Use wait() without a timeout, a (user, password) tuple, or HTTPBasicAuth.")
-        hooked = sorted(event for event, callbacks in base.hooks.items() if callbacks)
-        if hooked:
-            raise BeastStudioError(
-                f"wait(timeout=...) cannot bound session {', '.join(hooked)} hooks; nothing was sent and they "
-                "were not called. Use wait() without a timeout for a session with hooks.")
-        for prefix, adapter in base.adapters.items():
-            if type(adapter) is not requests.adapters.HTTPAdapter:
-                raise BeastStudioError(
-                    f"wait(timeout=...) cannot enforce its deadline through the custom transport adapter "
-                    f"{type(adapter).__name__} mounted at {prefix!r}; nothing was sent. Use wait() without "
-                    "a timeout, or a standard requests HTTPAdapter.")
-            _deadline_retries(adapter.max_retries, prefix)  # refuse before anything is built or sent
+                f"wait(timeout=...) cannot carry {problem} through its deadline; nothing was sent and no caller "
+                "code was called. Use wait() without a timeout for a customized session.")
         private = requests.Session()
         private.adapters.clear()
         for prefix, adapter in base.adapters.items():

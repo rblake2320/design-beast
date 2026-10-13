@@ -830,3 +830,100 @@ def test_custom_session_classes_are_refused_before_anything_is_sent(studio, cust
     assert finished and isinstance(box.get("error"), BeastStudioError), box
     assert "nothing was sent" in str(box["error"]), box["error"]
     assert received == [] and denied == [], (received, denied)
+
+
+# ---- the whole class of caller code the private bounded session could bypass ----
+
+def overridden_session(case, entered):
+    """A plain requests.Session carrying one caller customization the bounded copy could not carry."""
+    import http.cookiejar
+    import ssl
+
+    import requests
+    from urllib3.util.retry import Retry
+
+    session = requests.Session()
+    session.trust_env = False
+
+    def deny(*args, **kwargs):
+        entered.append(case)
+        raise requests.RequestException("caller policy refuses")
+
+    if case == "session-instance-request":
+        session.request = deny
+    elif case == "session-instance-send":
+        session.send = deny
+    elif case == "adapter-instance-send":
+        session.adapters["http://"].send = deny
+    elif case == "poolmanager-instance-urlopen":
+        session.adapters["http://"].poolmanager.urlopen = deny
+    elif case == "poolmanager-tls-context":
+        adapter = requests.adapters.HTTPAdapter()
+        adapter.init_poolmanager(10, 10, ssl_context=ssl.create_default_context())
+        session.mount("http://", adapter)
+    elif case == "retry-instance-sleep":
+        retry = Retry(total=2, status_forcelist=[503], allowed_methods=["GET"])
+        retry.sleep = deny
+        session.mount("http://", requests.adapters.HTTPAdapter(max_retries=retry))
+    elif case == "cookie-policy-class":
+        class OwnPolicy(http.cookiejar.DefaultCookiePolicy):
+            def return_ok(self, cookie, request):
+                entered.append(case)
+                return super().return_ok(cookie, request)
+        session.cookies.set_policy(OwnPolicy())
+    elif case == "cookie-policy-instance":
+        session.cookies._policy.return_ok = deny
+    elif case == "auth-instance-call":
+        auth = requests.auth.HTTPBasicAuth("owner", "test-only")
+        auth.__call__ = deny  # dunder lookup ignores this today; refused so no future path can bypass it
+        session.auth = auth
+    return session
+
+
+@pytest.mark.parametrize("case", [
+    "session-instance-request", "session-instance-send", "adapter-instance-send", "poolmanager-instance-urlopen",
+    "poolmanager-tls-context", "retry-instance-sleep", "cookie-policy-class", "cookie-policy-instance",
+    "auth-instance-call",
+])
+def test_caller_customizations_the_bounded_copy_cannot_carry_are_refused(studio, case):
+    routes, url = studio
+    received = []
+
+    def record(handler, stop):
+        received.append(handler.path)
+        json_reply({"phase": "done"})(handler, stop)
+
+    routes["/api/"] = record
+    entered = []
+    client = BeastStudioClient(url, session=overridden_session(case, entered))
+    box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=2))
+    assert finished and isinstance(box.get("error"), BeastStudioError), box
+    assert "nothing was sent" in str(box["error"]), box["error"]
+    assert received == [] and entered == [], (received, entered)
+
+
+def test_ordinary_session_state_on_a_used_session_still_reaches_the_server(studio):
+    """Positive control: headers, tuple auth and cookies arrive, after the same session served a normal call."""
+    import requests
+
+    routes, url = studio
+    seen = []
+
+    def status(handler, stop):
+        seen.append((handler.headers.get("X-Studio-Client"), handler.headers.get("Authorization"),
+                     handler.headers.get("Cookie")))
+        json_reply({"phase": "done"})(handler, stop)
+
+    routes["/api/events/"] = broken_sse
+    routes["/api/run/"] = status
+    session = requests.Session()
+    session.trust_env = False
+    session.headers["X-Studio-Client"] = "owned-test"
+    session.auth = ("owner", "test-only")
+    session.cookies.set("studio", "owned")
+    client = BeastStudioClient(url, session=session)
+    assert client.status("r1") == {"phase": "done"}  # pools and state already populated
+    box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=5))
+    assert finished and box.get("value") == {"phase": "done"}, box
+    header, auth, cookie = seen[-1]
+    assert header == "owned-test" and auth and auth.startswith("Basic ") and cookie == "studio=owned", seen
