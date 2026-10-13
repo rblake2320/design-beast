@@ -6,6 +6,8 @@ Create: brief → expand → N candidates → judge → graded winner.
 Plus: upload/drop any image → judge (free) / refine (ref edit) / animate (i2v).
 """
 import base64
+import http.client
+import ipaddress
 import io
 import json
 import os
@@ -17,6 +19,7 @@ import subprocess
 import sys
 import threading
 import time
+import urllib.parse
 import urllib.request
 from contextlib import contextmanager
 from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait as futures_wait
@@ -116,23 +119,152 @@ def hf_generate(model: str, prompt: str, out_file: Path, extra: list = None) -> 
 NVCF_STATUS_BASE = "https://api.nvcf.nvidia.com/v2/nvcf/pexec/status"
 
 
+_DEADLINE_SLACK_S = 0.1
+
+
+_RESOLVE_CHILD = (
+    "import json, socket, sys; "
+    "infos = socket.getaddrinfo(sys.argv[1], int(sys.argv[2]), 0, socket.SOCK_STREAM); "
+    "print(json.dumps([[int(f), int(t), int(p), list(sa)] for f, t, p, _, sa in infos]))"
+)
+
+
+def _resolve_bounded(host: str, port: int, budget: float) -> list:
+    """Resolve `host` in a child process that is killed at the deadline.
+
+    getaddrinfo cannot be cancelled in-process, so the resolver runs in its
+    own interpreter. subprocess.run kills and reaps that child when the budget
+    runs out, so a stalled lookup can never outlive the call. IP literals skip
+    the child entirely.
+    """
+    try:
+        ipaddress.ip_address(host)
+        return [[socket.AF_INET6 if ":" in host else socket.AF_INET,
+                 socket.SOCK_STREAM, 0, (host, port)]]
+    except ValueError:
+        pass
+    try:
+        proc = subprocess.run(
+            [sys.executable, "-I", "-c", _RESOLVE_CHILD, host, str(port)],
+            capture_output=True, text=True, timeout=max(budget, 0.001))
+    except subprocess.TimeoutExpired as exc:
+        raise TimeoutError(f"DNS resolution for {host} exceeded its budget") from exc
+    if proc.returncode != 0 or not proc.stdout.strip():
+        raise OSError(f"DNS resolution for {host} failed: {proc.stderr.strip()[-200:]}")
+    return [(f, t, p, tuple(sa)) for f, t, p, sa in json.loads(proc.stdout)]
+
+
+def _connect_first(addrs: list, deadline: float) -> socket.socket:
+    """Connect to the first resolved address that answers, within `deadline`."""
+    last: OSError | None = None
+    for fam, typ, proto, sa in addrs:
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise socket.timeout("connect budget exhausted")
+        sock = socket.socket(fam, typ, proto)
+        sock.settimeout(remaining)
+        try:
+            sock.connect(sa)
+            return sock
+        except OSError as exc:
+            sock.close()
+            last = exc
+    raise last or OSError("no addresses to connect to")
+
+
+def _http_call(method: str, url: str, headers: dict, body: bytes | None,
+               budget: float) -> tuple[int, dict, bytes]:
+    """One HTTP(S) request whose total wall-clock time is capped at `budget`.
+
+    The connected socket is captured before the request is sent, so the
+    watchdog can still reach it after http.client drops its own reference
+    (it does so for HTTP/1.0 or Connection: close responses). At the deadline
+    the watchdog shuts that socket down, which fails any pending header or
+    body read at once. Nothing is left running in the background.
+    """
+    deadline = time.monotonic() + max(budget, 0.0)
+    u = urllib.parse.urlsplit(url)
+    cls = http.client.HTTPSConnection if u.scheme == "https" else http.client.HTTPConnection
+    port = u.port or (443 if u.scheme == "https" else 80)
+    addrs = _resolve_bounded(u.hostname, port, deadline - time.monotonic())
+    conn = cls(u.hostname, port, timeout=max(budget, 0.001))
+    conn._create_connection = (
+        lambda _address, _timeout, _source: _connect_first(addrs, deadline))
+    finished = threading.Event()
+    expired = threading.Event()
+    held: dict = {}
+
+    def _watchdog() -> None:
+        if not finished.wait(max(deadline - time.monotonic(), 0.0)):
+            expired.set()
+            sock = held.get("sock")
+            if sock is not None:
+                try:
+                    sock.shutdown(socket.SHUT_RDWR)
+                except OSError:
+                    pass
+
+    threading.Thread(target=_watchdog, daemon=True, name="nim-deadline").start()
+    path = (u.path or "/") + (f"?{u.query}" if u.query else "")
+    resp = None
+    try:
+        conn.connect()
+        held["sock"] = conn.sock
+        conn.request(method, path, body=body, headers=headers)
+        resp = conn.getresponse()
+        data = resp.read()
+        return resp.status, {k.lower(): v for k, v in resp.getheaders()}, data
+    except (OSError, http.client.HTTPException) as exc:
+        # The socket can fail a hair before the watchdog's clock; errors within
+        # the slack of the deadline are the deadline, not a transport failure.
+        if expired.is_set() or isinstance(exc, socket.timeout)                 or time.monotonic() >= deadline - _DEADLINE_SLACK_S:
+            raise TimeoutError("NVCF call exceeded its remaining budget") from exc
+        raise
+    finally:
+        finished.set()
+        if resp is not None:
+            resp.close()
+        conn.close()
+
+
 def _nim_invoke(url: str, payload: dict, headers: dict, timeout: int = 600,
                 poll_base: str = NVCF_STATUS_BASE, poll_interval: float = 3.0) -> dict:
     """POST to a NIM endpoint; follow the NVCF 202-polling pattern if used.
 
-    The whole poll loop is bounded by `timeout` seconds; a job that never
-    completes raises TimeoutError instead of blocking its worker forever.
+    The whole poll loop, including headers and response bodies, is bounded by
+    `timeout` seconds of wall clock; a job that never completes raises
+    TimeoutError instead of blocking its worker forever.
     """
     deadline = time.monotonic() + timeout
-    r = requests.post(url, headers=headers, json=payload, timeout=(15, timeout))
-    while r.status_code == 202:
-        if time.monotonic() >= deadline:
-            raise TimeoutError(f"NVCF request still pending after {timeout}s; giving up")
-        rid = r.headers.get("NVCF-REQID")
-        time.sleep(poll_interval)
-        r = requests.get(f"{poll_base}/{rid}", headers=headers, timeout=(15, 120))
-    r.raise_for_status()
-    return r.json()
+
+    def _left() -> float:
+        return deadline - time.monotonic()
+
+    def _expired() -> TimeoutError:
+        return TimeoutError(f"NVCF request still pending after {timeout}s; giving up")
+
+    def _call(method: str, target: str, body: bytes | None, hdrs: dict):
+        if _left() <= 0:
+            raise _expired()
+        try:
+            return _http_call(method, target, hdrs, body, _left())
+        except TimeoutError as exc:
+            raise _expired() from exc
+
+    json_hdrs = {**headers, "Content-Type": "application/json"}
+    status, rhdrs, data = _call("POST", url, json.dumps(payload).encode(), json_hdrs)
+    while status == 202:
+        if _left() <= 0:
+            raise _expired()
+        rid = rhdrs.get("nvcf-reqid")
+        time.sleep(min(poll_interval, max(_left(), 0.0)))
+        status, rhdrs, data = _call("GET", f"{poll_base}/{rid}", None, headers)
+    if _left() < 0:
+        # A completion that arrives after the deadline is refused, not accepted.
+        raise _expired()
+    if status >= 400:
+        raise RuntimeError(f"NIM HTTP {status}: {data[:200].decode('utf-8', 'replace')}")
+    return json.loads(data)
 
 
 def nim_flux(slug: str, prompt: str, out_file: Path, ar: str) -> dict:
