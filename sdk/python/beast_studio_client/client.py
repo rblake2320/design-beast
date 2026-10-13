@@ -15,13 +15,16 @@ from __future__ import annotations
 
 import json
 import math
-import queue
+import socket
 import threading
 import time
 from typing import Any, Dict, Iterator, List, Optional
 from urllib.parse import quote
 
 import requests
+from urllib3.connection import HTTPConnection, HTTPSConnection
+from urllib3.connectionpool import HTTPConnectionPool, HTTPSConnectionPool
+from urllib3.poolmanager import ProxyManager
 
 from .models import AnimateDuration, AnimateQuality, AspectRatio, BackendAction, ImageModel
 
@@ -50,6 +53,82 @@ def _bounded_lines(response, deadline):
             line.clear()
 
 
+class _DeadlineScope:
+    """Sockets a bounded wait is blocked on. When the deadline passes they are
+    shut down, so a peer that trickles headers or body cannot keep a read (or a
+    thread) alive after wait() has returned."""
+
+    def __init__(self):
+        self._lock = threading.Lock()
+        self._sockets = set()
+        self.expired = False
+
+    def add(self, sock):
+        with self._lock:
+            if not self.expired:
+                self._sockets.add(sock)
+                return
+        _shutdown(sock)
+
+    def expire(self):
+        with self._lock:
+            self.expired = True
+            sockets, self._sockets = self._sockets, set()
+        for sock in sockets:
+            _shutdown(sock)
+
+
+def _shutdown(sock):
+    try:
+        sock.shutdown(socket.SHUT_RDWR)
+    except OSError:
+        pass  # already closed by the peer or by urllib3
+
+
+_ACTIVE_SCOPE = threading.local()
+
+
+def _track(connection):
+    scope = getattr(_ACTIVE_SCOPE, "scope", None)
+    if scope is not None and connection.sock is not None:
+        scope.add(connection.sock)
+
+
+class _TrackedHTTPConnection(HTTPConnection):
+    def getresponse(self, *args, **kwargs):
+        _track(self)  # registered before the status line and headers are read
+        return super().getresponse(*args, **kwargs)
+
+
+class _TrackedHTTPSConnection(HTTPSConnection):
+    def getresponse(self, *args, **kwargs):
+        _track(self)
+        return super().getresponse(*args, **kwargs)
+
+
+class _TrackedHTTPPool(HTTPConnectionPool):
+    ConnectionCls = _TrackedHTTPConnection
+
+
+class _TrackedHTTPSPool(HTTPSConnectionPool):
+    ConnectionCls = _TrackedHTTPSConnection
+
+
+_TRACKED_POOLS = {"http": _TrackedHTTPPool, "https": _TrackedHTTPSPool}
+
+
+class _DeadlineAdapter(requests.adapters.HTTPAdapter):
+    def init_poolmanager(self, *args, **kwargs):
+        super().init_poolmanager(*args, **kwargs)
+        self.poolmanager.pool_classes_by_scheme = _TRACKED_POOLS
+
+    def proxy_manager_for(self, proxy, **kwargs):
+        manager = super().proxy_manager_for(proxy, **kwargs)
+        if type(manager) is ProxyManager:  # SOCKS managers keep their own pools
+            manager.pool_classes_by_scheme = _TRACKED_POOLS
+        return manager
+
+
 class BeastStudioError(RuntimeError):
     """Raised only for transport-level failures (connection refused, non-JSON
     response). API-level errors (validation, not-found, backend-down) are
@@ -71,12 +150,12 @@ class BeastStudioClient:
 
     def _request(self, method: str, path: str, *, json_body: Any = None,
                  headers: Optional[dict] = None, timeout: Optional[float] = None,
-                 deadline: Optional[float] = None) -> Any:
+                 deadline: Optional[float] = None, http: Any = None) -> Any:
         url = f"{self.base_url}{path}"
         try:
             if deadline is not None:
                 budget = max(0.001, min(self.timeout, deadline - time.monotonic()))
-                with self.session.request(method, url, json=json_body, headers=headers,
+                with (http or self.session).request(method, url, json=json_body, headers=headers,
                                           timeout=(budget, budget), stream=True) as r:
                     if self.raise_for_status:
                         r.raise_for_status()
@@ -238,14 +317,15 @@ class BeastStudioClient:
         raise BeastStudioError. Use wait(timeout=...) for a total deadline."""
         return self._stream_events(run_id)
 
-    def _stream_events(self, run_id: str, timeout: Optional[float] = None) -> Iterator[Dict[str, Any]]:
+    def _stream_events(self, run_id: str, timeout: Optional[float] = None,
+                       http: Any = None) -> Iterator[Dict[str, Any]]:
         deadline = None if timeout is None else time.monotonic() + timeout
         # The server emits only on phase change, so an unbounded stream must not
         # time out while a long phase is quiet; a deadline bounds every read.
         connect_timeout = self.timeout if timeout is None else min(self.timeout, timeout)
         read_timeout = None if timeout is None else connect_timeout
         try:
-            with self.session.get(self.events_url(run_id), stream=True,
+            with (http or self.session).get(self.events_url(run_id), stream=True,
                                   timeout=(connect_timeout, read_timeout)) as r:
                 if r.status_code >= 400:
                     raise BeastStudioError(f"GET /api/events/{run_id} returned HTTP {r.status_code}")
@@ -281,8 +361,11 @@ class BeastStudioClient:
     def wait(self, run_id: str, poll_interval: float = 3,
              timeout: Optional[float] = None, use_sse: bool = True) -> Dict[str, Any]:
         """Wait for terminal status. A finite timeout bounds the whole call,
-        including transport reads; timed-out reads close in the worker using
-        finite socket inactivity timeouts and per-byte deadline checks.
+        including transport reads: the call runs in the caller's thread and, at
+        the deadline, every socket it is blocked on is shut down, so nothing
+        keeps running after wait() returns. Reaping covers requests.Session
+        sessions (the default); a duck-typed session is used as-is and is
+        bounded only by its own per-read timeouts.
         """
         if not math.isfinite(poll_interval) or poll_interval < 0 or (
                 timeout is not None and (not math.isfinite(timeout) or timeout < 0)):
@@ -291,29 +374,44 @@ class BeastStudioClient:
             return self._wait_impl(run_id, poll_interval, None, use_sse)
         if timeout == 0:
             raise BeastStudioError(f"job {run_id} did not reach a terminal phase within 0s")
-        deadline = time.monotonic() + timeout
-        result = queue.Queue(maxsize=1)
-
-        def worker():
-            try:
-                value = self._wait_impl(run_id, poll_interval,
-                                        max(0, deadline - time.monotonic()), use_sse)
-                result.put((True, value))
-            except Exception as error:
-                result.put((False, error))
-
-        threading.Thread(target=worker, daemon=True, name="beast-bounded-wait").start()
+        scope = _DeadlineScope()
+        timer = threading.Timer(timeout, scope.expire)
+        timer.name = "beast-wait-deadline"
+        timer.daemon = True
+        outer = getattr(_ACTIVE_SCOPE, "scope", None)
+        _ACTIVE_SCOPE.scope = scope
+        timer.start()
         try:
-            ok, value = result.get(timeout=max(0, deadline - time.monotonic()))
-        except queue.Empty as e:
-            raise BeastStudioError(
-                f"job {run_id} did not reach a terminal phase within {timeout}s") from e
-        if not ok:
-            raise value
-        return value
+            return self._wait_impl(run_id, poll_interval, timeout, use_sse, self._deadline_session())
+        except BeastStudioError as error:
+            if scope.expired:
+                raise BeastStudioError(
+                    f"job {run_id} did not reach a terminal phase within {timeout}s") from error
+            raise
+        finally:
+            timer.cancel()
+            _ACTIVE_SCOPE.scope = outer
+
+    def _deadline_session(self) -> Any:
+        """A session whose connections register with the active deadline scope,
+        sharing the caller's session state (headers, cookies, auth, proxies, TLS)."""
+        base = self.session
+        if not isinstance(base, requests.Session):
+            return base
+        tracked = getattr(self, "_tracked_session", None)
+        if tracked is None or tracked.base is not base:
+            tracked = requests.Session()
+            tracked.mount("http://", _DeadlineAdapter())
+            tracked.mount("https://", _DeadlineAdapter())
+            tracked.base = base
+            self._tracked_session = tracked
+        for name in ("headers", "cookies", "auth", "proxies", "hooks", "params",
+                     "verify", "cert", "trust_env", "max_redirects"):
+            setattr(tracked, name, getattr(base, name))
+        return tracked
 
     def _wait_impl(self, run_id: str, poll_interval: float,
-                   timeout: Optional[float], use_sse: bool) -> Dict[str, Any]:
+                   timeout: Optional[float], use_sse: bool, http: Any = None) -> Dict[str, Any]:
         """Block until the job reaches a terminal phase, return its final
         status. Prefers SSE (one connection, pushed updates); falls back to
         polling status() if use_sse=False or the stream errors."""
@@ -334,7 +432,7 @@ class BeastStudioClient:
         if use_sse:
             try:
                 last = None
-                for snap in self._stream_events(run_id, timeout=remaining()):
+                for snap in self._stream_events(run_id, timeout=remaining(), http=http):
                     last = snap
                     remaining()
                 if last is not None and last.get("phase") in TERMINAL_PHASES:
@@ -346,7 +444,7 @@ class BeastStudioClient:
             try:
                 snap = self.status(run_id) if budget is None else self._request(
                     "GET", f"/api/run/{quote(run_id, safe='')}",
-                    timeout=min(self.timeout, budget), deadline=t0 + timeout)
+                    timeout=min(self.timeout, budget), deadline=t0 + timeout, http=http)
             except BeastStudioError:
                 remaining()  # a transport failure at the deadline is the deadline
                 raise

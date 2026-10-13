@@ -191,3 +191,99 @@ def test_unbounded_stream_survives_a_phase_quieter_than_the_request_timeout(stud
     client = BeastStudioClient(url, timeout=0.5)
     box, elapsed, finished = bounded(lambda: list(client.stream_events("r1")))
     assert finished and box.get("value") == [{"phase": "generating"}, {"phase": "done"}], box
+
+
+# ---- reaping: after wait() returns at its deadline, nothing of it may keep running ----
+# Raw HTTP: a complete status line, then a header that never ends (one byte per 30 ms), so neither
+# per-read inactivity timeouts nor body-level deadline checks ever fire. The server side records when
+# the client actually closes the connection; an abandoned worker or socket keeps the drip alive.
+
+class Drips:
+    def __init__(self):
+        self.lock = threading.Lock()
+        self.open = 0
+        self.started = 0
+
+    def begin(self):
+        with self.lock:
+            self.open += 1
+            self.started += 1
+
+    def end(self):
+        with self.lock:
+            self.open -= 1
+
+
+def dripping(drips, head):
+    def behaviour(handler, stop):
+        drips.begin()
+        try:
+            handler.wfile.write(head)
+            handler.wfile.flush()
+            while not stop.wait(0.03):
+                handler.wfile.write(b"x")
+                handler.wfile.flush()
+        finally:
+            drips.end()
+    return behaviour
+
+
+HEADER_DRIP = b"HTTP/1.1 200 OK\r\nX-Drip: "
+BODY_DRIP = b"HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: 100000\r\n\r\n"
+
+
+def sdk_threads():
+    return sorted(t.name for t in threading.enumerate() if t.name.startswith("beast-"))
+
+
+def assert_reaped(drips, threads_before):
+    """Every dripping connection the SDK opened is closed by the client within 1 s, and no SDK thread remains."""
+    assert drips.started, "fault was not injected: the SDK never reached the dripping endpoint"
+    limit = time.monotonic() + 1.0
+    while drips.open and time.monotonic() < limit:
+        time.sleep(0.02)
+    assert drips.open == 0, f"{drips.open} of {drips.started} dripping connections still open 1s after wait() returned"
+    assert sdk_threads() == threads_before, sdk_threads()
+
+
+@pytest.mark.parametrize("use_sse,events,status", [
+    (True, HEADER_DRIP, HEADER_DRIP),
+    (False, None, HEADER_DRIP),
+    (False, None, BODY_DRIP),
+    (True, BODY_DRIP, BODY_DRIP),
+], ids=["sse-header-drip", "poll-header-drip", "poll-body-drip", "sse-body-drip"])
+def test_deadline_closes_dripping_connections_and_leaves_no_worker(studio, use_sse, events, status):
+    routes, url = studio
+    drips = Drips()
+    if events:
+        routes["/api/events/"] = dripping(drips, events)
+    routes["/api/run/"] = dripping(drips, status)
+    before = sdk_threads()
+    client = BeastStudioClient(url, timeout=2)
+    for _ in range(3):
+        box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=0.3, poll_interval=0.05, use_sse=use_sse))
+        assert finished and isinstance(box.get("error"), BeastStudioError), box
+        assert "terminal phase within" in str(box["error"]), box["error"]
+        assert elapsed < 0.3 + SLACK, elapsed
+    assert_reaped(drips, before)
+
+
+def test_reaping_keeps_session_state_and_terminal_results(studio):
+    """Positive control on the reaping path: caller headers reach the server and a terminal status returns."""
+    routes, url = studio
+    seen = {}
+
+    def status(handler, stop):
+        seen["auth"] = handler.headers.get("X-Studio-Token")
+        json_reply({"phase": "done"})(handler, stop)
+
+    routes["/api/events/"] = broken_sse
+    routes["/api/run/"] = status
+    client = BeastStudioClient(url)
+    client.session.headers["X-Studio-Token"] = "owned-test-token"
+    before = sdk_threads()
+    box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=5, poll_interval=0.05))
+    assert finished and box.get("value") == {"phase": "done"}, box
+    assert seen["auth"] == "owned-test-token"
+    time.sleep(0.1)
+    assert sdk_threads() == before
