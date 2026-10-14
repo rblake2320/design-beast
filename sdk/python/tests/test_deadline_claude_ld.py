@@ -1100,3 +1100,162 @@ def test_caller_proxy_headers_are_never_silently_dropped(loopback_proxy):
     assert finished and isinstance(box.get("error"), BeastStudioError), box
     assert "nothing was sent" in str(box["error"]), box["error"]
     assert len(seen) == before, seen
+
+
+# ---- the caller's cookie jar lock is shared with the caller's own threads ----
+# requests takes the jar's RLock for every request and response. The bounded call snapshots the caller's cookies
+# under that lock (waiting at most the remaining budget), works on a private copy, and writes back only its own
+# changes under the lock, again bounded.
+
+def hold_lock(lock, seconds, started):
+    def run():
+        with lock:
+            started.set()
+            time.sleep(seconds)
+    worker = threading.Thread(target=run, daemon=True)
+    worker.start()
+    assert started.wait(2)
+    return worker
+
+
+@pytest.mark.parametrize("use_sse", [True, False], ids=["sse", "polling"])
+def test_cookie_lock_held_by_another_thread_cannot_overrun_the_deadline(studio, use_sse):
+    import requests
+
+    routes, url = studio
+    received = []
+
+    def record(handler, stop):
+        received.append(handler.path)
+        json_reply({"phase": "done"})(handler, stop)
+
+    routes["/api/"] = record
+    session = requests.Session()
+    session.trust_env = False
+    holder = hold_lock(session.cookies._cookies_lock, 1.0, threading.Event())
+    box, elapsed, finished = bounded(
+        lambda: BeastStudioClient(url, session=session).wait("r1", timeout=0.2, use_sse=use_sse, poll_interval=0.05))
+    assert finished and isinstance(box.get("error"), BeastStudioError), box
+    assert "terminal phase within" in str(box["error"]) and "nothing was sent" in str(box["error"]), box["error"]
+    assert elapsed < 0.2 + 0.3, elapsed
+    assert received == [], received
+    holder.join(2)
+
+
+def test_cookie_lock_taken_during_the_call_does_not_block_it(studio):
+    """Positive: once the snapshot is taken, caller contention on its own jar cannot stall the bounded call."""
+    import requests
+
+    routes, url = studio
+    session = requests.Session()
+    session.trust_env = False
+    started = threading.Event()
+
+    def status(handler, stop):
+        hold_lock(session.cookies._cookies_lock, 1.0, started)
+        json_reply({"phase": "done"})(handler, stop)
+
+    routes["/api/events/"] = broken_sse
+    routes["/api/run/"] = status
+    box, elapsed, finished = bounded(lambda: BeastStudioClient(url, session=session).wait("r1", timeout=0.5))
+    assert finished and box.get("value") == {"phase": "done"}, box
+    assert elapsed < 0.5, elapsed
+
+
+def test_response_cookies_reach_the_caller_jar_without_overwriting_concurrent_changes(studio):
+    import requests
+
+    routes, url = studio
+    session = requests.Session()
+    session.trust_env = False
+    session.cookies.set("caller", "kept", domain="127.0.0.1", path="/")
+    session.cookies.set("mine", "before", domain="127.0.0.1", path="/")
+    seen = []
+
+    def status(handler, stop):
+        seen.append(handler.headers.get("Cookie"))
+        session.cookies.set("mine", "changed-by-caller", domain="127.0.0.1", path="/")  # concurrent caller change
+        body = json.dumps({"phase": "done"}).encode()
+        handler.send_response(200)
+        handler.send_header("Content-Type", "application/json")
+        handler.send_header("Set-Cookie", "studio=issued; Path=/")
+        handler.send_header("Content-Length", str(len(body)))
+        handler.end_headers()
+        handler.wfile.write(body)
+
+    routes["/api/events/"] = broken_sse
+    routes["/api/run/"] = status
+    box, elapsed, finished = bounded(lambda: BeastStudioClient(url, session=session).wait("r1", timeout=5))
+    assert finished and box.get("value") == {"phase": "done"}, box
+    assert seen and "caller=kept" in seen[0] and "mine=before" in seen[0], seen
+    jar = {cookie.name: cookie.value for cookie in session.cookies}
+    assert jar.get("studio") == "issued", jar  # the bounded call's response cookie was stored
+    assert jar.get("mine") == "changed-by-caller" and jar.get("caller") == "kept", jar
+
+
+def test_cookie_write_back_contention_is_a_typed_bounded_error(studio):
+    import requests
+
+    routes, url = studio
+    session = requests.Session()
+    session.trust_env = False
+    started = threading.Event()
+
+    def status(handler, stop):
+        hold_lock(session.cookies._cookies_lock, 1.5, started)
+        body = json.dumps({"phase": "done"}).encode()
+        handler.send_response(200)
+        handler.send_header("Set-Cookie", "studio=issued; Path=/")
+        handler.send_header("Content-Length", str(len(body)))
+        handler.end_headers()
+        handler.wfile.write(body)
+
+    routes["/api/events/"] = broken_sse
+    routes["/api/run/"] = status
+    box, elapsed, finished = bounded(lambda: BeastStudioClient(url, session=session).wait("r1", timeout=0.5))
+    assert finished and isinstance(box.get("error"), BeastStudioError), box
+    assert "response cookies could not be stored" in str(box["error"]), box["error"]
+    assert elapsed < 0.5 + 0.3, elapsed
+
+
+def test_a_cookie_the_caller_changed_during_the_call_keeps_the_callers_value(studio):
+    """Same key on both sides: the caller's change after the snapshot wins over the bounded call's Set-Cookie."""
+    import requests
+
+    routes, url = studio
+    session = requests.Session()
+    session.trust_env = False
+    session.cookies.set("shared", "before", domain="127.0.0.1", path="/")
+
+    def status(handler, stop):
+        session.cookies.set("shared", "caller-later", domain="127.0.0.1", path="/")
+        body = json.dumps({"phase": "done"}).encode()
+        handler.send_response(200)
+        handler.send_header("Set-Cookie", "shared=from-server; Path=/")
+        handler.send_header("Content-Length", str(len(body)))
+        handler.end_headers()
+        handler.wfile.write(body)
+
+    routes["/api/events/"] = broken_sse
+    routes["/api/run/"] = status
+    box, elapsed, finished = bounded(lambda: BeastStudioClient(url, session=session).wait("r1", timeout=5))
+    assert finished and box.get("value") == {"phase": "done"}, box
+    assert [c.value for c in session.cookies if c.name == "shared"] == ["caller-later"], list(session.cookies)
+
+
+def test_time_spent_waiting_for_the_cookie_lock_comes_out_of_the_same_budget(studio):
+    """The lock is held 0.15 s, then the status body trickles: the whole call still ends at the original 0.3 s."""
+    import requests
+
+    routes, url = studio
+    routes["/api/events/"] = broken_sse
+    routes["/api/run/"] = dripping(Drips(), BODY_DRIP)
+    session = requests.Session()
+    session.trust_env = False
+    holder = hold_lock(session.cookies._cookies_lock, 0.15, threading.Event())
+    box, elapsed, finished = bounded(lambda: BeastStudioClient(url, session=session).wait("r1", timeout=0.3,
+                                                                                            poll_interval=0.05))
+    assert finished and isinstance(box.get("error"), BeastStudioError), box
+    assert "within 0.3s" in str(box["error"]), box["error"]
+    assert elapsed < 0.3 + 0.12, elapsed
+    holder.join(2)

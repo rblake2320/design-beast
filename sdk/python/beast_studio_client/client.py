@@ -433,19 +433,8 @@ def _caller_policy_problem(session):
         return f"the custom cookie policy {type(policy).__name__}"
     if not _plain(vars(policy)):
         return "customized cookie policy settings"
-    domains = vars(jar).get("_cookies")
-    if type(domains) is not dict:
-        return "a custom cookie store"
-    for paths in dict.values(domains):
-        if type(paths) is not dict:
-            return "a custom cookie store"
-        for names in dict.values(paths):
-            if type(names) is not dict:
-                return "a custom cookie store"
-            for cookie in dict.values(names):
-                if type(cookie) is not http.cookiejar.Cookie or _shadowed(cookie, http.cookiejar.Cookie) or not _plain(
-                        vars(cookie)):
-                    return "a custom cookie"
+    if type(vars(jar).get("_cookies")) is not dict:
+        return "a custom cookie store"  # its contents are checked under the jar's own lock when snapshotted
     adapters = state.get("adapters")
     if not _bare_ordered(adapters):
         return f"a custom adapter mapping {type(adapters).__name__}"
@@ -478,6 +467,92 @@ def _caller_policy_problem(session):
         if type(retries) is not Retry or _shadowed(retries, Retry) or not _plain(vars(retries)):
             return f"the custom retry policy {type(retries).__name__} mounted at {prefix!r}"
     return None
+
+
+def _stored_cookies(store):
+    """Every Cookie in a cookie store, type-first; None if anything in it is not the stock shape."""
+    if type(store) is not dict:
+        return None
+    found = []
+    for paths in dict.values(store):
+        if type(paths) is not dict:
+            return None
+        for names in dict.values(paths):
+            if type(names) is not dict:
+                return None
+            for cookie in dict.values(names):
+                if type(cookie) is not http.cookiejar.Cookie or _shadowed(cookie, http.cookiejar.Cookie) or not _plain(
+                        vars(cookie)):
+                    return None
+                found.append(cookie)
+    return found
+
+
+def _cookie_copy(cookie):
+    clone = copy.copy(cookie)
+    clone._rest = dict(cookie._rest)
+    return clone
+
+
+def _cookie_key(cookie):
+    return cookie.domain, cookie.path, cookie.name
+
+
+def _locked(jar, scope):
+    """Take the caller jar's own lock, waiting no longer than the wait's remaining budget."""
+    lock = vars(jar)["_cookies_lock"]
+    if not lock.acquire(timeout=scope.remaining()):
+        raise socket.timeout("the caller's cookie jar stayed locked past the wait deadline")
+    return lock
+
+
+def _snapshot_cookies(jar, scope):
+    """A private jar holding copies of the caller's cookies under the caller's cookie policy, taken under the
+    caller's lock (bounded), plus the original values so only the bounded call's own changes are written back."""
+    lock = _locked(jar, scope)
+    try:
+        cookies = _stored_cookies(vars(jar)["_cookies"])
+        if cookies is None:
+            return None, None
+        private = requests.cookies.RequestsCookieJar(policy=vars(jar)["_policy"])
+        before = {}
+        for cookie in cookies:
+            private.set_cookie(_cookie_copy(cookie))
+            before[_cookie_key(cookie)] = dict(vars(cookie), _rest=dict(cookie._rest))
+        return private, before
+    finally:
+        lock.release()
+
+
+def _write_back_cookies(jar, private, before, scope):
+    """Store what the bounded call's responses changed (set, updated or expired) in the caller's jar, under the
+    caller's lock taken within the remaining budget. A cookie the caller itself set, changed or removed after
+    the snapshot keeps the caller's version: the caller's later change wins over the bounded call's."""
+    after = {_cookie_key(cookie): cookie for cookie in _stored_cookies(vars(private)["_cookies"]) or []}
+    changed = [cookie for key, cookie in after.items()
+               if key not in before or dict(vars(cookie), _rest=dict(cookie._rest)) != before[key]]
+    removed = [key for key in before if key not in after]
+    if not changed and not removed:
+        return
+    lock = _locked(jar, scope)
+    try:
+        current = {_cookie_key(cookie): cookie for cookie in _stored_cookies(vars(jar)["_cookies"]) or []}
+
+        def untouched(key):  # the caller has not changed this cookie since the snapshot
+            now = current.get(key)
+            then = before.get(key)
+            if now is None or then is None:
+                return now is None and then is None
+            return dict(vars(now), _rest=dict(now._rest)) == then
+
+        for cookie in changed:
+            if untouched(_cookie_key(cookie)):
+                jar.set_cookie(_cookie_copy(cookie))
+        for key in removed:
+            if key in current and untouched(key):
+                jar.clear(*key)
+    finally:
+        lock.release()
 
 
 def _deadline_retries(retries, prefix):
@@ -748,17 +823,35 @@ class BeastStudioClient:
         if timeout == 0:
             raise BeastStudioError(f"job {run_id} did not reach a terminal phase within 0s")
         scope = _DeadlineScope(timeout)
-        http = self._deadline_session()  # refuses before anything is sent
-        timer = threading.Timer(timeout, scope.expire)
+        try:
+            http, cookies_before = self._deadline_session(scope)  # refuses before anything is sent
+        except socket.timeout as error:
+            raise BeastStudioError(
+                f"job {run_id} did not reach a terminal phase within {timeout}s; nothing was sent: {error}") from error
+        left = scope.deadline - time.monotonic()  # the snapshot may have used part of the budget
+        if left <= 0:
+            http.close()
+            raise BeastStudioError(f"job {run_id} did not reach a terminal phase within {timeout}s; nothing was sent")
+        timer = threading.Timer(left, scope.expire)
         timer.name = "beast-wait-deadline"
         timer.daemon = True
         outer = getattr(_ACTIVE_SCOPE, "scope", None)
         _ACTIVE_SCOPE.scope = scope
         timer.start()
         try:
-            return self._wait_impl(run_id, poll_interval, timeout, use_sse, http)
+            result = self._wait_impl(run_id, poll_interval, left, use_sse, http)
+            try:
+                _write_back_cookies(self.session.cookies, http.cookies, cookies_before, scope)
+            except socket.timeout as error:
+                raise BeastStudioError(
+                    f"job {run_id} reached a terminal phase but its response cookies could not be stored in the "
+                    f"caller's cookie jar within {timeout}s: {error}") from error
+            return result
         except BeastStudioError as error:
-            if scope.expired or time.monotonic() >= scope.deadline:
+            if "response cookies could not be stored" in str(error):
+                raise
+            if scope.expired or time.monotonic() >= scope.deadline or str(error).startswith(
+                    f"job {run_id} did not reach a terminal phase within "):
                 raise BeastStudioError(
                     f"job {run_id} did not reach a terminal phase within {timeout}s") from error
             raise
@@ -769,7 +862,7 @@ class BeastStudioClient:
             http.close()
             scope.close()
 
-    def _deadline_session(self) -> Any:
+    def _deadline_session(self, scope) -> Any:
         """A private session and connection pool for one bounded wait, so one
         wait's deadline can never cut a connection another call borrowed.
 
@@ -791,16 +884,22 @@ class BeastStudioClient:
             raise BeastStudioError(
                 f"wait(timeout=...) cannot carry {problem} through its deadline; nothing was sent and no caller "
                 "code was called. Use wait() without a timeout for a customized session.")
+        cookies, cookies_before = _snapshot_cookies(base.cookies, scope)
+        if cookies is None:
+            raise BeastStudioError(
+                "wait(timeout=...) cannot carry a custom cookie through its deadline; nothing was sent and no "
+                "caller code was called. Use wait() without a timeout for a customized session.")
         private = requests.Session()
         private.adapters.clear()
         for prefix, adapter in collections.OrderedDict.items(base.adapters):
             private.mount(prefix, _DeadlineAdapter(
                 pool_connections=adapter._pool_connections, pool_maxsize=adapter._pool_maxsize,
                 max_retries=_deadline_retries(adapter.max_retries, prefix), pool_block=adapter._pool_block))
-        for name in ("headers", "cookies", "auth", "proxies", "hooks", "params",
+        for name in ("headers", "auth", "proxies", "hooks", "params",
                      "verify", "cert", "trust_env", "max_redirects"):
             setattr(private, name, getattr(base, name))
-        return private
+        private.cookies = cookies  # a private copy, so caller jar contention cannot block the bounded call
+        return private, cookies_before
 
     def _wait_impl(self, run_id: str, poll_interval: float,
                    timeout: Optional[float], use_sse: bool, http: Any = None) -> Dict[str, Any]:
