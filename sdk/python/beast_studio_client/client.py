@@ -306,6 +306,13 @@ def _shadowed(obj, cls):
     return sorted(name for name in names if callable(getattr(cls, name, None)))
 
 
+def _bare_ordered(value):
+    """An exact OrderedDict with no instance attributes. Unlike dict, OrderedDict instances accept per-instance
+    attributes that shadow its methods (requests itself later calls them), so the type alone is not enough."""
+    return type(value) is collections.OrderedDict and not vars(value)
+
+
+_RLOCK = type(threading.RLock())
 _SCALARS = (type(None), bool, int, float, str, bytes)
 _COLLECTIONS = (tuple, list, set, frozenset)
 
@@ -319,49 +326,52 @@ def _plain(value, depth=0):
     if depth < 3 and kind in _COLLECTIONS:
         return all(_plain(item, depth + 1) for item in value)
     if depth < 3 and kind is dict:
-        return all(_plain(key, depth + 1) and _plain(item, depth + 1) for key, item in value.items())
+        return all(_plain(key, depth + 1) and _plain(item, depth + 1) for key, item in dict.items(value))
     return False
 
 
-_PROXY_POOL_KEYS = frozenset({"_proxy", "_proxy_headers", "_proxy_config"})  # set by urllib3 from the proxy URL
-_PROXY_STATE = frozenset({"proxy", "proxy_headers", "proxy_ssl_context", "proxy_config"})
+def _same(value, stock, depth=0):
+    """Deep equality against a stock value, with every type established before any comparison. Only exact
+    builtins and urllib3's own immutable Url/ProxyConfig named tuples (no instance state) take part."""
+    kind = type(value)
+    if kind is not type(stock) or depth > 4:
+        return False
+    if kind in _SCALARS:
+        return value == stock
+    if kind in (tuple, list, urllib3.util.url.Url, urllib3.poolmanager.ProxyConfig):
+        return len(value) == len(stock) and all(_same(a, b, depth + 1) for a, b in zip(value, stock))
+    if kind is dict:
+        return all(type(key) is str for key in value) and set(value) == set(stock) and all(
+            _same(dict.__getitem__(value, key), stock[key], depth + 1) for key in value)
+    return False
 
 
 def _same_table(table, default):
     """An exact dict of str keys whose values are the very objects of the stock table (no caller functions)."""
     return (type(table) is dict and all(type(key) is str for key in table) and set(table) == set(default)
-            and all(table[key] is default[key] for key in table))
+            and all(dict.__getitem__(table, key) is default[key] for key in table))
 
 
-def _pool_problem(manager, reference, cls, label):
-    """A pool manager the private copy rebuilds must hold exactly a stock manager's state: same attribute set,
-    equal plain settings, and the stock pool-class and pool-key function tables by identity. Its live pools are
-    not reused and not inspected; urllib3's own proxy metadata is checked by type only."""
-    if type(manager) is not cls or _shadowed(manager, cls):
+def _pool_problem(manager, stock, cls, label):
+    """A pool manager the private copy rebuilds must hold exactly the state of a stock manager built the same
+    way (stock: the fresh adapter's PoolManager, or proxy_manager_for(the same proxy URL)): same attributes,
+    equal settings and proxy metadata (URL-derived headers, TLS config), and urllib3's own pool-class and
+    pool-key tables by identity. Its live pools are neither reused nor inspected."""
+    if type(manager) is not cls or _shadowed(manager, cls) or type(stock) is not cls:
         return f"the custom {label} {type(manager).__name__}"
-    state = vars(manager)
-    default = vars(reference.poolmanager)
-    allowed = _PROXY_STATE if cls is ProxyManager else frozenset()
-    if any(type(name) is not str for name in state) or set(state) - allowed != set(default):
+    state, default = vars(manager), vars(stock)
+    if any(type(name) is not str for name in state) or set(state) != set(default):
         return f"customized {label} attributes"
-    if type(state["pools"]) is not urllib3._collections.RecentlyUsedContainer:
-        return f"a custom {label} pool container"
-    if not _same_table(state["pool_classes_by_scheme"], default["pool_classes_by_scheme"]):
-        return f"customized {label} pool classes"
-    if not _same_table(state["key_fn_by_scheme"], default["key_fn_by_scheme"]):
-        return f"customized {label} pool-key functions"
-    if not (_plain(state["headers"]) and state["headers"] == default["headers"]):
-        return f"customized {label} headers"
-    kw = state["connection_pool_kw"]
-    if type(kw) is not dict or not all(type(key) is str for key in kw):
-        return f"customized {label} settings"
-    own = {key: value for key, value in kw.items() if not (cls is ProxyManager and key in _PROXY_POOL_KEYS)}
-    if not (_plain(own) and own == default["connection_pool_kw"]):
-        return f"customized {label} settings {sorted(own)}"
-    if cls is ProxyManager and (state["proxy_ssl_context"] is not None or not _plain(state["proxy_headers"])
-                                or type(state["proxy"]) is not urllib3.util.url.Url
-                                or type(state["proxy_config"]) is not urllib3.poolmanager.ProxyConfig):
-        return f"customized {label} proxy settings"
+    for name in state:
+        value = dict.__getitem__(state, name)
+        if name == "pools":
+            if type(value) is not urllib3._collections.RecentlyUsedContainer:
+                return f"a custom {label} pool container"
+        elif name in ("pool_classes_by_scheme", "key_fn_by_scheme"):
+            if not _same_table(value, default[name]):
+                return f"customized {label} {name}"
+        elif not _same(value, default[name]):
+            return f"customized {label} {name}"
     return None
 
 
@@ -389,15 +399,15 @@ def _caller_policy_problem(session):
         if _shadowed(headers, requests.structures.CaseInsensitiveDict):
             return "an overridden header mapping"
         store = vars(headers).get("_store")
-        if type(store) is not collections.OrderedDict or not all(
-                type(entry) is tuple and _plain(entry) for entry in store.values()):
+        if not _bare_ordered(store) or not all(
+                type(entry) is tuple and _plain(entry) for entry in collections.OrderedDict.values(store)):
             return "custom header values"
     elif not (type(headers) is dict and _plain(headers)):
         return f"the custom header mapping {type(headers).__name__}"
     hooks = state.get("hooks")
     if type(hooks) is not dict:
         return f"the custom hooks container {type(hooks).__name__}"
-    for event, callbacks in hooks.items():
+    for event, callbacks in dict.items(hooks):
         if type(event) is not str or type(callbacks) is not list or callbacks:
             return "session hooks"
     auth = state.get("auth")
@@ -414,6 +424,10 @@ def _caller_policy_problem(session):
     jar = state.get("cookies")
     if type(jar) is not requests.cookies.RequestsCookieJar or _shadowed(jar, requests.cookies.RequestsCookieJar):
         return f"the custom cookie jar {type(jar).__name__}"
+    jar_state = vars(jar)
+    if any(type(name) is not str for name in jar_state) or not (
+            {"_cookies", "_cookies_lock", "_policy"} <= set(jar_state) <= {"_cookies", "_cookies_lock", "_policy", "_now"})             or type(jar_state["_cookies_lock"]) is not _RLOCK or type(jar_state.get("_now", 0)) is not int:
+        return "a customized cookie jar"  # http.cookiejar adds the int _now itself once the jar is used
     policy = vars(jar).get("_policy")
     if type(policy) is not http.cookiejar.DefaultCookiePolicy or _shadowed(policy, http.cookiejar.DefaultCookiePolicy):
         return f"the custom cookie policy {type(policy).__name__}"
@@ -422,20 +436,20 @@ def _caller_policy_problem(session):
     domains = vars(jar).get("_cookies")
     if type(domains) is not dict:
         return "a custom cookie store"
-    for paths in domains.values():
+    for paths in dict.values(domains):
         if type(paths) is not dict:
             return "a custom cookie store"
-        for names in paths.values():
+        for names in dict.values(paths):
             if type(names) is not dict:
                 return "a custom cookie store"
-            for cookie in names.values():
+            for cookie in dict.values(names):
                 if type(cookie) is not http.cookiejar.Cookie or _shadowed(cookie, http.cookiejar.Cookie) or not _plain(
                         vars(cookie)):
                     return "a custom cookie"
     adapters = state.get("adapters")
-    if type(adapters) is not collections.OrderedDict:
-        return f"the custom adapter mapping {type(adapters).__name__}"
-    for prefix, adapter in adapters.items():
+    if not _bare_ordered(adapters):
+        return f"a custom adapter mapping {type(adapters).__name__}"
+    for prefix, adapter in collections.OrderedDict.items(adapters):
         if type(prefix) is not str:
             return "a custom adapter prefix"
         if type(adapter) is not requests.adapters.HTTPAdapter or _shadowed(adapter, requests.adapters.HTTPAdapter):
@@ -446,16 +460,18 @@ def _caller_policy_problem(session):
         if not all(type(size) in (int, bool) for size in sizes) or type(config) is not dict or config:
             return f"customized pool settings on the adapter mounted at {prefix!r}"
         reference = requests.adapters.HTTPAdapter(*sizes[:2], pool_block=sizes[2])
-        problem = _pool_problem(settings.get("poolmanager"), reference, PoolManager, "connection pool")
+        problem = _pool_problem(settings.get("poolmanager"), reference.poolmanager, PoolManager, "connection pool")
         if problem:
             return f"{problem} on the adapter mounted at {prefix!r}"
         proxies = settings.get("proxy_manager")
         if type(proxies) is not dict:
             return f"a custom proxy-manager mapping on the adapter mounted at {prefix!r}"
-        for proxy, manager in proxies.items():
+        for proxy, manager in dict.items(proxies):
             if type(proxy) is not str:
                 return "a custom proxy key"
-            problem = _pool_problem(manager, reference, ProxyManager, "proxy manager")
+            if not proxy.lower().startswith(("http://", "https://")):
+                return f"the unsupported proxy {proxy!r}"
+            problem = _pool_problem(manager, reference.proxy_manager_for(proxy), ProxyManager, "proxy manager")
             if problem:
                 return f"{problem} for {proxy!r}"
         retries = settings.get("max_retries")
@@ -777,7 +793,7 @@ class BeastStudioClient:
                 "code was called. Use wait() without a timeout for a customized session.")
         private = requests.Session()
         private.adapters.clear()
-        for prefix, adapter in base.adapters.items():
+        for prefix, adapter in collections.OrderedDict.items(base.adapters):
             private.mount(prefix, _DeadlineAdapter(
                 pool_connections=adapter._pool_connections, pool_maxsize=adapter._pool_maxsize,
                 max_retries=_deadline_retries(adapter.max_retries, prefix), pool_block=adapter._pool_block))

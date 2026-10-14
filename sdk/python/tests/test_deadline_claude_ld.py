@@ -983,6 +983,33 @@ def container_session(case, entered):
             total=1, status_forcelist=forcelist, allowed_methods=["GET"])))
     elif case == "cookie-store-subclass":
         session.cookies._cookies = type("SlowStore", (dict,), {"values": slow("values")})()
+    elif case == "adapters-instance-items":
+        original = session.adapters.items
+        session.adapters.items = lambda: (entered.append("items"), time.sleep(1), original())[2]
+    elif case == "header-store-instance-values":
+        store = session.headers._store
+        original = store.values
+        store.values = lambda: (entered.append("values"), time.sleep(1), original())[2]
+    elif case == "cookie-lock-object":
+        import threading as _threading
+
+        class SlowLock:
+            def __init__(self):
+                self.lock = _threading.RLock()
+
+            def __enter__(self):
+                entered.append("lock")
+                time.sleep(1)
+                return self.lock.__enter__()
+
+            def __exit__(self, *exc):
+                return self.lock.__exit__(*exc)
+
+            acquire = __enter__
+
+            def release(self):
+                self.lock.release()
+        session.cookies._cookies_lock = SlowLock()
     return session
 
 
@@ -990,6 +1017,7 @@ def container_session(case, entered):
     "hooks-dict-subclass", "headers-instance-items", "headers-dict-subclass", "header-value-str-subclass",
     "adapters-dict-subclass", "proxy-manager-map-subclass", "poolmanager-key-function", "poolmanager-pool-classes",
     "auth-tuple-subclass", "auth-part-str-subclass", "retry-forcelist-container", "cookie-store-subclass",
+    "adapters-instance-items", "header-store-instance-values", "cookie-lock-object",
 ])
 def test_policy_check_refuses_custom_containers_without_calling_them(studio, case):
     routes, url = studio
@@ -1009,3 +1037,66 @@ def test_policy_check_refuses_custom_containers_without_calling_them(studio, cas
         assert elapsed < 0.2 + 0.3, (use_sse, elapsed)
         assert entered == [], (use_sse, entered)
     assert received == [], received
+
+
+# ---- proxies: a used proxy session works; caller proxy policy is carried or refused, never dropped ----
+
+@pytest.fixture
+def loopback_proxy():
+    """A plain-HTTP forward proxy on loopback that answers every request itself (no onward connection)."""
+    seen = []
+
+    class Proxy(BaseHTTPRequestHandler):
+        def log_message(self, *args):
+            pass
+
+        def do_GET(self):
+            policy = self.headers.get("X-Owned-Policy")
+            seen.append((self.path, policy))
+            if self.path.startswith("http://") and "/api/events/" in self.path:
+                self.send_error(503)
+                return
+            json_reply({"phase": "done"})(self, None)
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Proxy)
+    server.daemon_threads = True
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    yield f"http://127.0.0.1:{server.server_address[1]}", seen
+    server.shutdown()
+    server.server_close()
+
+
+def test_a_session_already_used_through_a_proxy_still_waits_through_it(loopback_proxy):
+    """Positive control: status() first populates the adapter's stock proxy-manager cache; the bounded wait must
+    accept that stock state and reach the target through the same proxy."""
+    import requests
+
+    proxy, seen = loopback_proxy
+    session = requests.Session()
+    session.trust_env = False
+    session.proxies["http"] = proxy
+    client = BeastStudioClient("http://proxy-target.owned.invalid", session=session)
+    assert client.status("r1") == {"phase": "done"}
+    assert session.get_adapter("http://").proxy_manager, "the stock proxy-manager cache was not populated"
+    before = len(seen)
+    box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=2, use_sse=False))
+    assert finished and box.get("value") == {"phase": "done"}, box
+    assert len(seen) == before + 1, seen
+
+
+def test_caller_proxy_headers_are_never_silently_dropped(loopback_proxy):
+    """A header the caller added to a cached proxy manager would be lost by a fresh one; refuse before contact."""
+    import requests
+
+    proxy, seen = loopback_proxy
+    session = requests.Session()
+    session.trust_env = False
+    session.proxies["http"] = proxy
+    session.get_adapter("http://").proxy_manager_for(proxy).proxy_headers["X-Owned-Policy"] = "required"
+    client = BeastStudioClient("http://proxy-target.owned.invalid", session=session)
+    assert client.status("r1") == {"phase": "done"} and seen[-1][1] == "required"  # the caller's own policy
+    before = len(seen)
+    box, elapsed, finished = bounded(lambda: client.wait("r1", timeout=0.2, use_sse=False))
+    assert finished and isinstance(box.get("error"), BeastStudioError), box
+    assert "nothing was sent" in str(box["error"]), box["error"]
+    assert len(seen) == before, seen
