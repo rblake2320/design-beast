@@ -13,12 +13,31 @@ does not itself enforce (backend-sharing etiquette, VRAM contention).
 """
 from __future__ import annotations
 
+import collections
+import copy
+import http.cookiejar
+import ipaddress
 import json
+import math
+import os
+import socket
+import subprocess
+import sys
+import threading
 import time
 from typing import Any, Dict, Iterator, List, Optional
 from urllib.parse import quote
 
 import requests
+import urllib3
+import urllib3._collections
+import urllib3.util.url
+from urllib3.connection import HTTPConnection, HTTPSConnection
+from urllib3.connectionpool import HTTPConnectionPool, HTTPSConnectionPool
+from urllib3.exceptions import ConnectTimeoutError, NewConnectionError
+from urllib3.poolmanager import PoolManager, ProxyManager
+from urllib3.util.connection import allowed_gai_family
+from urllib3.util.retry import Retry
 
 from .models import AnimateDuration, AnimateQuality, AspectRatio, BackendAction, ImageModel
 
@@ -29,6 +48,533 @@ NIM_BACKENDS = frozenset(
 BACKEND_START_TIMEOUTS = {"nim-wan": 2130.0}
 DEFAULT_NIM_START_TIMEOUT = 510.0
 NIM_STOP_TIMEOUT = 150.0
+
+
+def _bounded_lines(response, deadline):
+    """Check the wall deadline even when a peer drips an unfinished line."""
+    line = bytearray()
+    for chunk in response.iter_content(chunk_size=1):
+        if deadline is not None and time.monotonic() >= deadline:
+            raise BeastStudioError("SSE stream exceeded its deadline")
+        if not chunk:
+            continue
+        line.extend(chunk)
+        if len(line) > 1_048_576:
+            raise BeastStudioError("SSE line exceeds 1MiB")
+        if chunk == b"\n":
+            yield line.decode("utf-8").rstrip("\r\n")
+            line.clear()
+
+
+class _DeadlineScope:
+    """Everything one bounded wait() can block on. At the deadline every
+    connection's socket is shut down and the resolver child is killed, so
+    nothing the call started outlives it. All connections come from the wait's
+    private pool, so none belongs to another caller."""
+
+    def __init__(self, timeout):
+        self._lock = threading.Lock()
+        self._sockets = []
+        self._child = None
+        self.addresses = {}
+        self.expired = False
+        self.deadline = time.monotonic() + timeout
+
+    def remaining(self):
+        left = self.deadline - time.monotonic()
+        if self.expired or left <= 0:
+            raise socket.timeout("wait deadline reached")
+        return left
+
+    def add(self, connection, sock):
+        entry = (connection, sock, sock.fileno())
+        with self._lock:
+            if not self.expired:
+                self._sockets.append(entry)
+                return
+        _reap(entry)
+
+    def discard(self, sock):
+        """Forget a socket the caller closed itself, so its handle is never touched again."""
+        with self._lock:
+            self._sockets = [entry for entry in self._sockets if entry[1] is not sock]
+
+    def attach_child(self, child):
+        with self._lock:
+            self._child = child
+            if not self.expired:
+                return
+        child.kill()
+
+    def expire(self):
+        with self._lock:
+            self.expired = True
+            sockets, child = list(self._sockets), self._child
+        for entry in sockets:
+            _reap(entry)
+        if child is not None:
+            child.kill()
+
+    def close(self):
+        with self._lock:
+            self._sockets = []
+
+
+def _reap(entry):
+    """Shut down the live socket of a registered connection. TLS wrapping
+    detaches the raw socket object and hands its handle to an SSLSocket; while
+    that connect() is still in progress the handle is shut down directly,
+    through a non-owning wrapper that is detached again, never closed."""
+    connection, raw, handle = entry
+    target = connection.sock if connection.sock is not None else raw
+    try:
+        if target.fileno() != -1:
+            target.shutdown(socket.SHUT_RDWR)
+        elif getattr(connection, "_beast_connecting", False):
+            borrowed = socket.socket(fileno=handle)
+            try:
+                borrowed.shutdown(socket.SHUT_RDWR)
+            finally:
+                borrowed.detach()
+    except OSError:
+        pass  # already closed by the peer or by urllib3
+
+
+_ACTIVE_SCOPE = threading.local()
+
+# getaddrinfo cannot be interrupted inside this process, so a bounded wait
+# resolves names in an owned child it can kill and reap at the deadline.
+_RESOLVER_CHILD = ("import json, socket, sys; "
+                   "print(json.dumps(socket.getaddrinfo(sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), "
+                   "socket.SOCK_STREAM)))")
+_RESOLVER_ENV = ("SYSTEMROOT", "WINDIR", "PATH", "TEMP", "TMP", "HOSTALIASES", "RES_OPTIONS", "LOCALDOMAIN")
+
+
+def _resolve(host, port, scope):
+    family = allowed_gai_family()
+    try:
+        ipaddress.ip_address(host)
+        return socket.getaddrinfo(host, port, family, socket.SOCK_STREAM)  # literal: no lookup
+    except ValueError:
+        pass
+    key = (host, port, family)
+    if key in scope.addresses:
+        return scope.addresses[key]
+    child = subprocess.Popen(
+        [sys.executable, "-I", "-c", _RESOLVER_CHILD, host, str(port), str(int(family))],
+        stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+        env={k: v for k, v in os.environ.items() if k.upper() in _RESOLVER_ENV},
+        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+    scope.attach_child(child)
+    try:
+        out, err = child.communicate(timeout=scope.remaining())
+    except (subprocess.TimeoutExpired, socket.timeout):
+        child.kill()
+        child.communicate()
+        raise socket.timeout(f"resolving {host} exceeded the wait deadline")
+    if scope.expired:
+        raise socket.timeout(f"resolving {host} exceeded the wait deadline")
+    if child.returncode:
+        raise socket.gaierror(f"could not resolve {host}: {err.strip().splitlines()[-1:] or child.returncode}")
+    addresses = [(family_, kind, proto, name, tuple(address))
+                 for family_, kind, proto, name, address in json.loads(out)]
+    scope.addresses[key] = addresses
+    return addresses
+
+
+def _bounded_new_conn(connection, scope):
+    """urllib3's create_connection with the lookup bounded and every socket
+    registered with the deadline scope before connect() can block."""
+    host = connection._dns_host
+    host = host.strip("[]") if host.startswith("[") else host
+    try:
+        addresses = _resolve(host, connection.port, scope)
+        error = OSError("getaddrinfo returns an empty list")
+        for entry in list(addresses):
+            family, kind, proto, _, address = entry
+            sock = socket.socket(family, kind, proto)
+            scope.add(connection, sock)
+            try:
+                for option in connection.socket_options or ():
+                    sock.setsockopt(*option)
+                limit = connection.timeout if isinstance(connection.timeout, (int, float)) else None
+                sock.settimeout(scope.remaining() if limit is None else min(limit, scope.remaining()))
+                if connection.source_address:
+                    sock.bind(connection.source_address)
+                sock.connect(address)
+                if addresses and addresses[0] is not entry:  # later connections of this wait try it first
+                    addresses.remove(entry)
+                    addresses.insert(0, entry)
+                return sock
+            except OSError as attempt:
+                error = attempt
+                scope.discard(sock)
+                sock.close()
+        raise error
+    except socket.timeout as e:
+        raise ConnectTimeoutError(connection, f"Connection to {connection.host} timed out: {e}") from e
+    except OSError as e:
+        raise NewConnectionError(connection, f"Failed to establish a new connection: {e}") from e
+
+
+def _track(connection):
+    scope = getattr(_ACTIVE_SCOPE, "scope", None)
+    if scope is not None and connection.sock is not None:
+        scope.add(connection, connection.sock)
+
+
+class _TrackedHTTPConnection(HTTPConnection):
+    # Inside a deadline scope a new socket registers before connect(), so the
+    # connect, any proxy CONNECT, TLS handshake and response reads all end at
+    # the deadline; a pooled socket registers again when reused.
+    def _new_conn(self):
+        scope = getattr(_ACTIVE_SCOPE, "scope", None)
+        return super()._new_conn() if scope is None else _bounded_new_conn(self, scope)
+
+    def connect(self):
+        self._beast_connecting = True
+        try:
+            return super().connect()
+        finally:
+            self._beast_connecting = False
+
+    def getresponse(self, *args, **kwargs):
+        _track(self)
+        return super().getresponse(*args, **kwargs)
+
+
+class _TrackedHTTPSConnection(HTTPSConnection):
+    def _new_conn(self):
+        scope = getattr(_ACTIVE_SCOPE, "scope", None)
+        return super()._new_conn() if scope is None else _bounded_new_conn(self, scope)
+
+    def connect(self):
+        self._beast_connecting = True
+        try:
+            return super().connect()
+        finally:
+            self._beast_connecting = False
+
+    def getresponse(self, *args, **kwargs):
+        _track(self)
+        return super().getresponse(*args, **kwargs)
+
+
+class _TrackedHTTPPool(HTTPConnectionPool):
+    ConnectionCls = _TrackedHTTPConnection
+
+
+class _TrackedHTTPSPool(HTTPSConnectionPool):
+    ConnectionCls = _TrackedHTTPSConnection
+
+
+_TRACKED_POOLS = {"http": _TrackedHTTPPool, "https": _TrackedHTTPSPool}
+
+
+class _DeadlineRetry(Retry):
+    """The caller's urllib3 retry policy, unchanged, except that no delay may
+    outlast the wait deadline. A delay that fits is slept as usual; one that
+    would cross the deadline expires the wait at once instead of sleeping
+    (Retry.new() keeps this class across attempts)."""
+
+    def sleep(self, response=None):
+        delay = 0.0
+        if self.respect_retry_after_header and response:
+            delay = self.get_retry_after(response) or 0.0
+        if not delay:
+            delay = max(0.0, self.get_backoff_time())
+        scope = getattr(_ACTIVE_SCOPE, "scope", None)
+        if scope is None:
+            return super().sleep(response)
+        if delay >= scope.remaining():  # raises once the deadline has passed
+            scope.expire()
+            raise socket.timeout(f"retry delay {delay:.3f}s exceeds the wait deadline")
+        if delay:
+            time.sleep(delay)
+
+
+_SESSION_STATE = frozenset({"adapters", "auth", "cert", "cookies", "headers", "hooks", "max_redirects",
+                            "params", "proxies", "stream", "trust_env", "verify"})
+
+
+def _shadowed(obj, cls):
+    """Instance attributes that replace a method of cls: caller code the bounded copy would drop or bypass.
+    Only call this once type(obj) is cls, so vars() is the plain instance dict."""
+    names = list(vars(obj))
+    if any(type(name) is not str for name in names):
+        return ["<non-string attribute>"]
+    return sorted(name for name in names if callable(getattr(cls, name, None)))
+
+
+def _bare_ordered(value):
+    """An exact OrderedDict with no instance attributes. Unlike dict, OrderedDict instances accept per-instance
+    attributes that shadow its methods (requests itself later calls them), so the type alone is not enough."""
+    return type(value) is collections.OrderedDict and not vars(value)
+
+
+_RLOCK = type(threading.RLock())
+_SCALARS = (type(None), bool, int, float, str, bytes)
+_COLLECTIONS = (tuple, list, set, frozenset)
+
+
+def _plain(value, depth=0):
+    """True if value is built only from exact builtin scalar and collection types, checked by type()
+    before anything is iterated, so inspecting it can never run caller code."""
+    kind = type(value)
+    if kind in _SCALARS:
+        return True
+    if depth < 3 and kind in _COLLECTIONS:
+        return all(_plain(item, depth + 1) for item in value)
+    if depth < 3 and kind is dict:
+        return all(_plain(key, depth + 1) and _plain(item, depth + 1) for key, item in dict.items(value))
+    return False
+
+
+def _same(value, stock, depth=0):
+    """Deep equality against a stock value, with every type established before any comparison. Only exact
+    builtins and urllib3's own immutable Url/ProxyConfig named tuples (no instance state) take part."""
+    kind = type(value)
+    if kind is not type(stock) or depth > 4:
+        return False
+    if kind in _SCALARS:
+        return value == stock
+    if kind in (tuple, list, urllib3.util.url.Url, urllib3.poolmanager.ProxyConfig):
+        return len(value) == len(stock) and all(_same(a, b, depth + 1) for a, b in zip(value, stock))
+    if kind is dict:
+        return all(type(key) is str for key in value) and set(value) == set(stock) and all(
+            _same(dict.__getitem__(value, key), stock[key], depth + 1) for key in value)
+    return False
+
+
+def _same_table(table, default):
+    """An exact dict of str keys whose values are the very objects of the stock table (no caller functions)."""
+    return (type(table) is dict and all(type(key) is str for key in table) and set(table) == set(default)
+            and all(dict.__getitem__(table, key) is default[key] for key in table))
+
+
+def _pool_problem(manager, stock, cls, label):
+    """A pool manager the private copy rebuilds must hold exactly the state of a stock manager built the same
+    way (stock: the fresh adapter's PoolManager, or proxy_manager_for(the same proxy URL)): same attributes,
+    equal settings and proxy metadata (URL-derived headers, TLS config), and urllib3's own pool-class and
+    pool-key tables by identity. Its live pools are neither reused nor inspected."""
+    if type(manager) is not cls or _shadowed(manager, cls) or type(stock) is not cls:
+        return f"the custom {label} {type(manager).__name__}"
+    state, default = vars(manager), vars(stock)
+    if any(type(name) is not str for name in state) or set(state) != set(default):
+        return f"customized {label} attributes"
+    for name in state:
+        value = dict.__getitem__(state, name)
+        if name == "pools":
+            if type(value) is not urllib3._collections.RecentlyUsedContainer:
+                return f"a custom {label} pool container"
+        elif name in ("pool_classes_by_scheme", "key_fn_by_scheme"):
+            if not _same_table(value, default[name]):
+                return f"customized {label} {name}"
+        elif not _same(value, default[name]):
+            return f"customized {label} {name}"
+    return None
+
+
+def _caller_policy_problem(session):
+    """Why the bounded path cannot carry this session faithfully, or None.
+
+    Every object the private session rebuilds or reuses must be the exact standard type with no per-instance
+    method overrides and carry no configuration a fresh standard object would lose. Each value's exact type is
+    established with type() before any of its methods are called, so this check itself never runs caller code."""
+    if type(session) is not requests.Session:
+        return f"the Session subclass {type(session).__name__}"
+    state = vars(session)
+    if any(type(name) is not str for name in state):
+        return "non-string Session attributes"
+    extra = sorted(name for name in state if name not in _SESSION_STATE)
+    if extra:
+        return f"per-instance Session attributes {extra}"
+    for name in ("stream", "verify", "cert", "max_redirects", "trust_env", "proxies", "params"):
+        if not _plain(state.get(name)):
+            return f"the custom session {name} value {type(state.get(name)).__name__}"
+    if type(state.get("proxies")) is not dict or type(state.get("params")) is not dict:
+        return "a custom proxies or params mapping"
+    headers = state.get("headers")
+    if type(headers) is requests.structures.CaseInsensitiveDict:
+        if _shadowed(headers, requests.structures.CaseInsensitiveDict):
+            return "an overridden header mapping"
+        store = vars(headers).get("_store")
+        if not _bare_ordered(store) or not all(
+                type(entry) is tuple and _plain(entry) for entry in collections.OrderedDict.values(store)):
+            return "custom header values"
+    elif not (type(headers) is dict and _plain(headers)):
+        return f"the custom header mapping {type(headers).__name__}"
+    hooks = state.get("hooks")
+    if type(hooks) is not dict:
+        return f"the custom hooks container {type(hooks).__name__}"
+    for event, callbacks in dict.items(hooks):
+        if type(event) is not str or type(callbacks) is not list or callbacks:
+            return "session hooks"
+    auth = state.get("auth")
+    if auth is not None:
+        if type(auth) is tuple:
+            if len(auth) != 2 or not all(type(part) in (str, bytes) for part in auth):
+                return "a custom session auth tuple"
+        elif type(auth) is requests.auth.HTTPBasicAuth:
+            if _shadowed(auth, requests.auth.HTTPBasicAuth) or not all(
+                    type(vars(auth).get(part)) in (str, bytes) for part in ("username", "password")):
+                return "a customized HTTPBasicAuth"
+        else:
+            return f"the custom session auth {type(auth).__name__}"
+    jar = state.get("cookies")
+    if type(jar) is not requests.cookies.RequestsCookieJar or _shadowed(jar, requests.cookies.RequestsCookieJar):
+        return f"the custom cookie jar {type(jar).__name__}"
+    jar_state = vars(jar)
+    if any(type(name) is not str for name in jar_state) or not (
+            {"_cookies", "_cookies_lock", "_policy"} <= set(jar_state) <= {"_cookies", "_cookies_lock", "_policy", "_now"})             or type(jar_state["_cookies_lock"]) is not _RLOCK or type(jar_state.get("_now", 0)) is not int:
+        return "a customized cookie jar"  # http.cookiejar adds the int _now itself once the jar is used
+    policy = vars(jar).get("_policy")
+    if type(policy) is not http.cookiejar.DefaultCookiePolicy or _shadowed(policy, http.cookiejar.DefaultCookiePolicy):
+        return f"the custom cookie policy {type(policy).__name__}"
+    if not _plain(vars(policy)):
+        return "customized cookie policy settings"
+    if type(vars(jar).get("_cookies")) is not dict:
+        return "a custom cookie store"  # its contents are checked under the jar's own lock when snapshotted
+    adapters = state.get("adapters")
+    if not _bare_ordered(adapters):
+        return f"a custom adapter mapping {type(adapters).__name__}"
+    for prefix, adapter in collections.OrderedDict.items(adapters):
+        if type(prefix) is not str:
+            return "a custom adapter prefix"
+        if type(adapter) is not requests.adapters.HTTPAdapter or _shadowed(adapter, requests.adapters.HTTPAdapter):
+            return f"the custom transport adapter {type(adapter).__name__} mounted at {prefix!r}"
+        settings = vars(adapter)
+        sizes = [settings.get(name) for name in ("_pool_connections", "_pool_maxsize", "_pool_block")]
+        config = settings.get("config")
+        if not all(type(size) in (int, bool) for size in sizes) or type(config) is not dict or config:
+            return f"customized pool settings on the adapter mounted at {prefix!r}"
+        reference = requests.adapters.HTTPAdapter(*sizes[:2], pool_block=sizes[2])
+        problem = _pool_problem(settings.get("poolmanager"), reference.poolmanager, PoolManager, "connection pool")
+        if problem:
+            return f"{problem} on the adapter mounted at {prefix!r}"
+        proxies = settings.get("proxy_manager")
+        if type(proxies) is not dict:
+            return f"a custom proxy-manager mapping on the adapter mounted at {prefix!r}"
+        for proxy, manager in dict.items(proxies):
+            if type(proxy) is not str:
+                return "a custom proxy key"
+            if not proxy.lower().startswith(("http://", "https://")):
+                return f"the unsupported proxy {proxy!r}"
+            problem = _pool_problem(manager, reference.proxy_manager_for(proxy), ProxyManager, "proxy manager")
+            if problem:
+                return f"{problem} for {proxy!r}"
+        retries = settings.get("max_retries")
+        if type(retries) is not Retry or _shadowed(retries, Retry) or not _plain(vars(retries)):
+            return f"the custom retry policy {type(retries).__name__} mounted at {prefix!r}"
+    return None
+
+
+def _stored_cookies(store):
+    """Every Cookie in a cookie store, type-first; None if anything in it is not the stock shape."""
+    if type(store) is not dict:
+        return None
+    found = []
+    for paths in dict.values(store):
+        if type(paths) is not dict:
+            return None
+        for names in dict.values(paths):
+            if type(names) is not dict:
+                return None
+            for cookie in dict.values(names):
+                if type(cookie) is not http.cookiejar.Cookie or _shadowed(cookie, http.cookiejar.Cookie) or not _plain(
+                        vars(cookie)):
+                    return None
+                found.append(cookie)
+    return found
+
+
+def _cookie_copy(cookie):
+    clone = copy.copy(cookie)
+    clone._rest = dict(cookie._rest)
+    return clone
+
+
+def _cookie_key(cookie):
+    return cookie.domain, cookie.path, cookie.name
+
+
+def _locked(jar, scope):
+    """Take the caller jar's own lock, waiting no longer than the wait's remaining budget."""
+    lock = vars(jar)["_cookies_lock"]
+    if not lock.acquire(timeout=scope.remaining()):
+        raise socket.timeout("the caller's cookie jar stayed locked past the wait deadline")
+    return lock
+
+
+def _snapshot_cookies(jar, scope):
+    """A private jar holding copies of the caller's cookies under the caller's cookie policy, taken under the
+    caller's lock (bounded), plus the original values so only the bounded call's own changes are written back."""
+    lock = _locked(jar, scope)
+    try:
+        cookies = _stored_cookies(vars(jar)["_cookies"])
+        if cookies is None:
+            return None, None
+        private = requests.cookies.RequestsCookieJar(policy=vars(jar)["_policy"])
+        before = {}
+        for cookie in cookies:
+            private.set_cookie(_cookie_copy(cookie))
+            before[_cookie_key(cookie)] = dict(vars(cookie), _rest=dict(cookie._rest))
+        return private, before
+    finally:
+        lock.release()
+
+
+def _write_back_cookies(jar, private, before, scope):
+    """Store what the bounded call's responses changed (set, updated or expired) in the caller's jar, under the
+    caller's lock taken within the remaining budget. A cookie the caller itself set, changed or removed after
+    the snapshot keeps the caller's version: the caller's later change wins over the bounded call's."""
+    after = {_cookie_key(cookie): cookie for cookie in _stored_cookies(vars(private)["_cookies"]) or []}
+    changed = [cookie for key, cookie in after.items()
+               if key not in before or dict(vars(cookie), _rest=dict(cookie._rest)) != before[key]]
+    removed = [key for key in before if key not in after]
+    if not changed and not removed:
+        return
+    lock = _locked(jar, scope)
+    try:
+        current = {_cookie_key(cookie): cookie for cookie in _stored_cookies(vars(jar)["_cookies"]) or []}
+
+        def untouched(key):  # the caller has not changed this cookie since the snapshot
+            now = current.get(key)
+            then = before.get(key)
+            if now is None or then is None:
+                return now is None and then is None
+            return dict(vars(now), _rest=dict(now._rest)) == then
+
+        for cookie in changed:
+            if untouched(_cookie_key(cookie)):
+                jar.set_cookie(_cookie_copy(cookie))
+        for key in removed:
+            if key in current and untouched(key):
+                jar.clear(*key)
+    finally:
+        lock.release()
+
+
+def _deadline_retries(retries, prefix):
+    if type(retries) is not Retry:
+        raise BeastStudioError(
+            f"wait(timeout=...) cannot bound the custom retry policy {type(retries).__name__} mounted at "
+            f"{prefix!r}; nothing was sent. Use wait() without a timeout, or urllib3's Retry.")
+    bounded = copy.copy(retries)
+    bounded.__class__ = _DeadlineRetry
+    return bounded
+
+
+class _DeadlineAdapter(requests.adapters.HTTPAdapter):
+    def init_poolmanager(self, *args, **kwargs):
+        super().init_poolmanager(*args, **kwargs)
+        self.poolmanager.pool_classes_by_scheme = _TRACKED_POOLS
+
+    def proxy_manager_for(self, proxy, **kwargs):
+        manager = super().proxy_manager_for(proxy, **kwargs)
+        if type(manager) is ProxyManager:  # SOCKS managers keep their own pools
+            manager.pool_classes_by_scheme = _TRACKED_POOLS
+        return manager
 
 
 class BeastStudioError(RuntimeError):
@@ -51,11 +597,29 @@ class BeastStudioClient:
     # ---- transport ----
 
     def _request(self, method: str, path: str, *, json_body: Any = None,
-                 headers: Optional[dict] = None, timeout: Optional[float] = None) -> Any:
+                 headers: Optional[dict] = None, timeout: Optional[float] = None,
+                 deadline: Optional[float] = None, http: Any = None) -> Any:
         url = f"{self.base_url}{path}"
         try:
+            if deadline is not None:
+                budget = max(0.001, min(self.timeout, deadline - time.monotonic()))
+                with (http or self.session).request(method, url, json=json_body, headers=headers,
+                                          timeout=(budget, budget), stream=True) as r:
+                    if self.raise_for_status:
+                        r.raise_for_status()
+                    body = bytearray()
+                    for chunk in r.iter_content(chunk_size=1):
+                        if time.monotonic() >= deadline:
+                            raise BeastStudioError(f"{method} {path} exceeded wait deadline")
+                        body.extend(chunk)
+                        if len(body) > 1_048_576:
+                            raise BeastStudioError("job status exceeds 1MiB")
+                    try:
+                        return json.loads(body)
+                    except ValueError as e:
+                        raise BeastStudioError(f"{method} {path} returned non-JSON") from e
             r = self.session.request(method, url, json=json_body, headers=headers,
-                                     timeout=timeout or self.timeout)
+                                     timeout=self.timeout if timeout is None else timeout)
         except requests.RequestException as e:
             raise BeastStudioError(f"{method} {path} failed: {e}") from e
         if self.raise_for_status:
@@ -197,47 +761,189 @@ class BeastStudioClient:
     def stream_events(self, run_id: str) -> Iterator[Dict[str, Any]]:
         """Yield each JSON status snapshot as the server emits it over SSE,
         stopping after a terminal phase (done/failed/cancelled) or when the
-        stream closes. No external SSE dependency — parses `data: ` lines."""
+        stream closes. Supports multiline data and CRLF; malformed events
+        raise BeastStudioError. Use wait(timeout=...) for a total deadline."""
+        return self._stream_events(run_id)
+
+    def _stream_events(self, run_id: str, timeout: Optional[float] = None,
+                       http: Any = None) -> Iterator[Dict[str, Any]]:
+        deadline = None if timeout is None else time.monotonic() + timeout
+        # The server emits only on phase change, so an unbounded stream must not
+        # time out while a long phase is quiet; a deadline bounds every read.
+        connect_timeout = self.timeout if timeout is None else min(self.timeout, timeout)
+        read_timeout = None if timeout is None else connect_timeout
         try:
-            resp_ctx = self.session.get(self.events_url(run_id), stream=True,
-                                        timeout=(self.timeout, None))
-        except requests.RequestException as e:
-            raise BeastStudioError(f"GET /api/events/{run_id} failed: {e}") from e
-        with resp_ctx as r:
-            for raw in r.iter_lines(decode_unicode=True):
-                if not raw or not raw.startswith("data:"):
-                    continue
-                payload = raw[len("data:"):].strip()
-                if not payload:
-                    continue
-                snap = json.loads(payload)
-                yield snap
-                if snap.get("phase") in TERMINAL_PHASES:
-                    return
+            with (http or self.session).get(self.events_url(run_id), stream=True,
+                                  timeout=(connect_timeout, read_timeout)) as r:
+                if r.status_code >= 400:
+                    raise BeastStudioError(f"GET /api/events/{run_id} returned HTTP {r.status_code}")
+                data_lines = []
+                event_size = 0
+                for raw in _bounded_lines(r, deadline):
+                    if deadline is not None and time.monotonic() >= deadline:
+                        raise BeastStudioError(f"GET /api/events/{run_id} timed out")
+                    if raw.startswith("data:"):
+                        value = raw[len("data:"):]
+                        value = value[1:] if value.startswith(" ") else value
+                        event_size += len(value)
+                        if event_size > 1_048_576:
+                            raise BeastStudioError("SSE event exceeds 1MiB")
+                        data_lines.append(value)
+                        continue
+                    if raw or not data_lines:
+                        continue
+                    payload = "\n".join(data_lines)
+                    data_lines.clear()
+                    event_size = 0
+                    if not payload.strip():
+                        continue
+                    snap = json.loads(payload)
+                    if not isinstance(snap, dict) or not isinstance(snap.get("phase"), str):
+                        raise BeastStudioError("SSE event is not a job status snapshot")
+                    yield snap
+                    if snap.get("phase") in TERMINAL_PHASES:
+                        return
+        except (requests.RequestException, ValueError) as e:
+            raise BeastStudioError(f"GET /api/events/{run_id} interrupted or malformed: {e}") from e
 
     def wait(self, run_id: str, poll_interval: float = 3,
              timeout: Optional[float] = None, use_sse: bool = True) -> Dict[str, Any]:
+        """Wait for terminal status. A finite timeout bounds the whole call,
+        including transport reads: the call runs in the caller's thread and, at
+        the deadline, every socket it is blocked on is shut down and any name
+        lookup child is killed, so nothing keeps running after wait() returns.
+        A finite timeout needs a requests.Session with standard adapters; any
+        other transport is refused before a request is sent.
+        """
+        if not math.isfinite(poll_interval) or poll_interval < 0 or (
+                timeout is not None and (not math.isfinite(timeout) or timeout < 0)):
+            raise BeastStudioError("wait intervals and timeout must be finite and nonnegative")
+        if timeout is None:
+            return self._wait_impl(run_id, poll_interval, None, use_sse)
+        if timeout == 0:
+            raise BeastStudioError(f"job {run_id} did not reach a terminal phase within 0s")
+        scope = _DeadlineScope(timeout)
+        try:
+            http, cookies_before = self._deadline_session(scope)  # refuses before anything is sent
+        except socket.timeout as error:
+            raise BeastStudioError(
+                f"job {run_id} did not reach a terminal phase within {timeout}s; nothing was sent: {error}") from error
+        left = scope.deadline - time.monotonic()  # the snapshot may have used part of the budget
+        if left <= 0:
+            http.close()
+            raise BeastStudioError(f"job {run_id} did not reach a terminal phase within {timeout}s; nothing was sent")
+        timer = threading.Timer(left, scope.expire)
+        timer.name = "beast-wait-deadline"
+        timer.daemon = True
+        outer = getattr(_ACTIVE_SCOPE, "scope", None)
+        _ACTIVE_SCOPE.scope = scope
+        timer.start()
+        try:
+            result = self._wait_impl(run_id, poll_interval, left, use_sse, http)
+            try:
+                _write_back_cookies(self.session.cookies, http.cookies, cookies_before, scope)
+            except socket.timeout as error:
+                raise BeastStudioError(
+                    f"job {run_id} reached a terminal phase but its response cookies could not be stored in the "
+                    f"caller's cookie jar within {timeout}s: {error}") from error
+            return result
+        except BeastStudioError as error:
+            if "response cookies could not be stored" in str(error):
+                raise
+            if scope.expired or time.monotonic() >= scope.deadline or str(error).startswith(
+                    f"job {run_id} did not reach a terminal phase within "):
+                raise BeastStudioError(
+                    f"job {run_id} did not reach a terminal phase within {timeout}s") from error
+            raise
+        finally:
+            timer.cancel()
+            timer.join()
+            _ACTIVE_SCOPE.scope = outer
+            http.close()
+            scope.close()
+
+    def _deadline_session(self, scope) -> Any:
+        """A private session and connection pool for one bounded wait, so one
+        wait's deadline can never cut a connection another call borrowed.
+
+        It carries the caller's session state (headers, cookies, auth, proxies,
+        TLS settings) and reproduces every standard requests HTTPAdapter mount at
+        its prefix with the same retry and pool settings. Anything the deadline
+        cannot reach (a custom adapter or Retry class, custom auth callable,
+        session hooks or cookie jar, a Session subclass or non-requests
+        session) is refused here, before any
+        callback runs or request is sent, rather than silently replaced or left
+        unbounded."""
+        base = self.session
+        if not isinstance(base, requests.Session):
+            raise BeastStudioError(
+                "wait(timeout=...) needs a plain requests.Session to enforce its deadline; got "
+                f"{type(base).__name__}; nothing was sent. Use wait() without a timeout for a custom session.")
+        problem = _caller_policy_problem(base)
+        if problem:
+            raise BeastStudioError(
+                f"wait(timeout=...) cannot carry {problem} through its deadline; nothing was sent and no caller "
+                "code was called. Use wait() without a timeout for a customized session.")
+        cookies, cookies_before = _snapshot_cookies(base.cookies, scope)
+        if cookies is None:
+            raise BeastStudioError(
+                "wait(timeout=...) cannot carry a custom cookie through its deadline; nothing was sent and no "
+                "caller code was called. Use wait() without a timeout for a customized session.")
+        private = requests.Session()
+        private.adapters.clear()
+        for prefix, adapter in collections.OrderedDict.items(base.adapters):
+            private.mount(prefix, _DeadlineAdapter(
+                pool_connections=adapter._pool_connections, pool_maxsize=adapter._pool_maxsize,
+                max_retries=_deadline_retries(adapter.max_retries, prefix), pool_block=adapter._pool_block))
+        for name in ("headers", "auth", "proxies", "hooks", "params",
+                     "verify", "cert", "trust_env", "max_redirects"):
+            setattr(private, name, getattr(base, name))
+        private.cookies = cookies  # a private copy, so caller jar contention cannot block the bounded call
+        return private, cookies_before
+
+    def _wait_impl(self, run_id: str, poll_interval: float,
+                   timeout: Optional[float], use_sse: bool, http: Any = None) -> Dict[str, Any]:
         """Block until the job reaches a terminal phase, return its final
         status. Prefers SSE (one connection, pushed updates); falls back to
         polling status() if use_sse=False or the stream errors."""
         t0 = time.monotonic()
+        if not math.isfinite(poll_interval) or poll_interval < 0 or (
+                timeout is not None and (not math.isfinite(timeout) or timeout < 0)):
+            raise BeastStudioError("wait intervals and timeout must be finite and nonnegative")
+
+        def remaining():
+            if timeout is None:
+                return None
+            value = timeout - (time.monotonic() - t0)
+            if value <= 0:
+                raise BeastStudioError(
+                    f"job {run_id} did not reach a terminal phase within {timeout}s")
+            return value
+
         if use_sse:
             try:
                 last = None
-                for snap in self.stream_events(run_id):
+                for snap in self._stream_events(run_id, timeout=remaining(), http=http):
                     last = snap
-                    if timeout is not None and time.monotonic() - t0 > timeout:
-                        break
+                    remaining()
                 if last is not None and last.get("phase") in TERMINAL_PHASES:
                     return last
             except BeastStudioError:
                 pass  # fall through to polling
         while True:
-            snap = self.status(run_id)
+            budget = remaining()
+            try:
+                snap = self.status(run_id) if budget is None else self._request(
+                    "GET", f"/api/run/{quote(run_id, safe='')}",
+                    timeout=min(self.timeout, budget), deadline=t0 + timeout, http=http)
+            except BeastStudioError:
+                remaining()  # a transport failure at the deadline is the deadline
+                raise
+            remaining()
+            if not isinstance(snap, dict):
+                raise BeastStudioError(f"job {run_id} returned invalid status: {snap}")
             if snap.get("phase") in TERMINAL_PHASES:
                 return snap
-            if timeout is not None and time.monotonic() - t0 > timeout:
-                raise BeastStudioError(
-                    f"job {run_id} did not reach a terminal phase within {timeout}s "
-                    f"(last phase: {snap.get('phase')})")
-            time.sleep(poll_interval)
+            if not isinstance(snap.get("phase"), str):
+                raise BeastStudioError(f"job {run_id} returned no phase: {snap}")
+            time.sleep(poll_interval if budget is None else min(poll_interval, remaining()))

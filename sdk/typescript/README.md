@@ -3,33 +3,26 @@
 Lightweight TypeScript/JavaScript client for Beast Studio. Zero runtime
 dependencies — uses the platform `fetch`.
 
-## Distribution model: source-only, no build step
+## Distribution
 
-This package ships `.ts` source and imports its own siblings with `.ts`
-extensions (`allowImportingTsExtensions` in `tsconfig.json`). It runs
-directly, unbuilt, on any TypeScript-native runtime:
+`npm pack` builds and ships JavaScript and TypeScript declarations in `dist/`.
+An installed consumer can import `beast-studio-client` without a TypeScript
+loader or source checkout. The private package stays local; packing it does
+not publish it.
 
-- **Node 22.6+** — `node --experimental-strip-types` (or unflagged on newer
-  Node; this repo was verified against Node 24) runs `.ts` files directly.
-- **Deno / Bun** — native `.ts` execution, no config needed.
-- **Older Node, or a browser bundle** — run your own `tsc`/esbuild/swc over
-  `src/` first; `allowImportingTsExtensions` requires `noEmit` (or
-  `emitDeclarationOnly`) in the *consuming* tsconfig, matching this
-  package's own — see `tsconfig.json` here as a starting point, and rewrite
-  the `.ts` import specifiers to `.js` if your bundler needs classic
-  NodeNext-style output.
+```bash
+npm ci
+npm run typecheck
+npm pack
+```
 
-This tradeoff was made deliberately for this environment (no network access
-to install a `typescript` devDependency at generation time) and to keep the
-package genuinely zero-dependency for the common case (a Node 22+ agent
-script). If your environment prefers a pre-built `dist/`, run `tsc` with
-`allowImportingTsExtensions: false` and `.js`-suffixed imports instead — the
-source is otherwise standard TS with no other exotic syntax.
+The source tests run with Node's TypeScript support. Consumers execute the
+compiled JavaScript exports.
 
 ## Usage
 
 ```typescript
-import { BeastStudioClient } from "./sdk/typescript/src/index.ts";
+import { BeastStudioClient } from "beast-studio-client";
 
 const c = new BeastStudioClient(); // defaults to http://127.0.0.1:8787
 
@@ -58,7 +51,7 @@ await c.animate({ file: "runs/x/final.png", motion: "slow push-in",
 ## Tests
 
 ```bash
-cd design-beast/sdk/typescript && node --test tests/
+cd design-beast/sdk/typescript && npm ci && npm test
 ```
 
 GPU-free, no live Beast Studio server. Sync/async-submit/status/cancel/retry
@@ -66,3 +59,16 @@ endpoints are tested against a fake `fetch`; `streamEvents()`/`wait()` are
 tested end-to-end against a real, tiny local `http` server (no external
 dependency) so the SSE frame-parsing is genuinely exercised, not just
 mocked.
+
+The distribution test packs the actual compiled SDK, installs it into an
+unrelated consumer, and imports it through `node_modules`. It runs with
+`npm test`, including CI. To exercise both installed SDKs against the actual
+Studio HTTP app without GPU or provider operations, use a disposable checkout
+with no existing Studio database:
+
+```bash
+python scripts/verify_sdk_distribution_codex_ld.py
+```
+
+That command builds fresh packages, installs the pinned Studio runtime,
+retains per-control receipts, and stops its owned loopback server.

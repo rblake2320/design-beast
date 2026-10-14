@@ -30,8 +30,11 @@ class FakeResponse:
         if self.status_code >= 400:
             raise RuntimeError(f"status {self.status_code}")
 
-    def iter_lines(self, decode_unicode=True):
+    def iter_lines(self, decode_unicode=True, chunk_size=1):
         return iter(self._lines)
+
+    def iter_content(self, chunk_size=1):
+        return (bytes([byte]) for byte in ("\n".join(self._lines) + "\n").encode())
 
     def __enter__(self):
         return self
@@ -191,6 +194,7 @@ def test_stream_events_parses_and_stops_at_terminal(client):
         'data: {"phase": "generating"}',
         "",
         'data: {"phase": "done", "final": "final.png"}',
+        "",
         'data: {"phase": "done", "final": "final.png"}',  # must not be reached
     ]
     client.session.get.return_value = FakeResponse(lines=lines)
@@ -200,7 +204,7 @@ def test_stream_events_parses_and_stops_at_terminal(client):
 
 
 def test_wait_uses_sse_and_returns_terminal_snapshot(client):
-    lines = ['data: {"phase": "generating"}', 'data: {"phase": "failed", "error": "boom"}']
+    lines = ['data: {"phase": "generating"}', "", 'data: {"phase": "failed", "error": "boom"}', ""]
     client.session.get.return_value = FakeResponse(lines=lines)
     out = client.wait("run1", use_sse=True)
     assert out == {"phase": "failed", "error": "boom"}

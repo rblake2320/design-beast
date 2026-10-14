@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "status": "worked",
+  "tested_code_commit": "0ef95bc929ab2a2941914f585df8534bb0ee296b",
+  "builder_client_commit": "7062eceeb6da6e56445623f012c359e34b95bd25",
+  "scope": "Windows installed Python wheel and npm tarball against disposable real localhost Studio and owned HTTP/TLS peers; no inference or GPU workload",
+  "source_tests": {
+    "passed": 428,
+    "deselected_live_gpu": 7,
+    "skipped": 0
+  },
+  "installed": {
+    "studio_checks": 30,
+    "python_deadline_inventory_passed": 38,
+    "node_deadline_inventory_passed": 7,
+    "python_source_identity": true,
+    "owned_server_exit": 0,
+    "wheel_sha256": "92c177dfd763ddbd18c44391ff7480f03a95754a19ee3cb1b67cbf056eb76d5d",
+    "tarball_sha256": "d1940ed583f526da7582a1f13ebc164cb21575253a1990fc23ad8399d35c480b"
+  },
+  "minimum_dependencies": {
+    "requests": "2.28.0",
+    "urllib3": "1.26.20",
+    "deadline_inventory_passed": 38,
+    "installed_client_sha256": "c2a63d98386981ed54ee6f1ba65088394350081b90e2cacf4efe4fa753de1673"
+  },
+  "independent_root_receiving": {
+    "retry_sse_polling_and_positive_delays": 8,
+    "transport_controls": 15,
+    "concurrent_wait_replays": 10,
+    "custom_auth_hook_refusals": 4,
+    "session_policy_preserved": true
+  },
+  "ci": {
+    "url": "https://github.com/rblake2320/design-beast/actions/runs/38484199967",
+    "head_sha": "0ef95bc929ab2a2941914f585df8534bb0ee296b",
+    "status": "success",
+    "jobs": {
+      "typescript-sdk": "success",
+      "python": "success"
+    }
+  },
+  "raw_evidence_sha256": {
+    "source_junit": "19d72234fc0a41ead0e981e34776c15ae1d75fb73d0933f51eecafe6d088107f",
+    "installed_receipt": "07464baac19a493b1f092907223a009fb94c67cc5813c0c78d6e1c491c480cf5",
+    "minimum_dependencies_junit": "c61bc5708c880edac34801acf26b791bc76aab1469faa141cff1bf4c00d32a4a",
+    "receiving_retry_matrix": "4e129e5977ec5274e57f6e781816ad92112bfb7bf9c5137e61357c2bcd3e391f",
+    "receiving_transport_matrix": "72a869fe853db73f239cb1ba825ed7c2888a0c68be81aa11eb32db947d661eb5",
+    "receiving_callbacks": "2be4df401c09f4ba70d926ea11823663db687b85a76c1669a3ceb69211b4c297",
+    "receiving_session_policy": "3a0e165c97c63ac0f85125940c21d9f68d1ea4444d43f42a0994738182d407ed"
+  },
+  "test_execution": "actual owned local processes and HTTP/TLS; resolver/callback stalls are explicit fault injections; no mocked Studio or provider calls",
+  "review": "root acceptance complete; independent final exact-pin review required before merge; admission and 24h soak tracked separately"
+}

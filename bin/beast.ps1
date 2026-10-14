@@ -2,29 +2,36 @@
 param([Parameter(Position = 0)][string]$Cmd = 'help', [Parameter(ValueFromRemainingArguments)]$Rest)
 
 $Repo = Split-Path $PSScriptRoot -Parent
+$ErrorActionPreference = 'Stop'
+
+function Invoke-BeastPython {
+    param([string]$Script, [string[]]$CommandArguments = @())
+    & python (Join-Path $Repo $Script) @CommandArguments @Rest
+    exit $LASTEXITCODE
+}
 
 switch ($Cmd) {
-    'doctor'  { python (Join-Path $Repo 'scripts\doctor.py') @Rest }
+    'doctor'  { Invoke-BeastPython 'scripts\doctor.py' }
     'sync'    { & (Join-Path $Repo 'scripts\sync_repos.ps1') @Rest }
-    'judge'   { python (Join-Path $Repo 'scripts\judge_image.py') @Rest }
-    'replay'  { python (Join-Path $Repo 'scripts\replay_diff.py') @Rest }
-    'ledger'  { python (Join-Path $Repo 'scripts\ledger_verify.py') @Rest }
-    'validate' { python (Join-Path $Repo 'scripts\beast_core.py') validate @Rest }
-    'status' { python (Join-Path $Repo 'scripts\beast_core.py') status @Rest }
-    'resource-check' { python (Join-Path $Repo 'scripts\beast_core.py') resource-check @Rest }
-    'checkpoint' { python (Join-Path $Repo 'scripts\write_recovery_checkpoint.py') @Rest }
-    'recover' { python (Join-Path $Repo 'scripts\verify_recovery_checkpoint.py') @Rest }
-    'watch-validate' { python (Join-Path $Repo 'scripts\validate_watch_procedure.py') @Rest }
-    'watch'   { python (Join-Path $Repo 'scripts\watch_video.py') @Rest }
-    'watch-index' { python (Join-Path $Repo 'scripts\watch_index.py') @Rest }
-    'watch-seek' { python (Join-Path $Repo 'scripts\watch_seek.py') @Rest }
+    'judge'   { Invoke-BeastPython 'scripts\judge_image.py' }
+    'replay'  { Invoke-BeastPython 'scripts\replay_diff.py' }
+    'ledger'  { Invoke-BeastPython 'scripts\ledger_verify.py' }
+    'validate' { Invoke-BeastPython 'scripts\beast_core.py' -CommandArguments @('validate') }
+    'status' { Invoke-BeastPython 'scripts\beast_core.py' -CommandArguments @('status') }
+    'resource-check' { Invoke-BeastPython 'scripts\beast_core.py' -CommandArguments @('resource-check') }
+    'checkpoint' { Invoke-BeastPython 'scripts\write_recovery_checkpoint.py' }
+    'recover' { Invoke-BeastPython 'scripts\verify_recovery_checkpoint.py' }
+    'watch-validate' { Invoke-BeastPython 'scripts\validate_watch_procedure.py' }
+    'watch'   { Invoke-BeastPython 'scripts\watch_video.py' }
+    'watch-index' { Invoke-BeastPython 'scripts\watch_index.py' }
+    'watch-seek' { Invoke-BeastPython 'scripts\watch_seek.py' }
     'recipes' {
         Get-ChildItem (Join-Path $Repo 'design-system\recipes') -Filter *.md | ForEach-Object {
             $head = (Get-Content $_.FullName -TotalCount 3) -join ' '
             "{0,-28} {1}" -f $_.BaseName, ($head -replace '#\s*Recipe\s*—\s*', '')
         }
     }
-    default {
+    'help' {
         @'
 beast doctor    verify the whole stack (Blender bridge, UE, Higgsfield, ffmpeg, disk)
 beast sync      clone/update all linked repos (repos.yml)
@@ -42,5 +49,9 @@ beast watch-index BUNDLE ["query"] -> build/search semantic visual memory
 beast watch-seek BUNDLE --at TIME [--level 1|2|3] -> rewind/forward for missing evidence
 beast recipes   list prompt recipe cards
 '@
+    }
+    default {
+        [Console]::Error.WriteLine("unknown beast command: $Cmd; run beast help")
+        exit 2
     }
 }

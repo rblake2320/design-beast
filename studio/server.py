@@ -6,6 +6,7 @@ Create: brief → expand → N candidates → judge → graded winner.
 Plus: upload/drop any image → judge (free) / refine (ref edit) / animate (i2v).
 """
 import base64
+import binascii
 import http.client
 import ipaddress
 import io
@@ -21,6 +22,7 @@ import threading
 import time
 import urllib.parse
 import urllib.request
+import uuid
 from contextlib import contextmanager
 from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait as futures_wait
 from pathlib import Path
@@ -1166,20 +1168,29 @@ class UploadReq(BaseModel):
 
 @app.post("/api/upload")
 def upload(req: UploadReq):
-    raw = base64.b64decode(req.data.split(",")[-1])
+    try:
+        # validate=True rejects any character outside the base64 alphabet
+        # instead of silently discarding it.
+        raw = base64.b64decode(req.data.split(",")[-1], validate=True)
+    except (binascii.Error, ValueError):
+        return JSONResponse({"error": "data is not valid base64",
+                             "code": E_VALIDATION}, 422)
     if len(raw) > 30 * 1024 * 1024:
         return JSONResponse({"error": "upload exceeds 30MB limit",
                              "code": E_VALIDATION}, 413)
-    safe = re.sub(r"[^\w.\-]", "_", req.name) or "upload.png"
-    fname = f"{time.strftime('%H%M%S')}_{safe}"
-    (UPLOADS / fname).write_bytes(raw)
+    # Verify the image in memory first so a rejected upload never touches disk.
     try:
         from PIL import Image
-        Image.open(UPLOADS / fname).verify()
+        Image.open(io.BytesIO(raw)).verify()
     except Exception:  # noqa: BLE001
-        (UPLOADS / fname).unlink(missing_ok=True)
         return JSONResponse({"error": "not a decodable image",
                              "code": E_VALIDATION}, 422)
+    safe = re.sub(r"[^\w.\-]", "_", req.name) or "upload.png"
+    # Random prefix so two uploads with the same name never share a path; the
+    # exclusive create refuses to overwrite even if one ever collides.
+    fname = f"{uuid.uuid4().hex}_{safe}"
+    with open(UPLOADS / fname, "xb") as out:
+        out.write(raw)
     return {"file": fname}
 
 
