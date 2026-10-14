@@ -34,13 +34,41 @@ c.animate(file="runs/x/final.png", motion="slow push-in",
           allow_cloud_fallback=True)  # only if the human asked for it
 ```
 
+## Bounded waits
+
+Pass a timeout when the caller needs a total wait budget:
+
+```python
+from beast_studio_client import BeastStudioError
+
+try:
+    final = c.wait(job["id"], timeout=120)
+except BeastStudioError as error:
+    print(error)  # timeout, transport failure, or unsupported caller policy
+```
+
+The budget covers SSE and polling, DNS, connections, TLS and HTTP retry delays.
+Each bounded wait uses its own connection pools so its cleanup does not close
+another caller's connections. A wait timeout stops waiting for the job; use
+`c.cancel(job["id"])` to request cancellation of the server job.
+
+A bounded wait supports a stock `requests.Session` and standard settings. It
+refuses custom session or adapter methods, authentication callbacks, response
+hooks and customized pool or proxy behavior that it cannot preserve within the
+deadline. That refusal happens before a request is sent. `wait()` without a
+timeout retains the supplied session's behavior and has no total wait deadline.
+
 ## Tests
 
 ```bash
 cd design-beast && python -m pytest sdk/python/tests -q
 ```
 
-GPU-free, no live server: `test_client.py` mocks `requests.Session`;
+These tests require no GPU or external service. `test_client.py` mocks `requests.Session`;
 `test_openapi_contract.py` regenerates the OpenAPI schema against a
 throwaway DB and checks it against the checked-in `openapi.json` and against
-`BeastStudioClient`'s method coverage.
+`BeastStudioClient`'s method coverage. `test_deadline_claude_ld.py` starts owned
+loopback HTTP/TLS servers and exercises real transport deadlines and cleanup.
+For fresh wheel and npm tarball acceptance against a disposable Studio server,
+run `python scripts/verify_sdk_distribution_codex_ld.py` from the repository
+root in a fresh checkout with no Studio database.
