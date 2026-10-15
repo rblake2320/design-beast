@@ -1,5 +1,42 @@
 # Opportunity Ledger
 
+## OPP-20261008-01 — Studio static-asset handoff through Blender and Unreal 5.8
+
+- Status: measured
+- Trigger: the owner added Meshy and approved connecting the available 3D tools.
+- New capability: Studio can ingest a self-contained static GLB, retrieve an existing
+  Meshy task, prepare editable Blender/GLB/FBX outputs, inspect them in a local 3D
+  viewer, and import a selection into a dedicated Unreal 5.8 workspace.
+- Potential beneficiaries: creators preparing static game props and reusable asset libraries.
+- Current-project value: replaces manual file handoffs with tracked jobs and receiving-side receipts.
+- Outside-project value: the same bounded static-asset handoff can be reused by local content tools.
+- Prior art and primary sources: Meshy Image-to-3D and Text-to-3D APIs,
+  https://docs.meshy.ai/en/api/image-to-3d and https://docs.meshy.ai/en/api/text-to-3d;
+  Unreal glTF/Interchange documentation,
+  https://dev.epicgames.com/documentation/unreal-engine/the-gl-transmission-format-gltf-in-unreal-engine;
+  Microsoft process-job semantics,
+  https://learn.microsoft.com/en-us/windows/win32/procthread/job-objects.
+  This is an integration, not a novelty claim.
+- Falsifiable claim: original static controls preserve export bounds and material
+  availability, load in Studio, and produce fresh job-bound UE 5.8 asset receipts
+  that survive a separate engine process; the imported textured control renders visibly.
+- Smallest real experiment: two original static controls, Blender 5.1.2, UE 5.8.1,
+  actual browser upload/inspection/import, and a GPU-admitted offscreen viewport capture.
+- Measures and acceptance threshold: exact source/export hashes where no optimization
+  is needed; reopened Blender bounds differ by at most 0.0001 m; positive native mesh
+  bounds/material slots; matching fresh-process asset metadata; complete visible prop
+  and retained blue/gold texture regions; no editor errors in the accepted frame.
+- Risks, constraints, and rights/privacy implications: static assets only; owner confirms
+  reuse rights; cloud generation needs explicit image-upload consent and a 120-credit
+  four-candidate batch authorization. Unknown submissions are retained and never retried.
+- Evidence: `proofs/assets-20261008/`. Local/control, receiving, reload, visual and hostile-input
+  checks executed. Meshy authentication and both task lists executed, but both lists were
+  empty; actual hosted generation/retrieval awaits a budget-approved task or existing asset.
+- Decision: ship for independent review with generation disabled by default; no credits
+  spent in this implementation run. Preserve the separate maintenance PR #47; the schema
+  isolation fix and httpx test dependency overlap because this workflow requires them.
+- Revisit trigger: approval of the bounded live Meshy batch or availability of a finished Meshy task.
+
 Design Beast treats unexpected capability as a first-class output of engineering and
 research. A discovery must not be discarded merely because it falls outside the
 current task, and it must not be promoted merely because it sounds novel.

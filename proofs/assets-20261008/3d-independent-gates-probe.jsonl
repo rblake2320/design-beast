@@ -1,0 +1,2 @@
+{"scenario": "validJPEGpaid-input-metadata", "route_status": 200, "declared_media": "data:image/png;base64", "encoded_image_format": "JPEG", "real_provider_calls": 0}
+{"scenario": "foreign-destination-receipt", "accepted": true, "destination": "/Game/OtherProject/OldAsset", "real_engine_calls": 0}

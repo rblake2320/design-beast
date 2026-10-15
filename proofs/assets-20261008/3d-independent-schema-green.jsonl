@@ -1,0 +1,1 @@
+{"scenario": "schema-generation-during-active-asset-job", "before_phase": "running", "after_phase": "running", "before_leases": 1, "after_leases": 1, "live_database_touched": false}

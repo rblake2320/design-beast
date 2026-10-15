@@ -18,6 +18,11 @@ import generate_openapi  # noqa: E402
 # call, mapped to the Python SDK method that covers it. "/" (index.html) is
 # intentionally excluded — it serves the web UI, not an API response.
 EXPECTED_COVERAGE = {
+    ("GET", "/api/assets/tools"): "asset_tools",
+    ("GET", "/api/assets/meshy-tasks"): "meshy_tasks",
+    ("POST", "/api/assets/upload"): "upload_asset",
+    ("POST", "/api/assets/prepare"): "prepare_asset",
+    ("POST", "/api/assets/unreal"): "import_asset_unreal",
     ("GET", "/api/recipes"): "recipes",
     ("POST", "/api/upload"): "upload",
     ("POST", "/api/expand"): "expand",

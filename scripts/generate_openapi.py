@@ -12,6 +12,7 @@ schema in this script, not on the FastAPI app object itself.
 """
 import argparse
 import json
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -27,30 +28,23 @@ CONTRACT_VERSION = "1.0.0"
 
 
 def generate() -> dict:
-    sys.path.insert(0, str(STUDIO))
-    import jobs as jobs_mod
-    original_db = jobs_mod.DB_PATH
     with tempfile.TemporaryDirectory(prefix="beast-openapi-gen-") as tmp:
-        # jobs uses a thread-local connection, so changing DB_PATH alone is
-        # insufficient when generate() is called inside a larger pytest run.
-        # Close both sides of the swap and restore the caller's DB afterward.
-        if hasattr(jobs_mod._LOCAL, "conn"):
-            jobs_mod._LOCAL.conn.close()
-            del jobs_mod._LOCAL.conn
-        jobs_mod.DB_PATH = Path(tmp) / "jobs.db"
-        try:
-            import server  # noqa: E402 — first import initializes the temp DB
-            jobs_mod.init()  # required when server was already imported
-            schema = server.app.openapi()
-        finally:
-            if hasattr(jobs_mod._LOCAL, "conn"):
-                jobs_mod._LOCAL.conn.close()
-                del jobs_mod._LOCAL.conn
-            jobs_mod.DB_PATH = original_db
-            # restore must leave the caller's DB USABLE, not just pointed-at:
-            # on a fresh clone the real jobs.db has no schema until init runs
-            # (idempotent CREATE IF NOT EXISTS), so run it here.
-            jobs_mod.init()
+        # Import-time recovery belongs to a disposable PROCESS as well as a
+        # disposable DB. Swapping module globals in this process races callers
+        # on other threads; restoring via init() also fails active jobs.
+        output = Path(tmp) / "schema.json"
+        code = (
+            "import json,sys; from pathlib import Path; "
+            "sys.path.insert(0,sys.argv[1]); import jobs; "
+            "jobs.DB_PATH=Path(sys.argv[2]); import server; "
+            "Path(sys.argv[3]).write_text(json.dumps(server.app.openapi()),encoding='utf-8')"
+        )
+        subprocess.run(
+            [sys.executable, "-c", code, str(STUDIO),
+             str(Path(tmp) / "jobs.db"), str(output)],
+            check=True, capture_output=True, text=True, timeout=60,
+        )
+        schema = json.loads(output.read_text(encoding="utf-8"))
 
     schema["info"]["version"] = CONTRACT_VERSION
     schema["info"]["title"] = "Beast Studio API"

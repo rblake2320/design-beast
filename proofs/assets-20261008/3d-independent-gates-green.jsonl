@@ -1,0 +1,2 @@
+{"scenario": "validJPEGpaid-input-metadata", "route_status": 200, "declared_media": "data:image/png;base64", "encoded_image_format": "PNG", "real_provider_calls": 0}
+{"scenario": "foreign-destination-receipt", "accepted": false, "error": "Unreal receipt has a different asset destination", "real_engine_calls": 0}

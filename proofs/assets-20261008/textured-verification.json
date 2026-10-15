@@ -1,0 +1,108 @@
+{
+  "source": "textured-control.glb",
+  "credits_spent": 0,
+  "checks": [
+    {
+      "scenario": "real Blender preparation",
+      "outcome": "Worked",
+      "receipt": {
+        "source": {
+          "bytes": 2648,
+          "sha256": "9c2a54fb1afe54ecfba7bf3479553ddcbb0877f908591ae2934a686e51b6e8df",
+          "meshes": 1,
+          "triangles": 12,
+          "units": "meters"
+        },
+        "export": {
+          "bytes": 2648,
+          "sha256": "9c2a54fb1afe54ecfba7bf3479553ddcbb0877f908591ae2934a686e51b6e8df",
+          "meshes": 1,
+          "triangles": 12,
+          "units": "meters"
+        },
+        "blender": {
+          "blender_version": "5.1.2",
+          "source_sha256": "9c2a54fb1afe54ecfba7bf3479553ddcbb0877f908591ae2934a686e51b6e8df",
+          "triangles_before": 12,
+          "triangles": 12,
+          "mesh_objects": 1,
+          "material_slots": 1,
+          "bounds_m": {
+            "min": [
+              -0.419615238904953,
+              -0.6598076224327087,
+              -0.25
+            ],
+            "max": [
+              0.9196152687072754,
+              0.4598076343536377,
+              1.25
+            ]
+          },
+          "source_bounds_m": {
+            "min": [
+              -0.419615238904953,
+              -0.6598076224327087,
+              -0.25
+            ],
+            "max": [
+              0.9196152687072754,
+              0.4598076343536377,
+              1.25
+            ]
+          },
+          "units": "meters",
+          "unit_scale": 1.0
+        }
+      }
+    },
+    {
+      "scenario": "GLB reopened in fresh Blender",
+      "outcome": "Worked",
+      "max_bounds_difference_m": 0.0
+    },
+    {
+      "scenario": "Unreal 5.8 import and asset readback",
+      "outcome": "Worked",
+      "receipt": {
+        "engine_version": "5.8.1-56057345+++UE5+Release-5.8",
+        "project": "C:/Users/techai/Documents/Codex/2026-10-04/https-github-com-rblake2320-design-beast-3/work/design-beast-3d/.beast/unreal-assets/BeastAssets.uproject",
+        "run_id": "asset-proof-textured-001",
+        "source_sha256": "9c2a54fb1afe54ecfba7bf3479553ddcbb0877f908591ae2934a686e51b6e8df",
+        "destination": "/Game/BeastAssets/Run_asset-proof-textured-001",
+        "meshes": [
+          {
+            "asset": "/Game/BeastAssets/Run_asset-proof-textured-001/model/StaticMeshes/model.model",
+            "bounds_extent_cm": [
+              66.96152687072754,
+              55.98077201843262,
+              75.0
+            ],
+            "material_slots": 1,
+            "lods": 1
+          }
+        ],
+        "reloaded": true,
+        "verification_process": false
+      }
+    },
+    {
+      "scenario": "saved meshes reloaded in separate Unreal process",
+      "outcome": "Worked",
+      "meshes": [
+        {
+          "asset": "/Game/BeastAssets/Run_asset-proof-textured-001/model/StaticMeshes/model.model",
+          "bounds_extent_cm": [
+            66.96152687072754,
+            55.98077201843262,
+            75.0
+          ],
+          "material_slots": 1,
+          "lods": 1
+        }
+      ]
+    }
+  ],
+  "outcome": "Worked",
+  "elapsed_seconds": 26.047
+}

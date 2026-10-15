@@ -1,0 +1,12 @@
+{
+  "prepare_job": "20261008_141117_faa5",
+  "unreal_job": "20261008_141442_a1ed",
+  "actual_browser": true,
+  "reload_viewer": true,
+  "reload_download_links": 5,
+  "keyboard_orbit": "Worked: focusable viewer responded to ArrowRight and announced View from stage front",
+  "console_errors": 0,
+  "mobile_viewport": 390,
+  "document_width": 375,
+  "minimum_visible_button_height": 45.1875
+}
