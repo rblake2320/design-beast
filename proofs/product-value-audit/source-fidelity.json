@@ -1,0 +1,11 @@
+{
+  "sample_source_seconds": 9.5,
+  "sample_output_seconds": 0.5,
+  "mean_absolute_error_rgb": [
+    0.289111328125,
+    0.272333984375,
+    0.29040364583333333
+  ],
+  "samples": 1,
+  "caption_band_excluded": true
+}
