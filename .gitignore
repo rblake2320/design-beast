@@ -35,3 +35,6 @@ beast.config.json
 watched/
 studio/.beast_model_hashes.json
 node_modules/
+
+# perf monitor run logs (scripts/perf_monitor.py) - local measurements, not product source
+session/perf/

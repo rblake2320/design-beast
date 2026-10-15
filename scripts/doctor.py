@@ -18,9 +18,11 @@ REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "studio"))
 import config  # noqa: E402
 
-FFMPEG_HINT = (Path.home() / "AppData/Local/Microsoft/WinGet/Packages"
-               / "Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe"
-               / "ffmpeg-8.1.2-full_build/bin")
+_FFMPEG_PKG = (Path.home() / "AppData/Local/Microsoft/WinGet/Packages"
+               / "Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe")
+# winget renames the build dir on every ffmpeg release (8.1.2 -> 9.0 ...): glob, don't pin.
+FFMPEG_HINT = next(iter(sorted(_FFMPEG_PKG.glob("ffmpeg-*-full_build/bin"), reverse=True)),
+                   _FFMPEG_PKG / "ffmpeg-missing/bin")
 
 results: list[tuple[str, str, str]] = []  # (level, name, note)
 
@@ -57,6 +59,29 @@ check("yt-dlp", shutil.which("yt-dlp") is not None,
 check("node >= 22", shutil.which("node") is not None,
       "needed by HyperFrames", "winget install OpenJS.NodeJS.LTS")
 check("git", shutil.which("git") is not None, "", "winget install Git.Git")
+
+# ---- perf monitor lane (scripts/perf_monitor.py, docs/runbooks/PERF-MONITOR.md) ----
+import perf_monitor  # noqa: E402
+import presentmon_api  # noqa: E402
+check("nvidia-smi", shutil.which("nvidia-smi") is not None,
+      "GPU temp/fan/clock/power lane", "install the NVIDIA driver")
+try:
+    with presentmon_api.Session() as _pms:
+        check("PresentMon service API", True,
+              f"api {_pms.version()}, gpu device {_pms.gpu_device_id()} - fps lane needs no elevation")
+        _svc_ok = True
+except (OSError, presentmon_api.PresentMonError) as _exc:
+    _svc_ok = False
+    check("PresentMon service API", None, str(_exc)[:80],
+          "winget install Intel.PresentMon; sc start PresentMonSharedService")
+if not _svc_ok:
+    _pm = perf_monitor.find_presentmon()
+    check("PresentMon console", _pm is not None or None, str(_pm or "fps lane off"),
+          "winget install Intel.PresentMon")
+    if _pm is not None:
+        _diag = perf_monitor.capture_privilege_diagnostic(_pm)
+        check("PresentMon console privilege", True if _diag["ok"] else None,
+              _diag["detail"], _diag.get("fix", ""))
 
 # ---- ComfyUI lane ----
 comfy_dir = Path(config.get("comfy_dir"))
