@@ -590,3 +590,137 @@ another capability. “Later” is not a trigger.
   passes.
 - Revisit trigger: post-upgrade verification result, or the next time we design
   a direction-selection step (cite worlds as prior art).
+
+### OPP-20260904-01 — Unprivileged live FPS + GPU telemetry via the PresentMon service API
+
+- Status: integrated (`scripts/perf_monitor.py`, `studio/presentmon_api.py`,
+  `docs/runbooks/PERF-MONITOR.md`; branch `agent/perf-monitor`, pending review)
+- Trigger: `PresentMon-2.5.1-x64.exe` refused `failed to start trace session:
+  access denied` from a non-elevated shell (user not in Performance Log Users,
+  2026-09-04). Inspecting the winget install found `SDK/PresentMonAPI.h` +
+  `PresentMonAPI2Loader.dll` and `PresentMonSharedService` already RUNNING.
+- New capability: any Beast agent can read per-frame events (CPU frame time,
+  displayed time, dropped flag) and windowed stats (presented/displayed FPS,
+  display latency, GPU busy) for any process, plus GPU temperature / power /
+  clocks / utilisation / VRAM from the service, from plain Python with **no
+  elevation and no group membership** — the console app's privilege wall does
+  not apply. Fan speed still comes from `nvidia-smi` (not served for NVIDIA).
+- Potential beneficiaries: rule-5 game look passes (FPS next to the screenshot
+  judge), UE 5.8 proofs, Studio resource guard (thermal/throttle admission),
+  any benchmark that must run unattended under a normal user account.
+- Current-project value: closes the "FPS + temp + fan" gap for design-beast;
+  gives the judge loop a quantitative performance receipt per session.
+- Outside-project value: the ctypes client is a self-contained, header-driven
+  binding to PresentMonAPI2 usable by any Windows tool that needs frame timing
+  without admin.
+- Prior art and primary sources: Intel PresentMon 2.x README + SDK header
+  (github.com/GameTechDev/PresentMon, tag v2.5.1); the official C++
+  `PresentMonAPIWrapper`; CapFrameX-style "1 % low". No novelty claim — this is
+  a local Python binding to a documented API.
+- Falsifiable claim: from a non-elevated Python, `pmOpenSession` succeeds and
+  a frame query on `dwm.exe` yields ≥ 20 frame events within 6 s with a
+  plausible FPS.
+- Smallest real experiment: `pytest tests/test_perf_monitor.py -k service`.
+- Measures and acceptance threshold: measured 2026-09-04 — dwm.exe 164–165
+  presented fps (165 Hz panel), 1 % low 104–144, p99 8.0 ms, display latency
+  11.1–11.3 ms; GPU 53 °C / 73.8 W / 1663 MHz via service vs nvidia-smi 53 °C /
+  72–74 W in the same second. Threshold: ≥ 20 frames in 6 s, 10 < fps < 1000.
+- Risks, constraints, and rights/privacy implications: the service echoes the
+  last real process's windowed averages for pids that never presented
+  (observed: idle chrome pids reported the terminal's 19.85 fps) — the lane
+  gates stats on frame events. First window after `track()` is empty (warm-up).
+  Metric set is vendor-dependent (NVIDIA rejects fan/voltage/limited/CPU
+  telemetry); registration drops rejected elements and records them. Depends
+  on the winget package layout under `C:\Program Files\Intel\PresentMon`.
+- Evidence: `tests/test_perf_monitor.py` (live service tests), runbook
+  evidence section, this session's probe transcripts.
+- Decision: integrated as the preferred fps backend; console app kept as the
+  fallback for nodes without the service.
+- Revisit trigger: PresentMon major bump (enums are parsed from the header, but
+  API export names could change), or the first Intel/AMD-adapter node where
+  the rejected-metric set differs.
+
+### OPP-20260904-02 — Screen "semantic codec" from OS-native change streams (four-stream probe)
+
+- Status: experiment (branch `agent/event-probe`, stacked on `agent/perf-monitor`)
+- Trigger: owner's two-model no-NLP SelfConnect test (~16 % faster) plus the
+  "flipbook" question, reviewed by three frontier models (Perplexity synthesis,
+  2026-09-04) into a "semantic video codec" blueprint whose Software Event
+  Camera section rebuilds frame diffing. Session finding: Windows already emits
+  the primitives — WGC/DXGI dirty + move rectangles, UI Automation events with
+  process identity, and PresentMon frame timestamps (OPP-20260904-01).
+- New capability (claimed, unproven): reconstruct a scripted six-step desktop
+  task (open folder → menu → destructive click → confirmation dialog → type →
+  cancel) from native event streams + a bounded raw replay ring, with zero VLM
+  calls, and measure native payload bytes vs raw frames ("semantic FPS").
+- Potential beneficiaries: Watch lane (procedure learning with proof boundary),
+  rule-5 game look passes, SelfConnect mesh observation, Vigil (ledger consumer),
+  Visional Trainer (`WindowsStateSource` becomes event-driven instead of polled).
+- Current-project value: replaces "60 screenshots/s through a VLM" with an
+  evidence-linked state stream; VLM/OCR become exception handlers.
+- Outside-project value: the governed fusion contract (same normalized events
+  from OS-native UI streams or compressed-video motion evidence) is the piece no
+  existing repo has.
+- Prior art and primary sources: RDP/VNC dirty-region transmission, Windows
+  Graphics Capture `DirtyRegions` (Win11 24H2+), UI Automation event model,
+  PresentMon 2.x API, Interlat (ACL 2026), DroidSpeak (NSDI '26), compressed-
+  domain tracking on codec motion vectors, Prophesee event cameras. NO novelty
+  claim on any stream; candidate claim = integrated governed state codec with
+  evidence classes and active replay. Prior-art sweep NOT yet done.
+- Falsifiable claim: all six scripted actions recover from UIA + dirty rects +
+  present timestamps alone, each with a replay frame handle, ordered correctly,
+  with native payload ≤ 5 % of retained raw-frame bytes and ≤ 250 ms
+  source→emit latency; any gap is recorded as a coverage gap, not inferred.
+- Smallest real experiment: `python watch/event_probe.py --duration 90` while a
+  human performs the six steps; report in Owner's Inbox.
+- Measures and acceptance threshold: see falsifiable claim; plus per-stream
+  clock-domain offsets recorded, not assumed.
+- Risks, constraints, and rights/privacy implications: observe-only (no
+  clicks/typing/invokes); bounded ring retention; raw frames of the owner's
+  desktop are sensitive → runs stay local and gitignored; `mss` cannot reach
+  60 fps at 5120×2160 in Python (measure, report actual); WGC `dirty_regions`
+  needs the `winrt-Windows.Foundation.Collections` binding (NOT installed —
+  owner decision pending; fallback = labelled tile-diff). UIA callbacks arrive
+  on foreign threads (MTA). Vigil's ledger cryptography is NOT duplicated —
+  probe writes a Vigil-shaped local manifest.
+- Evidence: this ledger row; session probes 2026-09-04 (UIA 178 events/7 s incl.
+  WindowOpened/Closed/Focus/Name-changed with pid; WGC 31 fps at 5K; PresentMon
+  API 3.3.0).
+- Decision: build the probe first (design-beast owns sampling/replay/timing);
+  Vigil remains the canonical tamper-evident ledger; keep IP framing private.
+- Revisit trigger: probe report pass/fail; first game/video-lane run
+  (`export_mvs`) to test the shared normalized-event contract.
+
+### OPP-20260904-03 — Full-watching capture: real footage at 60 fps, semantic-gated, hardware-encoded
+
+- Status: integrated (`watch/full_capture.py`, branch `agent/full-capture` on event-probe, draft PR pending)
+- Trigger: owner reframed the north star — the real goal is a training VIDEO whose visuals
+  match the true requirements; event_probe's replay ring (mss, ~7.7 fps at 5K) is a provable
+  slideshow, not footage. Owner picked "real-footage-first" + "build full-watching capture first".
+- New capability: capture the REAL desktop continuously at the source frame rate and encode it
+  with the GPU's hardware H.264/H.265 encoder, so the video step has actual footage that is, by
+  construction, the true UI. dxcam (DXGI Desktop Duplication) ceiling measured 59.8 fps at
+  5120×2160 (vs mss 7.7). Semantic gating: poll ~58 fps, encode only changed frames — idle keeps
+  0.85 %, motion keeps the changes. Frame ledger maps frame_idx→pts_ms→t_obs_ns (QPC domain, same
+  as event_probe) → a semantic event resolves to an exact video PTS (the assembler bridge).
+- Potential beneficiaries: the training-video generator (real-footage assembly + narration),
+  Watch lane, Vigil evidence clips, any "prove the UI did X" workflow.
+- Prior art and primary sources: dxcam / BetterCam (DDA, 240 fps), windows-capture / wincam (WGC
+  + HW H264), PyAV/NVENC. No novelty on capture; the claim stays the integrated governed codec.
+- Falsifiable claim: a dxcam capture encodes a decodable mp4 whose decoded duration matches the
+  ms-PTS ledger (±0.3 s) and whose every frame is retrievable by capture time.
+- Smallest real experiment: `pytest tests/test_full_capture.py` (incl. live_desktop dxcam run).
+- Measures/threshold: measured 2026-09-04 — mp4 verified by PyAV + ffprobe (160 frames, 2560×1080
+  h264_nvenc, decoded 0.03..8.00 s matching ledger), sha256'd; compression ~0.0002 of raw BGRA;
+  event→frame bridge exact (0.0 ms).
+- Risks/constraints: H.264 NVENC caps at 4096 wide → native 5120 auto-falls back to HEVC (or
+  downscale, default 0.5). Continuous mode is encode-bound (~20 fps at 2560×1080) due to NVENC +
+  CPU colorspace-convert under the Python GIL; semantic mode is the intended path. dxcam (DDA)
+  cannot capture DRM/HDCP-protected windows; `wgc` backend (windows-capture, install-gated) is a
+  declared follow-up behind `--backend`. Bounded queue drops oldest under backpressure (recorded
+  as `dropped_backpressure`). mp4 time_base gotcha: must set `codec_context.time_base`, not just
+  `stream.time_base`, or an 8 s clip decodes as 133 s.
+- Evidence: this row, runbook `docs/runbooks/FULL-CAPTURE.md`, tests, run manifests.
+- Decision: dxcam is the built backend; windows-capture behind --backend is the follow-up.
+- Revisit trigger: the assembler milestone (events + narration synced to this footage), or the
+  first need for protected-content capture (→ build the wgc backend).

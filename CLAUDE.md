@@ -48,6 +48,7 @@ Any AI agent (Claude Code, Codex, mesh peer) working in or from this repo follow
 | Faceless content pipeline | `D:\content\ai-content-engine` (topic → YouTube + shorts + thread + blog) |
 | Local vision judge | `python scripts/judge_image.py` (Ollama llava) or Read the image directly |
 | Real-time detection / QA | `D:\content\yolo-vision` venv — YOLO11 + YOLO-Face, 5.2 ms/frame GPU |
+| Live FPS + GPU temp/fan | `python scripts/perf_monitor.py [--process X.exe]` — PresentMon service API (no elevation) + nvidia-smi → `session/perf/*.jsonl`; runbook `docs/runbooks/PERF-MONITOR.md` |
 | Live library docs | context7 MCP (user scope) — use before writing framework code |
 | Sibling repos | `repos.yml` → `scripts/sync_repos.ps1` |
 
