@@ -1,0 +1,3 @@
+/scripts/benchmark_vjepa_selection.py text eol=lf
+/watch/tests/test_vjepa_selection.py text eol=lf
+/proofs/vjepa-selection/** -text
