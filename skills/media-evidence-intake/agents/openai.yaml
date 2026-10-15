@@ -1,0 +1,4 @@
+interface:
+  display_name: "Media Evidence Intake"
+  short_description: "Hash-bound media custody and claim gates"
+  default_prompt: "Use $media-evidence-intake to admit media, bind evidence, and compile only claims supported by verified receipts."

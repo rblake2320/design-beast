@@ -1,0 +1,12 @@
+{
+  "schema": "beast.evidence.dataset-rights/v1",
+  "reviewer_id": "user:directed-local-research",
+  "license_id": "none-research-only",
+  "rights_basis": "No dataset-training or redistribution rights were claimed for this tutorial.",
+  "training_allowed": true,
+  "label_schema_version": "beast.evidence.event/v1",
+  "split": "train",
+  "source_manifest_fingerprints": [
+    "485329be69374efaca16ab2c989366b644b19492384bc7e011a5dc1187469687"
+  ]
+}

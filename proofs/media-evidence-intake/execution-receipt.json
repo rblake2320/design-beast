@@ -1,0 +1,91 @@
+{
+  "artifacts": [
+    {
+      "bytes": 853,
+      "label": "environment",
+      "path": "proofs/media-evidence-intake/environment.json",
+      "sha256": "0b5a79140c7d03b7378538e450dd08aacbafb4d727e266d23238c7a0c92d6966"
+    },
+    {
+      "bytes": 2870,
+      "label": "adapter_receipt",
+      "path": "proofs/media-evidence-intake/execution/execution-receipt.json",
+      "sha256": "93d44a69f3f605c194408973d39d2fa89e4c68ba3e3e6de92cafd8fa6b0a56e3"
+    },
+    {
+      "bytes": 203,
+      "label": "control_svg",
+      "path": "proofs/media-evidence-intake/execution/control.svg",
+      "sha256": "eea527028cee98d8a2bee63aae620acacddc35f7b4a3043fc6392f5424ebd197"
+    },
+    {
+      "bytes": 12738,
+      "label": "control_png",
+      "path": "proofs/media-evidence-intake/execution/control.png",
+      "sha256": "267dc16dc535a799dc1899de83102415ed10f257bb8b04cd30407cd27ae022f6"
+    },
+    {
+      "bytes": 639,
+      "label": "result_svg",
+      "path": "proofs/media-evidence-intake/execution/metaballs.svg",
+      "sha256": "5cfd880715e38555f11037b0759899ab92cce78ab04b1ac1ddf70d07e2733ea6"
+    },
+    {
+      "bytes": 45505,
+      "label": "result_png",
+      "path": "proofs/media-evidence-intake/execution/metaballs.png",
+      "sha256": "3a4112e82833c4dc2b304559c1bce17898038e3e8ee867c227d7b71255f27608"
+    }
+  ],
+  "checks": [
+    {
+      "evidence": "Fresh adapter receipt gate typed_state_answered=true.",
+      "name": "typed_state_answered",
+      "passed": true
+    },
+    {
+      "evidence": "Parsed SVG order is feGaussianBlur, feColorMatrix, feColorMatrix.",
+      "name": "primitive_order_exact",
+      "passed": true
+    },
+    {
+      "evidence": "Parsed stdDeviation is exactly 34.79 34.79.",
+      "name": "blur_exact",
+      "passed": true
+    },
+    {
+      "evidence": "Parsed SVG contains two equal 20-value color matrices.",
+      "name": "two_identical_20_value_matrices",
+      "passed": true
+    },
+    {
+      "evidence": "Control render measured two connected alpha components.",
+      "name": "control_is_two_objects",
+      "passed": true
+    },
+    {
+      "evidence": "Result render measured one connected alpha component.",
+      "name": "filter_fuses_to_one_object",
+      "passed": true
+    },
+    {
+      "evidence": "Center alpha changed from 0 in control to 255 in result.",
+      "name": "gap_changes_from_empty_to_filled",
+      "passed": true
+    },
+    {
+      "evidence": "Result render measured exactly 800 by 480 pixels.",
+      "name": "render_size_exact",
+      "passed": true
+    }
+  ],
+  "claim_ids": [
+    "claim-b39ce9c9df6c1fe601fa5365"
+  ],
+  "environment_fingerprint": "0b5a79140c7d03b7378538e450dd08aacbafb4d727e266d23238c7a0c92d6966",
+  "executed_at": "2026-08-04T22:06:30Z",
+  "receipt_fingerprint": "3b2b09a3756f4bc6d10c287537e75bccd8df13e0e74c3964a5b17a06816f08c9",
+  "receipt_id": "receipt-metaballs-feedback-repair-20260804",
+  "schema": "beast.evidence.execution-receipt/v1",
+  "success": true
+}

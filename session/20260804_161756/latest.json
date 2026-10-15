@@ -1,0 +1,69 @@
+{
+  "current": "Rebased on origin/main ab1caf8; merged R2 extractors are wired to one explicit-authorization REST client; 287 tests pass; doctor 34/34; draft PR preparation",
+  "evidence": [
+    {
+      "bytes": 5383,
+      "path": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-evidence-intake\\proofs\\media-evidence-intake\\PROOF.md",
+      "sha256": "cf8dcb3282ca97e02c1a73a51501962f1a4c70c17007eda652037768465433df"
+    },
+    {
+      "bytes": 305848,
+      "path": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-evidence-intake\\proofs\\media-evidence-intake\\procedure-bundle.json",
+      "sha256": "c0ea9d12af311c160656e620df05bd6e14f167afd41314cf43a90578e24a61ab"
+    },
+    {
+      "bytes": 188,
+      "path": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-evidence-intake\\proofs\\media-evidence-intake\\dataset-rights-denial.json",
+      "sha256": "6a08817b7eddb20a22ac62c6cb0ac2da4aea65a1b7a503a500c3af2fe110826f"
+    }
+  ],
+  "git": {
+    "branch": "codex/evidence-intake",
+    "head": "5c4ac3fdc4e205da7dbd1cc5782a86b2371faa96",
+    "status_porcelain": [
+      "M docs/decisions/EVIDENCE-R2-GAP-CLOSURE-20260804.md",
+      " M proofs/media-evidence-intake/PROOF.md",
+      " M scripts/evidence_intake.py",
+      " M skills/media-evidence-intake/SKILL.md",
+      " M skills/media-evidence-intake/references/contracts.md",
+      " M watch/evidence/extractors/safe_search.py",
+      " M watch/evidence/extractors/web_entities.py",
+      " M watch/evidence/google_vision.py",
+      " M watch/evidence/schema/evidence_event.schema.json",
+      " M watch/evidence/tests/test_safety_extractors.py",
+      " M watch/tests/test_evidence_intake.py",
+      "?? watch/evidence/google_vision_client.py",
+      "?? watch/evidence/tests/test_google_vision_transport.py"
+    ]
+  },
+  "goal": "Integrate artifacts.zip into Beast as strict media evidence custody and close the SafeSearch/Web Detection operational gap",
+  "loop": {
+    "capabilities": [
+      "evidence.media_custody"
+    ],
+    "last_command": "python -m pytest -q",
+    "stage": "REMEMBER"
+  },
+  "next_actions": [
+    "Commit the post-rebase R2 integration, push codex/evidence-intake, and open a draft PR for independent review"
+  ],
+  "recorded_utc": "2026-08-04T21:51:07.174939+00:00",
+  "repo": "C:\\Users\\techai\\brain\\.worktrees\\design-beast-evidence-intake",
+  "resources": {
+    "gpu": {
+      "available": true,
+      "free_mib": 13330,
+      "name": "NVIDIA GeForce RTX 5090",
+      "total_mib": 32607,
+      "used_mib": 18858
+    }
+  },
+  "schema": "beast.recovery/v2",
+  "secrets_stored": false,
+  "unreal": {
+    "engine_root": "",
+    "map": "",
+    "project": "",
+    "run_id": ""
+  }
+}

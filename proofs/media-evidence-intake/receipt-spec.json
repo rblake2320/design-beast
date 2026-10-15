@@ -1,0 +1,28 @@
+{
+  "receipt_id": "receipt-metaballs-feedback-repair-20260804",
+  "claim_ids": [
+    "claim-b39ce9c9df6c1fe601fa5365"
+  ],
+  "success": true,
+  "environment_fingerprint": "0b5a79140c7d03b7378538e450dd08aacbafb4d727e266d23238c7a0c92d6966",
+  "executed_at": "2026-08-04T22:06:30Z",
+  "artifact_base": "../..",
+  "artifacts": [
+    {"label": "environment", "path": "environment.json"},
+    {"label": "adapter_receipt", "path": "execution/execution-receipt.json"},
+    {"label": "control_svg", "path": "execution/control.svg"},
+    {"label": "control_png", "path": "execution/control.png"},
+    {"label": "result_svg", "path": "execution/metaballs.svg"},
+    {"label": "result_png", "path": "execution/metaballs.png"}
+  ],
+  "checks": [
+    {"name": "typed_state_answered", "passed": true, "evidence": "Fresh adapter receipt gate typed_state_answered=true."},
+    {"name": "primitive_order_exact", "passed": true, "evidence": "Parsed SVG order is feGaussianBlur, feColorMatrix, feColorMatrix."},
+    {"name": "blur_exact", "passed": true, "evidence": "Parsed stdDeviation is exactly 34.79 34.79."},
+    {"name": "two_identical_20_value_matrices", "passed": true, "evidence": "Parsed SVG contains two equal 20-value color matrices."},
+    {"name": "control_is_two_objects", "passed": true, "evidence": "Control render measured two connected alpha components."},
+    {"name": "filter_fuses_to_one_object", "passed": true, "evidence": "Result render measured one connected alpha component."},
+    {"name": "gap_changes_from_empty_to_filled", "passed": true, "evidence": "Center alpha changed from 0 in control to 255 in result."},
+    {"name": "render_size_exact", "passed": true, "evidence": "Result render measured exactly 800 by 480 pixels."}
+  ]
+}

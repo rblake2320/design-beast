@@ -1,6 +1,6 @@
 {
   "schema": "beast.capability-graph/v1",
-  "updated": "2026-08-03",
+  "updated": "2026-08-04",
   "evidence_order": ["observed", "reproduced", "measured", "verified", "generalized"],
   "system_hypothesis": {
     "claim": "Expensive intelligence and human demonstrations can be compiled into cheaper, verified, replayable execution without increasing unsupported claims.",
@@ -33,6 +33,19 @@
       "evidence": ["proofs/watch-001-lumen-emissive/replay-log.json", "proofs/watch-004-ue58-first-game/EXECUTION-PROOF.md"],
       "breadth_count": 2,
       "next_test": "Run the frozen cross-domain Beast-loop benchmark with matched direct and compiled execution."
+    },
+    {
+      "id": "evidence.media_custody",
+      "name": "Hash-bound media evidence and promotion custody",
+      "domain": "eyes_immune_system",
+      "level": "reproduced",
+      "claim": "Exact media bytes can be admitted under bounded authorization, converted from Watch v3 into source-time evidence, linked to claims and fresh execution receipts, and promoted only when every runtime gate passes.",
+      "boundary": "One repaired silent-tutorial execution does not prove arbitrary-media understanding; Google Cloud Vision transport is contract-tested but has not been called live in this proof; research authorization is not dataset-training permission.",
+      "depends_on": ["watch.acquire"],
+      "targets": ["local image", "local video", "Watch v3", "optional Google Cloud Vision"],
+      "evidence": ["proofs/media-evidence-intake/PROOF.md", "watch/tests/test_evidence_intake.py", "watch/tests/test_evidence_cli.py"],
+      "breadth_count": 1,
+      "next_test": "Run the same frozen contracts on an owned image with an explicitly authorized live SafeSearch and Web Detection call, then independently review every returned evidence boundary."
     },
     {
       "id": "ue58.control",
