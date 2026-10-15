@@ -1,0 +1,19 @@
+{
+  "manifest_sha256": "15323c1157d4898a68ee52b8cbe5a6d20e63d4402c2826905a084c140dfd4a07",
+  "frame_budget": 25,
+  "inspection_budget": 1,
+  "max_seconds_per_case": 60,
+  "gate": "absolute mean luminance difference > 20 between requested frames",
+  "unit": "case-level pixel-change detection, NOT event/action recall",
+  "fixed_fps": 1.0,
+  "adaptive": "existing Watch escalation_for",
+  "confidence_labels": "perception=decoded requested frames; transition=case pixel change; procedure=causal proof",
+  "confidence_boundary": "Untrained constants; calibration is logging plumbing, not calibrated probabilities.",
+  "code_sha256": {
+    "evaluate_watch_inspection.py": "2c7e548172dbea204eb736dd91dacc8f4407ee183c96a9dcfb0441b43c4b4817",
+    "inspection.py": "883152dd9ebae2b38601141d85496dd7a78b5ded9f814086ab86f89ff7ad3835",
+    "inspection_runtime.py": "513be2f3edd36d31727408a04db980fd167b70d2c2adf4bbf5d14eb604fa2f7e",
+    "seek.py": "bf73063f57ece2a7ff5d46333ec0a6fbe626b64e3e0c27831334bc8b099520d9",
+    "core.py": "49330e3c1b20dd33daaf9f4d31cffd56c7de77bf2dee21206994da0918589111"
+  }
+}

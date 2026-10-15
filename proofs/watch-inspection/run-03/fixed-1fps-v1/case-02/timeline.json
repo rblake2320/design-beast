@@ -1,0 +1,146 @@
+{
+  "schema": "beast.watch.timeline/v3",
+  "source": {
+    "local_video": "video.mkv",
+    "range": {
+      "start_seconds": 0,
+      "end_seconds": 6,
+      "start": "00:00",
+      "end": "00:06"
+    }
+  },
+  "sampling": {
+    "height": 64
+  },
+  "frames": [
+    {
+      "id": "frame-0001",
+      "file": "frames/f_000000000000.jpg",
+      "source_seconds": 0.0,
+      "source_time": "00:00:00.000",
+      "clip_seconds": 0.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": null,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0002",
+      "file": "frames/f_000000001000.jpg",
+      "source_seconds": 1.0,
+      "source_time": "00:00:01.000",
+      "clip_seconds": 1.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0003",
+      "file": "frames/f_000000002000.jpg",
+      "source_seconds": 2.0,
+      "source_time": "00:00:02.000",
+      "clip_seconds": 2.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0004",
+      "file": "frames/f_000000003000.jpg",
+      "source_seconds": 3.0,
+      "source_time": "00:00:03.000",
+      "clip_seconds": 3.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0005",
+      "file": "frames/f_000000004000.jpg",
+      "source_seconds": 4.0,
+      "source_time": "00:00:04.000",
+      "clip_seconds": 4.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0006",
+      "file": "frames/f_000000005000.jpg",
+      "source_seconds": 5.0,
+      "source_time": "00:00:05.000",
+      "clip_seconds": 5.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0007",
+      "file": "frames/f_000000006000.jpg",
+      "source_seconds": 6.0,
+      "source_time": "00:00:06.000",
+      "clip_seconds": 6.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "ffffffffffffffff",
+      "sha256": "26f91a86984552db635fb66da28459aca3ddde0b9e7ed64b0e476cd363fd95da",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    }
+  ],
+  "evidence_requests": [
+    {
+      "id": "seek-0001",
+      "created_unix": 1789760677.9504805,
+      "center_seconds": 3.0,
+      "center_time": "00:00:03.000",
+      "level": 2,
+      "level_name": "action",
+      "direction": "both",
+      "before_seconds": 3.0,
+      "after_seconds": 3.0,
+      "fps": 1.0,
+      "reason": "Uniform sampling; cause remains unproven.",
+      "requested_frames": 7,
+      "new_frames": 7
+    }
+  ],
+  "coverage": {
+    "extracted_frames": 7,
+    "dense_samples": 7,
+    "near_duplicates": 0
+  },
+  "bundle_fingerprint": "b952395abdff075bf833c75a57ee92d66c21850d78825b2ee54e6a25c59a6ecb",
+  "visual_index_stale": false
+}
