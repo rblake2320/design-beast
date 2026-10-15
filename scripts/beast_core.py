@@ -135,8 +135,10 @@ def validate_all() -> dict[str, Any]:
     for path in pack_paths:
         errors.extend(validate_pack(read_json(path), graph_ids, path.relative_to(REPO)))
     benchmark = read_json(BENCHMARK)
-    if benchmark.get("schema") != "beast.loop-benchmark/v1":
-        errors.append("benchmark schema must be beast.loop-benchmark/v1")
+    if benchmark.get("schema") != "beast.loop-benchmark/v2":
+        errors.append("benchmark schema must be beast.loop-benchmark/v2")
+    if not benchmark.get("claim_ladder"):
+        errors.append("benchmark v2 requires an explicit claim ladder")
     if benchmark.get("status") != "protocol_only_unrun":
         errors.append("benchmark status may change only with retained run evidence")
     policy = read_json(POLICY)

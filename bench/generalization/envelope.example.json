@@ -1,0 +1,34 @@
+{
+  "model": {
+    "provider": "replace-with-provider",
+    "name": "replace-with-exact-model",
+    "version": "replace-with-version-or-snapshot",
+    "reasoning_effort": "replace-with-effort"
+  },
+  "agent_harness": {
+    "name": "replace-with-harness",
+    "version": "replace-with-version",
+    "allowed_tools": ["replace-with-explicit-tool-list"]
+  },
+  "targets": [
+    {
+      "domain": "replace-with-domain",
+      "application": "replace-with-application",
+      "version": "replace-with-version"
+    }
+  ],
+  "hardware": {
+    "host_class": "replace-with-host",
+    "gpu": "replace-with-gpu",
+    "operating_system": "replace-with-os-build"
+  },
+  "limits": {
+    "wall_clock_seconds": 1,
+    "tokens": 1,
+    "cost_usd": 0,
+    "human_interventions": 0
+  },
+  "initial_state_recipe": "replace-with-reproducible-reset-recipe",
+  "condition_isolation": "replace-with-how-baseline-frames-and-beast-inputs-are-separated",
+  "oracle_sequestration": "replace-with-how-executors-are-denied-oracle-content"
+}
