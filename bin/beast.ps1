@@ -12,6 +12,7 @@ function Invoke-BeastPython {
 
 switch ($Cmd) {
     'doctor'  { Invoke-BeastPython 'scripts\doctor.py' }
+    'update'  { & (Join-Path $Repo 'scripts\update_stack.ps1') @Rest; exit $LASTEXITCODE }
     'sync'    { & (Join-Path $Repo 'scripts\sync_repos.ps1') @Rest }
     'judge'   { Invoke-BeastPython 'scripts\judge_image.py' }
     'replay'  { Invoke-BeastPython 'scripts\replay_diff.py' }
@@ -34,6 +35,7 @@ switch ($Cmd) {
     'help' {
         @'
 beast doctor    verify the whole stack (Blender bridge, UE, Higgsfield, ffmpeg, disk)
+beast update    owner-run only: upgrade ffmpeg + HyperFrames (+skills), then re-run doctor; previews unless -Apply
 beast sync      clone/update all linked repos (repos.yml)
 beast judge     score generated images vs a brief (local llava)  <imgs> --brief "..."
 beast replay    name env drift vs a recorded run  <run-id> | --save-baseline | --check

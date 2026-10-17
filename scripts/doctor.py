@@ -18,9 +18,9 @@ REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "studio"))
 import config  # noqa: E402
 
-FFMPEG_HINT = (Path.home() / "AppData/Local/Microsoft/WinGet/Packages"
-               / "Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe"
-               / "ffmpeg-8.1.2-full_build/bin")
+sys.path.insert(0, str(REPO / "scripts"))
+import toolpaths  # noqa: E402
+
 
 results: list[tuple[str, str, str]] = []  # (level, name, note)
 
@@ -40,10 +40,31 @@ def _http_ok(url: str, timeout: float = 3) -> bool:
 
 
 def _tool(name: str) -> str | None:
-    if shutil.which(name):
-        return name
-    hinted = FFMPEG_HINT / f"{name}.exe"
-    return str(hinted) if hinted.exists() else None
+    return toolpaths.find_tool(name)
+
+
+def _hyperframes() -> tuple[bool | None, str]:
+    """Installed version vs npm latest. Outdated is WARN; updates stay manual."""
+    exe = shutil.which("hyperframes")
+    if not exe:
+        return None, "not installed"
+    try:
+        have = subprocess.run([exe, "--version"], capture_output=True, text=True,
+                              timeout=60).stdout.strip()
+    except Exception as e:  # noqa: BLE001
+        return False, f"--version failed: {e}"[:80]
+    npm = shutil.which("npm")
+    try:
+        latest = subprocess.run([npm, "view", "hyperframes", "version"],
+                                capture_output=True, text=True,
+                                timeout=30).stdout.strip() if npm else ""
+    except Exception:  # noqa: BLE001
+        latest = ""
+    if not latest:
+        return True, f"{have} (latest unknown, offline?)"
+    if have != latest:
+        return None, f"{have} -> {latest} available; run: beast update"
+    return True, f"{have} (latest)"
 
 
 # ---- core tools ----
@@ -57,6 +78,14 @@ check("yt-dlp", shutil.which("yt-dlp") is not None,
 check("node >= 22", shutil.which("node") is not None,
       "needed by HyperFrames", "winget install OpenJS.NodeJS.LTS")
 check("git", shutil.which("git") is not None, "", "winget install Git.Git")
+hf_ok, hf_note = _hyperframes()
+check("hyperframes", hf_ok, hf_note, "npm i -g hyperframes@latest  (or: beast update)")
+path_len = toolpaths.user_path_length()
+if path_len is not None:
+    check("user PATH size", None if path_len > toolpaths.PATH_WARN_AT else True,
+          f"{path_len}/{toolpaths.PATH_LIMIT} chars",
+          "prune dead/duplicate entries — past the limit Windows drops the whole "
+          "User PATH and installed tools (ffmpeg, node) vanish from new shells")
 
 # ---- ComfyUI lane ----
 comfy_dir = Path(config.get("comfy_dir"))
