@@ -28,7 +28,7 @@ locked on the focal point; endpoint math keeps image edges off-canvas. Glow acce
 `mix-blend-mode: screen` layers anchored INSIDE the plate so they track the camera.
 Text over image needs a scrim + text-shadow — `check` enforces WCAG AA and it will catch you.
 
-## Hard-won gotchas (2026-07-31, hyperframes 0.7.86)
+## Hard-won gotchas (2026-07-31 on 0.7.86; re-verified 2026-10-17 on 0.8.169)
 - Main composition lives at project ROOT `index.html`; `compositions/` is for
   sub-comps/blocks only. "No composition found" = wrong location.
 - Run `hyperframes init <name>` from the parent dir with a bare name — a nested path
@@ -36,7 +36,12 @@ Text over image needs a scrim + text-shadow — `check` enforces WCAG AA and it 
 - `radial-gradient(circle, ...)` defaults to farthest-corner → discs render as squares.
   Use `circle closest-side` for soft-edged suns/orbs.
 - ffmpeg must be on PATH for render/snapshot (winget install puts it in
-  `%LOCALAPPDATA%\Microsoft\WinGet\Packages\Gyan.FFmpeg...\bin`).
+  `%LOCALAPPDATA%\Microsoft\WinGet\Packages\Gyan.FFmpeg...\bin`). The folder name
+  carries the version and winget replaces it on upgrade — never hardcode it.
+- "ffmpeg not found" while it is installed: check the User PATH length first. Past
+  32,767 chars Windows silently drops the entire User PATH (seen 2026-10-17: 328
+  entries, 248 dead). `beast doctor` now warns at 24,000.
+- Keep current with `beast update` (preview) → `beast update -Apply` (owner-run).
 - Studio previews: `npm run dev` is long-running — background it; ports auto-increment
   3002, 3003… one server per project.
 

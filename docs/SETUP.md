@@ -88,6 +88,9 @@ mkdir D:\content\yolo-vision; cd D:\content\yolo-vision; python -m venv .venv
 npx hyperframes skills update       # installs the agent skill set (core)
 ```
 
+Later upgrades: `beast update` previews; `beast update -Apply` upgrades ffmpeg +
+HyperFrames + its skills, then re-runs `beast doctor` as proof. Nothing auto-updates.
+
 ## 7. Game lane (optional)
 
 Blender 5.x (MCP bridge inside Blender, :9876) · UE 5.8 + BeastLab project hosts the

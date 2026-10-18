@@ -5,21 +5,19 @@ from __future__ import annotations
 import json
 import math
 import re
-import shutil
 import subprocess
 import sys
 from pathlib import Path
 
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
+import toolpaths  # noqa: E402
+
+
 def ffmpeg_exe() -> str:
-    found = shutil.which("ffmpeg")
+    found = toolpaths.find_tool("ffmpeg")
     if found:
         return found
-    hinted = (Path.home() / "AppData/Local/Microsoft/WinGet/Packages"
-              / "Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe"
-              / "ffmpeg-8.1.2-full_build/bin/ffmpeg.exe")
-    if hinted.exists():
-        return str(hinted)
     raise FileNotFoundError("ffmpeg")
 
 

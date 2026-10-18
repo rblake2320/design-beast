@@ -12,8 +12,8 @@ One line per capability; re-verify dates when checked. Machine: Windows 11, RTX 
 | Unreal Engine 5.6.1 | `D:\Epic Games\UE_5.6`; used by `/api/to_ue` to import into the RouteRush project (`C:\Users\techai\route-rush-unreal`); VibeUE staged at `~\ue-plugins\VibeUE` (not compiled into either engine) | ✅ 2026-07-19 |
 | NVIDIA ACE | Audio2Face-3D lip-sync + Claire/James/Mark models, staged `~\nvidia-blueprints\` | ✅ 2026-07-19 |
 | Image-to-3D | Tripo API / Hunyuan3D-2.1 / TRELLIS.2 (both fit on 5090) | per pipeline skill |
-| ffmpeg 8.1.2 / ImageMagick 7.1.2 / rembg[gpu] | CLI — assembly, grading, background removal | ✅ 2026-07-02 |
-| HyperFrames 0.7.86 | `npx hyperframes` — HTML/CSS/GSAP → deterministic MP4/WebM; 27 agent skills (`/hyperframes` router + 10 workflows); Studio preview; renders ~15s/8s-clip local | ✅ 2026-07-31 |
+| ffmpeg 9.0.2 / ImageMagick 7.1.2 / rembg[gpu] | CLI — assembly, grading, background removal; located version-agnostically by `scripts/toolpaths.py` (winget folders are versioned and replaced on upgrade) | ✅ 2026-10-17 |
+| HyperFrames 0.8.169 | `hyperframes` CLI — HTML/CSS/GSAP → deterministic MP4/WebM; `/hyperframes` router + 10 workflows; Studio preview; ~400-item block registry; renders ~15s/8s-clip local. Upgrade with `beast update -Apply` (owner-run, never scheduled); `beast doctor` warns when behind npm latest | ✅ 2026-10-17 (1080p smoke render) |
 | ai-content-engine | `D:\content\ai-content-engine` — faceless long-form YouTube + shorts + thread + blog from one topic (Claude script → ElevenLabs → ffmpeg) | cloned 2026-07-31, needs .env keys |
 | Local video gen | ComfyUI `D:\AI\ComfyUI` (0.28.0) — **Wan 2.2 TI2V 5B** (i2v 704², 33f in 48s) and **LTX-2.3 22B nvfp4** (i2v + synced AAC audio in one pass, 25f in 85s), both smoke-rendered from a real image on the 5090; graphs live in studio/server.py (wan_animate, ltx_animate) | ✅ verified 2026-07-31 |
 | Chatterbox TTS 0.1.7 | `D:\AI\tts\chatterbox-venv` — local voice cloning (10s clip), beats ElevenLabs in blind tests; NOTE: runs on torch 2.11+cu128 overriding its 2.6 pin (2.6 has no Blackwell build); save via soundfile, not torchaudio | ✅ 2026-07-31 |
@@ -29,7 +29,8 @@ game-content-pipeline · higgsfield-generate / -product-photoshoot / -marketplac
 -soul-id · web-artifacts-builder · magic MCP (21st.dev components) ·
 **hyperframes family** (router + motion-graphics, product-launch-video,
 faceless-explainer, pr-to-video, talking-head-recut, embedded-captions, music-to-video,
-slideshow, general-video + core/animation/keyframes/creative/registry/cli/media-use) ·
+slideshow, general-video + core/animation/keyframes/creative/registry/cli/media-use/
+audio/studio) ·
 **ui-ux-pro-max** plugin (240+ styles, 127 font pairings, 99 UX rules) ·
 **context7 MCP** (live library docs — kills API hallucination in frontend code)
 
