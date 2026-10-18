@@ -30,6 +30,7 @@ COSTS-BASELINE.md (pricing sources), WIN-PLAN.md (what we build next).
 | Cinematic i2v/t2v, frontier models | Higgsfield (Seedance 2.0, Kling 3.0) | subscription | Runway/Krea/Higgsfield — credits |
 | HTML→deterministic MP4 (motion graphics) | **HyperFrames — 3 videos shipped 2026-07-31** | free | Remotion (free but React-dev-only), After Effects ($) |
 | Explainers/launch/captions/recuts/slideshows/music-sync | HyperFrames 10 workflows | free | Descript/Opus/CapCut — subscriptions |
+| 3D motion shots (GLB spins, 3D stings, shader plates) in deterministic MP4 | **Three.js 0.181.2 via HyperFrames `three` adapter — smoke-verified 2026-10-18 (RTX 5090 WebGL, frame-identical re-render)**; recipe `3d-motion-shot` | free | Cinema4D/After Effects ($), Spline (subscription) |
 | In-composition audio mix (fades, ducking under VO, EQ/comp/reverb, submix buses) | HyperFrames `hyperframes-audio` skill (0.8.x) — docs-level, not yet used in a shipped video | free | Premiere/Audition, CapCut |
 | Faceless content pipeline (topic→YT+shorts+thread+blog) | ai-content-engine (needs keys) | API costs | Iris, faceless-channel SaaS — $50+/mo |
 | Video upscale w/ temporal consistency | GAP — SeedVR2 scouted, not installed | — | Topaz Video ($299), SeedVR2 (free, DIY) |
