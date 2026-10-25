@@ -124,6 +124,9 @@ def create(kind: str, model: str, brief: str, params: dict,
         db = _db()
         with db:  # commit on success; roll back every exceptional exit
             # Serialize lookup + insert across connections, not just threads.
+            # This takes SQLite's write lock for the whole block, so create() is
+            # strictly serialized: that is the point (cross-process idempotency),
+            # not an accident to optimize away. Fine at Beast job rates.
             db.execute("BEGIN IMMEDIATE")
             if idempotency_key is not None:
                 row = db.execute("SELECT id FROM jobs WHERE idempotency_key=?",
