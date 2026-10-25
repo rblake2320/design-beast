@@ -1,0 +1,8 @@
+{
+  "caption": "The model\u2019s torso color changed from purple to pink between the two screenshots.",
+  "uncertainty": "No uncertainty \u2014 the color shift is directly visible and unambiguous.",
+  "perception_confidence": null,
+  "transition_confidence": null,
+  "procedure_confidence": null,
+  "evidence_class": "unverified_visual_observation"
+}

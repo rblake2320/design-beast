@@ -1,0 +1,36 @@
+{
+  "frame": {
+    "id": "frame-0039",
+    "file": "frames/f_000000019000.jpg",
+    "source_seconds": 19.0,
+    "source_time": "00:00:19.000",
+    "clip_seconds": 19.0,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "020e3e7cf8f8f0e0",
+    "sha256": "a36ebfeb6cf18520c0f757c9e08d8158ca581764e1d05d376a31aaf44049d122",
+    "change_from_previous": 7,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "ocr_status": "observed_unverified",
+  "result": {
+    "clip_ms": 19000,
+    "source_ms": 319000,
+    "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+    "sha256": "a36ebfeb6cf18520c0f757c9e08d8158ca581764e1d05d376a31aaf44049d122",
+    "state": {
+      "screen_type": "abstract graphic interface",
+      "view": "top-down perspective of floating document-like shapes against light gray background.",
+      "content": "Multiple translucent white rectangles with placeholder lines and small icons: blue cloud, red document, green file, and blue folder.",
+      "overlays": "No active overlays; all elements are static visual representations without interactive indicators or selections.",
+      "visible_text": "No readable text visible on any element or background.",
+      "uncertainty": "No uncertainty; all elements clearly rendered as abstract icons and placeholders without ambiguity."
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 4.622542599987355,
+    "provider_cost_usd": 0
+  }
+}

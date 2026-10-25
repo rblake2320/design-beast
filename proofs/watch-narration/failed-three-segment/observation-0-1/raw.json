@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-19T07:37:49.0264277Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D modeling software interface\",\n  \"view\": \"Front Orthographic (Local) view, showing a low-poly human torso model centered on grid.\",\n  \"content\": \"Low-poly female torso model with pink body, green neckband, and teal feet. Grid background visible.\",\n  \"overlays\": \"White pencil cursor, selection box tool active, object mode indicator, scene collection panel.\",\n  \"visible_text\": \"Front Orthographic (Local), Female 2, Object Mode, Scene Collection, ViewLayer, Gravity, Simulation, Keying Sets, Audio, Rigid Body World, Light Probes, Custom Properties.\",\n  \"uncertainty\": \"No uncertainty; all visible elements are clearly rendered and labeled in the interface.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 5128606900,
+  "load_duration": 3665301500,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 445566000,
+  "eval_count": 158,
+  "eval_duration": 970198000
+}

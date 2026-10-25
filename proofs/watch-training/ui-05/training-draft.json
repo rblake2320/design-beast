@@ -1,0 +1,38 @@
+{
+  "schema_version": "beast.watch.training-draft/v1",
+  "source_sha256": "46ca6a61fa8cd4802284014fa091570e933403da1767d03f92108a6d4a78b8b1",
+  "source_duration_ms": 30000,
+  "visual_policy": "original_source_only",
+  "publication_allowed": false,
+  "steps": [
+    {
+      "start_ms": 9000,
+      "end_ms": 11000,
+      "caption": "The viewport changes scale. This footage alone does not establish which input caused it.",
+      "frame_refs": [
+        {
+          "clip_ms": 9000,
+          "sha256": "81efd771d9cec76a4af87b0a7785ebcefff6640bd1b2bd928727e43958df0a57"
+        },
+        {
+          "clip_ms": 9500,
+          "sha256": "2a62d970e1074dd48e3235167950545877cf64ef1366ad680410450f3764e2c3"
+        },
+        {
+          "clip_ms": 10000,
+          "sha256": "5d68d2cc0fc910c3e083037b2e99a26220093bdc69d9630216d47bf66a87261c"
+        },
+        {
+          "clip_ms": 10500,
+          "sha256": "045652cb727288e3126f27a14f47895218435fa4910b5bad5bac3af6cabb3dcc"
+        },
+        {
+          "clip_ms": 11000,
+          "sha256": "efed05565537cf74c4723eb79cca74dfd82c029b4d9a53e98fae909d8e9581fa"
+        }
+      ],
+      "review_state": "uncertain",
+      "requires_human_approval": true
+    }
+  ]
+}

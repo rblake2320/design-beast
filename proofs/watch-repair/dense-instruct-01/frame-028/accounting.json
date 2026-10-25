@@ -1,0 +1,33 @@
+{
+  "frame": {
+    "id": "frame-0029",
+    "file": "frames/f_000000014000.jpg",
+    "source_seconds": 14.0,
+    "source_time": "00:00:14.000",
+    "clip_seconds": 14.0,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "00bf7f3f3f3f3f01",
+    "sha256": "7aa0221aaf4169c1b5e36b2d94da39e88dda961c877e01d8c959f54866029e78",
+    "change_from_previous": 0,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "result": {
+    "source_ms": 14000,
+    "sha256": "7aa0221aaf4169c1b5e36b2d94da39e88dda961c877e01d8c959f54866029e78",
+    "state": {
+      "screen_type": "3D modeling software interface",
+      "view": "User Perspective (Local) showing a centered humanoid figure.",
+      "content": "A pinkish-purple humanoid model with green neck and legs, standing centrally. No other objects visible.",
+      "overlays": "White pencil cursor near the model. Active tool: 'Stabilize Stroke'.",
+      "visible_text": "User Perspective (Local), Female 2, Sculpting, Global, Radius 35 px, Factor 0.750, Select Box, Scene Collection, Scene, Object, ViewLayer, Gravity.",
+      "uncertainty": "No uncertainty; all elements clearly rendered."
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 4.527268299993011,
+    "provider_cost_usd": 0
+  }
+}

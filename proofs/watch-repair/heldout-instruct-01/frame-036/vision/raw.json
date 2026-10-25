@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:25:16.5209584Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"abstract digital graphic\",\n  \"view\": \"floating document icons on light background, central icon most focused.\",\n  \"content\": \"blurred documents with file icons: red PDF, blue Word, green Excel. Light green and purple document areas visible.\",\n  \"overlays\": \"none\",\n  \"visible_text\": \"PDF\",\n  \"uncertainty\": \"low\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4378791200,
+  "load_duration": 3473902500,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 403287000,
+  "eval_count": 83,
+  "eval_duration": 464287000
+}

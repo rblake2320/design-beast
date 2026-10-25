@@ -1,0 +1,22 @@
+{
+  "schema": "beast.resource-admission/v1",
+  "workload": "judge",
+  "class": "light",
+  "requested_mib": 6144,
+  "protected_reserve_mib": 4096,
+  "required_free_mib": 10240,
+  "admitted": true,
+  "reasons": [
+    "live free VRAM satisfies workload budget and protected reserve"
+  ],
+  "snapshot": {
+    "available": true,
+    "name": "NVIDIA GeForce RTX 5090",
+    "total_mib": 32607,
+    "used_mib": 17630,
+    "free_mib": 14558,
+    "utilization_percent": 1,
+    "measured_unix": 1789762867.568015
+  },
+  "automatic_process_termination": false
+}

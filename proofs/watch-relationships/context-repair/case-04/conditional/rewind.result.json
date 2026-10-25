@@ -1,0 +1,70 @@
+{
+  "status": "completed",
+  "intent_sha256": "b270210fb506aedffc93b18577bb2c64186eb34e116f059ac356c41f82d3d75b",
+  "elapsed_seconds": 0.3820537999854423,
+  "charged_frames": 9,
+  "provider_cost": 0,
+  "request": {
+    "id": "seek-0003",
+    "created_unix": 1789869439.4506216,
+    "center_seconds": 1.62,
+    "center_time": "00:00:01.620",
+    "level": 3,
+    "level_name": "forensic",
+    "direction": "both",
+    "before_seconds": 0.54,
+    "after_seconds": 0.54,
+    "fps": 7.407407407407407,
+    "reason": "Bounded relationship experiment; Zero confidence placeholders are uncalibrated, not evidence scores.; Forward replay checks sequence, not reproducibility.",
+    "requested_frames": 9,
+    "new_frames": 7
+  },
+  "frames": [
+    {
+      "source_seconds": 1.08,
+      "file": "frames/f_000000001080.jpg",
+      "sha256": "240ff20ff6c8d13d7fcc665cfea1a769b5f3d688a96a3f320adbfdede19a4cef"
+    },
+    {
+      "source_seconds": 1.215,
+      "file": "frames/f_000000001215.jpg",
+      "sha256": "873feda4de7c89f309e66182cd6c800e0246538fa23f74f7ede596ee528163ee"
+    },
+    {
+      "source_seconds": 1.35,
+      "file": "frames/f_000000001350.jpg",
+      "sha256": "b5ecf0384439df7a112fe430797f122cc09baf772b0e2bb41f3f0a474e6184bb"
+    },
+    {
+      "source_seconds": 1.485,
+      "file": "frames/f_000000001485.jpg",
+      "sha256": "816b6850d3da351ef8e5f1c47e12e14a83cd967d6561dd91abefd0ff3aef7497"
+    },
+    {
+      "source_seconds": 1.62,
+      "file": "frames/f_000000001620.jpg",
+      "sha256": "a791ae87a7b63cc1905eedbc433b28ed2b20944b2c53ede8c33e5cf567b60cf5"
+    },
+    {
+      "source_seconds": 1.755,
+      "file": "frames/f_000000001755.jpg",
+      "sha256": "54f955a7d9eb354d8ab65dcca3b03783f94b1ca9022a082ae999aa7994d2a579"
+    },
+    {
+      "source_seconds": 1.89,
+      "file": "frames/f_000000001890.jpg",
+      "sha256": "54f955a7d9eb354d8ab65dcca3b03783f94b1ca9022a082ae999aa7994d2a579"
+    },
+    {
+      "source_seconds": 2.025,
+      "file": "frames/f_000000002025.jpg",
+      "sha256": "62db7914fb03f3f3cb5f0feba32f74c6741446ad37b5b008b6afdad7bb166b46"
+    },
+    {
+      "source_seconds": 2.16,
+      "file": "frames/f_000000002160.jpg",
+      "sha256": "58e311a66d7bb130d1c5e0f0afbac651862b8a94de6a2d2a21f1ceaca61a2532"
+    }
+  ],
+  "timeline_after_sha256": "e5d65880258d8e9e099b5e1446068f3c4ae62fda23bfb45fe08d8571c99b5b5c"
+}

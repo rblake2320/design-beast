@@ -1,0 +1,15 @@
+{
+  "source_ms": 17500,
+  "sha256": "f09f1b26bb9e6025a0e3e922ff8002f590f12c103358af491b703058c1aed988",
+  "state": {
+    "screen_type": "Instructional slide",
+    "view": "Full-screen text layout on dark background",
+    "content": "Black background with yellow title and white bullet points about character blocking in 3D modeling.",
+    "overlays": "Cursor visible over text, indicating mouse position.",
+    "visible_text": "HOW TO BLOCK OUT, FOLLOW THE SHAPE LANGUAGE, BREAK THE CHARACTER INTO PARTS, USE SIMPLE SHAPES, STRAIGHT VS CURVES, STYLIZED CHARACTER ACADEMY, TELL YOUR OWN STORIES WITH YOUR 3D CHARACTERS",
+    "uncertainty": "No visible interface elements or active tools; cursor position may be misleading."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.409383699996397,
+  "provider_cost_usd": 0
+}

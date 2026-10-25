@@ -1,0 +1,104 @@
+{
+  "arm": "watch-adaptive-bounded",
+  "charged_frames": 16,
+  "unique_frames": 16,
+  "elapsed_seconds": 0.986793599993689,
+  "frames": [
+    {
+      "source_seconds": 0.0,
+      "file": "frames/f_000000000000.jpg",
+      "sha256": "6391e85917141a3714307651527bbe8ce965b11abf54cda8c446da8a626fa399"
+    },
+    {
+      "source_seconds": 0.133,
+      "file": "frames/f_000000000133.jpg",
+      "sha256": "8a157a629569a3139cb976a64b5e4b0de4206c3b60e18b31b0670cf2f196432b"
+    },
+    {
+      "source_seconds": 0.267,
+      "file": "frames/f_000000000267.jpg",
+      "sha256": "ab148ddf5489926d61fe28d0f1129ec6e73db19532315188c467e468e8fad457"
+    },
+    {
+      "source_seconds": 0.4,
+      "file": "frames/f_000000000400.jpg",
+      "sha256": "d97a9e10ab08454ef0d932f45c2a4e1d76419673ece0240e2495d7b91ca10ad9"
+    },
+    {
+      "source_seconds": 0.533,
+      "file": "frames/f_000000000533.jpg",
+      "sha256": "b1c5c91eafa6d6371ac5f6349cff9241175ac60d8cee1c127f66c79bb31a6f5b"
+    },
+    {
+      "source_seconds": 0.667,
+      "file": "frames/f_000000000667.jpg",
+      "sha256": "61de8eedcb4bce6071551063712fa99a1a6bc06e61ed253d0089c399b3d5593f"
+    },
+    {
+      "source_seconds": 0.8,
+      "file": "frames/f_000000000800.jpg",
+      "sha256": "96895348e5684d67884db058c6cc9fea1b8526eb7a43baf8926126018f6847fe"
+    },
+    {
+      "source_seconds": 0.933,
+      "file": "frames/f_000000000933.jpg",
+      "sha256": "d844f1992617856750d895e2d467902514ed5040bca8c302b3303f5578bab71c"
+    },
+    {
+      "source_seconds": 1.067,
+      "file": "frames/f_000000001067.jpg",
+      "sha256": "a9416a44a39cb877a3d8fb23412bdabe8e4075ff8bd2ed4929811eebb78e4377"
+    },
+    {
+      "source_seconds": 1.2,
+      "file": "frames/f_000000001200.jpg",
+      "sha256": "7e0dcfa44edac6c71f342c541739d3179d0f84b8efbf99b4230b01c0817336c5"
+    },
+    {
+      "source_seconds": 1.333,
+      "file": "frames/f_000000001333.jpg",
+      "sha256": "fe1ede8d98d7fce2ffce5f6e2cecf3e7b0c556ecd794e6c84c8d75bbaed81844"
+    },
+    {
+      "source_seconds": 1.467,
+      "file": "frames/f_000000001467.jpg",
+      "sha256": "ae5c295fadae95337d1a2020562651fda60198936626bccf1a17902c5e2a2471"
+    },
+    {
+      "source_seconds": 1.6,
+      "file": "frames/f_000000001600.jpg",
+      "sha256": "759a2e9e73f0c65987d7a35977fe5429bf6715109762b64437db708fed840990"
+    },
+    {
+      "source_seconds": 1.733,
+      "file": "frames/f_000000001733.jpg",
+      "sha256": "759a2e9e73f0c65987d7a35977fe5429bf6715109762b64437db708fed840990"
+    },
+    {
+      "source_seconds": 1.867,
+      "file": "frames/f_000000001867.jpg",
+      "sha256": "1b3a3bbe9fb14d23c4cbd2deb2f5ca508f7cb76cbf2ec6a3994047e834a4bb36"
+    },
+    {
+      "source_seconds": 2.0,
+      "file": "frames/f_000000002000.jpg",
+      "sha256": "ee228ba04470d138e2eece38511299a8d96bd042a1433d7cc054f4f73bccb47e"
+    }
+  ],
+  "debt": {
+    "control": "unresolved",
+    "action": "unresolved",
+    "reproducibility": "untested",
+    "perception_confidence": null,
+    "transition_confidence": null,
+    "procedure_confidence": null
+  },
+  "status": "review_required",
+  "gpu_calls": 0,
+  "paid_api_calls": 0,
+  "verified_procedure": false,
+  "publication_allowed": false,
+  "action_recall": null,
+  "false_causal_claim_rate": null,
+  "boundary": "no action detector; null semantic metrics, not zero errors"
+}

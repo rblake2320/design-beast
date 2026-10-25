@@ -1,0 +1,15 @@
+{
+  "source_ms": 5000,
+  "sha256": "18c26e0118c9f01299a6a80da8a366d764cbdd4aefcfd6faca492e0f8dd7258c",
+  "state": {
+    "screen_type": "3D viewport",
+    "view": "Right Orthographic (Local), showing 'Female 2' model centered.",
+    "content": "A low-poly humanoid model with purple torso, pink limbs, and teal neck/legs. No other objects visible.",
+    "overlays": "White pencil cursor near model, no active selection or drawn marks.",
+    "visible_text": "Sculpting mode active, 'Right Orthographic (Local)', 'Female 2', tool settings like 'Radius 35 px'.",
+    "uncertainty": "No uncertainty; all elements clearly visible and labeled."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.513197099993704,
+  "provider_cost_usd": 0
+}

@@ -1,0 +1,36 @@
+{
+  "frame": {
+    "id": "frame-0029",
+    "file": "frames/f_000000014000.jpg",
+    "source_seconds": 14.0,
+    "source_time": "00:00:14.000",
+    "clip_seconds": 14.0,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "0003033fbfbfe7ff",
+    "sha256": "75bd76f22bf2a402b0907699cd2d26e5e18961963f9b37fc589f0e4e2bf7a587",
+    "change_from_previous": 1,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "ocr_status": "observed_unverified",
+  "result": {
+    "clip_ms": 14000,
+    "source_ms": 314000,
+    "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+    "sha256": "75bd76f22bf2a402b0907699cd2d26e5e18961963f9b37fc589f0e4e2bf7a587",
+    "state": {
+      "screen_type": "video screenshot",
+      "view": "medium close-up of a man centered in frame",
+      "content": "Man with dark hair and black shirt; black desk lamp left, green plant right; plain wall background.",
+      "overlays": "",
+      "visible_text": "",
+      "uncertainty": "No visible uncertainty indicators."
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 4.387723300009384,
+    "provider_cost_usd": 0
+  }
+}

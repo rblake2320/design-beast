@@ -1,0 +1,215 @@
+{
+  "cases": [
+    {
+      "case": "case-06",
+      "source_sha256": "319b6c318197edd14ed00d5da26f37b640c9a99144d53711db7d46dbd217f1be",
+      "events": [
+        {
+          "start_ms": 960,
+          "end_ms": 1280,
+          "modality": "mouse_down",
+          "key": null,
+          "control": "Inspect",
+          "control_bounds": [
+            520,
+            400,
+            171,
+            105
+          ],
+          "pointer": [
+            608,
+            455
+          ]
+        },
+        {
+          "start_ms": 2000,
+          "end_ms": 2320,
+          "modality": "mouse_down",
+          "key": null,
+          "control": "Save",
+          "control_bounds": [
+            60,
+            400,
+            141,
+            105
+          ],
+          "pointer": [
+            132,
+            455
+          ]
+        }
+      ],
+      "results": [
+        {
+          "start_ms": 2600,
+          "end_ms": 4400,
+          "identity": "Status: Saved"
+        }
+      ],
+      "permitted_temporal_pairs": [
+        {
+          "event_index": 0,
+          "result_index": 0
+        },
+        {
+          "event_index": 1,
+          "result_index": 0
+        }
+      ],
+      "causal_sufficiency": "unknown",
+      "required_abstention": true,
+      "notes": "Two distinct visible mouse-down intervals precede one Saved state. Both are order-compatible; proximity and matching control wording do not exclude delayed or autonomous causes."
+    },
+    {
+      "case": "case-07",
+      "source_sha256": "45f39e2b62e92dd665a0d0927e795d96a5582cccb38def64d595a109477f596f",
+      "events": [
+        {
+          "start_ms": 1200,
+          "end_ms": 1520,
+          "modality": "key_down",
+          "key": "s",
+          "control": "Save",
+          "control_bounds": [
+            60,
+            400,
+            141,
+            105
+          ],
+          "pointer": null
+        }
+      ],
+      "results": [
+        {
+          "start_ms": 1840,
+          "end_ms": 4360,
+          "identity": "Status: Saved"
+        }
+      ],
+      "permitted_temporal_pairs": [
+        {
+          "event_index": 0,
+          "result_index": 0
+        }
+      ],
+      "causal_sufficiency": "unknown",
+      "required_abstention": true,
+      "notes": "Visible Key S DOWN caption and yellow Save control; pointer remains at upper left, so this is not a mouse click. Temporal association does not exclude independent status change."
+    },
+    {
+      "case": "case-08",
+      "source_sha256": "c6d4ef0573f10d79ec0ece78a9deec8ae8b313c7434d29477602b6bbfedeb80b",
+      "events": [
+        {
+          "start_ms": 1360,
+          "end_ms": 1360,
+          "modality": "mouse_down",
+          "key": null,
+          "control": "Save",
+          "control_bounds": [
+            60,
+            400,
+            141,
+            105
+          ],
+          "pointer": [
+            132,
+            455
+          ]
+        }
+      ],
+      "results": [
+        {
+          "start_ms": 1680,
+          "end_ms": 4400,
+          "identity": "Status: Saved"
+        }
+      ],
+      "permitted_temporal_pairs": [
+        {
+          "event_index": 0,
+          "result_index": 0
+        }
+      ],
+      "causal_sufficiency": "unknown",
+      "required_abstention": true,
+      "notes": "Exactly one native frame has Mouse button DOWN plus yellow Save, bracketed by unpressed frames at 1320 and 1400 ms. Equal interval endpoints denote one observed frame, not a physical zero-duration input. Causality remains unknown."
+    },
+    {
+      "case": "case-09",
+      "source_sha256": "a54a143db7d6fb3080d387cad8a483df03eac0873573dbff83db0ef038223e26",
+      "events": [
+        {
+          "start_ms": 960,
+          "end_ms": 1280,
+          "modality": "mouse_down",
+          "key": null,
+          "control": "Save",
+          "control_bounds": [
+            60,
+            400,
+            141,
+            105
+          ],
+          "pointer": [
+            132,
+            455
+          ]
+        },
+        {
+          "start_ms": 1880,
+          "end_ms": 2200,
+          "modality": "mouse_down",
+          "key": null,
+          "control": "Inspect",
+          "control_bounds": [
+            520,
+            400,
+            171,
+            105
+          ],
+          "pointer": [
+            608,
+            455
+          ]
+        }
+      ],
+      "results": [
+        {
+          "start_ms": 3560,
+          "end_ms": 4440,
+          "identity": "Status: Saved"
+        }
+      ],
+      "permitted_temporal_pairs": [
+        {
+          "event_index": 0,
+          "result_index": 0
+        },
+        {
+          "event_index": 1,
+          "result_index": 0
+        }
+      ],
+      "causal_sufficiency": "unknown",
+      "required_abstention": true,
+      "notes": "Save then Inspect appear as separate mouse-down intervals, followed later by Saved. Both precede the result; neither latest-input matching nor control naming resolves causality."
+    },
+    {
+      "case": "case-10",
+      "source_sha256": "22783b1ccb48ea7949083109bb6975ba960e8c0807c92768b7ca5f685515fb28",
+      "events": [],
+      "results": [
+        {
+          "start_ms": 1600,
+          "end_ms": 4360,
+          "identity": "Status: Saved"
+        }
+      ],
+      "permitted_temporal_pairs": [],
+      "causal_sufficiency": "unknown",
+      "required_abstention": true,
+      "notes": "Idle changes to Saved with no visible mouse-down, key-down, or yellow pressed control in the native frame scan. No visible input can be paired; no cause inferred."
+    }
+  ]
+}

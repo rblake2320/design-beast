@@ -1,0 +1,38 @@
+{
+  "events": [
+    {
+      "kind": "keydown",
+      "time": 1207.2000000178814,
+      "trusted": true,
+      "key": "s",
+      "x": null,
+      "y": null
+    },
+    {
+      "kind": "keyup",
+      "time": 1569.7000000178814,
+      "trusted": true,
+      "key": "s",
+      "x": null,
+      "y": null
+    },
+    {
+      "kind": "save_requested",
+      "time": 1569.7000000178814,
+      "trusted": true,
+      "key": "s",
+      "x": null,
+      "y": null
+    },
+    {
+      "kind": "result_visible",
+      "time": 1823,
+      "trusted": false,
+      "key": null,
+      "x": null,
+      "y": null
+    }
+  ],
+  "timeOrigin": 1789843610691.2,
+  "elapsed": 3037.2000000178814
+}

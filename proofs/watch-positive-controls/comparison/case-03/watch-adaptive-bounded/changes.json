@@ -1,0 +1,79 @@
+{
+  "pairs": [
+    {
+      "start_ms": 1250,
+      "end_ms": 1383,
+      "mean_absolute_difference": 0.008203125
+    },
+    {
+      "start_ms": 1383,
+      "end_ms": 1517,
+      "mean_absolute_difference": 0.004399956597222222
+    },
+    {
+      "start_ms": 1517,
+      "end_ms": 1650,
+      "mean_absolute_difference": 2.333892505787037
+    },
+    {
+      "start_ms": 1650,
+      "end_ms": 1783,
+      "mean_absolute_difference": 0.008049406828703703
+    },
+    {
+      "start_ms": 1783,
+      "end_ms": 1917,
+      "mean_absolute_difference": 0.007649016203703704
+    },
+    {
+      "start_ms": 1917,
+      "end_ms": 2050,
+      "mean_absolute_difference": 0.0
+    },
+    {
+      "start_ms": 2050,
+      "end_ms": 2183,
+      "mean_absolute_difference": 0.007649016203703704
+    },
+    {
+      "start_ms": 2183,
+      "end_ms": 2317,
+      "mean_absolute_difference": 0.007649016203703704
+    },
+    {
+      "start_ms": 2317,
+      "end_ms": 2450,
+      "mean_absolute_difference": 0.0
+    },
+    {
+      "start_ms": 2450,
+      "end_ms": 2583,
+      "mean_absolute_difference": 0.007649016203703704
+    },
+    {
+      "start_ms": 2583,
+      "end_ms": 2717,
+      "mean_absolute_difference": 0.007649016203703704
+    },
+    {
+      "start_ms": 2717,
+      "end_ms": 2850,
+      "mean_absolute_difference": 0.0
+    },
+    {
+      "start_ms": 2850,
+      "end_ms": 2983,
+      "mean_absolute_difference": 0.007649016203703704
+    },
+    {
+      "start_ms": 2983,
+      "end_ms": 3117,
+      "mean_absolute_difference": 1.5113758680555556
+    },
+    {
+      "start_ms": 3117,
+      "end_ms": 3250,
+      "mean_absolute_difference": 0.02328486689814815
+    }
+  ]
+}

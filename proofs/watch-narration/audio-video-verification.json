@@ -1,0 +1,19 @@
+{
+  "output_sha256": "241536688fc8834bab908d0a2120ffcae231ca05c98ae796c4190c868710bd63",
+  "expected_words": "The viewport view changed from 'User Perspective (Local)' to 'Front Orthographic (Local)', altering the camera angle while keeping the model centered. The input or cause is not established by these frames. The viewport view changed from 'User Perspective (Local)' to 'Right Orthographic (Local)', altering the camera angle while keeping the model centered. The input or cause is not established by these frames. The interface switches from a 3D modeling view to a full-screen instructional slide. The input or cause is not established by these frames.",
+  "recognized_words": "The viewport view changed from user perspective, local, to front orthographic, local, altering the camera angle while keeping the model centered. The input or cause is not established by these frames. The viewport view changed from user perspective, local, to right orthographic, local, altering the camera angle while keeping the model centered. The input or cause is not established by these frames. The interface switches from a 3D modeling view to a full screen instructional slide. The input or cause is not established by these frames.",
+  "word_sequence_similarity": 1.0,
+  "audio_rms": 0.07473344185994278,
+  "source_region_pixel_errors": [
+    0.025349030671296298,
+    0.07613715277777777,
+    0.15703450520833334
+  ],
+  "held_source_pixel_errors": [
+    0.08489945023148149,
+    0.12042896412037037,
+    0.06474247685185185
+  ],
+  "asr": "faster-whisper base.en CPU int8; transcription is fallible",
+  "boundary": "1280x720 fixture; speech-content check, not semantic correctness of explanation"
+}

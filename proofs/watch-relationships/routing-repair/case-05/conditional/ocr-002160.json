@@ -1,0 +1,253 @@
+{
+  "observation": {
+    "ms": 2160,
+    "sha256": "ab9f0fcf556712d4d3ad6238b0de173afd1fadc7fd42a369f0006b239ed0fc23",
+    "file": "frames/f_000000002160.jpg",
+    "modality": "mouse_down",
+    "key": null,
+    "control": "Save",
+    "control_bounds": [
+      64,
+      404,
+      132,
+      96
+    ],
+    "control_reference_ms": 1080,
+    "control_reference_sha256": "6346e3dc90ecd6b8c76c7cd4b0a6a77f3c2063d224e315f449f41eb493756219",
+    "pointer": [
+      132,
+      454
+    ],
+    "result": "Saved"
+  },
+  "words": [
+    {
+      "text": "Local",
+      "box": [
+        25,
+        29,
+        60,
+        19
+      ],
+      "line": [
+        "1",
+        "1",
+        "1"
+      ],
+      "origin": "global"
+    },
+    {
+      "text": "workflow",
+      "box": [
+        93,
+        29,
+        101,
+        19
+      ],
+      "line": [
+        "1",
+        "1",
+        "1"
+      ],
+      "origin": "global"
+    },
+    {
+      "text": "Be",
+      "box": [
+        60,
+        400,
+        631,
+        105
+      ],
+      "line": [
+        "2",
+        "1",
+        "1"
+      ],
+      "origin": "global"
+    },
+    {
+      "text": "&",
+      "box": [
+        543,
+        343,
+        140,
+        209
+      ],
+      "line": [
+        "2",
+        "1",
+        "1"
+      ],
+      "origin": "global"
+    },
+    {
+      "text": "Status:",
+      "box": [
+        864,
+        168,
+        78,
+        19
+      ],
+      "line": [
+        "3",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        837,
+        137,
+        214,
+        83
+      ]
+    },
+    {
+      "text": "Saved",
+      "box": [
+        952,
+        168,
+        71,
+        19
+      ],
+      "line": [
+        "3",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        837,
+        137,
+        214,
+        83
+      ]
+    },
+    {
+      "text": "See/e",
+      "box": [
+        96,
+        440,
+        70,
+        23
+      ],
+      "line": [
+        "4",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        67,
+        407,
+        127,
+        91
+      ]
+    },
+    {
+      "text": "Reset",
+      "box": [
+        316,
+        440,
+        82,
+        23
+      ],
+      "line": [
+        "5",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        287,
+        407,
+        138,
+        91
+      ]
+    },
+    {
+      "text": "Inspect",
+      "box": [
+        557,
+        440,
+        101,
+        29
+      ],
+      "line": [
+        "6",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        527,
+        407,
+        157,
+        91
+      ]
+    },
+    {
+      "text": "Mouse",
+      "box": [
+        51,
+        648,
+        75,
+        18
+      ],
+      "line": [
+        "7",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        43,
+        638,
+        278,
+        38
+      ]
+    },
+    {
+      "text": "button",
+      "box": [
+        144,
+        647,
+        89,
+        19
+      ],
+      "line": [
+        "7",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        43,
+        638,
+        278,
+        38
+      ]
+    },
+    {
+      "text": "DOWN",
+      "box": [
+        252,
+        648,
+        59,
+        18
+      ],
+      "line": [
+        "7",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        43,
+        638,
+        278,
+        38
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:17:50.5870601Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D modeling software interface\",\n  \"view\": \"User Perspective (Local) showing a low-poly human torso model centered in viewport.\",\n  \"content\": \"A purple torso model with green neck and leg areas. No visible facial features or limbs beyond torso and legs.\",\n  \"overlays\": \"White pencil cursor near model. Selection box tool active. Scene Collection panel on right.\",\n  \"visible_text\": \"User Perspective (Local), Female 2, Sculpting, Object Mode, Global, Radius: 35 px, Factor: 0.750, Drag: Select Box\",\n  \"uncertainty\": \"No visible uncertainty; all elements clearly rendered and labeled.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4540121300,
+  "load_duration": 3276912300,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 405921000,
+  "eval_count": 148,
+  "eval_duration": 819179000
+}

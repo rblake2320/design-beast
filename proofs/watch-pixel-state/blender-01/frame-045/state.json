@@ -1,0 +1,5392 @@
+{
+  "schema_version": "beast.watch.pixel-state/v1",
+  "clip_ms": 22500,
+  "frame_sha256": "5af1d0d072f0052dcb94eb540d945f549d37cf211ce74937a4fb8f62f4d27caf",
+  "before_sha256": "ad839405df33b1f818cf81d1c41988398898e9f4316644a65a593ad120c076ef",
+  "dimensions": [
+    1280,
+    720
+  ],
+  "text_elements": [
+    {
+      "track_id": 226,
+      "text": "HOW TO BLOCK OUT",
+      "bbox": [
+        505,
+        116,
+        272,
+        19
+      ],
+      "raw_ocr_score": 95.697273,
+      "consecutive_frames": 11
+    },
+    {
+      "track_id": 227,
+      "text": "FOLLOW THE SHAPE LANGUAGE \u2014 Different characters use different shapes. Some are round, some are",
+      "bbox": [
+        79,
+        219,
+        1037,
+        18
+      ],
+      "raw_ocr_score": 90.740593,
+      "consecutive_frames": 11
+    },
+    {
+      "track_id": 228,
+      "text": "angular, and some are boxy. Your blockout should reflect the shape language of your chosen concept.",
+      "bbox": [
+        79,
+        245,
+        1006,
+        19
+      ],
+      "raw_ocr_score": 92.405464,
+      "consecutive_frames": 11
+    },
+    {
+      "track_id": 229,
+      "text": "BREAK THE CHARACTER INTO PARTS \u2014 Before sculpting, divide the character into major sections like the head,",
+      "bbox": [
+        79,
+        294,
+        1114,
+        19
+      ],
+      "raw_ocr_score": 90.956329,
+      "consecutive_frames": 11
+    },
+    {
+      "track_id": 230,
+      "text": "torso, arms, legs, hands, and feet. This makes the blockout process clearer and more organized.",
+      "bbox": [
+        78,
+        321,
+        940,
+        18
+      ],
+      "raw_ocr_score": 92.993858,
+      "consecutive_frames": 11
+    },
+    {
+      "track_id": 239,
+      "text": "USE SIMPLE SHAPES \u2014 Start with very simple primitive shapes in Blender. Keep the resolution low and avoid",
+      "bbox": [
+        79,
+        369,
+        1079,
+        19
+      ],
+      "raw_ocr_score": 88.532089,
+      "consecutive_frames": 9
+    },
+    {
+      "track_id": 232,
+      "text": "details so you can focus on the overall form.",
+      "bbox": [
+        78,
+        396,
+        430,
+        19
+      ],
+      "raw_ocr_score": 96.196915,
+      "consecutive_frames": 11
+    },
+    {
+      "track_id": 233,
+      "text": "STRAIGHT VS CURVES \u2014 Mixing straight and curved forms makes the character more appealing and dynamic.",
+      "bbox": [
+        78,
+        445,
+        1095,
+        18
+      ],
+      "raw_ocr_score": 92.577774,
+      "consecutive_frames": 11
+    },
+    {
+      "track_id": 234,
+      "text": "This helps avoid stiff or boring shapes.",
+      "bbox": [
+        78,
+        471,
+        376,
+        19
+      ],
+      "raw_ocr_score": 95.959015,
+      "consecutive_frames": 11
+    },
+    {
+      "track_id": 257,
+      "text": "CHECK THE SILHOUETTE \u2014 Your cha should be readable from a distance. A strong silhouette is a sign of a",
+      "bbox": [
+        78,
+        520,
+        1105,
+        19
+      ],
+      "raw_ocr_score": 92.922035,
+      "consecutive_frames": 2
+    },
+    {
+      "track_id": 254,
+      "text": "good blockout.",
+      "bbox": [
+        78,
+        547,
+        148,
+        18
+      ],
+      "raw_ocr_score": 92.067688,
+      "consecutive_frames": 5
+    },
+    {
+      "track_id": 235,
+      "text": "STYLIZED CHARACTER ACADEMY",
+      "bbox": [
+        35,
+        674,
+        185,
+        8
+      ],
+      "raw_ocr_score": 96.6922,
+      "consecutive_frames": 11
+    },
+    {
+      "track_id": 255,
+      "text": "YOUR OWN S",
+      "bbox": [
+        977,
+        662,
+        71,
+        28
+      ],
+      "raw_ocr_score": 72.880058,
+      "consecutive_frames": 5
+    }
+  ],
+  "appeared_text_track_ids": [],
+  "disappeared_text_track_ids": [],
+  "motion_tracks": [
+    {
+      "track_id": 608,
+      "before": [
+        604.00341796875,
+        369.99664306640625
+      ],
+      "after": [
+        604.00341796875,
+        369.99664306640625
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 609,
+      "before": [
+        815.0076293945312,
+        381.98980712890625
+      ],
+      "after": [
+        815.0078735351562,
+        381.99603271484375
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 610,
+      "before": [
+        693.9996337890625,
+        294.99505615234375
+      ],
+      "after": [
+        693.9996337890625,
+        294.99505615234375
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 611,
+      "before": [
+        622.0,
+        294.99981689453125
+      ],
+      "after": [
+        622.0,
+        294.9998779296875
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 613,
+      "before": [
+        124.9981689453125,
+        397.0030517578125
+      ],
+      "after": [
+        124.99817657470703,
+        397.0030822753906
+      ],
+      "forward_backward_error_px": 0.0001332416431978345,
+      "age_frames": 11
+    },
+    {
+      "track_id": 614,
+      "before": [
+        345.0021667480469,
+        472.0149230957031
+      ],
+      "after": [
+        345.0021667480469,
+        472.0149230957031
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 615,
+      "before": [
+        219.00146484375,
+        472.00653076171875
+      ],
+      "after": [
+        219.00143432617188,
+        472.0064697265625
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 616,
+      "before": [
+        1017.0000610351562,
+        295.00189208984375
+      ],
+      "after": [
+        1017.0001831054688,
+        295.0021667480469
+      ],
+      "forward_backward_error_px": 0.00037126237293705344,
+      "age_frames": 11
+    },
+    {
+      "track_id": 617,
+      "before": [
+        127.00270080566406,
+        302.00347900390625
+      ],
+      "after": [
+        127.002685546875,
+        302.00347900390625
+      ],
+      "forward_backward_error_px": 7.514082244597375e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 618,
+      "before": [
+        268.0007019042969,
+        301.9983215332031
+      ],
+      "after": [
+        268.0007019042969,
+        301.9983215332031
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 619,
+      "before": [
+        438.0,
+        321.0002746582031
+      ],
+      "after": [
+        438.0,
+        321.000244140625
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 620,
+      "before": [
+        410.9991455078125,
+        302.0042724609375
+      ],
+      "after": [
+        410.9991149902344,
+        302.0042724609375
+      ],
+      "forward_backward_error_px": 4.31583721365314e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 622,
+      "before": [
+        260.9954833984375,
+        472.00738525390625
+      ],
+      "after": [
+        260.9954833984375,
+        472.00738525390625
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 623,
+      "before": [
+        105.00052642822266,
+        472.00225830078125
+      ],
+      "after": [
+        105.00045776367188,
+        472.0024719238281
+      ],
+      "forward_backward_error_px": 0.00021484569879248738,
+      "age_frames": 11
+    },
+    {
+      "track_id": 624,
+      "before": [
+        352.001953125,
+        257.9998474121094
+      ],
+      "after": [
+        352.001953125,
+        257.9998474121094
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 625,
+      "before": [
+        867.9982299804688,
+        295.00177001953125
+      ],
+      "after": [
+        867.9982299804688,
+        295.00177001953125
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 626,
+      "before": [
+        1083.0006103515625,
+        257.9993591308594
+      ],
+      "after": [
+        1083.0006103515625,
+        257.9993896484375
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 627,
+      "before": [
+        286.9997863769531,
+        451.9994201660156
+      ],
+      "after": [
+        286.9997863769531,
+        451.9994201660156
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 628,
+      "before": [
+        352.9996032714844,
+        445.0005187988281
+      ],
+      "after": [
+        352.9996032714844,
+        445.00054931640625
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 629,
+      "before": [
+        944.9984741210938,
+        295.00067138671875
+      ],
+      "after": [
+        944.9984130859375,
+        295.0005187988281
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 630,
+      "before": [
+        848.002685546875,
+        232.00083923339844
+      ],
+      "after": [
+        848.002685546875,
+        232.00083923339844
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 631,
+      "before": [
+        1015.99658203125,
+        333.9935607910156
+      ],
+      "after": [
+        1015.996826171875,
+        333.9941101074219
+      ],
+      "forward_backward_error_px": 0.0001220703125,
+      "age_frames": 11
+    },
+    {
+      "track_id": 632,
+      "before": [
+        480.9993896484375,
+        370.004638671875
+      ],
+      "after": [
+        481.00018310546875,
+        370.004150390625
+      ],
+      "forward_backward_error_px": 0.0005223767948336899,
+      "age_frames": 11
+    },
+    {
+      "track_id": 633,
+      "before": [
+        112.00153350830078,
+        304.0008544921875
+      ],
+      "after": [
+        112.00151062011719,
+        304.0008544921875
+      ],
+      "forward_backward_error_px": 3.814697265625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 634,
+      "before": [
+        1069.005126953125,
+        295.0021667480469
+      ],
+      "after": [
+        1069.0054931640625,
+        294.99884033203125
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 635,
+      "before": [
+        1171.008056640625,
+        457.9945373535156
+      ],
+      "after": [
+        1171.008056640625,
+        457.9945373535156
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 636,
+      "before": [
+        238.9999542236328,
+        302.0000305175781
+      ],
+      "after": [
+        238.9999542236328,
+        302.0000305175781
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 637,
+      "before": [
+        1143.999755859375,
+        370.00244140625
+      ],
+      "after": [
+        1143.999755859375,
+        370.0025329589844
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 638,
+      "before": [
+        370.0000915527344,
+        444.99981689453125
+      ],
+      "after": [
+        370.00006103515625,
+        444.99981689453125
+      ],
+      "forward_backward_error_px": 8.63167442730628e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 639,
+      "before": [
+        402.9976501464844,
+        333.00531005859375
+      ],
+      "after": [
+        402.9975891113281,
+        333.0053405761719
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 640,
+      "before": [
+        392.99609375,
+        370.0019836425781
+      ],
+      "after": [
+        392.9960632324219,
+        370.001953125
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 641,
+      "before": [
+        1155.00146484375,
+        445.00006103515625
+      ],
+      "after": [
+        1155.00146484375,
+        445.00006103515625
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 642,
+      "before": [
+        199.0004425048828,
+        381.9971618652344
+      ],
+      "after": [
+        199.00042724609375,
+        381.99713134765625
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 643,
+      "before": [
+        312.9999694824219,
+        306.9994201660156
+      ],
+      "after": [
+        312.9999694824219,
+        306.9994201660156
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 644,
+      "before": [
+        591.005859375,
+        370.0063781738281
+      ],
+      "after": [
+        591.005859375,
+        370.0059509277344
+      ],
+      "forward_backward_error_px": 0.000152587890625,
+      "age_frames": 11
+    },
+    {
+      "track_id": 645,
+      "before": [
+        712.9988403320312,
+        369.9997253417969
+      ],
+      "after": [
+        712.9951782226562,
+        370.00067138671875
+      ],
+      "forward_backward_error_px": 8.63167442730628e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 646,
+      "before": [
+        677.9993896484375,
+        294.9953308105469
+      ],
+      "after": [
+        677.9993896484375,
+        294.9953308105469
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 647,
+      "before": [
+        976.0032958984375,
+        320.9993591308594
+      ],
+      "after": [
+        976.0032958984375,
+        320.9993591308594
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 648,
+      "before": [
+        117.00072479248047,
+        382.0020751953125
+      ],
+      "after": [
+        117.00069427490234,
+        382.0020751953125
+      ],
+      "forward_backward_error_px": 4.31583721365314e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 649,
+      "before": [
+        187.99969482421875,
+        304.0002136230469
+      ],
+      "after": [
+        187.9997100830078,
+        304.00018310546875
+      ],
+      "forward_backward_error_px": 3.4119690099032596e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 651,
+      "before": [
+        1004.009521484375,
+        445.00482177734375
+      ],
+      "after": [
+        1004.009521484375,
+        445.0049133300781
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 652,
+      "before": [
+        701.0010986328125,
+        218.99685668945312
+      ],
+      "after": [
+        701.0010986328125,
+        218.99685668945312
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 653,
+      "before": [
+        564.0059814453125,
+        369.9963073730469
+      ],
+      "after": [
+        564.0044555664062,
+        370.0020446777344
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 654,
+      "before": [
+        103.0032730102539,
+        371.9973449707031
+      ],
+      "after": [
+        103.0032730102539,
+        371.9973449707031
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 655,
+      "before": [
+        461.0013427734375,
+        219.00384521484375
+      ],
+      "after": [
+        461.0014953613281,
+        219.00381469726562
+      ],
+      "forward_backward_error_px": 0.00029627210460603237,
+      "age_frames": 11
+    },
+    {
+      "track_id": 656,
+      "before": [
+        214.0001220703125,
+        306.0003356933594
+      ],
+      "after": [
+        214.00010681152344,
+        306.00030517578125
+      ],
+      "forward_backward_error_px": 8.63167442730628e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 657,
+      "before": [
+        444.00067138671875,
+        444.99969482421875
+      ],
+      "after": [
+        444.0006408691406,
+        444.9994812011719
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 658,
+      "before": [
+        327.0003967285156,
+        380.0
+      ],
+      "after": [
+        327.000244140625,
+        380.0
+      ],
+      "forward_backward_error_px": 0.0001100326917367056,
+      "age_frames": 11
+    },
+    {
+      "track_id": 659,
+      "before": [
+        207.00070190429688,
+        229.00222778320312
+      ],
+      "after": [
+        207.000732421875,
+        229.0022430419922
+      ],
+      "forward_backward_error_px": 8.217109279939905e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 660,
+      "before": [
+        564.0,
+        230.0
+      ],
+      "after": [
+        563.9999389648438,
+        230.00003051757812
+      ],
+      "forward_backward_error_px": 1.52587890625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 661,
+      "before": [
+        86.99958038330078,
+        303.99981689453125
+      ],
+      "after": [
+        86.99959564208984,
+        303.9997863769531
+      ],
+      "forward_backward_error_px": 6.151014531496912e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 662,
+      "before": [
+        288.0019226074219,
+        305.9959411621094
+      ],
+      "after": [
+        288.0019226074219,
+        305.9959411621094
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 663,
+      "before": [
+        369.9995422363281,
+        231.99981689453125
+      ],
+      "after": [
+        369.9995422363281,
+        231.99981689453125
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 664,
+      "before": [
+        230.99957275390625,
+        221.000732421875
+      ],
+      "after": [
+        230.99957275390625,
+        221.000732421875
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 665,
+      "before": [
+        654.0001220703125,
+        306.00018310546875
+      ],
+      "after": [
+        654.0001831054688,
+        306.0001525878906
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 666,
+      "before": [
+        242.0000762939453,
+        377.0002746582031
+      ],
+      "after": [
+        242.0001220703125,
+        377.000244140625
+      ],
+      "forward_backward_error_px": 8.63167442730628e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 667,
+      "before": [
+        228.0003204345703,
+        307.00018310546875
+      ],
+      "after": [
+        228.00030517578125,
+        307.0001220703125
+      ],
+      "forward_backward_error_px": 0.00012302029062993824,
+      "age_frames": 11
+    },
+    {
+      "track_id": 668,
+      "before": [
+        380.9966735839844,
+        373.9987487792969
+      ],
+      "after": [
+        380.9967041015625,
+        373.9987487792969
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 669,
+      "before": [
+        439.0010070800781,
+        307.005615234375
+      ],
+      "after": [
+        439.0010070800781,
+        307.0055847167969
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 670,
+      "before": [
+        283.0008850097656,
+        229.0
+      ],
+      "after": [
+        283.0008850097656,
+        229.0
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 671,
+      "before": [
+        169.99996948242188,
+        306.9999084472656
+      ],
+      "after": [
+        169.99998474121094,
+        307.0000305175781
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 672,
+      "before": [
+        343.9999694824219,
+        307.0026550292969
+      ],
+      "after": [
+        343.9999694824219,
+        307.0026550292969
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 673,
+      "before": [
+        664.9982299804688,
+        380.0025329589844
+      ],
+      "after": [
+        664.998046875,
+        380.0025329589844
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 674,
+      "before": [
+        704.9990844726562,
+        456.0037841796875
+      ],
+      "after": [
+        704.9990844726562,
+        456.0037841796875
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 675,
+      "before": [
+        231.99920654296875,
+        407.0027160644531
+      ],
+      "after": [
+        231.99908447265625,
+        407.00274658203125
+      ],
+      "forward_backward_error_px": 0.0001406790834153071,
+      "age_frames": 11
+    },
+    {
+      "track_id": 676,
+      "before": [
+        321.999755859375,
+        331.99945068359375
+      ],
+      "after": [
+        321.9997863769531,
+        331.99945068359375
+      ],
+      "forward_backward_error_px": 4.31583721365314e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 677,
+      "before": [
+        170.9976043701172,
+        255.99374389648438
+      ],
+      "after": [
+        170.99752807617188,
+        255.99375915527344
+      ],
+      "forward_backward_error_px": 4.825252835871652e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 678,
+      "before": [
+        113.99894714355469,
+        407.00115966796875
+      ],
+      "after": [
+        113.99897003173828,
+        407.00115966796875
+      ],
+      "forward_backward_error_px": 3.1456798751605675e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 679,
+      "before": [
+        214.00006103515625,
+        297.0
+      ],
+      "after": [
+        214.00001525878906,
+        296.9999084472656
+      ],
+      "forward_backward_error_px": 1.52587890625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 680,
+      "before": [
+        346.0003356933594,
+        379.9998779296875
+      ],
+      "after": [
+        346.0003356933594,
+        379.9998779296875
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 681,
+      "before": [
+        133.999267578125,
+        372.0
+      ],
+      "after": [
+        133.999267578125,
+        372.0
+      ],
+      "forward_backward_error_px": 4.31583721365314e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 682,
+      "before": [
+        189.00173950195312,
+        333.0008544921875
+      ],
+      "after": [
+        189.0017547607422,
+        333.0008239746094
+      ],
+      "forward_backward_error_px": 9.650505671743304e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 683,
+      "before": [
+        493.9948425292969,
+        332.0069580078125
+      ],
+      "after": [
+        493.9947509765625,
+        332.00701904296875
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 684,
+      "before": [
+        256.000244140625,
+        227.0009002685547
+      ],
+      "after": [
+        256.000244140625,
+        227.0009002685547
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 685,
+      "before": [
+        794.00146484375,
+        305.0028076171875
+      ],
+      "after": [
+        794.000244140625,
+        305.0032653808594
+      ],
+      "forward_backward_error_px": 0.0001100326917367056,
+      "age_frames": 11
+    },
+    {
+      "track_id": 686,
+      "before": [
+        802.9984741210938,
+        229.9926300048828
+      ],
+      "after": [
+        802.9984741210938,
+        229.9926300048828
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 687,
+      "before": [
+        805.00146484375,
+        456.0030822753906
+      ],
+      "after": [
+        805.00146484375,
+        456.0030517578125
+      ],
+      "forward_backward_error_px": 0.000492081162519753,
+      "age_frames": 11
+    },
+    {
+      "track_id": 688,
+      "before": [
+        813.0001220703125,
+        255.99745178222656
+      ],
+      "after": [
+        813.0001831054688,
+        255.9973907470703
+      ],
+      "forward_backward_error_px": 0.0001220703125,
+      "age_frames": 11
+    },
+    {
+      "track_id": 689,
+      "before": [
+        269.0050354003906,
+        373.9991149902344
+      ],
+      "after": [
+        269.00469970703125,
+        373.99920654296875
+      ],
+      "forward_backward_error_px": 0.000152587890625,
+      "age_frames": 11
+    },
+    {
+      "track_id": 690,
+      "before": [
+        1009.0,
+        296.0011291503906
+      ],
+      "after": [
+        1009.000244140625,
+        296.001220703125
+      ],
+      "forward_backward_error_px": 0.0002460405812598765,
+      "age_frames": 11
+    },
+    {
+      "track_id": 691,
+      "before": [
+        980.0017700195312,
+        333.99951171875
+      ],
+      "after": [
+        980.0017700195312,
+        333.9994812011719
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 692,
+      "before": [
+        1016.9966430664062,
+        230.99839782714844
+      ],
+      "after": [
+        1016.9970092773438,
+        230.9982147216797
+      ],
+      "forward_backward_error_px": 0.000152587890625,
+      "age_frames": 11
+    },
+    {
+      "track_id": 693,
+      "before": [
+        1191.0009765625,
+        305.99853515625
+      ],
+      "after": [
+        1191.0009765625,
+        305.99853515625
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 694,
+      "before": [
+        199.00094604492188,
+        371.0002136230469
+      ],
+      "after": [
+        199.00099182128906,
+        371.000244140625
+      ],
+      "forward_backward_error_px": 5.50163458683528e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 695,
+      "before": [
+        179.00100708007812,
+        306.999267578125
+      ],
+      "after": [
+        179.00094604492188,
+        306.999267578125
+      ],
+      "forward_backward_error_px": 5.50163458683528e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 696,
+      "before": [
+        410.00067138671875,
+        481.99835205078125
+      ],
+      "after": [
+        410.0006408691406,
+        481.9983215332031
+      ],
+      "forward_backward_error_px": 4.31583721365314e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 698,
+      "before": [
+        782.0000610351562,
+        297.00469970703125
+      ],
+      "after": [
+        781.9992065429688,
+        297.00494384765625
+      ],
+      "forward_backward_error_px": 0.00013647876039613038,
+      "age_frames": 11
+    },
+    {
+      "track_id": 699,
+      "before": [
+        704.9988403320312,
+        296.9966125488281
+      ],
+      "after": [
+        704.9989624023438,
+        296.9966735839844
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 700,
+      "before": [
+        383.0007019042969,
+        232.00048828125
+      ],
+      "after": [
+        383.0007019042969,
+        232.00048828125
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 701,
+      "before": [
+        367.9987487792969,
+        295.99688720703125
+      ],
+      "after": [
+        367.9987487792969,
+        295.99688720703125
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 702,
+      "before": [
+        922.002685546875,
+        230.00808715820312
+      ],
+      "after": [
+        922.002685546875,
+        230.00808715820312
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 703,
+      "before": [
+        146.998291015625,
+        220.00350952148438
+      ],
+      "after": [
+        146.9982452392578,
+        220.00344848632812
+      ],
+      "forward_backward_error_px": 0.0001100326917367056,
+      "age_frames": 11
+    },
+    {
+      "track_id": 704,
+      "before": [
+        952.0008544921875,
+        332.00054931640625
+      ],
+      "after": [
+        952.0008544921875,
+        332.0005798339844
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 705,
+      "before": [
+        937.99755859375,
+        456.0013427734375
+      ],
+      "after": [
+        937.99755859375,
+        456.0013732910156
+      ],
+      "forward_backward_error_px": 8.63167442730628e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 706,
+      "before": [
+        189.0018310546875,
+        481.9977111816406
+      ],
+      "after": [
+        189.00180053710938,
+        481.99774169921875
+      ],
+      "forward_backward_error_px": 7.62939453125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 707,
+      "before": [
+        582.995361328125,
+        229.99761962890625
+      ],
+      "after": [
+        582.9956665039062,
+        229.99771118164062
+      ],
+      "forward_backward_error_px": 0.00012302029062993824,
+      "age_frames": 11
+    },
+    {
+      "track_id": 708,
+      "before": [
+        138.0001983642578,
+        307.0049743652344
+      ],
+      "after": [
+        138.0002899169922,
+        307.0050048828125
+      ],
+      "forward_backward_error_px": 9.1552734375e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 710,
+      "before": [
+        1103.0010986328125,
+        295.9978942871094
+      ],
+      "after": [
+        1103.0010986328125,
+        295.9979248046875
+      ],
+      "forward_backward_error_px": 0.00013647876039613038,
+      "age_frames": 11
+    },
+    {
+      "track_id": 712,
+      "before": [
+        493.9999694824219,
+        383.000244140625
+      ],
+      "after": [
+        494.0,
+        383.0002136230469
+      ],
+      "forward_backward_error_px": 4.31583721365314e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 713,
+      "before": [
+        123.00012969970703,
+        453.00604248046875
+      ],
+      "after": [
+        123.0000991821289,
+        453.00604248046875
+      ],
+      "forward_backward_error_px": 3.814697265625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 714,
+      "before": [
+        141.00125122070312,
+        332.0000915527344
+      ],
+      "after": [
+        141.00131225585938,
+        332.0001525878906
+      ],
+      "forward_backward_error_px": 0.00011917495430679992,
+      "age_frames": 11
+    },
+    {
+      "track_id": 715,
+      "before": [
+        741.0006713867188,
+        446.9995422363281
+      ],
+      "after": [
+        741.0003662109375,
+        446.9993896484375
+      ],
+      "forward_backward_error_px": 0.000213623046875,
+      "age_frames": 11
+    },
+    {
+      "track_id": 716,
+      "before": [
+        215.99996948242188,
+        371.9999084472656
+      ],
+      "after": [
+        216.0,
+        372.0
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 717,
+      "before": [
+        529.9994506835938,
+        323.0031433105469
+      ],
+      "after": [
+        529.9994506835938,
+        323.0034484863281
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 718,
+      "before": [
+        335.0007629394531,
+        445.9997253417969
+      ],
+      "after": [
+        335.00079345703125,
+        445.999755859375
+      ],
+      "forward_backward_error_px": 8.63167442730628e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 719,
+      "before": [
+        813.0004272460938,
+        304.9976806640625
+      ],
+      "after": [
+        813.0004272460938,
+        304.9976501464844
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 720,
+      "before": [
+        432.003173828125,
+        407.0027160644531
+      ],
+      "after": [
+        432.0037841796875,
+        406.9998779296875
+      ],
+      "forward_backward_error_px": 9.650505671743304e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 721,
+      "before": [
+        186.9998779296875,
+        446.00018310546875
+      ],
+      "after": [
+        186.99993896484375,
+        446.0001220703125
+      ],
+      "forward_backward_error_px": 1.52587890625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 722,
+      "before": [
+        204.99977111816406,
+        448.9986572265625
+      ],
+      "after": [
+        204.99977111816406,
+        448.99859619140625
+      ],
+      "forward_backward_error_px": 0.00012947511277161539,
+      "age_frames": 11
+    },
+    {
+      "track_id": 723,
+      "before": [
+        887.000732421875,
+        296.0033264160156
+      ],
+      "after": [
+        887.0006713867188,
+        296.00323486328125
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 724,
+      "before": [
+        251.9990997314453,
+        323.99371337890625
+      ],
+      "after": [
+        251.99908447265625,
+        323.9936828613281
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 725,
+      "before": [
+        823.9937744140625,
+        455.9956359863281
+      ],
+      "after": [
+        823.9937744140625,
+        455.99566650390625
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 726,
+      "before": [
+        717.9985961914062,
+        382.995849609375
+      ],
+      "after": [
+        717.9998779296875,
+        382.99560546875
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 727,
+      "before": [
+        1009.9993896484375,
+        222.0018768310547
+      ],
+      "after": [
+        1009.9994506835938,
+        222.0019073486328
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 728,
+      "before": [
+        82.0004653930664,
+        449.00018310546875
+      ],
+      "after": [
+        82.00054168701172,
+        449.00018310546875
+      ],
+      "forward_backward_error_px": 0.00011108566104667261,
+      "age_frames": 11
+    },
+    {
+      "track_id": 729,
+      "before": [
+        313.00006103515625,
+        295.99945068359375
+      ],
+      "after": [
+        313.00006103515625,
+        295.99945068359375
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 730,
+      "before": [
+        222.0000457763672,
+        230.9995574951172
+      ],
+      "after": [
+        222.00006103515625,
+        230.9995880126953
+      ],
+      "forward_backward_error_px": 2.15791860682657e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 731,
+      "before": [
+        152.00244140625,
+        377.0003967285156
+      ],
+      "after": [
+        152.00242614746094,
+        377.0003967285156
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 732,
+      "before": [
+        239.99916076660156,
+        332.9995422363281
+      ],
+      "after": [
+        239.99911499023438,
+        332.9996032714844
+      ],
+      "forward_backward_error_px": 9.1552734375e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 733,
+      "before": [
+        315.9981384277344,
+        226.9958038330078
+      ],
+      "after": [
+        315.9981384277344,
+        226.9958038330078
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 734,
+      "before": [
+        83.00120544433594,
+        484.9931640625
+      ],
+      "after": [
+        83.00123596191406,
+        484.9928283691406
+      ],
+      "forward_backward_error_px": 0.00011108566104667261,
+      "age_frames": 11
+    },
+    {
+      "track_id": 735,
+      "before": [
+        1126.997314453125,
+        451.9944152832031
+      ],
+      "after": [
+        1126.997314453125,
+        451.9944152832031
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 736,
+      "before": [
+        859.9993896484375,
+        222.99984741210938
+      ],
+      "after": [
+        859.9993896484375,
+        222.99984741210938
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 737,
+      "before": [
+        846.0009765625,
+        324.00018310546875
+      ],
+      "after": [
+        846.0009765625,
+        324.0002136230469
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 738,
+      "before": [
+        118.00088500976562,
+        296.0008850097656
+      ],
+      "after": [
+        118.00086975097656,
+        296.00091552734375
+      ],
+      "forward_backward_error_px": 8.110157796181738e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 739,
+      "before": [
+        1008.9962158203125,
+        323.99755859375
+      ],
+      "after": [
+        1008.9967041015625,
+        323.99932861328125
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 740,
+      "before": [
+        287.0004577636719,
+        372.0000305175781
+      ],
+      "after": [
+        287.00018310546875,
+        372.0001525878906
+      ],
+      "forward_backward_error_px": 0.0002895151556003839,
+      "age_frames": 11
+    },
+    {
+      "track_id": 741,
+      "before": [
+        300.00262451171875,
+        446.9959716796875
+      ],
+      "after": [
+        300.00262451171875,
+        446.9959716796875
+      ],
+      "forward_backward_error_px": 4.31583721365314e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 742,
+      "before": [
+        361.000244140625,
+        399.0001525878906
+      ],
+      "after": [
+        361.0002136230469,
+        399.0000915527344
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 743,
+      "before": [
+        179.99977111816406,
+        232.00021362304688
+      ],
+      "after": [
+        179.9997100830078,
+        232.000244140625
+      ],
+      "forward_backward_error_px": 0.00015930643712636083,
+      "age_frames": 11
+    },
+    {
+      "track_id": 744,
+      "before": [
+        1167.005126953125,
+        304.99847412109375
+      ],
+      "after": [
+        1167.005126953125,
+        304.99847412109375
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 745,
+      "before": [
+        835.0030517578125,
+        296.00018310546875
+      ],
+      "after": [
+        835.0029907226562,
+        296.0002136230469
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 746,
+      "before": [
+        264.0006408691406,
+        331.99951171875
+      ],
+      "after": [
+        264.0006103515625,
+        331.99951171875
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 747,
+      "before": [
+        911.9992065429688,
+        250.00479125976562
+      ],
+      "after": [
+        911.9992065429688,
+        250.00479125976562
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 748,
+      "before": [
+        376.9993591308594,
+        382.99847412109375
+      ],
+      "after": [
+        376.9993591308594,
+        382.9984436035156
+      ],
+      "forward_backward_error_px": 9.650505671743304e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 750,
+      "before": [
+        751.0001220703125,
+        448.00103759765625
+      ],
+      "after": [
+        750.9999389648438,
+        448.00128173828125
+      ],
+      "forward_backward_error_px": 0.00046583061339333653,
+      "age_frames": 11
+    },
+    {
+      "track_id": 751,
+      "before": [
+        128.9998016357422,
+        231.99868774414062
+      ],
+      "after": [
+        128.99981689453125,
+        231.9987335205078
+      ],
+      "forward_backward_error_px": 8.217109279939905e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 752,
+      "before": [
+        648.0,
+        323.0009460449219
+      ],
+      "after": [
+        648.0,
+        323.0009460449219
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 753,
+      "before": [
+        83.00003814697266,
+        224.00027465820312
+      ],
+      "after": [
+        83.00000762939453,
+        224.000244140625
+      ],
+      "forward_backward_error_px": 3.814697265625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 754,
+      "before": [
+        602.9988403320312,
+        309.0025329589844
+      ],
+      "after": [
+        602.9986572265625,
+        309.00250244140625
+      ],
+      "forward_backward_error_px": 0.00028790225042030215,
+      "age_frames": 11
+    },
+    {
+      "track_id": 755,
+      "before": [
+        433.0005187988281,
+        456.0011901855469
+      ],
+      "after": [
+        433.0007629394531,
+        456.00115966796875
+      ],
+      "forward_backward_error_px": 0.0003479539300315082,
+      "age_frames": 11
+    },
+    {
+      "track_id": 756,
+      "before": [
+        742.4011840820312,
+        376.8575744628906
+      ],
+      "after": [
+        742.3997192382812,
+        376.8575744628906
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 757,
+      "before": [
+        723.00146484375,
+        259.997802734375
+      ],
+      "after": [
+        723.00146484375,
+        259.997802734375
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 758,
+      "before": [
+        1113.000244140625,
+        297.0004577636719
+      ],
+      "after": [
+        1113.00048828125,
+        297.0005798339844
+      ],
+      "forward_backward_error_px": 0.00038602022686973214,
+      "age_frames": 11
+    },
+    {
+      "track_id": 759,
+      "before": [
+        775.00146484375,
+        328.0002746582031
+      ],
+      "after": [
+        775.0020141601562,
+        328.0003662109375
+      ],
+      "forward_backward_error_px": 0.00013647876039613038,
+      "age_frames": 11
+    },
+    {
+      "track_id": 760,
+      "before": [
+        214.00006103515625,
+        380.0001525878906
+      ],
+      "after": [
+        214.00015258789062,
+        380.00018310546875
+      ],
+      "forward_backward_error_px": 0.00018625725351739675,
+      "age_frames": 11
+    },
+    {
+      "track_id": 761,
+      "before": [
+        294.00079345703125,
+        324.00115966796875
+      ],
+      "after": [
+        294.00079345703125,
+        324.0011901855469
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 762,
+      "before": [
+        351.0003662109375,
+        398.0000305175781
+      ],
+      "after": [
+        351.0003662109375,
+        398.0000305175781
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 763,
+      "before": [
+        458.0030212402344,
+        256.99822998046875
+      ],
+      "after": [
+        458.0030822753906,
+        256.9981994628906
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 764,
+      "before": [
+        141.99620056152344,
+        255.99664306640625
+      ],
+      "after": [
+        141.99766540527344,
+        255.99537658691406
+      ],
+      "forward_backward_error_px": 4.825252835871652e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 765,
+      "before": [
+        761.0005493164062,
+        256.0035400390625
+      ],
+      "after": [
+        761.0005493164062,
+        256.00360107421875
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 766,
+      "before": [
+        551.9999389648438,
+        222.0
+      ],
+      "after": [
+        552.0,
+        222.0
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 767,
+      "before": [
+        1063.99658203125,
+        260.0062255859375
+      ],
+      "after": [
+        1063.99658203125,
+        260.0062255859375
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 768,
+      "before": [
+        311.00042724609375,
+        333.0008850097656
+      ],
+      "after": [
+        311.000244140625,
+        333.0008544921875
+      ],
+      "forward_backward_error_px": 0.0001258271950064227,
+      "age_frames": 11
+    },
+    {
+      "track_id": 769,
+      "before": [
+        416.9956970214844,
+        447.0036315917969
+      ],
+      "after": [
+        416.9954833984375,
+        447.00384521484375
+      ],
+      "forward_backward_error_px": 0.0006665139808319509,
+      "age_frames": 11
+    },
+    {
+      "track_id": 770,
+      "before": [
+        694.9998168945312,
+        452.0015869140625
+      ],
+      "after": [
+        695.0001831054688,
+        452.00152587890625
+      ],
+      "forward_backward_error_px": 0.00033009808976203203,
+      "age_frames": 11
+    },
+    {
+      "track_id": 771,
+      "before": [
+        465.00006103515625,
+        448.00384521484375
+      ],
+      "after": [
+        465.00006103515625,
+        448.00384521484375
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 772,
+      "before": [
+        101.00298309326172,
+        379.999267578125
+      ],
+      "after": [
+        101.00298309326172,
+        379.999267578125
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 773,
+      "before": [
+        540.0007934570312,
+        323.9962463378906
+      ],
+      "after": [
+        540.0007934570312,
+        323.9962463378906
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 774,
+      "before": [
+        447.0042724609375,
+        306.0058288574219
+      ],
+      "after": [
+        447.00433349609375,
+        306.00579833984375
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 775,
+      "before": [
+        246.9997100830078,
+        259.00006103515625
+      ],
+      "after": [
+        246.9997100830078,
+        259.00006103515625
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 776,
+      "before": [
+        604.0006103515625,
+        382.9923400878906
+      ],
+      "after": [
+        604.0006713867188,
+        382.99212646484375
+      ],
+      "forward_backward_error_px": 8.63167442730628e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 777,
+      "before": [
+        933.999755859375,
+        305.0007019042969
+      ],
+      "after": [
+        933.999755859375,
+        305.00067138671875
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 778,
+      "before": [
+        104.9999008178711,
+        484.9996643066406
+      ],
+      "after": [
+        104.99984741210938,
+        484.999755859375
+      ],
+      "forward_backward_error_px": 0.00010377098806202412,
+      "age_frames": 11
+    },
+    {
+      "track_id": 779,
+      "before": [
+        334.99853515625,
+        250.99546813964844
+      ],
+      "after": [
+        334.99853515625,
+        250.99546813964844
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 780,
+      "before": [
+        1034.999755859375,
+        298.99993896484375
+      ],
+      "after": [
+        1034.9993896484375,
+        298.9998474121094
+      ],
+      "forward_backward_error_px": 0.0001258271950064227,
+      "age_frames": 11
+    },
+    {
+      "track_id": 781,
+      "before": [
+        130.00186157226562,
+        458.0103759765625
+      ],
+      "after": [
+        130.0018310546875,
+        458.01043701171875
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 782,
+      "before": [
+        78.9986572265625,
+        457.00042724609375
+      ],
+      "after": [
+        78.99862670898438,
+        457.0003967285156
+      ],
+      "forward_backward_error_px": 4.31583721365314e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 783,
+      "before": [
+        404.0,
+        229.00025939941406
+      ],
+      "after": [
+        404.0,
+        229.00025939941406
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 784,
+      "before": [
+        80.0002212524414,
+        322.9996643066406
+      ],
+      "after": [
+        80.0002212524414,
+        322.9996643066406
+      ],
+      "forward_backward_error_px": 2.288818359375e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 787,
+      "before": [
+        245.00112915039062,
+        231.998046875
+      ],
+      "after": [
+        245.00112915039062,
+        231.998046875
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 788,
+      "before": [
+        1098.00048828125,
+        382.0106201171875
+      ],
+      "after": [
+        1098.00048828125,
+        382.0106201171875
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 789,
+      "before": [
+        805.0016479492188,
+        299.0007019042969
+      ],
+      "after": [
+        805.0016479492188,
+        299.0013122558594
+      ],
+      "forward_backward_error_px": 0.000643768988084048,
+      "age_frames": 11
+    },
+    {
+      "track_id": 790,
+      "before": [
+        713.9990844726562,
+        256.0001220703125
+      ],
+      "after": [
+        713.9990844726562,
+        256.0001220703125
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 791,
+      "before": [
+        131.9993438720703,
+        380.0003662109375
+      ],
+      "after": [
+        131.99929809570312,
+        380.0003662109375
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 792,
+      "before": [
+        193.9998016357422,
+        296.0
+      ],
+      "after": [
+        193.99972534179688,
+        296.0000305175781
+      ],
+      "forward_backward_error_px": 0.0001100326917367056,
+      "age_frames": 11
+    },
+    {
+      "track_id": 793,
+      "before": [
+        260.9984130859375,
+        485.0061950683594
+      ],
+      "after": [
+        260.9984130859375,
+        485.0061340332031
+      ],
+      "forward_backward_error_px": 9.1552734375e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 794,
+      "before": [
+        696.0009155273438,
+        231.9968719482422
+      ],
+      "after": [
+        696.0009155273438,
+        231.9968719482422
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 795,
+      "before": [
+        601.0003051757812,
+        299.0035705566406
+      ],
+      "after": [
+        601.0003051757812,
+        299.0035400390625
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 796,
+      "before": [
+        863.0029907226562,
+        259.00164794921875
+      ],
+      "after": [
+        863.0029907226562,
+        259.00164794921875
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 797,
+      "before": [
+        366.0059509277344,
+        250.99888610839844
+      ],
+      "after": [
+        366.0059509277344,
+        250.99888610839844
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 798,
+      "before": [
+        501.9999694824219,
+        382.99993896484375
+      ],
+      "after": [
+        502.0,
+        383.000244140625
+      ],
+      "forward_backward_error_px": 0.0002516543900128454,
+      "age_frames": 11
+    },
+    {
+      "track_id": 799,
+      "before": [
+        426.99932861328125,
+        324.0
+      ],
+      "after": [
+        426.9992980957031,
+        323.9999694824219
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 800,
+      "before": [
+        282.00067138671875,
+        249.99966430664062
+      ],
+      "after": [
+        282.00067138671875,
+        249.99966430664062
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 801,
+      "before": [
+        494.00067138671875,
+        455.0003356933594
+      ],
+      "after": [
+        494.0007019042969,
+        455.0003356933594
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 802,
+      "before": [
+        1093.999755859375,
+        232.00143432617188
+      ],
+      "after": [
+        1093.999755859375,
+        232.0014190673828
+      ],
+      "forward_backward_error_px": 0.0001258271950064227,
+      "age_frames": 11
+    },
+    {
+      "track_id": 803,
+      "before": [
+        516.0003051757812,
+        258.99822998046875
+      ],
+      "after": [
+        516.000244140625,
+        258.99835205078125
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 804,
+      "before": [
+        485.99786376953125,
+        334.0053405761719
+      ],
+      "after": [
+        485.99786376953125,
+        334.0054016113281
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 805,
+      "before": [
+        177.99497985839844,
+        249.99549865722656
+      ],
+      "after": [
+        177.99497985839844,
+        249.99549865722656
+      ],
+      "forward_backward_error_px": 4.825252835871652e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 806,
+      "before": [
+        262.9998474121094,
+        446.0000305175781
+      ],
+      "after": [
+        262.999755859375,
+        446.00006103515625
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 807,
+      "before": [
+        655.0033569335938,
+        259.0008544921875
+      ],
+      "after": [
+        655.0033569335938,
+        259.0008544921875
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 808,
+      "before": [
+        130.00033569335938,
+        332.99993896484375
+      ],
+      "after": [
+        130.00033569335938,
+        332.9998779296875
+      ],
+      "forward_backward_error_px": 7.62939453125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 809,
+      "before": [
+        585.0008544921875,
+        383.0020446777344
+      ],
+      "after": [
+        585.0009765625,
+        383.0022888183594
+      ],
+      "forward_backward_error_px": 0.0001726334885461256,
+      "age_frames": 11
+    },
+    {
+      "track_id": 810,
+      "before": [
+        91.99979400634766,
+        250.00050354003906
+      ],
+      "after": [
+        91.9998550415039,
+        250.0005645751953
+      ],
+      "forward_backward_error_px": 0.00012302029062993824,
+      "age_frames": 11
+    },
+    {
+      "track_id": 811,
+      "before": [
+        568.0064697265625,
+        333.9980163574219
+      ],
+      "after": [
+        568.0064697265625,
+        333.9980163574219
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 812,
+      "before": [
+        116.00062561035156,
+        458.0068359375
+      ],
+      "after": [
+        116.00059509277344,
+        458.0068359375
+      ],
+      "forward_backward_error_px": 5.50163458683528e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 813,
+      "before": [
+        337.00067138671875,
+        476.0019226074219
+      ],
+      "after": [
+        337.00067138671875,
+        476.0019226074219
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 814,
+      "before": [
+        145.99998474121094,
+        382.9999694824219
+      ],
+      "after": [
+        145.99998474121094,
+        383.0000305175781
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 815,
+      "before": [
+        297.0003662109375,
+        454.99700927734375
+      ],
+      "after": [
+        297.00030517578125,
+        454.99700927734375
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 817,
+      "before": [
+        819.9998779296875,
+        327.9999084472656
+      ],
+      "after": [
+        819.9998168945312,
+        327.9992370605469
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 818,
+      "before": [
+        160.9995880126953,
+        306.9971923828125
+      ],
+      "after": [
+        160.9995574951172,
+        306.9972229003906
+      ],
+      "forward_backward_error_px": 6.291359750321135e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 819,
+      "before": [
+        156.00474548339844,
+        257.9876708984375
+      ],
+      "after": [
+        156.00473022460938,
+        257.98748779296875
+      ],
+      "forward_backward_error_px": 7.62939453125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 820,
+      "before": [
+        111.00535583496094,
+        374.0011901855469
+      ],
+      "after": [
+        111.00540924072266,
+        374.00115966796875
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 821,
+      "before": [
+        345.00067138671875,
+        485.0139465332031
+      ],
+      "after": [
+        345.00067138671875,
+        485.0139465332031
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 822,
+      "before": [
+        297.9997863769531,
+        476.00006103515625
+      ],
+      "after": [
+        297.99969482421875,
+        476.0000305175781
+      ],
+      "forward_backward_error_px": 9.650505671743304e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 823,
+      "before": [
+        366.0074768066406,
+        259.0004577636719
+      ],
+      "after": [
+        366.0074768066406,
+        259.0004577636719
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 825,
+      "before": [
+        243.00173950195312,
+        401.0035705566406
+      ],
+      "after": [
+        243.0015106201172,
+        401.0027770996094
+      ],
+      "forward_backward_error_px": 1.52587890625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 826,
+      "before": [
+        776.9884643554688,
+        383.01202392578125
+      ],
+      "after": [
+        776.9895629882812,
+        383.0118713378906
+      ],
+      "forward_backward_error_px": 9.1552734375e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 827,
+      "before": [
+        83.9998779296875,
+        255.99974060058594
+      ],
+      "after": [
+        83.99989318847656,
+        255.99974060058594
+      ],
+      "forward_backward_error_px": 6.291359750321135e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 828,
+      "before": [
+        253.0001983642578,
+        474.00177001953125
+      ],
+      "after": [
+        253.00022888183594,
+        474.0017395019531
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 829,
+      "before": [
+        426.0002136230469,
+        258.99151611328125
+      ],
+      "after": [
+        426.0002136230469,
+        258.99151611328125
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 830,
+      "before": [
+        352.0006103515625,
+        324.0033874511719
+      ],
+      "after": [
+        352.0006103515625,
+        324.0033874511719
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 831,
+      "before": [
+        729.9998779296875,
+        295.99859619140625
+      ],
+      "after": [
+        729.9998779296875,
+        295.99859619140625
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 832,
+      "before": [
+        671.9959716796875,
+        374.0003356933594
+      ],
+      "after": [
+        671.99609375,
+        374.0003662109375
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 833,
+      "before": [
+        120.00350189208984,
+        307.0016784667969
+      ],
+      "after": [
+        120.00353240966797,
+        307.0016784667969
+      ],
+      "forward_backward_error_px": 3.814697265625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 834,
+      "before": [
+        353.99969482421875,
+        333.9974365234375
+      ],
+      "after": [
+        353.9997253417969,
+        333.9974060058594
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 835,
+      "before": [
+        202.00047302246094,
+        456.99774169921875
+      ],
+      "after": [
+        202.00054931640625,
+        456.9976806640625
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 836,
+      "before": [
+        706.9985961914062,
+        306.9975891113281
+      ],
+      "after": [
+        706.9987182617188,
+        306.99761962890625
+      ],
+      "forward_backward_error_px": 0.0001258271950064227,
+      "age_frames": 11
+    },
+    {
+      "track_id": 837,
+      "before": [
+        589.9998168945312,
+        307.0003967285156
+      ],
+      "after": [
+        589.9998168945312,
+        307.0002746582031
+      ],
+      "forward_backward_error_px": 0.00013647876039613038,
+      "age_frames": 11
+    },
+    {
+      "track_id": 838,
+      "before": [
+        356.9967041015625,
+        219.99725341796875
+      ],
+      "after": [
+        356.9967041015625,
+        219.99725341796875
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 839,
+      "before": [
+        828.0026245117188,
+        250.00111389160156
+      ],
+      "after": [
+        828.0026245117188,
+        250.00111389160156
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 840,
+      "before": [
+        392.0038146972656,
+        485.0025634765625
+      ],
+      "after": [
+        392.0037841796875,
+        485.0025634765625
+      ],
+      "forward_backward_error_px": 4.31583721365314e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 841,
+      "before": [
+        787.9998779296875,
+        373.0056457519531
+      ],
+      "after": [
+        787.9998168945312,
+        373.0058898925781
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 842,
+      "before": [
+        298.99993896484375,
+        408.99981689453125
+      ],
+      "after": [
+        298.99945068359375,
+        409.0000305175781
+      ],
+      "forward_backward_error_px": 0.0001643421855987981,
+      "age_frames": 11
+    },
+    {
+      "track_id": 843,
+      "before": [
+        289.0024719238281,
+        221.0005645751953
+      ],
+      "after": [
+        289.0024719238281,
+        221.0005645751953
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 844,
+      "before": [
+        987.0017700195312,
+        324.999755859375
+      ],
+      "after": [
+        987.001708984375,
+        324.9996643066406
+      ],
+      "forward_backward_error_px": 8.63167442730628e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 845,
+      "before": [
+        442.99627685546875,
+        478.0009765625
+      ],
+      "after": [
+        442.99676513671875,
+        478.0008850097656
+      ],
+      "forward_backward_error_px": 0.0010536301415413618,
+      "age_frames": 11
+    },
+    {
+      "track_id": 846,
+      "before": [
+        424.9958801269531,
+        449.00299072265625
+      ],
+      "after": [
+        424.995849609375,
+        449.0028991699219
+      ],
+      "forward_backward_error_px": 0.0005501634441316128,
+      "age_frames": 11
+    },
+    {
+      "track_id": 847,
+      "before": [
+        277.9979248046875,
+        380.9994812011719
+      ],
+      "after": [
+        277.9980163574219,
+        380.99945068359375
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 848,
+      "before": [
+        273.99273681640625,
+        485.0083923339844
+      ],
+      "after": [
+        273.9927062988281,
+        485.0084228515625
+      ],
+      "forward_backward_error_px": 4.31583721365314e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 849,
+      "before": [
+        824.996826171875,
+        383.00616455078125
+      ],
+      "after": [
+        824.9970703125,
+        383.00592041015625
+      ],
+      "forward_backward_error_px": 8.63167442730628e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 850,
+      "before": [
+        605.0016479492188,
+        258.99871826171875
+      ],
+      "after": [
+        605.0016479492188,
+        258.9986877441406
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 851,
+      "before": [
+        506.9992980957031,
+        374.0010986328125
+      ],
+      "after": [
+        506.9996337890625,
+        374.0013122558594
+      ],
+      "forward_backward_error_px": 0.0004587798030115664,
+      "age_frames": 11
+    },
+    {
+      "track_id": 852,
+      "before": [
+        543.0023193359375,
+        374.0015869140625
+      ],
+      "after": [
+        543.0026245117188,
+        374.00152587890625
+      ],
+      "forward_backward_error_px": 0.0001220703125,
+      "age_frames": 11
+    },
+    {
+      "track_id": 853,
+      "before": [
+        198.9961395263672,
+        258.0056457519531
+      ],
+      "after": [
+        198.9961395263672,
+        258.005615234375
+      ],
+      "forward_backward_error_px": 1.52587890625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 854,
+      "before": [
+        854.9962158203125,
+        298.99871826171875
+      ],
+      "after": [
+        854.9967651367188,
+        298.9986877441406
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 855,
+      "before": [
+        92.00054931640625,
+        484.99981689453125
+      ],
+      "after": [
+        92.00057983398438,
+        484.9998474121094
+      ],
+      "forward_backward_error_px": 4.31583721365314e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 856,
+      "before": [
+        1042.0003662109375,
+        456.0044860839844
+      ],
+      "after": [
+        1042.000244140625,
+        456.0043029785156
+      ],
+      "forward_backward_error_px": 0.0001258271950064227,
+      "age_frames": 11
+    },
+    {
+      "track_id": 857,
+      "before": [
+        213.00030517578125,
+        221.0028839111328
+      ],
+      "after": [
+        213.00030517578125,
+        221.0028839111328
+      ],
+      "forward_backward_error_px": 1.52587890625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 858,
+      "before": [
+        1092.9998779296875,
+        457.9981689453125
+      ],
+      "after": [
+        1092.9998779296875,
+        457.9981689453125
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 859,
+      "before": [
+        1061.995849609375,
+        250.0008544921875
+      ],
+      "after": [
+        1061.995849609375,
+        250.00086975097656
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 860,
+      "before": [
+        88.0003662109375,
+        408.9998779296875
+      ],
+      "after": [
+        88.0003662109375,
+        408.9998779296875
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 861,
+      "before": [
+        789.9998168945312,
+        249.99964904785156
+      ],
+      "after": [
+        789.9998168945312,
+        249.99964904785156
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 862,
+      "before": [
+        392.9974365234375,
+        383.0015563964844
+      ],
+      "after": [
+        392.99749755859375,
+        383.00146484375
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 863,
+      "before": [
+        604.99951171875,
+        220.99835205078125
+      ],
+      "after": [
+        604.9993896484375,
+        220.99838256835938
+      ],
+      "forward_backward_error_px": 0.0001100326917367056,
+      "age_frames": 11
+    },
+    {
+      "track_id": 864,
+      "before": [
+        366.9976806640625,
+        219.9975128173828
+      ],
+      "after": [
+        366.9976806640625,
+        219.9975128173828
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 865,
+      "before": [
+        353.0002136230469,
+        374.000244140625
+      ],
+      "after": [
+        353.0002136230469,
+        374.000244140625
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 866,
+      "before": [
+        935.9942626953125,
+        259.00006103515625
+      ],
+      "after": [
+        935.9942626953125,
+        259.0000305175781
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 867,
+      "before": [
+        231.9987335205078,
+        249.9993438720703
+      ],
+      "after": [
+        231.9987335205078,
+        249.9993438720703
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 868,
+      "before": [
+        219.00169372558594,
+        485.0014953613281
+      ],
+      "after": [
+        219.00172424316406,
+        485.00146484375
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 869,
+      "before": [
+        1091.0013427734375,
+        447.99859619140625
+      ],
+      "after": [
+        1091.0013427734375,
+        447.99859619140625
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 870,
+      "before": [
+        801.9999389648438,
+        324.99981689453125
+      ],
+      "after": [
+        802.0001220703125,
+        324.997802734375
+      ],
+      "forward_backward_error_px": 0.00013647876039613038,
+      "age_frames": 11
+    },
+    {
+      "track_id": 871,
+      "before": [
+        920.0006713867188,
+        374.0108642578125
+      ],
+      "after": [
+        920.0006713867188,
+        374.0108642578125
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 872,
+      "before": [
+        846.0,
+        446.9989013671875
+      ],
+      "after": [
+        845.9993286132812,
+        446.9991455078125
+      ],
+      "forward_backward_error_px": 0.0005115678068250418,
+      "age_frames": 11
+    },
+    {
+      "track_id": 873,
+      "before": [
+        807.0062255859375,
+        382.99853515625
+      ],
+      "after": [
+        807.0069580078125,
+        383.00042724609375
+      ],
+      "forward_backward_error_px": 0.0001258271950064227,
+      "age_frames": 11
+    },
+    {
+      "track_id": 874,
+      "before": [
+        1098.9998779296875,
+        223.00198364257812
+      ],
+      "after": [
+        1099.000244140625,
+        223.00209045410156
+      ],
+      "forward_backward_error_px": 0.00016220315592363477,
+      "age_frames": 11
+    },
+    {
+      "track_id": 875,
+      "before": [
+        670.00048828125,
+        296.99798583984375
+      ],
+      "after": [
+        670.00048828125,
+        296.9979553222656
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 876,
+      "before": [
+        243.999755859375,
+        446.0000305175781
+      ],
+      "after": [
+        243.99977111816406,
+        445.9999694824219
+      ],
+      "forward_backward_error_px": 3.4119690099032596e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 877,
+      "before": [
+        673.9984741210938,
+        383.9989013671875
+      ],
+      "after": [
+        673.99853515625,
+        383.9988708496094
+      ],
+      "forward_backward_error_px": 0.00025895022554323077,
+      "age_frames": 11
+    },
+    {
+      "track_id": 878,
+      "before": [
+        336.9997253417969,
+        485.0023498535156
+      ],
+      "after": [
+        336.9997253417969,
+        485.0023498535156
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 880,
+      "before": [
+        224.99801635742188,
+        324.99884033203125
+      ],
+      "after": [
+        224.9980926513672,
+        324.9988098144531
+      ],
+      "forward_backward_error_px": 9.650505671743304e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 881,
+      "before": [
+        920.0007934570312,
+        383.01129150390625
+      ],
+      "after": [
+        920.0007934570312,
+        383.0113525390625
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 882,
+      "before": [
+        962.0,
+        383.0012512207031
+      ],
+      "after": [
+        962.0,
+        383.0012512207031
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 883,
+      "before": [
+        961.9998779296875,
+        251.99794006347656
+      ],
+      "after": [
+        961.9998779296875,
+        251.99790954589844
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 884,
+      "before": [
+        455.00750732421875,
+        297.00238037109375
+      ],
+      "after": [
+        455.007568359375,
+        297.0023498535156
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 885,
+      "before": [
+        383.0022277832031,
+        478.0000305175781
+      ],
+      "after": [
+        383.0018615722656,
+        478.000244140625
+      ],
+      "forward_backward_error_px": 0.0001100326917367056,
+      "age_frames": 11
+    },
+    {
+      "track_id": 886,
+      "before": [
+        888.9993896484375,
+        383.0005187988281
+      ],
+      "after": [
+        888.9996948242188,
+        383.0002136230469
+      ],
+      "forward_backward_error_px": 0.0005526968743652105,
+      "age_frames": 11
+    },
+    {
+      "track_id": 887,
+      "before": [
+        1025.9993896484375,
+        258.9993896484375
+      ],
+      "after": [
+        1025.9993896484375,
+        258.99932861328125
+      ],
+      "forward_backward_error_px": 0.00013647876039613038,
+      "age_frames": 11
+    },
+    {
+      "track_id": 888,
+      "before": [
+        110.9996566772461,
+        477.9994201660156
+      ],
+      "after": [
+        110.99964904785156,
+        477.99945068359375
+      ],
+      "forward_backward_error_px": 9.918212890625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 889,
+      "before": [
+        658.0046997070312,
+        248.0049285888672
+      ],
+      "after": [
+        658.0046997070312,
+        248.0049285888672
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 890,
+      "before": [
+        1076.660400390625,
+        374.2557067871094
+      ],
+      "after": [
+        1076.66162109375,
+        374.2556457519531
+      ],
+      "forward_backward_error_px": 0.0002460405812598765,
+      "age_frames": 11
+    },
+    {
+      "track_id": 891,
+      "before": [
+        1014.0027465820312,
+        383.009033203125
+      ],
+      "after": [
+        1014.0028076171875,
+        383.0091247558594
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 892,
+      "before": [
+        815.9984130859375,
+        233.99855041503906
+      ],
+      "after": [
+        815.9984130859375,
+        233.99855041503906
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 893,
+      "before": [
+        275.0010681152344,
+        256.0
+      ],
+      "after": [
+        275.0010681152344,
+        256.0
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 894,
+      "before": [
+        107.9993896484375,
+        456.00103759765625
+      ],
+      "after": [
+        107.99935913085938,
+        456.00103759765625
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 896,
+      "before": [
+        1144.002685546875,
+        383.0054016113281
+      ],
+      "after": [
+        1144.002685546875,
+        383.00537109375
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 897,
+      "before": [
+        307.0039978027344,
+        257.9991455078125
+      ],
+      "after": [
+        307.0039978027344,
+        257.9991455078125
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 898,
+      "before": [
+        671.9996948242188,
+        306.9998779296875
+      ],
+      "after": [
+        671.9996948242188,
+        306.9998474121094
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 899,
+      "before": [
+        394.0002746582031,
+        306.9988098144531
+      ],
+      "after": [
+        394.0002746582031,
+        306.9989013671875
+      ],
+      "forward_backward_error_px": 8.63167442730628e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 900,
+      "before": [
+        259.99981689453125,
+        457.9997253417969
+      ],
+      "after": [
+        259.9997863769531,
+        457.999755859375
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 901,
+      "before": [
+        166.00021362304688,
+        219.99684143066406
+      ],
+      "after": [
+        166.00022888183594,
+        219.9968719482422
+      ],
+      "forward_backward_error_px": 3.4119690099032596e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 903,
+      "before": [
+        359.0002746582031,
+        409.99969482421875
+      ],
+      "after": [
+        359.0002136230469,
+        409.99957275390625
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 904,
+      "before": [
+        399.9958190917969,
+        259.0055236816406
+      ],
+      "after": [
+        399.9958190917969,
+        259.0055236816406
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 905,
+      "before": [
+        519.0001220703125,
+        332.0013732910156
+      ],
+      "after": [
+        518.9998168945312,
+        332.0014343261719
+      ],
+      "forward_backward_error_px": 0.0001258271950064227,
+      "age_frames": 11
+    },
+    {
+      "track_id": 906,
+      "before": [
+        752.9556274414062,
+        379.71624755859375
+      ],
+      "after": [
+        752.9556274414062,
+        379.7166748046875
+      ],
+      "forward_backward_error_px": 0.0010393912671133876,
+      "age_frames": 11
+    },
+    {
+      "track_id": 907,
+      "before": [
+        1053.0006103515625,
+        449.0025329589844
+      ],
+      "after": [
+        1053.000244140625,
+        449.0025634765625
+      ],
+      "forward_backward_error_px": 0.0002200653834734112,
+      "age_frames": 11
+    },
+    {
+      "track_id": 909,
+      "before": [
+        521.0,
+        383.0001220703125
+      ],
+      "after": [
+        521.0,
+        383.0002136230469
+      ],
+      "forward_backward_error_px": 9.1552734375e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 910,
+      "before": [
+        418.0003356933594,
+        307.0022888183594
+      ],
+      "after": [
+        418.0003662109375,
+        307.00225830078125
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 911,
+      "before": [
+        446.9978332519531,
+        374.0022277832031
+      ],
+      "after": [
+        446.998291015625,
+        374.00244140625
+      ],
+      "forward_backward_error_px": 0.00026074229390360415,
+      "age_frames": 11
+    },
+    {
+      "track_id": 912,
+      "before": [
+        545.0028076171875,
+        383.9994812011719
+      ],
+      "after": [
+        545.002685546875,
+        383.9994201660156
+      ],
+      "forward_backward_error_px": 0.0002460405812598765,
+      "age_frames": 11
+    },
+    {
+      "track_id": 913,
+      "before": [
+        505.9990539550781,
+        252.00015258789062
+      ],
+      "after": [
+        505.9990539550781,
+        252.0001678466797
+      ],
+      "forward_backward_error_px": 4.31583721365314e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 914,
+      "before": [
+        446.9967956542969,
+        383.0014953613281
+      ],
+      "after": [
+        446.9970703125,
+        383.0016174316406
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 915,
+      "before": [
+        565.0057373046875,
+        382.9968566894531
+      ],
+      "after": [
+        565.0032958984375,
+        383.00048828125
+      ],
+      "forward_backward_error_px": 8.63167442730628e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 916,
+      "before": [
+        648.999267578125,
+        299.0003356933594
+      ],
+      "after": [
+        648.9994506835938,
+        299.0003662109375
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 917,
+      "before": [
+        231.0003662109375,
+        371.0006408691406
+      ],
+      "after": [
+        231.0001983642578,
+        371.0009765625
+      ],
+      "forward_backward_error_px": 0.0006757077062502503,
+      "age_frames": 11
+    },
+    {
+      "track_id": 918,
+      "before": [
+        311.00103759765625,
+        485.00128173828125
+      ],
+      "after": [
+        311.0009765625,
+        485.0013122558594
+      ],
+      "forward_backward_error_px": 4.31583721365314e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 919,
+      "before": [
+        245.0006866455078,
+        220.00054931640625
+      ],
+      "after": [
+        245.0006866455078,
+        220.00054931640625
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 920,
+      "before": [
+        248.9994659423828,
+        306.9997253417969
+      ],
+      "after": [
+        248.99945068359375,
+        306.99969482421875
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 921,
+      "before": [
+        384.9986572265625,
+        382.9984130859375
+      ],
+      "after": [
+        384.9986877441406,
+        382.99835205078125
+      ],
+      "forward_backward_error_px": 0.0001100326917367056,
+      "age_frames": 11
+    },
+    {
+      "track_id": 922,
+      "before": [
+        567.9987182617188,
+        258.99810791015625
+      ],
+      "after": [
+        567.9987182617188,
+        258.9981384277344
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 923,
+      "before": [
+        231.99884033203125,
+        258.9991455078125
+      ],
+      "after": [
+        231.99884033203125,
+        258.9991455078125
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 924,
+      "before": [
+        776.0007934570312,
+        259.0002746582031
+      ],
+      "after": [
+        776.0007934570312,
+        259.000244140625
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 925,
+      "before": [
+        157.9980926513672,
+        486.00238037109375
+      ],
+      "after": [
+        157.9980926513672,
+        486.0025634765625
+      ],
+      "forward_backward_error_px": 6.291359750321135e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 926,
+      "before": [
+        155.00062561035156,
+        296.0043640136719
+      ],
+      "after": [
+        155.0006103515625,
+        296.00439453125
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 927,
+      "before": [
+        323.00006103515625,
+        232.0018768310547
+      ],
+      "after": [
+        323.00006103515625,
+        232.0018768310547
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 928,
+      "before": [
+        500.9996643066406,
+        449.0007629394531
+      ],
+      "after": [
+        501.00006103515625,
+        449.0008544921875
+      ],
+      "forward_backward_error_px": 0.0007124400581233203,
+      "age_frames": 11
+    },
+    {
+      "track_id": 929,
+      "before": [
+        693.9985961914062,
+        307.9987487792969
+      ],
+      "after": [
+        693.9985961914062,
+        307.9987487792969
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 930,
+      "before": [
+        414.998779296875,
+        248.99595642089844
+      ],
+      "after": [
+        414.998779296875,
+        248.99595642089844
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 931,
+      "before": [
+        94.00086975097656,
+        474.0029602050781
+      ],
+      "after": [
+        94.00094604492188,
+        474.00299072265625
+      ],
+      "forward_backward_error_px": 9.770392352947965e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 932,
+      "before": [
+        511.999755859375,
+        223.0000457763672
+      ],
+      "after": [
+        511.99969482421875,
+        222.99998474121094
+      ],
+      "forward_backward_error_px": 8.63167442730628e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 933,
+      "before": [
+        1084.6287841796875,
+        382.9758605957031
+      ],
+      "after": [
+        1084.62841796875,
+        382.9757995605469
+      ],
+      "forward_backward_error_px": 0.0002516543900128454,
+      "age_frames": 11
+    },
+    {
+      "track_id": 934,
+      "before": [
+        209.00079345703125,
+        409.0021057128906
+      ],
+      "after": [
+        209.00103759765625,
+        409.0020751953125
+      ],
+      "forward_backward_error_px": 8.63167442730628e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 935,
+      "before": [
+        686.99365234375,
+        252.00111389160156
+      ],
+      "after": [
+        686.99365234375,
+        252.00111389160156
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 936,
+      "before": [
+        660.9991455078125,
+        325.0006408691406
+      ],
+      "after": [
+        660.9993896484375,
+        325.0006103515625
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 937,
+      "before": [
+        149.00050354003906,
+        249.99684143066406
+      ],
+      "after": [
+        149.0009765625,
+        249.99542236328125
+      ],
+      "forward_backward_error_px": 2.15791860682657e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 938,
+      "before": [
+        234.9986114501953,
+        446.0003662109375
+      ],
+      "after": [
+        234.99855041503906,
+        446.0003662109375
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 939,
+      "before": [
+        113.00037384033203,
+        250.00338745117188
+      ],
+      "after": [
+        113.00035095214844,
+        250.00335693359375
+      ],
+      "forward_backward_error_px": 7.033954170765355e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 940,
+      "before": [
+        1031.002197265625,
+        449.0106201171875
+      ],
+      "after": [
+        1031.00390625,
+        449.01324462890625
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 941,
+      "before": [
+        633.99462890625,
+        247.99838256835938
+      ],
+      "after": [
+        633.99462890625,
+        247.99838256835938
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 942,
+      "before": [
+        412.9983825683594,
+        257.9947509765625
+      ],
+      "after": [
+        412.9983825683594,
+        257.9947509765625
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 943,
+      "before": [
+        334.0003967285156,
+        371.0
+      ],
+      "after": [
+        334.0003356933594,
+        370.9999694824219
+      ],
+      "forward_backward_error_px": 4.31583721365314e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 944,
+      "before": [
+        170.00177001953125,
+        478.0010986328125
+      ],
+      "after": [
+        170.00180053710938,
+        478.0010986328125
+      ],
+      "forward_backward_error_px": 6.291359750321135e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 945,
+      "before": [
+        674.9988403320312,
+        325.9997253417969
+      ],
+      "after": [
+        674.9990844726562,
+        325.999755859375
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 946,
+      "before": [
+        211.0009002685547,
+        251.99990844726562
+      ],
+      "after": [
+        211.0009307861328,
+        251.99998474121094
+      ],
+      "forward_backward_error_px": 0.0001911920844577253,
+      "age_frames": 11
+    },
+    {
+      "track_id": 947,
+      "before": [
+        95.00080108642578,
+        307.00006103515625
+      ],
+      "after": [
+        95.00070190429688,
+        307.0000305175781
+      ],
+      "forward_backward_error_px": 0.00014813605230301619,
+      "age_frames": 11
+    },
+    {
+      "track_id": 948,
+      "before": [
+        752.0048217773438,
+        223.0039825439453
+      ],
+      "after": [
+        752.0048217773438,
+        223.0039825439453
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 949,
+      "before": [
+        984.0006713867188,
+        259.0024719238281
+      ],
+      "after": [
+        984.0006713867188,
+        259.00244140625
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 950,
+      "before": [
+        407.9954528808594,
+        451.00018310546875
+      ],
+      "after": [
+        407.9954528808594,
+        451.0001525878906
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 951,
+      "before": [
+        395.99993896484375,
+        449.9998474121094
+      ],
+      "after": [
+        395.99993896484375,
+        449.9998474121094
+      ],
+      "forward_backward_error_px": 4.31583721365314e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 952,
+      "before": [
+        1017.0005493164062,
+        308.00018310546875
+      ],
+      "after": [
+        1017.0006103515625,
+        308.000244140625
+      ],
+      "forward_backward_error_px": 0.0003662109375,
+      "age_frames": 11
+    },
+    {
+      "track_id": 953,
+      "before": [
+        891.9982299804688,
+        324.99871826171875
+      ],
+      "after": [
+        891.9982299804688,
+        324.9986877441406
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 954,
+      "before": [
+        232.002197265625,
+        483.9946594238281
+      ],
+      "after": [
+        232.002197265625,
+        483.9946594238281
+      ],
+      "forward_backward_error_px": 1.52587890625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 955,
+      "before": [
+        766.0072021484375,
+        221.00311279296875
+      ],
+      "after": [
+        766.0072021484375,
+        221.00311279296875
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 956,
+      "before": [
+        91.99974822998047,
+        259.00054931640625
+      ],
+      "after": [
+        91.99976348876953,
+        259.00054931640625
+      ],
+      "forward_backward_error_px": 7.62939453125e-06,
+      "age_frames": 11
+    },
+    {
+      "track_id": 957,
+      "before": [
+        721.0003662109375,
+        249.99749755859375
+      ],
+      "after": [
+        721.0003662109375,
+        249.99749755859375
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 958,
+      "before": [
+        275.0000915527344,
+        445.9999694824219
+      ],
+      "after": [
+        275.00018310546875,
+        445.9999694824219
+      ],
+      "forward_backward_error_px": 0.00018563118646852672,
+      "age_frames": 11
+    },
+    {
+      "track_id": 959,
+      "before": [
+        561.997802734375,
+        300.9979553222656
+      ],
+      "after": [
+        561.9978637695312,
+        300.998046875
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 960,
+      "before": [
+        414.00006103515625,
+        382.9985046386719
+      ],
+      "after": [
+        414.00006103515625,
+        382.9987487792969
+      ],
+      "forward_backward_error_px": 0.00015560972678940743,
+      "age_frames": 11
+    },
+    {
+      "track_id": 961,
+      "before": [
+        478.999267578125,
+        400.9991149902344
+      ],
+      "after": [
+        478.9995422363281,
+        400.9992980957031
+      ],
+      "forward_backward_error_px": 0.000152587890625,
+      "age_frames": 11
+    },
+    {
+      "track_id": 962,
+      "before": [
+        647.0026245117188,
+        382.9991760253906
+      ],
+      "after": [
+        647.002685546875,
+        382.9992370605469
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 963,
+      "before": [
+        486.0001220703125,
+        410.00091552734375
+      ],
+      "after": [
+        486.00018310546875,
+        410.0009460449219
+      ],
+      "forward_backward_error_px": 9.650505671743304e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 964,
+      "before": [
+        1035.0,
+        308.0000305175781
+      ],
+      "after": [
+        1034.999755859375,
+        308.0000305175781
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 966,
+      "before": [
+        259.9997253417969,
+        254.00067138671875
+      ],
+      "after": [
+        259.9997253417969,
+        254.00067138671875
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 967,
+      "before": [
+        703.9998168945312,
+        259.0030517578125
+      ],
+      "after": [
+        703.9998168945312,
+        259.0030517578125
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 968,
+      "before": [
+        89.0011215209961,
+        370.99700927734375
+      ],
+      "after": [
+        89.0011215209961,
+        370.99700927734375
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 969,
+      "before": [
+        738.000244140625,
+        308.0001525878906
+      ],
+      "after": [
+        738.0003051757812,
+        308.0000915527344
+      ],
+      "forward_backward_error_px": 0.0001100326917367056,
+      "age_frames": 11
+    },
+    {
+      "track_id": 971,
+      "before": [
+        1009.0029907226562,
+        458.0015869140625
+      ],
+      "after": [
+        1009.0028076171875,
+        458.00201416015625
+      ],
+      "forward_backward_error_px": 0.0005830375012010336,
+      "age_frames": 11
+    },
+    {
+      "track_id": 972,
+      "before": [
+        174.00062561035156,
+        220.99887084960938
+      ],
+      "after": [
+        174.000732421875,
+        220.99891662597656
+      ],
+      "forward_backward_error_px": 0.0001220703125,
+      "age_frames": 11
+    },
+    {
+      "track_id": 973,
+      "before": [
+        362.0000305175781,
+        371.9999694824219
+      ],
+      "after": [
+        361.9999694824219,
+        372.0000305175781
+      ],
+      "forward_backward_error_px": 4.31583721365314e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 974,
+      "before": [
+        100.00048065185547,
+        325.0006103515625
+      ],
+      "after": [
+        100.00047302246094,
+        325.0005798339844
+      ],
+      "forward_backward_error_px": 6.291359750321135e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 975,
+      "before": [
+        626.0038452148438,
+        449.005126953125
+      ],
+      "after": [
+        626.00390625,
+        449.00506591796875
+      ],
+      "forward_backward_error_px": 9.1552734375e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 977,
+      "before": [
+        99.99961853027344,
+        259.0061950683594
+      ],
+      "after": [
+        99.99961853027344,
+        259.0062255859375
+      ],
+      "forward_backward_error_px": 3.4119690099032596e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 978,
+      "before": [
+        520.0,
+        447.99945068359375
+      ],
+      "after": [
+        520.0,
+        447.99945068359375
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 979,
+      "before": [
+        738.0,
+        294.00006103515625
+      ],
+      "after": [
+        738.0000610351562,
+        294.0000915527344
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 980,
+      "before": [
+        395.99835205078125,
+        323.00042724609375
+      ],
+      "after": [
+        395.9983215332031,
+        323.00042724609375
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 981,
+      "before": [
+        1028.006103515625,
+        225.0008087158203
+      ],
+      "after": [
+        1028.006103515625,
+        225.00082397460938
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 982,
+      "before": [
+        596.9998168945312,
+        249.9998321533203
+      ],
+      "after": [
+        596.999755859375,
+        249.9998016357422
+      ],
+      "forward_backward_error_px": 7.62939453125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 983,
+      "before": [
+        721.999755859375,
+        332.0
+      ],
+      "after": [
+        721.9998168945312,
+        331.9999694824219
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 984,
+      "before": [
+        155.9978790283203,
+        476.0018615722656
+      ],
+      "after": [
+        155.9978790283203,
+        476.00189208984375
+      ],
+      "forward_backward_error_px": 4.31583721365314e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 985,
+      "before": [
+        1077.0008544921875,
+        304.9991760253906
+      ],
+      "after": [
+        1077.000244140625,
+        304.99969482421875
+      ],
+      "forward_backward_error_px": 0.0003662109375,
+      "age_frames": 11
+    },
+    {
+      "track_id": 986,
+      "before": [
+        165.00537109375,
+        445.99853515625
+      ],
+      "after": [
+        165.0053253173828,
+        445.9986267089844
+      ],
+      "forward_backward_error_px": 9.1552734375e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 987,
+      "before": [
+        648.9999389648438,
+        372.9962463378906
+      ],
+      "after": [
+        648.9993286132812,
+        372.996337890625
+      ],
+      "forward_backward_error_px": 0.00030669785337522626,
+      "age_frames": 11
+    },
+    {
+      "track_id": 988,
+      "before": [
+        578.9998779296875,
+        258.99847412109375
+      ],
+      "after": [
+        579.0007934570312,
+        258.99853515625
+      ],
+      "forward_backward_error_px": 0.001222228049300611,
+      "age_frames": 11
+    },
+    {
+      "track_id": 989,
+      "before": [
+        912.0045776367188,
+        298.9942626953125
+      ],
+      "after": [
+        912.0045776367188,
+        298.9942626953125
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 990,
+      "before": [
+        358.0025939941406,
+        485.0096130371094
+      ],
+      "after": [
+        358.0025939941406,
+        485.00970458984375
+      ],
+      "forward_backward_error_px": 8.63167442730628e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 991,
+      "before": [
+        557.006103515625,
+        382.9974060058594
+      ],
+      "after": [
+        557.0029296875,
+        382.99755859375
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 992,
+      "before": [
+        905.9996948242188,
+        258.0040283203125
+      ],
+      "after": [
+        905.9996948242188,
+        258.0040283203125
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 993,
+      "before": [
+        569.9995727539062,
+        324.0029296875
+      ],
+      "after": [
+        569.99951171875,
+        324.0030517578125
+      ],
+      "forward_backward_error_px": 0.00030517578125,
+      "age_frames": 11
+    },
+    {
+      "track_id": 994,
+      "before": [
+        244.00120544433594,
+        478.0001220703125
+      ],
+      "after": [
+        244.0012664794922,
+        478.0001220703125
+      ],
+      "forward_backward_error_px": 8.217109279939905e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 995,
+      "before": [
+        231.00015258789062,
+        381.9993896484375
+      ],
+      "after": [
+        231.0006103515625,
+        381.9990234375
+      ],
+      "forward_backward_error_px": 0.0012513137189671397,
+      "age_frames": 11
+    },
+    {
+      "track_id": 996,
+      "before": [
+        130.0006103515625,
+        410.0007629394531
+      ],
+      "after": [
+        130.00064086914062,
+        410.0007629394531
+      ],
+      "forward_backward_error_px": 4.31583721365314e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 997,
+      "before": [
+        411.0015869140625,
+        221.00033569335938
+      ],
+      "after": [
+        411.0015869140625,
+        221.00033569335938
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 998,
+      "before": [
+        976.0001831054688,
+        301.0003967285156
+      ],
+      "after": [
+        976.0001220703125,
+        301.0003356933594
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 999,
+      "before": [
+        636.9998779296875,
+        230.0006561279297
+      ],
+      "after": [
+        636.9998779296875,
+        230.0006561279297
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 1000,
+      "before": [
+        125.99659729003906,
+        257.99713134765625
+      ],
+      "after": [
+        125.99701690673828,
+        257.99774169921875
+      ],
+      "forward_backward_error_px": 1.52587890625e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 1001,
+      "before": [
+        675.999755859375,
+        254.0008087158203
+      ],
+      "after": [
+        675.999755859375,
+        254.0008087158203
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 1002,
+      "before": [
+        962.997314453125,
+        298.9992980957031
+      ],
+      "after": [
+        962.9971923828125,
+        298.9993896484375
+      ],
+      "forward_backward_error_px": 0.00013647876039613038,
+      "age_frames": 11
+    },
+    {
+      "track_id": 1003,
+      "before": [
+        321.0012512207031,
+        305.9981689453125
+      ],
+      "after": [
+        321.0012512207031,
+        305.9981689453125
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 11
+    },
+    {
+      "track_id": 1004,
+      "before": [
+        622.0000610351562,
+        308.0005187988281
+      ],
+      "after": [
+        622.0000610351562,
+        308.00054931640625
+      ],
+      "forward_backward_error_px": 0.0001100326917367056,
+      "age_frames": 11
+    },
+    {
+      "track_id": 1005,
+      "before": [
+        693.0051879882812,
+        378.0011291503906
+      ],
+      "after": [
+        693.0048828125,
+        378.0003967285156
+      ],
+      "forward_backward_error_px": 3.0517578125e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 1006,
+      "before": [
+        231.00405883789062,
+        457.000244140625
+      ],
+      "after": [
+        231.00401306152344,
+        457.0002136230469
+      ],
+      "forward_backward_error_px": 9.770392352947965e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 1007,
+      "before": [
+        155.99945068359375,
+        457.99993896484375
+      ],
+      "after": [
+        155.99945068359375,
+        458.0
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 11
+    },
+    {
+      "track_id": 1009,
+      "before": [
+        294.9985656738281,
+        307.00042724609375
+      ],
+      "after": [
+        294.9985656738281,
+        307.00042724609375
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 10
+    },
+    {
+      "track_id": 1011,
+      "before": [
+        411.00189208984375,
+        230.9998779296875
+      ],
+      "after": [
+        411.00189208984375,
+        230.9998779296875
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 10
+    },
+    {
+      "track_id": 1015,
+      "before": [
+        1025.000244140625,
+        382.9991455078125
+      ],
+      "after": [
+        1025.000244140625,
+        382.9991760253906
+      ],
+      "forward_backward_error_px": 9.1552734375e-05,
+      "age_frames": 9
+    },
+    {
+      "track_id": 1016,
+      "before": [
+        274.0016784667969,
+        306.9949645996094
+      ],
+      "after": [
+        274.001708984375,
+        306.9949951171875
+      ],
+      "forward_backward_error_px": 6.823938019806519e-05,
+      "age_frames": 9
+    },
+    {
+      "track_id": 1023,
+      "before": [
+        508.9997863769531,
+        384.0002136230469
+      ],
+      "after": [
+        508.999755859375,
+        384.00018310546875
+      ],
+      "forward_backward_error_px": 0.00022217132209334522,
+      "age_frames": 6
+    },
+    {
+      "track_id": 1024,
+      "before": [
+        177.99942016601562,
+        258.9930114746094
+      ],
+      "after": [
+        177.9994354248047,
+        258.99298095703125
+      ],
+      "forward_backward_error_px": 0.00014395112521015108,
+      "age_frames": 6
+    },
+    {
+      "track_id": 1025,
+      "before": [
+        989.0049438476562,
+        369.99957275390625
+      ],
+      "after": [
+        989.0052490234375,
+        369.99920654296875
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 5
+    },
+    {
+      "track_id": 1027,
+      "before": [
+        988.0040893554688,
+        456.0026550292969
+      ],
+      "after": [
+        988.0042114257812,
+        456.0026550292969
+      ],
+      "forward_backward_error_px": 8.63167442730628e-05,
+      "age_frames": 5
+    },
+    {
+      "track_id": 1028,
+      "before": [
+        1070.0010986328125,
+        380.00286865234375
+      ],
+      "after": [
+        1070.0010986328125,
+        380.0028991699219
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 5
+    },
+    {
+      "track_id": 1029,
+      "before": [
+        1071.9991455078125,
+        448.0003356933594
+      ],
+      "after": [
+        1071.9991455078125,
+        448.00042724609375
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 5
+    },
+    {
+      "track_id": 1031,
+      "before": [
+        791.0,
+        520.9998168945312
+      ],
+      "after": [
+        791.0005493164062,
+        520.9957885742188
+      ],
+      "forward_backward_error_px": 0.00030517578125,
+      "age_frames": 4
+    },
+    {
+      "track_id": 1032,
+      "before": [
+        1113.001220703125,
+        521.001953125
+      ],
+      "after": [
+        1113.001220703125,
+        521.001953125
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 4
+    },
+    {
+      "track_id": 1033,
+      "before": [
+        861.9945068359375,
+        533.0012817382812
+      ],
+      "after": [
+        861.9945068359375,
+        533.0012817382812
+      ],
+      "forward_backward_error_px": 6.103515625e-05,
+      "age_frames": 4
+    },
+    {
+      "track_id": 1034,
+      "before": [
+        1066.0001220703125,
+        521.0001220703125
+      ],
+      "after": [
+        1066.0001220703125,
+        521.0001220703125
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 4
+    },
+    {
+      "track_id": 1035,
+      "before": [
+        505.9999694824219,
+        408.99993896484375
+      ],
+      "after": [
+        505.99993896484375,
+        409.0000915527344
+      ],
+      "forward_backward_error_px": 4.31583721365314e-05,
+      "age_frames": 3
+    },
+    {
+      "track_id": 1036,
+      "before": [
+        971.0,
+        521.0
+      ],
+      "after": [
+        971.0,
+        521.0
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 3
+    },
+    {
+      "track_id": 1037,
+      "before": [
+        224.0,
+        560.0
+      ],
+      "after": [
+        224.0,
+        560.0
+      ],
+      "forward_backward_error_px": 0.0,
+      "age_frames": 3
+    },
+    {
+      "track_id": 1038,
+      "before": [
+        452.0,
+        484.0
+      ],
+      "after": [
+        452.000244140625,
+        483.9999084472656
+      ],
+      "forward_backward_error_px": 0.0004013960715383291,
+      "age_frames": 2
+    }
+  ],
+  "changed_regions": [
+    [
+      469,
+      508,
+      27,
+      31
+    ]
+  ],
+  "changed_pixel_fraction": 0.00036024305555555554,
+  "motion_scale": 1.0000000187679752,
+  "affine_inlier_fraction": 1.0,
+  "tracking_reset": false,
+  "uncertainty": [
+    "OCR/flow scores are uncalibrated; no causal action is established",
+    "Unobserved time between samples remains uncertain"
+  ],
+  "perception_confidence": null,
+  "transition_confidence": null,
+  "procedure_confidence": null,
+  "evidence_class": "pixel_measurement_not_semantic_verdict"
+}

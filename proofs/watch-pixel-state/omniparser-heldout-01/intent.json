@@ -1,0 +1,11 @@
+{
+  "model": "microsoft/OmniParser-v2.0",
+  "revision": "6600256cb0f1b07651e3bc86166196307bad7e2d",
+  "device": "cpu",
+  "frames": 61,
+  "timeline_sha256": "8a4a63aec433bc2cb5150bf479f6155815d86249111fe97299d0ab31f0999bf6",
+  "threshold": 0.25,
+  "caption_model": null,
+  "license": "upstream icon_detect/LICENSE; weights not redistributed",
+  "warning": "Detector boxes/scores are uncalibrated; neither cursor identity nor tool function inferred"
+}

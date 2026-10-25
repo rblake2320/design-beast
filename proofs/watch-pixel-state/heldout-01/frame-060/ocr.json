@@ -1,0 +1,5 @@
+{
+  "frame_sha256": "0b503bfd31299cd4eb8f648aa04d38b9bd72ffcadcc29e40973c336c5f7bb280",
+  "tsv": "level\tpage_num\tblock_num\tpar_num\tline_num\tword_num\tleft\ttop\twidth\theight\tconf\ttext\r\n1\t1\t0\t0\t0\t0\t0\t0\t1280\t720\t-1\t\r\n2\t1\t1\t0\t0\t0\t556\t197\t68\t26\t-1\t\r\n3\t1\t1\t1\t0\t0\t556\t197\t68\t26\t-1\t\r\n4\t1\t1\t1\t1\t0\t556\t197\t68\t26\t-1\t\r\n5\t1\t1\t1\t1\t1\t556\t197\t68\t26\t26.150352\toz\r\n2\t1\t2\t0\t0\t0\t570\t216\t161\t29\t-1\t\r\n3\t1\t2\t1\t0\t0\t570\t216\t161\t29\t-1\t\r\n4\t1\t2\t1\t1\t0\t570\t216\t161\t29\t-1\t\r\n5\t1\t2\t1\t1\t1\t570\t212\t58\t37\t7.181961\tZs\r\n5\t1\t2\t1\t1\t2\t677\t212\t54\t37\t51.331211\tFe\r\n2\t1\t3\t0\t0\t0\t629\t283\t69\t37\t-1\t\r\n3\t1\t3\t1\t0\t0\t629\t283\t69\t37\t-1\t\r\n4\t1\t3\t1\t1\t0\t629\t283\t69\t37\t-1\t\r\n5\t1\t3\t1\t1\t1\t629\t283\t69\t37\t0.000000\t~rd\r\n",
+  "evidence_class": "unverified_ocr"
+}

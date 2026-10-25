@@ -1,0 +1,15 @@
+{
+  "source_ms": 3000,
+  "sha256": "5012379a442ea04bfa578651634c010509f4a8b1be20ca8a2aef5f181fd908c6",
+  "state": {
+    "screen_type": "3D modeling software interface",
+    "view": "User Perspective (Local) showing a low-poly human figure centered in view.",
+    "content": "A purple female character model with green neck and legs, standing upright. No other objects visible.",
+    "overlays": "White pencil cursor hovering near the model. No active selection or drawn marks on the model.",
+    "visible_text": "User Perspective (Local), Female 2, Sculpting, Global, Radius: 35 px, Factor: 0.750, Drag: Select Box.",
+    "uncertainty": "None. All visible elements are clearly rendered and labeled."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.858014899989939,
+  "provider_cost_usd": 0
+}

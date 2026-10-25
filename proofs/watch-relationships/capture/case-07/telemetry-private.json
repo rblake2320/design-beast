@@ -1,0 +1,41 @@
+{
+  "events": [
+    {
+      "kind": "down",
+      "time": 1203.5,
+      "trusted": true,
+      "target": "save",
+      "key": "s",
+      "x": null,
+      "y": null
+    },
+    {
+      "kind": "up",
+      "time": 1568.8999999761581,
+      "trusted": true,
+      "target": "save",
+      "key": "s",
+      "x": null,
+      "y": null
+    },
+    {
+      "kind": "activate",
+      "time": 1568.8999999761581,
+      "trusted": true,
+      "target": "save",
+      "key": "s",
+      "x": null,
+      "y": null
+    },
+    {
+      "kind": "result:Saved",
+      "time": 1824.8999999761581,
+      "trusted": false,
+      "target": null,
+      "key": null,
+      "x": null,
+      "y": null
+    }
+  ],
+  "origin": 1789868299306.8
+}

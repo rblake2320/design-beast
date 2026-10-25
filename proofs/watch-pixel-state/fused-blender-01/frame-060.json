@@ -1,0 +1,46 @@
+{
+  "clip_ms": 30000,
+  "frame_sha256": "6621e4252675666bc4e4822285105ba1abaccdaf198d440ab679fa08d6dc2815",
+  "pixel_state_sha256": "6934ed14939381b182fa289cbdaa6904b1a0e50b0834ce71bcc783314f38d6f3",
+  "ui_regions_sha256": "585871daa4a5e114dbba06fc9959280b9b10f1fd66ea82250be2c2f330a3ec7b",
+  "ui_regions": [],
+  "temporal_windows": [
+    {
+      "window": 6,
+      "sha256": "b8453376191988faa17430ec79e067dbfd6039501e29917a3fe5acf2ee24c1c6",
+      "start_ms": 22500,
+      "end_ms": 30000,
+      "distance": 0.007342815399169922
+    }
+  ],
+  "inspection_recommendation": {
+    "schema_version": "beast.watch.inspection/v1",
+    "requested_action": "compare_states",
+    "target_interval": {
+      "start_ms": 29500,
+      "end_ms": 30000
+    },
+    "target_regions": [
+      {
+        "x": 0.74375,
+        "y": 0.7611111111111111,
+        "width": 0.0171875,
+        "height": 0.05694444444444444
+      }
+    ],
+    "predicted_value_of_inspection": 0.0,
+    "confidence": {
+      "perception": 0.0,
+      "transition": 0.0,
+      "procedure": 0.0
+    },
+    "uncertainty_reasons": [
+      "OCR/flow scores are uncalibrated; no causal action is established",
+      "Unobserved time between samples remains uncertain",
+      "Scheduling heuristic is uncalibrated; no evidence promotion."
+    ],
+    "option_readout": null
+  },
+  "confidence_status": "zero policy inputs mean not established; not calibrated probabilities",
+  "evidence_class": "unverified_multichannel_visual_state"
+}

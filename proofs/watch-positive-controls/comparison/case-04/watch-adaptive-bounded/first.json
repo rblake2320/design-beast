@@ -1,0 +1,71 @@
+{
+  "schema": "beast.watch.inspection-receipt/v1",
+  "status": "intent",
+  "context": {
+    "source_interval": {
+      "start_ms": 0,
+      "end_ms": 2280
+    },
+    "candidate_interval": {
+      "start_ms": 0,
+      "end_ms": 1250
+    },
+    "confidence": {
+      "perception": 0.0,
+      "transition": 0.0,
+      "procedure": 0.0
+    },
+    "missing_evidence": true,
+    "rapid_action": false,
+    "completed_inspections": 0
+  },
+  "decision": {
+    "schema_version": "beast.watch.inspection/v1",
+    "requested_action": "increase_density",
+    "target_interval": {
+      "start_ms": 0,
+      "end_ms": 1250
+    },
+    "target_regions": [],
+    "predicted_value_of_inspection": 0.5,
+    "confidence": {
+      "perception": 0.0,
+      "transition": 0.0,
+      "procedure": 0.0
+    },
+    "uncertainty_reasons": [
+      "Causality and reproducibility require independent evidence."
+    ],
+    "option_readout": null
+  },
+  "source_sha256": "dc815bd2fb0e2070af2ad3f1501e713dfef764b26f57ca524599f655a53334f6",
+  "timeline_before_sha256": "fc8e7a08423687f257953911bda305b346f3c1ed10371d0ed230d54783f12565",
+  "plan": {
+    "level": 3,
+    "center_seconds": 0.625,
+    "before_seconds": 0.625,
+    "after_seconds": 0.625,
+    "fps": 12.0,
+    "direction": "both",
+    "timestamps": [
+      0.0,
+      0.083,
+      0.167,
+      0.25,
+      0.333,
+      0.417,
+      0.5,
+      0.583,
+      0.667,
+      0.75,
+      0.833,
+      0.917,
+      1.0,
+      1.083,
+      1.167,
+      1.25
+    ]
+  },
+  "frame_budget": 16,
+  "max_seconds": 60.0
+}

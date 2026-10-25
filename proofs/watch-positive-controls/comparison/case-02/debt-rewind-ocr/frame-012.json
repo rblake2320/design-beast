@@ -1,0 +1,121 @@
+{
+  "frame": {
+    "source_seconds": 1.5,
+    "file": "frames/f_000000001500.jpg",
+    "sha256": "fe1ede8d98d7fce2ffce5f6e2cecf3e7b0c556ecd794e6c84c8d75bbaed81844"
+  },
+  "words": [
+    {
+      "text": "Training",
+      "box": [
+        24,
+        29,
+        85,
+        22
+      ]
+    },
+    {
+      "text": "workspace",
+      "box": [
+        116,
+        29,
+        115,
+        22
+      ]
+    },
+    {
+      "text": "\u2014",
+      "box": [
+        237,
+        39,
+        26,
+        2
+      ]
+    },
+    {
+      "text": "local",
+      "box": [
+        268,
+        29,
+        49,
+        17
+      ]
+    },
+    {
+      "text": "test",
+      "box": [
+        325,
+        29,
+        38,
+        17
+      ]
+    },
+    {
+      "text": "application",
+      "box": [
+        370,
+        29,
+        114,
+        22
+      ]
+    },
+    {
+      "text": "Status:",
+      "box": [
+        838,
+        188,
+        72,
+        17
+      ]
+    },
+    {
+      "text": "Unsaved",
+      "box": [
+        920,
+        188,
+        92,
+        17
+      ]
+    },
+    {
+      "text": "ES",
+      "box": [
+        90,
+        430,
+        172,
+        90
+      ]
+    },
+    {
+      "text": "Key",
+      "box": [
+        82,
+        665,
+        43,
+        23
+      ]
+    },
+    {
+      "text": "S",
+      "box": [
+        143,
+        665,
+        13,
+        18
+      ]
+    },
+    {
+      "text": "DOWN",
+      "box": [
+        174,
+        665,
+        59,
+        18
+      ]
+    }
+  ],
+  "input_proposal": {
+    "kind": "key_down",
+    "key": "s"
+  }
+}

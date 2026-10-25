@@ -1,0 +1,15 @@
+{
+  "source_ms": 10000,
+  "sha256": "8f17d2efc2bd95986380d924f10c3ce2bf584029e55062ba44f2f6ddac8c57fb",
+  "state": {
+    "screen_type": "Blender 3D viewport",
+    "view": "Right Orthographic (Local) view, showing a single human figure centered in the grid",
+    "content": "A female character model (Female 2) with purple skin, green accents on limbs, and a visible arm/leg structure. Positioned vertically in the center.",
+    "overlays": "Grid lines, green/red selection handles on the model, white pencil cursor, and a small green dot near the top right.",
+    "visible_text": "Right Orthographic (Local), (1) Female 2, Sculpting, Global, 35 px, Factor, 0.50, Drag, Select Box, Scene Collection, Bulk Dude 1, Fat Dude 2, Female 1, Female 2",
+    "uncertainty": "No visible uncertainty; all elements are clearly rendered in the viewport."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.962098899995908,
+  "provider_cost_usd": 0
+}

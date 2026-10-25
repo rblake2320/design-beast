@@ -1,0 +1,60 @@
+{
+  "observation": {
+    "ms": 2592,
+    "sha256": "f95e115724bc9d9cd1afea845a72d76fb24aa3967041b7158a6061a712f9740c",
+    "file": "frames/f_000000002592.jpg",
+    "modality": null,
+    "key": null,
+    "control": null,
+    "control_bounds": null,
+    "pointer": [
+      9,
+      88
+    ],
+    "result": null
+  },
+  "words": [
+    {
+      "text": "Local",
+      "box": [
+        24,
+        29,
+        61,
+        19
+      ],
+      "line": [
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "text": "workflow",
+      "box": [
+        93,
+        29,
+        102,
+        19
+      ],
+      "line": [
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "text": "@",
+      "box": [
+        0,
+        79,
+        20,
+        20
+      ],
+      "line": [
+        "2",
+        "1",
+        "1"
+      ]
+    }
+  ]
+}

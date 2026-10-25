@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:20:07.109216Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D viewport\",\n  \"view\": \"User Perspective (Local), centered on 'Female 2' model.\",\n  \"content\": \"A humanoid 3D model, 'Female 2', with pink torso, green limbs, and orange arm highlights. No other objects visible.\",\n  \"overlays\": \"White arrow cursor. Selected object highlighted with orange edges. No active popups or tool overlays.\",\n  \"visible_text\": \"User Perspective (Local), (1) Female 2, Sculpting, ViewLayer, Scene Collection, Gravity, Simulation, Keying Sets, Rigid Body World, Light Probes, Animation, Custom Properties.\",\n  \"uncertainty\": \"No uncertainty. All visible elements are clearly defined and unambiguous in this single frame.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4637137700,
+  "load_duration": 3290943100,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 394140000,
+  "eval_count": 163,
+  "eval_duration": 911487000
+}

@@ -1,0 +1,41 @@
+{
+  "events": [
+    {
+      "kind": "down",
+      "time": 1226.800000011921,
+      "trusted": true,
+      "target": "reset",
+      "key": null,
+      "x": 355.7900085449219,
+      "y": 452.5
+    },
+    {
+      "kind": "up",
+      "time": 1588.300000011921,
+      "trusted": true,
+      "target": "reset",
+      "key": null,
+      "x": 355.7900085449219,
+      "y": 452.5
+    },
+    {
+      "kind": "activate",
+      "time": 1588.4000000059605,
+      "trusted": true,
+      "target": "reset",
+      "key": null,
+      "x": 355,
+      "y": 452
+    },
+    {
+      "kind": "result:Reset",
+      "time": 1842.300000011921,
+      "trusted": false,
+      "target": null,
+      "key": null,
+      "x": null,
+      "y": null
+    }
+  ],
+  "origin": 1789868275497.3
+}

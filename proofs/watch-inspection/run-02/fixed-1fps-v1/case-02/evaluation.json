@@ -1,0 +1,38 @@
+{
+  "backend": "fixed-1fps-v1",
+  "case_id": "case-02",
+  "stratum": "brief_transition",
+  "source_kind": "prerecorded",
+  "source_sha256": "34eab217152db1bf2d29b5014d38aa8b650aa1f37dae27cb98c28f81a216768d",
+  "evidence_class": "uncertain_observation",
+  "gates": {
+    "transition_passed": false,
+    "action_supports_cause": false,
+    "reproducibility_passed": false,
+    "transition_evidence": [],
+    "causal_evidence": [],
+    "reproducibility_evidence": []
+  },
+  "confidence": {
+    "perception": 0.5,
+    "transition": 0.5,
+    "procedure": 0.0
+  },
+  "inspections": 1,
+  "frames": 7,
+  "elapsed_seconds": 0.2894862999964971,
+  "provider_cost": 0,
+  "provider_cost_unit": "USD",
+  "gpu_calls": 0,
+  "compute_budget_exceeded": false,
+  "true_positive": false,
+  "false_acceptance": false,
+  "miss": true,
+  "procedure_false_acceptance": false,
+  "brier": {
+    "perception": 0.25,
+    "transition": 0.25,
+    "procedure": 0.0
+  },
+  "inspection_receipt": "fixed-1fps-v1/case-02/inspection.result.json"
+}

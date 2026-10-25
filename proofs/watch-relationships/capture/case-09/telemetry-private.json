@@ -1,0 +1,68 @@
+{
+  "events": [
+    {
+      "kind": "down",
+      "time": 923,
+      "trusted": true,
+      "target": "save",
+      "key": null,
+      "x": 130.4600067138672,
+      "y": 452.5
+    },
+    {
+      "kind": "up",
+      "time": 1282.5,
+      "trusted": true,
+      "target": "save",
+      "key": null,
+      "x": 130.4600067138672,
+      "y": 452.5
+    },
+    {
+      "kind": "activate",
+      "time": 1282.699999988079,
+      "trusted": true,
+      "target": "save",
+      "key": null,
+      "x": 130,
+      "y": 452
+    },
+    {
+      "kind": "down",
+      "time": 1825.5,
+      "trusted": true,
+      "target": "inspect",
+      "key": null,
+      "x": 605.5800170898438,
+      "y": 452.5
+    },
+    {
+      "kind": "up",
+      "time": 2187.9000000059605,
+      "trusted": true,
+      "target": "inspect",
+      "key": null,
+      "x": 605.5800170898438,
+      "y": 452.5
+    },
+    {
+      "kind": "activate",
+      "time": 2188,
+      "trusted": true,
+      "target": "inspect",
+      "key": null,
+      "x": 605,
+      "y": 452
+    },
+    {
+      "kind": "result:Saved",
+      "time": 3483.699999988079,
+      "trusted": false,
+      "target": null,
+      "key": null,
+      "x": null,
+      "y": null
+    }
+  ],
+  "origin": 1789868308887.5
+}

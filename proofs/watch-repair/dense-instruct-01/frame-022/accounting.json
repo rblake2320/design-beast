@@ -1,0 +1,33 @@
+{
+  "frame": {
+    "id": "frame-0023",
+    "file": "frames/f_000000011000.jpg",
+    "source_seconds": 11.0,
+    "source_time": "00:00:11.000",
+    "clip_seconds": 11.0,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "00bf7f3f3f3f3f01",
+    "sha256": "efed05565537cf74c4723eb79cca74dfd82c029b4d9a53e98fae909d8e9581fa",
+    "change_from_previous": 0,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "result": {
+    "source_ms": 11000,
+    "sha256": "efed05565537cf74c4723eb79cca74dfd82c029b4d9a53e98fae909d8e9581fa",
+    "state": {
+      "screen_type": "3D viewport",
+      "view": "Right Orthographic (Local), showing 'Female 2' model centered.",
+      "content": "A purple-pink humanoid mesh with green limbs, standing upright. No visible textures or materials applied.",
+      "overlays": "Selection box around the torso. Red X-axis gizmo highlighted. Tool icon for sculpting mode active.",
+      "visible_text": "Sculpting, Right Orthographic (Local), Female 2, Object Mode, Global, Radius 35 px, Factor 0.750, Select Box.",
+      "uncertainty": "No uncertainty; screenshot shows clear state of the scene and interface."
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 4.607730799994897,
+    "provider_cost_usd": 0
+  }
+}

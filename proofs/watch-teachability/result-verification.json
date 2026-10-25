@@ -1,0 +1,13 @@
+{
+  "output_sha256": "29470e6e87170eda5b584ba0455ac6bc6397c2de1ab5f1516109b5aab8c26c7d",
+  "expected_words": "Front orthographic view appears.",
+  "recognized_words": "Front orthographic view appears.",
+  "word_sequence_similarity": 1.0,
+  "audio_rms": 0.07289725538916146,
+  "source_region_pixel_errors": [
+    0.025487919560185184
+  ],
+  "held_source_pixel_errors": [],
+  "asr": "faster-whisper base.en CPU int8; transcription is fallible",
+  "boundary": "1280x720 fixture; speech-content check, not semantic correctness of explanation"
+}

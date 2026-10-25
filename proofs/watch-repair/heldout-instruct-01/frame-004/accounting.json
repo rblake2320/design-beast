@@ -1,0 +1,36 @@
+{
+  "frame": {
+    "id": "frame-0005",
+    "file": "frames/f_000000002000.jpg",
+    "source_seconds": 2.0,
+    "source_time": "00:00:02.000",
+    "clip_seconds": 2.0,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "0003033fbfbfe7ff",
+    "sha256": "dd139e2981d70ae206c0bbab87dc621ea57d8f18ce70a78f3a6f833066cde163",
+    "change_from_previous": 1,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "ocr_status": "observed_unverified",
+  "result": {
+    "clip_ms": 2000,
+    "source_ms": 302000,
+    "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+    "sha256": "dd139e2981d70ae206c0bbab87dc621ea57d8f18ce70a78f3a6f833066cde163",
+    "state": {
+      "screen_type": "video capture",
+      "view": "medium close-up of a man centered in frame, facing camera directly.",
+      "content": "Man with dark hair and black shirt. Behind him: a black desk lamp left, green plant right, white wall background. Microphone visible at bottom center.",
+      "overlays": "",
+      "visible_text": "",
+      "uncertainty": ""
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 4.404219599993667,
+    "provider_cost_usd": 0
+  }
+}

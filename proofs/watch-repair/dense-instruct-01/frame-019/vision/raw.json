@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:19:00.944719Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D viewport\",\n  \"view\": \"Right Orthographic (Local), showing 'Female 2' model centered.\",\n  \"content\": \"A stylized humanoid figure named 'Female 2', mostly purple with green accents on neck, legs, and feet. Mesh visible in wireframe mode.\",\n  \"overlays\": \"White pencil cursor near the model. Blue selection line along the model's torso. No active tool overlays visible.\",\n  \"visible_text\": \"Right Orthographic (Local), (1) Female 2, Object Mode, Sculpting, ViewLayer, Scene Collection, Gravity, Simulation, Keying Sets, Rigid Body World, Light Probes, Animation, Custom Properties, 5.0.1\",\n  \"uncertainty\": \"No visible uncertainty indicators or incomplete elements.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4633606700,
+  "load_duration": 3243049100,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 409906000,
+  "eval_count": 171,
+  "eval_duration": 941164000
+}

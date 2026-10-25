@@ -1,0 +1,19 @@
+{
+  "labels_sha256": "9f7b26a9efc0eb548b514c3f21860b56aaf0a7d1d129ea74e747bd089e324017",
+  "report_sha256": "e60cb8172e79259dcd2a3a850270989e5b69d3b30ea2b06f269991b1c7d4f4e3",
+  "tally": {
+    "watch-adaptive-bounded": {
+      "recovered_positive_cases": 3,
+      "false_input_cases": 0,
+      "correct_negative_cases": 1
+    },
+    "debt-rewind": {
+      "recovered_positive_cases": 3,
+      "false_input_cases": 0,
+      "correct_negative_cases": 1
+    }
+  },
+  "rewind_graduation": "FAIL",
+  "unit": "case-level recognition of explicit visible input indicators, not number of frames or causal chains",
+  "publication_allowed": false
+}

@@ -1,0 +1,12 @@
+{
+  "actual_playback": {
+    "time": 0.262526,
+    "width": 1280,
+    "height": 720
+  },
+  "seek_seconds": 10,
+  "exported_segments": 1,
+  "browser_errors": [],
+  "mobile_overflow": false,
+  "caption_author": "test operator; not automatic semantic understanding"
+}

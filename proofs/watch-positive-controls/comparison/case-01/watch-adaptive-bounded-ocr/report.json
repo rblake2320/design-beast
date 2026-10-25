@@ -1,0 +1,47 @@
+{
+  "observed_inputs": [
+    {
+      "frame": {
+        "source_seconds": 1.05,
+        "file": "frames/f_000000001050.jpg",
+        "sha256": "e5b7867ac37cb14cf0323c281af4ad63a771d7425c84df7db9fba8cf54497e12"
+      },
+      "kind": "mouse_down",
+      "key": null
+    },
+    {
+      "frame": {
+        "source_seconds": 1.167,
+        "file": "frames/f_000000001167.jpg",
+        "sha256": "d1ba82508c4e747a3d7479746d0a6426bef68a92f6bbd7a571777f7ba858d30d"
+      },
+      "kind": "mouse_down",
+      "key": null
+    },
+    {
+      "frame": {
+        "source_seconds": 1.283,
+        "file": "frames/f_000000001283.jpg",
+        "sha256": "796c7451f2043f748ba39346724cef8e30ce69523faf59a53d86ff9401fc1073"
+      },
+      "kind": "mouse_down",
+      "key": null
+    },
+    {
+      "frame": {
+        "source_seconds": 1.4,
+        "file": "frames/f_000000001400.jpg",
+        "sha256": "796c7451f2043f748ba39346724cef8e30ce69523faf59a53d86ff9401fc1073"
+      },
+      "kind": "mouse_down",
+      "key": null
+    }
+  ],
+  "ocr_calls": 16,
+  "elapsed_seconds": 2.1560000000172295,
+  "gpu_calls": 0,
+  "model_tokens": 0,
+  "publication_allowed": false,
+  "causal_chains_accepted": 0,
+  "claim": "input indicators recognized from supplied frame pixels only; semantic review required"
+}

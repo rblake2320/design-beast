@@ -1,0 +1,33 @@
+{
+  "frame": {
+    "id": "frame-0025",
+    "file": "frames/f_000000012000.jpg",
+    "source_seconds": 12.0,
+    "source_time": "00:00:12.000",
+    "clip_seconds": 12.0,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "00bf7f3f3f3f3f01",
+    "sha256": "1a41ec26ac6912f627022279893e1e2689ad6e8bc1bc6bee936ca8feb0b75140",
+    "change_from_previous": 0,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "result": {
+    "source_ms": 12000,
+    "sha256": "1a41ec26ac6912f627022279893e1e2689ad6e8bc1bc6bee936ca8feb0b75140",
+    "state": {
+      "screen_type": "3D viewport",
+      "view": "Right Orthographic (Local), showing 'Female 2' model centered.",
+      "content": "A humanoid figure with pink torso, green neck/legs, and white feet. Object is selected, shown in wireframe with color shading.",
+      "overlays": "Selection handles at center; pencil cursor near base; active tool bar with 'Sculpting' mode visible.",
+      "visible_text": "Right Orthographic (Local), (1) Female 2, Sculpting, Global, Radius 35 px, Factor 0.750, Drag: Select Box, Scene Collection, Scene, ViewLayer, Units, Gravity, Simulation, Keying Sets, Audio, Rigid Body World, Light Probes, Custom Properties.",
+      "uncertainty": "No uncertainty; all visible elements are clearly rendered and labeled."
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 4.754251000005752,
+    "provider_cost_usd": 0
+  }
+}

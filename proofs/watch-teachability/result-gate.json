@@ -1,0 +1,15 @@
+{
+  "decisions": [
+    {
+      "unit_id": "front-view-result",
+      "decision": "eligible_draft",
+      "reason": "reviewed result description only; do not imply its cause",
+      "verified_procedure": false,
+      "publication_allowed": false
+    }
+  ],
+  "eligible_units": 1,
+  "status": "draft_available",
+  "publication_allowed": false,
+  "boundary": "validates declared review and evidence links, not causal truth or reviewer identity"
+}

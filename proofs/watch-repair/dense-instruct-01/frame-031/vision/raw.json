@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:20:02.0949209Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D viewport\",\n  \"view\": \"User Perspective (Local), centered on humanoid model\",\n  \"content\": \"Humanoid model with pink torso, green limbs, and orange edges. No visible facial features or detailed textures.\",\n  \"overlays\": \"White pencil cursor, selection box outline around model, active tool icons in toolbar.\",\n  \"visible_text\": \"User Perspective (Local), Female 2, Sculpting, Global, Radius: 35 px, Factor: 0.750, Select Box, Scene Collection, ViewLayer, Scene, Camera, Object, Background S., Scene, Active Clip, Movie Clip, Units, Gravity, Simulation, Keying Sets, Audio, Rigid Body World, Light Probes, Animation, Custom Properties\",\n  \"uncertainty\": \"No uncertainty. All elements clearly rendered and labeled.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4916929800,
+  "load_duration": 3442137600,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 409659000,
+  "eval_count": 181,
+  "eval_duration": 1019562000
+}

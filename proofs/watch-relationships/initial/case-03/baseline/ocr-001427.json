@@ -1,0 +1,116 @@
+{
+  "observation": {
+    "ms": 1427,
+    "sha256": "e85bceb8943c6a3b7c3b733ccf50ada8ad1acb58e30793e0b1ea434d7280fceb",
+    "file": "frames/f_000000001427.jpg",
+    "modality": "mouse_down",
+    "key": null,
+    "control": null,
+    "control_bounds": null,
+    "pointer": [
+      132,
+      454
+    ],
+    "result": null
+  },
+  "words": [
+    {
+      "text": "Local",
+      "box": [
+        24,
+        29,
+        61,
+        19
+      ],
+      "line": [
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "text": "workflow",
+      "box": [
+        93,
+        29,
+        102,
+        19
+      ],
+      "line": [
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "text": "Es)",
+      "box": [
+        833,
+        133,
+        190,
+        91
+      ],
+      "line": [
+        "2",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "text": "td",
+      "box": [
+        60,
+        400,
+        372,
+        105
+      ],
+      "line": [
+        "3",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "text": "Mouse",
+      "box": [
+        51,
+        648,
+        75,
+        18
+      ],
+      "line": [
+        "4",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "text": "button",
+      "box": [
+        144,
+        647,
+        89,
+        19
+      ],
+      "line": [
+        "4",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "text": "DOWN",
+      "box": [
+        252,
+        648,
+        59,
+        18
+      ],
+      "line": [
+        "4",
+        "1",
+        "1"
+      ]
+    }
+  ]
+}

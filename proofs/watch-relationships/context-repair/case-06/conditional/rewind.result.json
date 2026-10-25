@@ -1,0 +1,70 @@
+{
+  "status": "completed",
+  "intent_sha256": "77d540cb2d34244d83be4880db76e148d136d83a4d2c2db03395946c5fbcb3d3",
+  "elapsed_seconds": 0.3854664000100456,
+  "charged_frames": 9,
+  "provider_cost": 0,
+  "request": {
+    "id": "seek-0003",
+    "created_unix": 1789869446.0564022,
+    "center_seconds": 2.725,
+    "center_time": "00:00:02.725",
+    "level": 3,
+    "level_name": "forensic",
+    "direction": "both",
+    "before_seconds": 0.5449999999999999,
+    "after_seconds": 0.5449999999999999,
+    "fps": 7.339449541284404,
+    "reason": "Bounded relationship experiment; Zero confidence placeholders are uncalibrated, not evidence scores.; Forward replay checks sequence, not reproducibility.",
+    "requested_frames": 9,
+    "new_frames": 7
+  },
+  "frames": [
+    {
+      "source_seconds": 2.18,
+      "file": "frames/f_000000002180.jpg",
+      "sha256": "a2a1a695e4fbb880445b33110906e1b6a754f0abc0c46f69c0fc99c6bb292165"
+    },
+    {
+      "source_seconds": 2.316,
+      "file": "frames/f_000000002316.jpg",
+      "sha256": "6fb8b208fb0fcbe5e7916d6c66f938f69c14b5be02e9bbe61797be4783b7d877"
+    },
+    {
+      "source_seconds": 2.453,
+      "file": "frames/f_000000002453.jpg",
+      "sha256": "36ef577c8e080ab7dea83b55e17c15bd181affd1b3dce5f80d12218a03861463"
+    },
+    {
+      "source_seconds": 2.589,
+      "file": "frames/f_000000002589.jpg",
+      "sha256": "9610fe43b350e67de18e023957d7b139599a6620d705a2eb218626e07aa80db4"
+    },
+    {
+      "source_seconds": 2.725,
+      "file": "frames/f_000000002725.jpg",
+      "sha256": "de5f293deb4565453937ceb543e7e2b07ba7de9ad6911cc320895956f6b004a5"
+    },
+    {
+      "source_seconds": 2.861,
+      "file": "frames/f_000000002861.jpg",
+      "sha256": "53eda061d49e797ac0d2fc2b69b5bb916dc30b09afe798e13cb60f9c0fe216b2"
+    },
+    {
+      "source_seconds": 2.998,
+      "file": "frames/f_000000002998.jpg",
+      "sha256": "de5f293deb4565453937ceb543e7e2b07ba7de9ad6911cc320895956f6b004a5"
+    },
+    {
+      "source_seconds": 3.134,
+      "file": "frames/f_000000003134.jpg",
+      "sha256": "de5f293deb4565453937ceb543e7e2b07ba7de9ad6911cc320895956f6b004a5"
+    },
+    {
+      "source_seconds": 3.27,
+      "file": "frames/f_000000003270.jpg",
+      "sha256": "53eda061d49e797ac0d2fc2b69b5bb916dc30b09afe798e13cb60f9c0fe216b2"
+    }
+  ],
+  "timeline_after_sha256": "a4a5551377580bbd84ffa5aae193a2c0988fd7c753598b4aaec4230163b6af1c"
+}

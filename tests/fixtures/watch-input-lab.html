@@ -1,0 +1,24 @@
+<!doctype html><meta charset="utf-8"><title>Input recovery test workspace</title>
+<style>
+body{margin:0;background:#15202a;color:#eef4f8;font:24px Arial}header{padding:24px;background:#213544}
+button{position:absolute;left:90px;top:430px;padding:24px 48px;font:30px Arial;border:4px solid #b5c8d5;background:#355a76;color:white;border-radius:12px}
+button:active,button.down{background:#ffcc44;color:#111;transform:translateY(3px)}
+#result{position:absolute;right:75px;top:145px;border:3px solid #8199aa;padding:35px;width:330px}
+#pointer{position:absolute;pointer-events:none;border:3px solid white;width:22px;height:22px;border-radius:50%;left:600px;top:500px}
+#input{position:absolute;left:80px;bottom:30px;font:28px monospace;color:#ffdf6c}
+</style><header>Training workspace — local test application</header>
+<button id="save">Save</button><div id="result">Status: Unsaved</div><div id="pointer"></div><div id="input"></div>
+<script>
+const button=document.querySelector('#save'), result=document.querySelector('#result'),
+pointer=document.querySelector('#pointer'), input=document.querySelector('#input');
+const config=new URLSearchParams(location.search), delay=Number(config.get('delay')||250);
+window.events=[];
+function log(kind,event){window.events.push({kind,time:performance.now(),trusted:event?.isTrusted??false,key:event?.key??null,x:event?.clientX??null,y:event?.clientY??null});}
+function save(event){log('save_requested',event);setTimeout(()=>{result.textContent='Status: Saved';result.style.background='#176344';log('result_visible',null);},delay);}
+document.addEventListener('pointermove',e=>{pointer.style.left=(e.clientX-11)+'px';pointer.style.top=(e.clientY-11)+'px';});
+button.addEventListener('pointerdown',e=>{log('pointerdown',e);input.textContent='Mouse button DOWN';button.classList.add('down');});
+button.addEventListener('pointerup',e=>{log('pointerup',e);input.textContent='';button.classList.remove('down');});
+button.addEventListener('click',save);
+document.addEventListener('keydown',e=>{if(e.key==='s'){log('keydown',e);input.textContent='Key S DOWN';}});
+document.addEventListener('keyup',e=>{if(e.key==='s'){log('keyup',e);input.textContent='';save(e);}});
+</script>

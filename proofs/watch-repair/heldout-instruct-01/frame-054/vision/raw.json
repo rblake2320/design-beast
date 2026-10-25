@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:26:39.8307631Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"video capture\",\n  \"view\": \"medium close-up, centered on man\u2019s head and torso\",\n  \"content\": \"Man with dark hair, wearing black shirt. Background: plain wall, black lamp to left, green plant to right.\",\n  \"overlays\": \"\",\n  \"visible_text\": \"\",\n  \"uncertainty\": \"None\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4309175300,
+  "load_duration": 3429382500,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 408454000,
+  "eval_count": 78,
+  "eval_duration": 433679000
+}

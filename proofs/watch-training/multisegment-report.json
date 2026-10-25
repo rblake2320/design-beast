@@ -1,0 +1,51 @@
+{
+  "source_sha256": "0bedaf7253e5dd1da6e4891783d4adf5ef04ec30a701030057a508224f943698",
+  "output_sha256": "f1b0c84b3fefc4e81508a56f2edce8045f23798a5cc26188a22e4a0a1fd67695",
+  "duration_ms": 2000,
+  "probe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_type": "video",
+        "width": 1280,
+        "height": 1108
+      }
+    ],
+    "format": {
+      "duration": "2.000000"
+    }
+  },
+  "segments": [
+    {
+      "output_start_ms": 0,
+      "output_end_ms": 1000,
+      "source_start_ms": 0,
+      "source_end_ms": 1000,
+      "caption": "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
+      "original_source_start_ms": 9000,
+      "original_source_end_ms": 10000,
+      "source_sha256": "0bedaf7253e5dd1da6e4891783d4adf5ef04ec30a701030057a508224f943698",
+      "segment_sha256": "c13e05cc511dbf23c5b8da228bb7f6495edff74e2790faf7a7c5d4bb8de525ff",
+      "review_state": "uncertain",
+      "requires_human_approval": true
+    },
+    {
+      "output_start_ms": 1000,
+      "output_end_ms": 2000,
+      "source_start_ms": 1000,
+      "source_end_ms": 2000,
+      "caption": "Actual source footage. The input causing this visual change is not established.",
+      "original_source_start_ms": 10000,
+      "original_source_end_ms": 11000,
+      "source_sha256": "0bedaf7253e5dd1da6e4891783d4adf5ef04ec30a701030057a508224f943698",
+      "segment_sha256": "73d6c43f71035dcc5c5f3e850195238549b5384e33d7d00050db15171c676398",
+      "review_state": "uncertain",
+      "requires_human_approval": true
+    }
+  ],
+  "generated_visuals": 0,
+  "publication_allowed": false,
+  "verified_procedure": false,
+  "audio": "none; captions only"
+}

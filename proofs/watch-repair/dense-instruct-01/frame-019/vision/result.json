@@ -1,0 +1,15 @@
+{
+  "source_ms": 9500,
+  "sha256": "2a62d970e1074dd48e3235167950545877cf64ef1366ad680410450f3764e2c3",
+  "state": {
+    "screen_type": "3D viewport",
+    "view": "Right Orthographic (Local), showing 'Female 2' model centered.",
+    "content": "A stylized humanoid figure named 'Female 2', mostly purple with green accents on neck, legs, and feet. Mesh visible in wireframe mode.",
+    "overlays": "White pencil cursor near the model. Blue selection line along the model's torso. No active tool overlays visible.",
+    "visible_text": "Right Orthographic (Local), (1) Female 2, Object Mode, Sculpting, ViewLayer, Scene Collection, Gravity, Simulation, Keying Sets, Rigid Body World, Light Probes, Animation, Custom Properties, 5.0.1",
+    "uncertainty": "No visible uncertainty indicators or incomplete elements."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.6617933999950765,
+  "provider_cost_usd": 0
+}

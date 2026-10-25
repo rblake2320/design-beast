@@ -1,0 +1,38 @@
+{
+  "source_sha256": "46ca6a61fa8cd4802284014fa091570e933403da1767d03f92108a6d4a78b8b1",
+  "output_sha256": "fa4281466f4b5ad73757c5f873d9a4d542e8e1546d3519cc8e980dd922ec1955",
+  "duration_ms": 2000,
+  "probe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_type": "video",
+        "width": 1280,
+        "height": 876
+      }
+    ],
+    "format": {
+      "duration": "2.000000"
+    }
+  },
+  "segments": [
+    {
+      "output_start_ms": 0,
+      "output_end_ms": 2000,
+      "source_start_ms": 9000,
+      "source_end_ms": 11000,
+      "caption": "The viewport changes scale. This footage alone does not establish which input caused it.",
+      "original_source_start_ms": 9000,
+      "original_source_end_ms": 11000,
+      "source_sha256": "46ca6a61fa8cd4802284014fa091570e933403da1767d03f92108a6d4a78b8b1",
+      "segment_sha256": "5e53517c3f1223a9f1121ccbe2974698b3390b49572191e2c20773762d1bec03",
+      "review_state": "uncertain",
+      "requires_human_approval": true
+    }
+  ],
+  "generated_visuals": 0,
+  "publication_allowed": false,
+  "verified_procedure": false,
+  "audio": "none; captions only"
+}

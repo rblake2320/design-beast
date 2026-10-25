@@ -1,0 +1,205 @@
+{
+  "arms": [
+    {
+      "arm": "debt-rewind",
+      "charged_frames": 16,
+      "unique_frames": 14,
+      "elapsed_seconds": 0.7981402000004891,
+      "frames": [
+        {
+          "source_seconds": 1.25,
+          "file": "frames/f_000000001250.jpg",
+          "sha256": "7134a604a47f61ade8bc902ecc99980f09cdd9857ed7673dc34cbeec8770d788"
+        },
+        {
+          "source_seconds": 1.3,
+          "file": "frames/f_000000001300.jpg",
+          "sha256": "252f19afeb2bfca6f8975162d2f14ceba2b29ac6843be9ee1518cd107ddf73a1"
+        },
+        {
+          "source_seconds": 1.35,
+          "file": "frames/f_000000001350.jpg",
+          "sha256": "dc4c6dc36f2b73c2ad25e57865ea783efb009c83f871cd1ecc4eaf42e3009182"
+        },
+        {
+          "source_seconds": 1.4,
+          "file": "frames/f_000000001400.jpg",
+          "sha256": "fe03d7853b4e2287364f0a418753282093ede60e83d387757df73b35619de70e"
+        },
+        {
+          "source_seconds": 1.45,
+          "file": "frames/f_000000001450.jpg",
+          "sha256": "66ade5f78576ddd946d4d8f6356223e016de113b284806f113b19f123a70b4e5"
+        },
+        {
+          "source_seconds": 1.5,
+          "file": "frames/f_000000001500.jpg",
+          "sha256": "44278fdbd7309838da9f9315fa93ab5511042857c6dde187a18662440fd96556"
+        },
+        {
+          "source_seconds": 1.55,
+          "file": "frames/f_000000001550.jpg",
+          "sha256": "66ade5f78576ddd946d4d8f6356223e016de113b284806f113b19f123a70b4e5"
+        },
+        {
+          "source_seconds": 1.6,
+          "file": "frames/f_000000001600.jpg",
+          "sha256": "0c19b14af0dcd56cf36f9581daa3c5d8ea7026abd9aded17ce41724539362e03"
+        },
+        {
+          "source_seconds": 1.65,
+          "file": "frames/f_000000001650.jpg",
+          "sha256": "debaee1487a8199924847dbe96c9aa2119f912213b1927c1ce89b5112bc102a6"
+        },
+        {
+          "source_seconds": 1.7,
+          "file": "frames/f_000000001700.jpg",
+          "sha256": "baed737b517da67a4600ef2e44d06527b372a0b3841eb63c84db84d3adb15482"
+        },
+        {
+          "source_seconds": 1.75,
+          "file": "frames/f_000000001750.jpg",
+          "sha256": "e2c46cebfe61d7ffdd8a10f09047965603a62103cb170eacc88ec30f1d3e8c38"
+        },
+        {
+          "source_seconds": 2.25,
+          "file": "frames/f_000000002250.jpg",
+          "sha256": "baed737b517da67a4600ef2e44d06527b372a0b3841eb63c84db84d3adb15482"
+        },
+        {
+          "source_seconds": 2.75,
+          "file": "frames/f_000000002750.jpg",
+          "sha256": "baed737b517da67a4600ef2e44d06527b372a0b3841eb63c84db84d3adb15482"
+        },
+        {
+          "source_seconds": 3.25,
+          "file": "frames/f_000000003250.jpg",
+          "sha256": "a3a558e8a38fc6d5c89b1b9de3e1941795ff431b8e6c9d8775b29757607f7b30"
+        }
+      ],
+      "debt": {
+        "control": "unresolved",
+        "action": "unresolved",
+        "reproducibility": "untested",
+        "perception_confidence": null,
+        "transition_confidence": null,
+        "procedure_confidence": null
+      },
+      "status": "review_required",
+      "gpu_calls": 0,
+      "paid_api_calls": 0,
+      "verified_procedure": false,
+      "publication_allowed": false,
+      "action_recall": null,
+      "false_causal_claim_rate": null,
+      "boundary": "no action detector; null semantic metrics, not zero errors"
+    },
+    {
+      "arm": "watch-adaptive-bounded",
+      "charged_frames": 16,
+      "unique_frames": 16,
+      "elapsed_seconds": 0.9445501000154763,
+      "frames": [
+        {
+          "source_seconds": 1.25,
+          "file": "frames/f_000000001250.jpg",
+          "sha256": "7134a604a47f61ade8bc902ecc99980f09cdd9857ed7673dc34cbeec8770d788"
+        },
+        {
+          "source_seconds": 1.383,
+          "file": "frames/f_000000001383.jpg",
+          "sha256": "fe03d7853b4e2287364f0a418753282093ede60e83d387757df73b35619de70e"
+        },
+        {
+          "source_seconds": 1.517,
+          "file": "frames/f_000000001517.jpg",
+          "sha256": "44278fdbd7309838da9f9315fa93ab5511042857c6dde187a18662440fd96556"
+        },
+        {
+          "source_seconds": 1.65,
+          "file": "frames/f_000000001650.jpg",
+          "sha256": "debaee1487a8199924847dbe96c9aa2119f912213b1927c1ce89b5112bc102a6"
+        },
+        {
+          "source_seconds": 1.783,
+          "file": "frames/f_000000001783.jpg",
+          "sha256": "baed737b517da67a4600ef2e44d06527b372a0b3841eb63c84db84d3adb15482"
+        },
+        {
+          "source_seconds": 1.917,
+          "file": "frames/f_000000001917.jpg",
+          "sha256": "b3ad86e1c0ff9ea9ee2389a42a0a5a7189356f470d182f5131e878a8db7cdc8f"
+        },
+        {
+          "source_seconds": 2.05,
+          "file": "frames/f_000000002050.jpg",
+          "sha256": "b3ad86e1c0ff9ea9ee2389a42a0a5a7189356f470d182f5131e878a8db7cdc8f"
+        },
+        {
+          "source_seconds": 2.183,
+          "file": "frames/f_000000002183.jpg",
+          "sha256": "baed737b517da67a4600ef2e44d06527b372a0b3841eb63c84db84d3adb15482"
+        },
+        {
+          "source_seconds": 2.317,
+          "file": "frames/f_000000002317.jpg",
+          "sha256": "b3ad86e1c0ff9ea9ee2389a42a0a5a7189356f470d182f5131e878a8db7cdc8f"
+        },
+        {
+          "source_seconds": 2.45,
+          "file": "frames/f_000000002450.jpg",
+          "sha256": "b3ad86e1c0ff9ea9ee2389a42a0a5a7189356f470d182f5131e878a8db7cdc8f"
+        },
+        {
+          "source_seconds": 2.583,
+          "file": "frames/f_000000002583.jpg",
+          "sha256": "baed737b517da67a4600ef2e44d06527b372a0b3841eb63c84db84d3adb15482"
+        },
+        {
+          "source_seconds": 2.717,
+          "file": "frames/f_000000002717.jpg",
+          "sha256": "b3ad86e1c0ff9ea9ee2389a42a0a5a7189356f470d182f5131e878a8db7cdc8f"
+        },
+        {
+          "source_seconds": 2.85,
+          "file": "frames/f_000000002850.jpg",
+          "sha256": "b3ad86e1c0ff9ea9ee2389a42a0a5a7189356f470d182f5131e878a8db7cdc8f"
+        },
+        {
+          "source_seconds": 2.983,
+          "file": "frames/f_000000002983.jpg",
+          "sha256": "baed737b517da67a4600ef2e44d06527b372a0b3841eb63c84db84d3adb15482"
+        },
+        {
+          "source_seconds": 3.117,
+          "file": "frames/f_000000003117.jpg",
+          "sha256": "ee4d7f6f717c60d2c8bf4110134788a4ba7394365c92aea98878485152fcf122"
+        },
+        {
+          "source_seconds": 3.25,
+          "file": "frames/f_000000003250.jpg",
+          "sha256": "a3a558e8a38fc6d5c89b1b9de3e1941795ff431b8e6c9d8775b29757607f7b30"
+        }
+      ],
+      "debt": {
+        "control": "unresolved",
+        "action": "unresolved",
+        "reproducibility": "untested",
+        "perception_confidence": null,
+        "transition_confidence": null,
+        "procedure_confidence": null
+      },
+      "status": "review_required",
+      "gpu_calls": 0,
+      "paid_api_calls": 0,
+      "verified_procedure": false,
+      "publication_allowed": false,
+      "action_recall": null,
+      "false_causal_claim_rate": null,
+      "boundary": "no action detector; null semantic metrics, not zero errors"
+    }
+  ],
+  "winner": null,
+  "publication_allowed": false,
+  "boundary": "sampling comparison only; reviewer must assess action evidence; no narration path"
+}

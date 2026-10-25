@@ -1,0 +1,5 @@
+{
+  "frame_sha256": "07e7f4158883f0d258c04d0555228df692a2b0c772a248a512902f3bf3f7620a",
+  "tsv": "level\tpage_num\tblock_num\tpar_num\tline_num\tword_num\tleft\ttop\twidth\theight\tconf\ttext\r\n1\t1\t0\t0\t0\t0\t0\t0\t1280\t720\t-1\t\r\n2\t1\t1\t0\t0\t0\t663\t262\t169\t95\t-1\t\r\n3\t1\t1\t1\t0\t0\t663\t262\t169\t95\t-1\t\r\n4\t1\t1\t1\t1\t0\t663\t262\t169\t95\t-1\t\r\n5\t1\t1\t1\t1\t1\t663\t262\t169\t95\t73.389244\t<A\r\n2\t1\t2\t0\t0\t0\t304\t359\t149\t37\t-1\t\r\n3\t1\t2\t1\t0\t0\t304\t359\t149\t37\t-1\t\r\n4\t1\t2\t1\t1\t0\t304\t359\t149\t37\t-1\t\r\n5\t1\t2\t1\t1\t1\t300\t355\t56\t51\t92.156624\tThe\r\n5\t1\t2\t1\t1\t2\t376\t355\t82\t51\t81.979782\twriti\r\n2\t1\t3\t0\t0\t0\t472\t376\t16\t22\t-1\t\r\n3\t1\t3\t1\t0\t0\t472\t376\t16\t22\t-1\t\r\n4\t1\t3\t1\t1\t0\t472\t376\t16\t22\t-1\t\r\n5\t1\t3\t1\t1\t1\t472\t376\t16\t22\t15.750847\tiY\r\n2\t1\t4\t0\t0\t0\t838\t359\t118\t45\t-1\t\r\n3\t1\t4\t1\t0\t0\t838\t359\t118\t45\t-1\t\r\n4\t1\t4\t1\t1\t0\t838\t359\t118\t45\t-1\t\r\n5\t1\t4\t1\t1\t1\t834\t355\t36\t53\t63.925243\trd\r\n5\t1\t4\t1\t1\t2\t883\t359\t73\t45\t96.258347\tpart\r\n",
+  "evidence_class": "unverified_ocr"
+}

@@ -1,0 +1,15 @@
+{
+  "source_ms": 10000,
+  "sha256": "8f17d2efc2bd95986380d924f10c3ce2bf584029e55062ba44f2f6ddac8c57fb",
+  "state": {
+    "screen_type": "desktop",
+    "view": "full screen",
+    "content": "A dark background with abstract, glowing, geometric patterns in shades of blue, purple, and cyan. The patterns are complex and spread across the entire visible area.",
+    "overlays": "None visible.",
+    "visible_text": "",
+    "uncertainty": "None"
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 9.935870400004205,
+  "provider_cost_usd": 0
+}

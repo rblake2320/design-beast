@@ -1,0 +1,25 @@
+{
+  "reviewer": "/root/training_review",
+  "review_date": "2026-09-19",
+  "verdict": "accepted",
+  "kind": "observable_result",
+  "sentence": "Front orthographic view appears.",
+  "start_ms": 500,
+  "end_ms": 2500,
+  "source_sha256": "46ca6a61fa8cd4802284014fa091570e933403da1767d03f92108a6d4a78b8b1",
+  "review_data_sha256": "4e02af8d6f69c4f0f9cd45d970c490aa1b2cef1d7cf7d758d8d8984d94e67f9a",
+  "frame_refs": [
+    {"clip_ms": 1000, "sha256": "bdff86f233b398474b4ebe2029b2fa6425417b11b6996355e91d717c156e6f2c", "file": "media/frame-002.jpg"},
+    {"clip_ms": 2000, "sha256": "f5a895fb96ba3a770751902b9b8288dc1745d74fc8d68896fcc68c4ed31c02c6", "file": "media/frame-004.jpg"}
+  ],
+  "result_evidence": "Reviewer directly inspected both source images and verified their SHA256 values against review-data.json. At 1000ms the visible label is User Perspective (Local), with an oblique side view. At 2000ms the visible label is Front Orthographic (Local), with the model viewed from the front and the grid visible.",
+  "scope": "Accepts only the stated visible result occurring within the 500..2500ms interval. Does not assert the exact transition time, continuous interval coverage, a click, keyboard shortcut, other user input, causal mechanism, geometry modification, reproducibility, or a verified procedure.",
+  "control_evidence": "",
+  "action_evidence": "",
+  "perception_confidence": null,
+  "transition_confidence": null,
+  "procedure_confidence": null,
+  "verified_procedure": false,
+  "publication_allowed": false,
+  "requires_human_approval": true
+}

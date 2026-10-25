@@ -1,0 +1,229 @@
+{
+  "schema_version": "beast.watch.pixel-state/v1",
+  "clip_ms": 16500,
+  "frame_sha256": "40a87ecc69024e11bae9ea68f1777ad75b7170100a584c1dd0b76ba3bc31d9b4",
+  "before_sha256": "07e7f4158883f0d258c04d0555228df692a2b0c772a248a512902f3bf3f7620a",
+  "dimensions": [
+    1280,
+    720
+  ],
+  "text_elements": [
+    {
+      "track_id": 13,
+      "text": "The Research",
+      "bbox": [
+        414,
+        351,
+        410,
+        48
+      ],
+      "raw_ocr_score": 96.20163,
+      "consecutive_frames": 1
+    }
+  ],
+  "appeared_text_track_ids": [
+    13
+  ],
+  "disappeared_text_track_ids": [
+    10,
+    11,
+    12
+  ],
+  "motion_tracks": [],
+  "changed_regions": [
+    [
+      376,
+      168,
+      504,
+      390
+    ],
+    [
+      880,
+      361,
+      78,
+      46
+    ],
+    [
+      304,
+      358,
+      65,
+      39
+    ],
+    [
+      533,
+      568,
+      92,
+      28
+    ],
+    [
+      655,
+      132,
+      91,
+      27
+    ],
+    [
+      801,
+      450,
+      4,
+      14
+    ],
+    [
+      739,
+      229,
+      2,
+      17
+    ],
+    [
+      746,
+      202,
+      6,
+      6
+    ],
+    [
+      863,
+      506,
+      9,
+      5
+    ],
+    [
+      529,
+      188,
+      15,
+      2
+    ],
+    [
+      584,
+      269,
+      8,
+      4
+    ],
+    [
+      584,
+      304,
+      10,
+      4
+    ],
+    [
+      758,
+      533,
+      8,
+      6
+    ],
+    [
+      741,
+      206,
+      3,
+      14
+    ],
+    [
+      529,
+      558,
+      15,
+      2
+    ],
+    [
+      408,
+      352,
+      5,
+      6
+    ],
+    [
+      769,
+      186,
+      17,
+      1
+    ],
+    [
+      544,
+      577,
+      16,
+      1
+    ],
+    [
+      580,
+      349,
+      12,
+      2
+    ],
+    [
+      501,
+      179,
+      11,
+      1
+    ],
+    [
+      726,
+      390,
+      4,
+      5
+    ],
+    [
+      804,
+      491,
+      1,
+      11
+    ],
+    [
+      565,
+      590,
+      10,
+      2
+    ],
+    [
+      512,
+      169,
+      7,
+      2
+    ],
+    [
+      506,
+      181,
+      6,
+      2
+    ],
+    [
+      828,
+      260,
+      5,
+      4
+    ],
+    [
+      475,
+      283,
+      1,
+      8
+    ],
+    [
+      801,
+      409,
+      1,
+      7
+    ],
+    [
+      749,
+      197,
+      3,
+      3
+    ],
+    [
+      478,
+      362,
+      3,
+      4
+    ]
+  ],
+  "changed_pixel_fraction": 0.08899088541666667,
+  "motion_scale": null,
+  "affine_inlier_fraction": null,
+  "tracking_reset": false,
+  "uncertainty": [
+    "OCR/flow scores are uncalibrated; no causal action is established",
+    "Unobserved time between samples remains uncertain",
+    "Only largest 64 connected changed regions retained",
+    "No reliable cross-frame feature correspondence"
+  ],
+  "perception_confidence": null,
+  "transition_confidence": null,
+  "procedure_confidence": null,
+  "evidence_class": "pixel_measurement_not_semantic_verdict"
+}

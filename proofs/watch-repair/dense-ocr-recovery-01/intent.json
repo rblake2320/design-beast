@@ -1,0 +1,7 @@
+{
+  "reason": "All prior OCR used incorrect Windows decoding; 17 null, others may contain mojibake",
+  "prior_report_sha256": "2f49e8fbe17dd862bf8a20d84957f957b63ae043e98f92cf4748ebbbcd53b00e",
+  "timeline_sha256": "3c811e6ea7f62bcf39bd835a97665b84b14d3fdc640532ef657bba914ea4f60d",
+  "max_cpu_ocr_calls": 61,
+  "vision_calls": 0
+}

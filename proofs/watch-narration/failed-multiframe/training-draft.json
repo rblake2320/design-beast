@@ -1,0 +1,26 @@
+{
+  "schema_version": "beast.watch.training-draft/v1",
+  "source_sha256": "46ca6a61fa8cd4802284014fa091570e933403da1767d03f92108a6d4a78b8b1",
+  "source_duration_ms": 30000,
+  "visual_policy": "original_source_only",
+  "publication_allowed": false,
+  "steps": [
+    {
+      "start_ms": 16500,
+      "end_ms": 18500,
+      "caption": "The viewport now displays a character blockout with simplified shapes, showing the head, torso, arms, legs, and feet as distinct sections.",
+      "frame_refs": [
+        {
+          "clip_ms": 17000,
+          "sha256": "25b630074aa92179629c520ca8103fb29444d227627996ecb5d6e302a6a878cf"
+        },
+        {
+          "clip_ms": 18000,
+          "sha256": "478a9a299cb4867715501e9b17edf3e52d5a4158c532226888988f56a07a1fc5"
+        }
+      ],
+      "review_state": "uncertain",
+      "requires_human_approval": true
+    }
+  ]
+}

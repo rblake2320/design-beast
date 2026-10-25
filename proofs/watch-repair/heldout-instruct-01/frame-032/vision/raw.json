@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:24:58.0862076Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"illustration\",\n  \"view\": \"centered illustration on plain background\",\n  \"content\": \"blue outlined paper with pencil, horizontal lines, arrows left and right\",\n  \"overlays\": \"text overlay with gradient blue font\",\n  \"visible_text\": \"The writing isn't actually the hard part\",\n  \"uncertainty\": \"None\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4326582700,
+  "load_duration": 3433267700,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 406661000,
+  "eval_count": 79,
+  "eval_duration": 440666000
+}

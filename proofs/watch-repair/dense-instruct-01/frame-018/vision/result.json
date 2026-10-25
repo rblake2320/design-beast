@@ -1,0 +1,15 @@
+{
+  "source_ms": 9000,
+  "sha256": "81efd771d9cec76a4af87b0a7785ebcefff6640bd1b2bd928727e43958df0a57",
+  "state": {
+    "screen_type": "3D viewport",
+    "view": "Right Orthographic (Local), showing 'Female 2' model centered on grid.",
+    "content": "A low-poly humanoid model named 'Female 2', colored purple/pink with green neck/foot accents, standing upright. No other objects visible.",
+    "overlays": "Cursor: pencil icon near foot. Selection box active around model. Blue line drawn along torso. Red X axis gizmo visible.",
+    "visible_text": "Right Orthographic (Local), (1) Female 2, Annotation: Note, Placement: 3D Cursor, Stabilize Stroke, Radius: 35 px, Factor: 0.750, Drag: Select Box, Scene Collection, ViewLayer, Scene, Object, Gravity, Simulation, Keying Sets, Audio, Rigid Body World, Light Probes, Animation, Custom Properties.",
+    "uncertainty": "No uncertainty. All visible elements are explicitly rendered in the viewport."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.947200599999633,
+  "provider_cost_usd": 0
+}

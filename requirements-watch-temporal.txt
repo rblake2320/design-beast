@@ -1,0 +1,7 @@
+# Install in a dedicated environment. Do not upgrade the user's shared runtime.
+-r requirements-watch-perception.txt
+transformers==4.57.1
+tokenizers==0.22.2
+huggingface-hub==0.36.0
+safetensors==0.5.3
+# torch/torchvision are installed separately for the actual hardware/CUDA ABI.

@@ -1,0 +1,83 @@
+{
+  "events": [
+    {
+      "start_ms": 1090,
+      "end_ms": 2180,
+      "modality": "mouse_down",
+      "key": null,
+      "control": null,
+      "control_bounds": [
+        524,
+        404,
+        163,
+        96
+      ],
+      "pointer": [
+        607,
+        454
+      ],
+      "frame_refs": [
+        {
+          "ms": 1090,
+          "sha256": "ac400304b36cf982a0d741964541e2a76f88a811b0f6f935675ada96253d42ac",
+          "file": "frames/f_000000001090.jpg"
+        },
+        {
+          "ms": 2180,
+          "sha256": "a2a1a695e4fbb880445b33110906e1b6a754f0abc0c46f69c0fc99c6bb292165",
+          "file": "frames/f_000000002180.jpg"
+        }
+      ],
+      "unsampled_continuity": "unknown",
+      "control_reference": {
+        "ms": null,
+        "sha256": null
+      }
+    }
+  ],
+  "results": [
+    {
+      "identity": "Idle",
+      "start_ms": 1090,
+      "end_ms": 2180,
+      "frame_refs": [
+        {
+          "ms": 1090,
+          "sha256": "ac400304b36cf982a0d741964541e2a76f88a811b0f6f935675ada96253d42ac",
+          "file": "frames/f_000000001090.jpg"
+        },
+        {
+          "ms": 2180,
+          "sha256": "a2a1a695e4fbb880445b33110906e1b6a754f0abc0c46f69c0fc99c6bb292165",
+          "file": "frames/f_000000002180.jpg"
+        }
+      ]
+    },
+    {
+      "identity": "Saved",
+      "start_ms": 3270,
+      "end_ms": 4360,
+      "frame_refs": [
+        {
+          "ms": 3270,
+          "sha256": "53eda061d49e797ac0d2fc2b69b5bb916dc30b09afe798e13cb60f9c0fe216b2",
+          "file": "frames/f_000000003270.jpg"
+        },
+        {
+          "ms": 4360,
+          "sha256": "084c4961cf7ca3a610922cee6eb6a50f1cc86cace98b1cf748f45e6cda5e8000",
+          "file": "frames/f_000000004360.jpg"
+        }
+      ]
+    }
+  ],
+  "temporal_candidates": [],
+  "causal_sufficiency": "unknown",
+  "accepted_causal_chains": [],
+  "publication_allowed": false,
+  "confidence": {
+    "perception": null,
+    "transition": null,
+    "procedure": null
+  }
+}

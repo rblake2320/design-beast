@@ -1,0 +1,16 @@
+{
+  "clip_ms": 27000,
+  "sha256": "0bd847d42e7fc823a7080eeeccb7ad90588c5ac899c7422a6ffc2a9c3b25f34c",
+  "regions": [
+    {
+      "bbox_xyxy": [
+        149.297119140625,
+        81.99658203125,
+        1101.85400390625,
+        306.7442626953125
+      ],
+      "raw_score": 0.28009462356567383
+    }
+  ],
+  "evidence_class": "unverified_ui_region_detection"
+}

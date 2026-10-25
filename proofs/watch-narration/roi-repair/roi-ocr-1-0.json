@@ -1,0 +1,14 @@
+{
+  "source_sha256": "a314f422407011c47e11a73c1a1fd1d15f8284d0b06c04cffa3ff9c8e15809ac",
+  "crop_box": [
+    0,
+    0,
+    640,
+    240
+  ],
+  "scale": 3,
+  "inverted": true,
+  "derived_sha256": "f3e7a483221195c8f3a2cfe5863c9b78323f5b94ae5265182757f801ebd7b9b3",
+  "text": "% file\r\n\r\nEdn\r\n\r\nRender Window Help\r\n\r\nLayout\r\n\r\nModeling\r\n\r\nSculpting\r\n\r\nUV Editing\r\n\r\nTexture Paint\r\n\r\nShading\r\n\r\nAnimation\r\n\r\nRender\r\n\r\nJ\r\n\r\nCo\r\n\r\n\u00a22- @ ObjectMode v\r\n\r\nView Select Add Object\r\n\r\nB, Gwobal v Orv Dray \u2018O}\r\n\r\nAnnotation: (I vote\r\n\r\nv Placement: }e{ 3D Cursor v\r\n\r\nStabilize Stroke\r\n\r\nRadius\r\n\r\n35 px\r\n\r\nFactor\r\n\r\n103750\r\n\r\nDrag: Selec\r\n\r\nUser Perspective (Local)\r\n\r\na\r\n\r\n(1) Female 2\r\n\r\naa\r\n\r\nAG\r\n\r\n--)\r\n\r\n7\r\n\r\n&\r\n\r\na!\r\n",
+  "evidence_class": "unverified_ocr"
+}

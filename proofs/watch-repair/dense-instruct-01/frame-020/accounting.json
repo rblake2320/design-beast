@@ -1,0 +1,33 @@
+{
+  "frame": {
+    "id": "frame-0021",
+    "file": "frames/f_000000010000.jpg",
+    "source_seconds": 10.0,
+    "source_time": "00:00:10.000",
+    "clip_seconds": 10.0,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "00bf7f3f3f3f3f01",
+    "sha256": "5d68d2cc0fc910c3e083037b2e99a26220093bdc69d9630216d47bf66a87261c",
+    "change_from_previous": 0,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "result": {
+    "source_ms": 10000,
+    "sha256": "5d68d2cc0fc910c3e083037b2e99a26220093bdc69d9630216d47bf66a87261c",
+    "state": {
+      "screen_type": "3D viewport",
+      "view": "Right Orthographic (Local), showing 'Female 2' model centered.",
+      "content": "A humanoid mesh named 'Female 2', mostly pink with green accents, standing vertically. No visible textures or shading applied.",
+      "overlays": "Selection box cursor, active tool icon (brush), and axis gizmo on the model.",
+      "visible_text": "Right Orthographic (Local), Female 2, Sculpting, Object Mode, Global, Factor 0.750, Radius 35 px, Scene Collection, ViewLayer, Scene, Camera, Object, Gravity, Units, Simulation, Keying Sets, Audio, Rigid Body World, Light Probes, Animation, Custom Properties.",
+      "uncertainty": "No uncertainty; all elements clearly visible and labeled."
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 4.69665189999796,
+    "provider_cost_usd": 0
+  }
+}

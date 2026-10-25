@@ -187,11 +187,11 @@ def detect_scene_times(ffmpeg: str, video: Path, threshold: float = 0.28) -> lis
 
 
 def extract_frame(ffmpeg: str, video: Path, clip_seconds: float,
-                  destination: Path, height: int) -> bool:
+                  destination: Path, height: int, *, timeout: float = 120) -> bool:
     proc = subprocess.run(
         [ffmpeg, "-v", "error", "-ss", f"{clip_seconds:.3f}", "-i", str(video),
          "-frames:v", "1", "-vf", f"scale=-2:{height}", "-q:v", "3",
-         str(destination), "-y"], capture_output=True, text=True, timeout=120)
+         str(destination), "-y"], capture_output=True, text=True, timeout=timeout)
     return proc.returncode == 0 and destination.exists() and destination.stat().st_size > 0
 
 

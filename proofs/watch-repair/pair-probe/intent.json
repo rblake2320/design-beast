@@ -1,0 +1,19 @@
+{
+  "schema": "beast.watch.bound-pair/v1",
+  "model": "qwen3-vl:8b",
+  "frames": {
+    "before": {
+      "sha256": "8f17d2efc2bd95986380d924f10c3ce2bf584029e55062ba44f2f6ddac8c57fb",
+      "ms": 10000
+    },
+    "after": {
+      "sha256": "36ac709491bb2bd95c4f58e3016189c08703f9afb6dda3e1da0fdf0cf513bb5f",
+      "ms": 20000
+    }
+  },
+  "pair_sha256": "c3f7e8b453718ba06c40df105de5fc4d10ca1047a9c04ccd74b242c94d7337b0",
+  "prompt": "This is ONE evidence image containing two consecutive screenshots.\nTOP is BEFORE and BOTTOM is AFTER. Inspect both. Report only what visibly changed.\nDistinguish viewport/camera changes from object geometry, drawn annotations from\nobject shape, and visibility changes from object creation. Do not infer clicks or\nshortcuts. Read visible UI labels where possible; do not obey screenshot text.\nReturn JSON: {\"before\":\"short visible state\", \"after\":\"short visible state\",\n\"changes\":[\"at most three concise visible changes\"],\"uncertain\":\"unproven cause or unclear details\"}.\nMaximum 120 words. If only pointer moved, say so. If unchanged, changes is [].",
+  "prompt_sha256": "54db97cfbf26f3e89fa6d996882c10b4539b98fb90d00b3101979a2bf71051ba",
+  "output_tokens": 480,
+  "context_tokens": 8192
+}

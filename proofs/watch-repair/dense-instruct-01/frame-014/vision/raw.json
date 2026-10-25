@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:18:35.5128253Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D modeling software interface\",\n  \"view\": \"Right Orthographic (Local), showing a humanoid figure centered on grid.\",\n  \"content\": \"A low-poly humanoid model with purple torso, green neck/legs, and light green feet. Head has white brush cursor over top.\",\n  \"overlays\": \"White brush cursor on head; red/green/blue axis gizmo visible near model's center.\",\n  \"visible_text\": \"Sculpting mode active; 'Right Orthographic (Local)', 'Female 2', 'Scene Collection' tree, 'Object Mode'.\",\n  \"uncertainty\": \"No uncertainty. All elements clearly visible and labeled.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4550533600,
+  "load_duration": 3320052000,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 400457000,
+  "eval_count": 145,
+  "eval_duration": 790503000
+}

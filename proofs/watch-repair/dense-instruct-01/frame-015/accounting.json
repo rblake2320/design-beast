@@ -1,0 +1,33 @@
+{
+  "frame": {
+    "id": "frame-0016",
+    "file": "frames/f_000000007500.jpg",
+    "source_seconds": 7.5,
+    "source_time": "00:00:07.500",
+    "clip_seconds": 7.5,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "00bf7f3f3f3f3f01",
+    "sha256": "40bceb4686a23c1e4bec80c5a89d77bf5664426d338402526f8d7895cc849b76",
+    "change_from_previous": 0,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "result": {
+    "source_ms": 7500,
+    "sha256": "40bceb4686a23c1e4bec80c5a89d77bf5664426d338402526f8d7895cc849b76",
+    "state": {
+      "screen_type": "3D viewport",
+      "view": "Right Orthographic (Local), showing 'Female 2' model centered.",
+      "content": "A purple-pink humanoid mesh labeled '(1) Female 2'. Neck and shoulder area highlighted with green selection.",
+      "overlays": "Cursor shaped as a pencil. Green selection handles visible on neck. Tool options bar at top.",
+      "visible_text": "Sculpting, Right Orthographic (Local), (1) Female 2, Object Mode, Stabilize Stroke, Radius: 35 px, Factor: 0.750.",
+      "uncertainty": "No uncertainty; all visible elements are clearly rendered and labeled."
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 4.561760500000673,
+    "provider_cost_usd": 0
+  }
+}

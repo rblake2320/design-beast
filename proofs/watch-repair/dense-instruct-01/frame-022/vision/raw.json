@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:19:16.086208Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D viewport\",\n  \"view\": \"Right Orthographic (Local), showing 'Female 2' model centered.\",\n  \"content\": \"A purple-pink humanoid mesh with green limbs, standing upright. No visible textures or materials applied.\",\n  \"overlays\": \"Selection box around the torso. Red X-axis gizmo highlighted. Tool icon for sculpting mode active.\",\n  \"visible_text\": \"Sculpting, Right Orthographic (Local), Female 2, Object Mode, Global, Radius 35 px, Factor 0.750, Select Box.\",\n  \"uncertainty\": \"No uncertainty; screenshot shows clear state of the scene and interface.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4603073700,
+  "load_duration": 3339533200,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 411281000,
+  "eval_count": 148,
+  "eval_duration": 809030000
+}

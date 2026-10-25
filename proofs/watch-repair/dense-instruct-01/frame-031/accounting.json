@@ -1,0 +1,33 @@
+{
+  "frame": {
+    "id": "frame-0032",
+    "file": "frames/f_000000015500.jpg",
+    "source_seconds": 15.5,
+    "source_time": "00:00:15.500",
+    "clip_seconds": 15.5,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "00bf7f3f3f3f3f01",
+    "sha256": "63e87d5ee942718ff0f0fefaa4cd8fb91bc8e0073d7c7f8f3bb89e2310d3ed94",
+    "change_from_previous": 0,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "result": {
+    "source_ms": 15500,
+    "sha256": "63e87d5ee942718ff0f0fefaa4cd8fb91bc8e0073d7c7f8f3bb89e2310d3ed94",
+    "state": {
+      "screen_type": "3D viewport",
+      "view": "User Perspective (Local), centered on humanoid model",
+      "content": "Humanoid model with pink torso, green limbs, and orange edges. No visible facial features or detailed textures.",
+      "overlays": "White pencil cursor, selection box outline around model, active tool icons in toolbar.",
+      "visible_text": "User Perspective (Local), Female 2, Sculpting, Global, Radius: 35 px, Factor: 0.750, Select Box, Scene Collection, ViewLayer, Scene, Camera, Object, Background S., Scene, Active Clip, Movie Clip, Units, Gravity, Simulation, Keying Sets, Audio, Rigid Body World, Light Probes, Animation, Custom Properties",
+      "uncertainty": "No uncertainty. All elements clearly rendered and labeled."
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 4.921378500002902,
+    "provider_cost_usd": 0
+  }
+}

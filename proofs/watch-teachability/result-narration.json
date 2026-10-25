@@ -1,0 +1,47 @@
+{
+  "output_sha256": "29470e6e87170eda5b584ba0455ac6bc6397c2de1ab5f1516109b5aab8c26c7d",
+  "segments": [
+    {
+      "output_start_seconds": 0,
+      "output_end_seconds": 2.2333333333333334,
+      "audio_seconds": 1.9626666666666666,
+      "held_seconds": 0.2333333333333334,
+      "unextended_source_fraction": 0.8955223880597015,
+      "measured_motion_fraction": null,
+      "source": {
+        "output_start_ms": 0,
+        "output_end_ms": 2000,
+        "source_start_ms": 500,
+        "source_end_ms": 2500,
+        "caption": "Front orthographic view appears.",
+        "original_source_start_ms": 500,
+        "original_source_end_ms": 2500,
+        "source_sha256": "46ca6a61fa8cd4802284014fa091570e933403da1767d03f92108a6d4a78b8b1",
+        "segment_sha256": "cb81341eaa16d73b78eeb4f834a2c0217e201f2eda93a6743163ab6b8060da4d",
+        "review_state": "uncertain",
+        "requires_human_approval": true
+      },
+      "wav_sha256": "f6387a327d7271005ece49c111312594131c7affd971f1105e14943019be8080",
+      "clip_sha256": "f84011f7609bc1e28a5d259586dce514bdb05183100dfe951c90d8963e9aee61"
+    }
+  ],
+  "probe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_type": "video"
+      },
+      {
+        "codec_type": "audio"
+      }
+    ],
+    "format": {
+      "duration": "2.276000"
+    }
+  },
+  "publication_allowed": false,
+  "verified_procedure": false,
+  "audio": "local Kokoro af_heart synthetic voice; not source speaker",
+  "generated_scene_images": 0
+}

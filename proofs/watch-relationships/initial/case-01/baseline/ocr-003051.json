@@ -1,0 +1,74 @@
+{
+  "observation": {
+    "ms": 3051,
+    "sha256": "c5dabbb8daf8bfedc79749d34b6a6dfdb83b56c36b9c7002b91da3774227631b",
+    "file": "frames/f_000000003051.jpg",
+    "modality": null,
+    "key": null,
+    "control": null,
+    "control_bounds": null,
+    "pointer": [
+      131,
+      454
+    ],
+    "result": null
+  },
+  "words": [
+    {
+      "text": "Local",
+      "box": [
+        24,
+        29,
+        61,
+        19
+      ],
+      "line": [
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "text": "workflow",
+      "box": [
+        93,
+        29,
+        102,
+        19
+      ],
+      "line": [
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "text": "[ee]",
+      "box": [
+        56,
+        396,
+        174,
+        149
+      ],
+      "line": [
+        "2",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "text": "Le",
+      "box": [
+        279,
+        396,
+        150,
+        149
+      ],
+      "line": [
+        "2",
+        "1",
+        "1"
+      ]
+    }
+  ]
+}

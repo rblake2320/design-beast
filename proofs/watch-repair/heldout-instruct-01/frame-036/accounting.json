@@ -1,0 +1,36 @@
+{
+  "frame": {
+    "id": "frame-0037",
+    "file": "frames/f_000000018000.jpg",
+    "source_seconds": 18.0,
+    "source_time": "00:00:18.000",
+    "clip_seconds": 18.0,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "0707223c7c70f0e0",
+    "sha256": "6abd1aa24686d1a92473b97fad3463fd83f156814151ffb77263b018f21ed0f1",
+    "change_from_previous": 9,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "ocr_status": "observed_unverified",
+  "result": {
+    "clip_ms": 18000,
+    "source_ms": 318000,
+    "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+    "sha256": "6abd1aa24686d1a92473b97fad3463fd83f156814151ffb77263b018f21ed0f1",
+    "state": {
+      "screen_type": "abstract digital graphic",
+      "view": "floating document icons on light background, central icon most focused.",
+      "content": "blurred documents with file icons: red PDF, blue Word, green Excel. Light green and purple document areas visible.",
+      "overlays": "none",
+      "visible_text": "PDF",
+      "uncertainty": "low"
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 4.382987999997567,
+    "provider_cost_usd": 0
+  }
+}
