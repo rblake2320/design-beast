@@ -1,0 +1,7 @@
+{
+  "commit": "a7d8faeca4ede6ff1f540ba14737b6ccdb1285ed",
+  "protocol_sha256": "d0deb5bffb45e3b823b60a748eab919a5b2fb130a96175b1c46b51fb81ab1a76",
+  "implementation_sha256": "c759b07107b32445e539660843d39dd1db877886c4c180df6f792b2a7e187c07",
+  "kind": "retained-feature replay",
+  "new_model_calls": 0
+}
