@@ -1,0 +1,60 @@
+{
+  "schema": "beast.watch.visual-validation/v1",
+  "proof": "watch-006-blender-glass",
+  "date": "2026-10-25",
+  "source": {
+    "url": "https://www.youtube.com/watch?v=mSplN3TleXk",
+    "title": "Blender Transparent Glass Material using Principled BSDF Node",
+    "bundle": "watched/glass-principled-mSplN3TleXk",
+    "timeline_schema": "beast.watch.timeline/v3",
+    "frames_initial": 43,
+    "reinspections": 2,
+    "frames_after_reinspection": 80
+  },
+  "typed_state": {
+    "status": "answered",
+    "fields": 14,
+    "observations": 19,
+    "fingerprint": "6ebd400a332d6d0c28e9e9141d796edbe73612c2169e32389d6da8f7b447af13",
+    "negative_controls": [
+      {"case": "my first (wrong) reading 0.096 added as a second final for transparent.base_s", "result": "insufficient_evidence: conflicting final values"},
+      {"case": "only the wrong 0.096 reading as final, single frame", "result": "insufficient_evidence: needs 2 distinct frame confirmations"}
+    ],
+    "visual_only_facts_not_in_transcript": [
+      "tinted HSV 0.388 / 0.441 / 0.800 (narration: 'green')",
+      "transparent base saturation settles at 0.000 (narration: 'light grey, value 0.8')",
+      "Specular 0.5, Transmission Roughness 0, GGX (never spoken)",
+      "frosted roughness drag passes 0.509 and 0.491 before 0.500"
+    ],
+    "watching_gate": "scripts/validate_watch_procedure.py ok=true, 4 visual-only facts, 2 reinspections"
+  },
+  "execution": {
+    "script": "execute_glass.py",
+    "application": "Blender 5.2.2 LTS headless, Cycles OPTIX on RTX 5090",
+    "version_gap": "tutorial UI is Principled BSDF v1 (3.x); executed on v2 socket names (Transmission Weight, Specular IOR Level); Transmission Roughness has no v2 socket and its value was 0",
+    "structural": "readback.json socket values equal typed-state for all three materials (run2 == run3 == run3b)",
+    "stand_in_scene": "cube/backdrop/area light/camera are NOT tutorial evidence; built in a previous video that was not watched"
+  },
+  "judge": {
+    "model": "local qwen3-vl:8b via scripts/judge_image.py",
+    "brief": "side-by-side: score only how well RIGHT cube's glass material matches LEFT (tutorial) cube; ignore background/camera/lighting/UI",
+    "run2_white_set": {"transparent": 7, "frosted": 7, "tinted": 8, "note": "first transparent/frosted scores (7/4) used swapped reference frames and were discarded; see superseded/"},
+    "run3_studio_set": {"transparent": 7, "frosted": 6, "tinted": 8},
+    "repair": "only the stand-in set changed (world/backdrop colour, light energy, 1024 samples); materials were never touched",
+    "bounded_conclusion": "The on-screen values were recovered, type-checked and executed; the materials read back exactly. Visual match is partial (6-8/10) and the judge's remaining complaints (edge sharpness, depth) are scene/camera, which the tutorial never showed. This does not establish tutorial-to-skill reliability in general."
+  },
+  "determinism": {
+    "blender_cycles": "run3 vs run3b: PNG hashes differ; ImageMagick RMSE 1.37e-5 .. 1.42e-5 normalized (seed 0, OPTIX + denoiser is not bit-exact)",
+    "typed_state": "fingerprint stable across repeated compiles"
+  },
+  "incidents": [
+    "reference frames for transparent/frosted were swapped on first crop (2.5s title is the CLEAR cube, 7.5s title is the FROSTED cube); fixed by re-reading both frames side by side; wrong files kept in superseded/",
+    "Blender wrote run1 renders to C:\\run1 because the relative output path was resolved against the Blender working dir; fixed with .resolve(); stray files left for the owner to remove"
+  ],
+  "artifacts": {
+    "renders": ["run3/transparent.png", "run3/frosted.png", "run3/tinted.png"],
+    "glb": "run3/tinted_glass.glb",
+    "readback": "run3/readback.json",
+    "judge_pairs": ["judge/transparent_pair_run3.png", "judge/frosted_pair_run3.png", "judge/tinted_pair_run3.png"]
+  }
+}

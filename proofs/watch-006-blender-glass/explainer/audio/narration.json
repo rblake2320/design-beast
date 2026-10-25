@@ -1,0 +1,32 @@
+[
+  {
+    "key": "watch",
+    "file": "watch.wav",
+    "seconds": 5.696,
+    "text": "Beast watched a three minute Blender tutorial and kept eighty frames, each tied to its timestamp."
+  },
+  {
+    "key": "compile",
+    "file": "compile.wav",
+    "seconds": 7.915,
+    "text": "Fourteen values were read off the screen, four of them never spoken, and type checked. Anything unresolved is refused, not guessed."
+  },
+  {
+    "key": "execute",
+    "file": "execute.wav",
+    "seconds": 6.208,
+    "text": "The procedure ran in Blender with no human in the loop. The materials read back exactly as compiled."
+  },
+  {
+    "key": "judge",
+    "file": "judge.wav",
+    "seconds": 6.208,
+    "text": "A local vision model scored the result against the tutorial. Then Beast exported the glass as a model."
+  },
+  {
+    "key": "prove",
+    "file": "prove.wav",
+    "seconds": 7.211,
+    "text": "This video is that model, rendered frame by frame from the recorded inputs. Re-render it and every frame matches."
+  }
+]

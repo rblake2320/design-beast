@@ -1,0 +1,50 @@
+{
+  "blender": "5.2.2 LTS",
+  "device": [
+    "OPTIX:NVIDIA GeForce RTX 5090"
+  ],
+  "materials": {
+    "transparent": {
+      "distribution": "GGX",
+      "base_color_linear": [
+        0.603827,
+        0.603827,
+        0.603827,
+        1.0
+      ],
+      "Metallic": 0.0,
+      "Specular IOR Level": 0.5,
+      "Roughness": 0.0,
+      "IOR": 1.45,
+      "Transmission Weight": 1.0
+    },
+    "frosted": {
+      "distribution": "GGX",
+      "base_color_linear": [
+        0.603827,
+        0.603827,
+        0.603827,
+        1.0
+      ],
+      "Metallic": 0.0,
+      "Specular IOR Level": 0.5,
+      "Roughness": 0.5,
+      "IOR": 1.45,
+      "Transmission Weight": 1.0
+    },
+    "tinted": {
+      "distribution": "GGX",
+      "base_color_linear": [
+        0.168383,
+        0.603827,
+        0.276967,
+        1.0
+      ],
+      "Metallic": 0.0,
+      "Specular IOR Level": 0.5,
+      "Roughness": 0.0,
+      "IOR": 1.45,
+      "Transmission Weight": 1.0
+    }
+  }
+}

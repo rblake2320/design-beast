@@ -1,0 +1,238 @@
+{
+  "schema": "beast.watch.procedure/v1",
+  "source_timeline": "timeline.json",
+  "goal": "Make transparent, frosted and tinted glass materials with a Principled BSDF (Cycles)",
+  "application": "Blender",
+  "version_context": [
+    "source: Blender 3.x Principled BSDF v1 UI (Clearcoat, Specular Tint, Subsurface Radius sockets)",
+    "execution target: Blender 5.2.2 LTS (Principled BSDF v2: Transmission Weight, Specular IOR Level, Coat; no Transmission Roughness socket)"
+  ],
+  "typed_state": {
+    "target": "typed-target.json",
+    "observations": "typed-observations.json",
+    "compiled": "typed-state.json",
+    "validated": true
+  },
+  "prerequisites": [],
+  "watching_evidence": {
+    "visual_only_facts": [
+      {
+        "claim": "Tinted glass colour is HSV H 0.388, S 0.441 (V 0.800); narration only says 'green'",
+        "frame_ids": [
+          "frame-0075"
+        ],
+        "transcript_search_terms": [
+          "0.388",
+          "0.441",
+          "hue",
+          "saturation",
+          "hsv"
+        ],
+        "transcript_absence_checked": true
+      },
+      {
+        "claim": "Transparent glass saturation is dragged 0.495 -> 0.096 and settles at 0.000 (neutral grey)",
+        "frame_ids": [
+          "frame-0016",
+          "frame-0024",
+          "frame-0026",
+          "frame-0028"
+        ],
+        "transcript_search_terms": [
+          "saturation",
+          "0.495",
+          "0.096"
+        ],
+        "transcript_absence_checked": true
+      },
+      {
+        "claim": "Specular stays at 0.500, Transmission Roughness at 0.000, distribution GGX",
+        "frame_ids": [
+          "frame-0038",
+          "frame-0041"
+        ],
+        "transcript_search_terms": [
+          "specular",
+          "transmission roughness",
+          "ggx"
+        ],
+        "transcript_absence_checked": true
+      },
+      {
+        "claim": "Frosted roughness passes 0.509 and 0.491 while dragging before settling at 0.500",
+        "frame_ids": [
+          "frame-0061",
+          "frame-0066",
+          "frame-0067",
+          "frame-0068"
+        ],
+        "transcript_search_terms": [
+          "0.509",
+          "0.491"
+        ],
+        "transcript_absence_checked": true
+      }
+    ],
+    "ambiguous_segments": [
+      {
+        "description": "Base colour picker for transparent glass: exact HSV (narration: 'light grey, value 0.8')",
+        "source_seconds": 42.5,
+        "requires_reinspection": true,
+        "evidence_request_index": 0,
+        "resolved": true
+      },
+      {
+        "description": "Frosted roughness final value (narration: 0.5)",
+        "source_seconds": 132.0,
+        "requires_reinspection": true,
+        "evidence_request_index": 1,
+        "resolved": true
+      }
+    ],
+    "transcript_only_limitations": [
+      "Scene (area light, plane, camera, Cycles settings) was built in a previous video and is not shown; the executor uses a declared stand-in scene, not tutorial evidence."
+    ]
+  },
+  "steps": [
+    {
+      "id": "step-001",
+      "intent": "Create 'transparent glass' material: base S 0 V 0.8, roughness 0, IOR 1.45, transmission 1",
+      "preconditions": [
+        "cube with a Principled BSDF material"
+      ],
+      "action": {
+        "type": "set_properties",
+        "target": "material 'transparent glass' Principled BSDF",
+        "operation": "bpy socket assignment",
+        "value": "typed-state.json values transparent.*"
+      },
+      "observed_postconditions": [
+        "transparent glass renders as in the tutorial's final shot"
+      ],
+      "evidence": [
+        {
+          "start_seconds": 40,
+          "end_seconds": 90,
+          "frame_ids": [],
+          "transcript_segment_ids": []
+        }
+      ],
+      "implementation": {
+        "preferred": "api_or_mcp",
+        "code": "execute_glass.py",
+        "fallback": "gui",
+        "confidence": 0.8
+      },
+      "validation": {
+        "structural": [
+          "socket values read back equal typed-state"
+        ],
+        "behavioral": [
+          "Cycles render completes"
+        ],
+        "visual": [
+          "local judge vs tutorial final frame"
+        ]
+      },
+      "uncertainties": [
+        "Socket rename 3.x->5.2: Transmission->Transmission Weight, Specular->Specular IOR Level; Transmission Roughness removed in 4.0 (value 0, no effect)"
+      ]
+    },
+    {
+      "id": "step-002",
+      "intent": "Create 'frosted glass' material: copy of transparent with roughness 0.5",
+      "preconditions": [
+        "cube with a Principled BSDF material"
+      ],
+      "action": {
+        "type": "set_properties",
+        "target": "material 'frosted glass' Principled BSDF",
+        "operation": "bpy socket assignment",
+        "value": "typed-state.json values frosted.*"
+      },
+      "observed_postconditions": [
+        "frosted glass renders as in the tutorial's final shot"
+      ],
+      "evidence": [
+        {
+          "start_seconds": 126,
+          "end_seconds": 150,
+          "frame_ids": [],
+          "transcript_segment_ids": []
+        }
+      ],
+      "implementation": {
+        "preferred": "api_or_mcp",
+        "code": "execute_glass.py",
+        "fallback": "gui",
+        "confidence": 0.8
+      },
+      "validation": {
+        "structural": [
+          "socket values read back equal typed-state"
+        ],
+        "behavioral": [
+          "Cycles render completes"
+        ],
+        "visual": [
+          "local judge vs tutorial final frame"
+        ]
+      },
+      "uncertainties": []
+    },
+    {
+      "id": "step-003",
+      "intent": "Create 'tinted glass' material: copy of transparent with base HSV 0.388/0.441/0.8",
+      "preconditions": [
+        "cube with a Principled BSDF material"
+      ],
+      "action": {
+        "type": "set_properties",
+        "target": "material 'tinted glass' Principled BSDF",
+        "operation": "bpy socket assignment",
+        "value": "typed-state.json values tinted.*"
+      },
+      "observed_postconditions": [
+        "tinted glass renders as in the tutorial's final shot"
+      ],
+      "evidence": [
+        {
+          "start_seconds": 175,
+          "end_seconds": 190,
+          "frame_ids": [],
+          "transcript_segment_ids": []
+        }
+      ],
+      "implementation": {
+        "preferred": "api_or_mcp",
+        "code": "execute_glass.py",
+        "fallback": "gui",
+        "confidence": 0.8
+      },
+      "validation": {
+        "structural": [
+          "socket values read back equal typed-state"
+        ],
+        "behavioral": [
+          "Cycles render completes"
+        ],
+        "visual": [
+          "local judge vs tutorial final frame"
+        ]
+      },
+      "uncertainties": [
+        "HSV->RGB: Blender's picker shows HSV in display (sRGB) space; converted HSV->sRGB->linear for the socket"
+      ]
+    }
+  ],
+  "publication_gate": {
+    "executed_in_sandbox": false,
+    "structural_validation_passed": false,
+    "behavioral_validation_passed": false,
+    "visual_validation_passed": false,
+    "visual_only_evidence_validated": false,
+    "required_reinspection_completed": false,
+    "typed_state_validated": false,
+    "human_approved": false
+  }
+}

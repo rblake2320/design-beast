@@ -1,0 +1,50 @@
+{
+  "schema": "beast.watch.proof/v1",
+  "proof": "watch-006-blender-glass",
+  "date": "2026-10-25",
+  "status": "structural_pass; visual_partial; explainer_deterministic_same_machine",
+  "chain": ["watch", "reinspect", "compile", "execute", "judge", "export_glb", "explainer_render", "replay_check"],
+  "watch": {
+    "tool": "scripts/watch_video.py (beast.watch.timeline/v3)",
+    "source": "https://www.youtube.com/watch?v=mSplN3TleXk",
+    "frames": 80, "transcript_segments": 43,
+    "reinspections": [
+      {"at": "0:42.5", "level": 2, "reason": "base colour picker HSV; narration only says 'light grey, value 0.8'"},
+      {"at": "2:12", "level": 1, "reason": "frosted roughness final value"}
+    ],
+    "yt_dlp": "2026.07.04 failed with HTTP 403; upgraded to 2026.10.21"
+  },
+  "compile": {
+    "tool": "scripts/compile_visual_evidence.py (watch/typed_evidence.py)",
+    "status": "answered", "fields": 14, "observations": 19,
+    "fingerprint": "6ebd400a332d6d0c28e9e9141d796edbe73612c2169e32389d6da8f7b447af13",
+    "watching_gate": "scripts/validate_watch_procedure.py ok=true (4 visual-only facts, 2 reinspections)"
+  },
+  "execute": {
+    "tool": "execute_glass.py in Blender 5.2.2 LTS -b, Cycles OPTIX, RTX 5090",
+    "runs": {"run2": "white stand-in set", "run3": "studio stand-in set", "run3b": "repeat of run3"},
+    "structural": "readback.json material sockets identical across run2/run3/run3b and equal to typed-state",
+    "cycles_determinism": "run3 vs run3b PNG differ; RMSE 1.4e-5 normalized (denoiser/OPTIX not bit-exact)"
+  },
+  "judge": {"model": "qwen3-vl:8b (Ollama)", "run3": {"transparent": 7, "frosted": 6, "tinted": 8}},
+  "explainer": {
+    "tool": "HyperFrames 0.8.169 + three@0.181.2 (vendored) + GSAP 3.14.2 (vendored) + Kokoro narration (local)",
+    "composition": "explainer/index.html, 42 s, 1920x1080x30, five scenes, five narration clips",
+    "gates": "lint 0 errors; check passed (layout 0, motion 0, contrast 45/45 WCAG AA)",
+    "local_rtx5090": {
+      "draft_A_vs_B": "1260/1260 frames identical (framemd5)",
+      "final_A_vs_B": "1260/1260 frames identical; MP4 SHA-256 identical aa0504860e3682ff…",
+      "webgl": "ANGLE (NVIDIA GeForce RTX 5090, Direct3D11)"
+    },
+    "spark1_gb10_aarch64": {
+      "browser": "chrome-headless-shell 156.0.8078.47 linux-arm64 (installed today via @puppeteer/browsers); the x64 build hyperframes tried first fails with Exec format error",
+      "webgl": "ANGLE (NVIDIA GB10/PCIe, OpenGL ES 3.2) — GPU, not SwiftShader",
+      "snapshot_twice_at_20s": "PNG SHA-256 identical 36ae3b80ded4882a… (rendering deterministic on the Spark)",
+      "mp4_twice": "702/1260 frames differ, max per-channel delta 11/255, spread across the frame (encoder/capture path on ffmpeg 6.1, not the renderer)",
+      "spark_vs_rtx5090_at_20s": "4.71% of pixels differ, 1.04% by >16/255; differences in BOTH the text column (font fallback: no Segoe UI on Linux) and the 3D area (D3D11 vs GLES driver) — NOT cross-machine identical"
+    },
+    "bounded_conclusion": "Bit-exact replay holds on the same machine+driver and the Spark is self-consistent at the PNG level. Cross-machine identity is not established; it needs vendored fonts and a matched GPU/driver class before it can be claimed."
+  },
+  "deliverable": "Owner's Inbox/2026-10-25_design-beast_watch-006_explainer.mp4 (== explainer_final_A.mp4)",
+  "owner_cleanup": "C:\\run1\\ holds three stray PNGs from run1 (relative output path bug, since fixed); delete at will"
+}
