@@ -1,0 +1,480 @@
+{
+  "schema": "beast.watch.typed-observations/v1",
+  "target_fingerprint": "b63e1d5bf3d8816d46d60499624a29f13061501b16cfcb48276882d530a34a47",
+  "timeline_fingerprint": "d0eb8083792c78a6057dd73facd577db45d595a0891d87e07511bb4a6d97234d",
+  "observations": [
+    {
+      "field": "distribution",
+      "raw_value": "GGX",
+      "phase": "final",
+      "confidence": 0.95,
+      "source_ui_label": "GGX dropdown",
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "region": [
+            80,
+            252,
+            230,
+            26
+          ],
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "region": [
+            80,
+            252,
+            230,
+            26
+          ],
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "field": "transparent.metallic",
+      "raw_value": 0.0,
+      "phase": "final",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "region": [
+            180,
+            441,
+            130,
+            24
+          ],
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "region": [
+            180,
+            441,
+            130,
+            24
+          ],
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "field": "transparent.specular",
+      "raw_value": 0.5,
+      "phase": "final",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "region": [
+            180,
+            464,
+            130,
+            24
+          ],
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "region": [
+            180,
+            464,
+            130,
+            24
+          ],
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "field": "transparent.roughness",
+      "raw_value": 0.0,
+      "phase": "final",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "region": [
+            180,
+            509,
+            130,
+            24
+          ],
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "region": [
+            180,
+            509,
+            130,
+            24
+          ],
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "field": "transparent.ior",
+      "raw_value": 1.45,
+      "phase": "final",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "region": [
+            180,
+            669,
+            130,
+            24
+          ],
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "region": [
+            180,
+            669,
+            130,
+            24
+          ],
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "field": "transparent.transmission",
+      "raw_value": 1.0,
+      "phase": "final",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "region": [
+            180,
+            692,
+            130,
+            24
+          ],
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "region": [
+            180,
+            692,
+            130,
+            24
+          ],
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "field": "transparent.transmission_roughness",
+      "raw_value": 0.0,
+      "phase": "final",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "region": [
+            180,
+            715,
+            130,
+            24
+          ],
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "region": [
+            180,
+            715,
+            130,
+            24
+          ],
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "field": "transparent.base_s",
+      "raw_value": 0.495,
+      "phase": "transient",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "frame_id": "frame-0016",
+          "region": [
+            185,
+            555,
+            150,
+            24
+          ],
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "field": "transparent.base_s",
+      "raw_value": 0.096,
+      "phase": "transient",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "frame_id": "frame-0024",
+          "region": [
+            185,
+            555,
+            150,
+            24
+          ],
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "field": "transparent.base_h",
+      "raw_value": 0.593,
+      "phase": "final",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "frame_id": "frame-0024",
+          "region": [
+            185,
+            532,
+            150,
+            24
+          ],
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0026",
+          "region": [
+            185,
+            532,
+            150,
+            24
+          ],
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0028",
+          "region": [
+            185,
+            532,
+            150,
+            24
+          ],
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "field": "transparent.base_s",
+      "raw_value": 0.0,
+      "phase": "final",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "frame_id": "frame-0026",
+          "region": [
+            185,
+            555,
+            150,
+            24
+          ],
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0028",
+          "region": [
+            185,
+            555,
+            150,
+            24
+          ],
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "field": "transparent.base_v",
+      "raw_value": 0.8,
+      "phase": "final",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "frame_id": "frame-0024",
+          "region": [
+            185,
+            578,
+            150,
+            24
+          ],
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0026",
+          "region": [
+            185,
+            578,
+            150,
+            24
+          ],
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0028",
+          "region": [
+            185,
+            578,
+            150,
+            24
+          ],
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "field": "frosted.roughness",
+      "raw_value": 0.0,
+      "phase": "transient",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "frame_id": "frame-0056",
+          "region": [
+            180,
+            509,
+            130,
+            24
+          ],
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "field": "frosted.roughness",
+      "raw_value": 0.509,
+      "phase": "transient",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "frame_id": "frame-0061",
+          "region": [
+            180,
+            509,
+            130,
+            24
+          ],
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "field": "frosted.roughness",
+      "raw_value": 0.491,
+      "phase": "transient",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "frame_id": "frame-0066",
+          "region": [
+            180,
+            509,
+            130,
+            24
+          ],
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "field": "frosted.roughness",
+      "raw_value": 0.5,
+      "phase": "final",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "frame_id": "frame-0067",
+          "region": [
+            180,
+            509,
+            130,
+            24
+          ],
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0068",
+          "region": [
+            180,
+            509,
+            130,
+            24
+          ],
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "field": "tinted.base_h",
+      "raw_value": 0.388,
+      "phase": "final",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "frame_id": "frame-0075",
+          "region": [
+            185,
+            532,
+            150,
+            24
+          ],
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "field": "tinted.base_s",
+      "raw_value": 0.441,
+      "phase": "final",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "frame_id": "frame-0075",
+          "region": [
+            185,
+            555,
+            150,
+            24
+          ],
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "field": "tinted.base_v",
+      "raw_value": 0.8,
+      "phase": "final",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "frame_id": "frame-0075",
+          "region": [
+            185,
+            578,
+            150,
+            24
+          ],
+          "method": "vision"
+        }
+      ]
+    }
+  ]
+}

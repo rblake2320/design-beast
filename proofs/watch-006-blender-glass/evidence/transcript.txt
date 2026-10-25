@@ -1,0 +1,43 @@
+[00:00:00.000] Hello, this is a video to show how can we make&nbsp;
+[00:00:00.000] transparent glass, frosted glass and colored grass in&nbsp;Blender
+[00:00:10.861] this is a setting we make before,
+[00:00:10.861] we can find this setting in previous video&nbsp;in this channel
+[00:00:17.558] in this setting, we use Cycles&nbsp;as a renderer,
+[00:00:21.517] and we add a area light for the lighting
+[00:00:25.143] a cube for the glass material&nbsp;
+[00:00:25.143] and the plane for the background color
+[00:00:32.700] for the background color,
+[00:00:32.700] in the previous video we&nbsp;set it in blue color
+[00:00:38.664] for this material setting, I go back to make it light grey
+[00:00:43.997] and then I select&nbsp;the glass cube and call it transparent glass
+[00:00:57.300] and this glass cube has already applied the glass&nbsp;material
+[00:01:02.153] I have used the based color in light grey,  the value in 0.8&nbsp;&nbsp;
+[00:01:10.140] and then the roughness, I turn it from 0.5&nbsp;to 0.
+[00:01:17.628] and then IOR, we can keep it to 1.45
+[00:01:24.240] and transmission, we can turn it to 1 to make&nbsp;it transparent
+[00:01:31.716] so I call it transparent grass here
+[00:01:37.380] and then I's like to duplicate this cube, copy and&nbsp;
+[00:01:37.380] paste
+[00:01:42.300] and make it invisible and I rename it to
+[00:01:51.420] frosted glass
+[00:01:58.140] and then I will name it to frosted glass
+[00:02:04.560] frosted glass
+[00:02:07.980] if we want to make frosted glass,
+[00:02:07.980] just&nbsp;increase the roughness to 0.5
+[00:02:21.120] so it's looking frosted glass now
+[00:02:24.434] and then we&nbsp;can make it invisible
+[00:02:29.117] I'd like to duplicate transparent glass cube,
+[00:02:29.117] copy and paste, and I'd like to rename
+[00:02:40.620] Tinted Glass
+[00:02:44.460] and then I will name it
+[00:02:50.220] Tinted Glass
+[00:02:53.460] for the Tinted Glass,
+[00:02:53.460] we can change the base&nbsp;color
+[00:02:56.674] for example we can change to Blue or green
+[00:03:03.720] i keep it in green color
+[00:03:08.160] so this is how we can make the&nbsp;transparent glass,
+[00:03:12.292] frosted glass, tinted glass in Blender by using Principled&nbsp;BSDF node
+[00:03:18.017] this is the quick setting to make transparent glass in Blender
+[00:03:22.742] hope&nbsp;this helps
+[00:03:24.044] Please Subscribe this channel, more video will be shared with you
+[00:03:28.212] I'm&nbsp;Artist B, see you in the next video, bye

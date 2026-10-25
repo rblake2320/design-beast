@@ -1,0 +1,1358 @@
+{
+  "schema": "beast.watch.typed-state/v1",
+  "status": "answered",
+  "application": "Blender",
+  "version": "3.x (Principled BSDF v1 UI: Clearcoat/Specular Tint/Subsurface Radius sockets)",
+  "target_fingerprint": "b63e1d5bf3d8816d46d60499624a29f13061501b16cfcb48276882d530a34a47",
+  "timeline_fingerprint": "d0eb8083792c78a6057dd73facd577db45d595a0891d87e07511bb4a6d97234d",
+  "values": [
+    {
+      "name": "distribution",
+      "type": "enum",
+      "value": "GGX",
+      "confidence": 0.95,
+      "source_ui_labels": [
+        "GGX dropdown"
+      ],
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "source_seconds": 62.5,
+          "source_time": "00:01:02.500",
+          "frame_sha256": "76f1d2938b16014874feb758c36fe3c15ed62f5e461c57278632cabb45a356e5",
+          "ingest_hash_verified": true,
+          "region": [
+            80,
+            252,
+            230,
+            26
+          ],
+          "region_rgba_sha256": "a600ff641a6b749e1ee9dba2d8191361585c31fb0fa0be6330ff9b85f5e1d6ad",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "source_seconds": 77.5,
+          "source_time": "00:01:17.500",
+          "frame_sha256": "6bdf3bc362333e4b4600c8e8ee4c15e1ed352b8a4a7cd7c33eacfe7f9f4a7aad",
+          "ingest_hash_verified": true,
+          "region": [
+            80,
+            252,
+            230,
+            26
+          ],
+          "region_rgba_sha256": "662455cf1bff8d77c90d46fc9fc0dec19d05d029788966366467817460c5f835",
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "name": "frosted.roughness",
+      "type": "number",
+      "value": 0.5,
+      "confidence": 0.95,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0067",
+          "source_seconds": 142.5,
+          "source_time": "00:02:22.500",
+          "frame_sha256": "afdf727f8cc2f5e5c9fb478ab52b2358ae8a3494ced1f2fe12bf4812e289fecd",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            509,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "e7f253128947a93b12267de5dba6f63df2a648bcf2c426e75f5c01e11206bbad",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0068",
+          "source_seconds": 147.5,
+          "source_time": "00:02:27.500",
+          "frame_sha256": "bb25dfcacc929e3f67bb1f38c834952e5a83dc29247c43d7a9a835678c83f9ca",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            509,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "330b0574932bd740f16812972905cfc14ecd5cca0694783ebfcbeab865b6b1e5",
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "name": "tinted.base_h",
+      "type": "number",
+      "value": 0.388,
+      "confidence": 0.95,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0075",
+          "source_seconds": 182.5,
+          "source_time": "00:03:02.500",
+          "frame_sha256": "7cdb61e6017e4ea39c29e01d5196b9d6ef9e5f89d62dd987b55479065e50c57b",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            532,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "34f8845269ee783836b536327041b1cda1d5929d16da78305e6fadb6b5fcb306",
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "name": "tinted.base_s",
+      "type": "number",
+      "value": 0.441,
+      "confidence": 0.95,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0075",
+          "source_seconds": 182.5,
+          "source_time": "00:03:02.500",
+          "frame_sha256": "7cdb61e6017e4ea39c29e01d5196b9d6ef9e5f89d62dd987b55479065e50c57b",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            555,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "3f15a54571d4553743b719fb94076e259a7c1d8faf7aa4fb4dab39656d235a6d",
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "name": "tinted.base_v",
+      "type": "number",
+      "value": 0.8,
+      "confidence": 0.95,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0075",
+          "source_seconds": 182.5,
+          "source_time": "00:03:02.500",
+          "frame_sha256": "7cdb61e6017e4ea39c29e01d5196b9d6ef9e5f89d62dd987b55479065e50c57b",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            578,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "f1d9e4591c5a4bef712c083c7688fdc3867fc8d5df33af2cf4add791726da5e5",
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "name": "transparent.base_h",
+      "type": "number",
+      "value": 0.593,
+      "confidence": 0.95,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0024",
+          "source_seconds": 43.0,
+          "source_time": "00:00:43.000",
+          "frame_sha256": "aec84e38728f9341ed4a989a4176ee4db67a7d8789f2eb1096ccd4d7f5344f82",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            532,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "c8e2a5fecd61389f76868e689421e87d6608c0facedadb92450f6d4d6576bcad",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0026",
+          "source_seconds": 43.5,
+          "source_time": "00:00:43.500",
+          "frame_sha256": "d968e5da891f7fd442ff5c133c76ab9f7193ec0750dfa3a034a602b15da6330d",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            532,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "80f299a1c6afa1f2bf30d432c659b5d8d03dba7d0b5dd9bf2599e6a3d5aba488",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0028",
+          "source_seconds": 44.0,
+          "source_time": "00:00:44.000",
+          "frame_sha256": "1a5fb10826feaf9fa77c6dc1e1e606d345b98e8be0877367cd4914439af375c0",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            532,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "ae226d74f3c8d23fd5c4d0928cdeb2190982f0b377f0bcee5bb674903c533b13",
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "name": "transparent.base_s",
+      "type": "number",
+      "value": 0.0,
+      "confidence": 0.95,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0026",
+          "source_seconds": 43.5,
+          "source_time": "00:00:43.500",
+          "frame_sha256": "d968e5da891f7fd442ff5c133c76ab9f7193ec0750dfa3a034a602b15da6330d",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            555,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "f90b2a664f04f4e80b14edfdd5de059b01a0f9430ad54723150f49233051aad7",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0028",
+          "source_seconds": 44.0,
+          "source_time": "00:00:44.000",
+          "frame_sha256": "1a5fb10826feaf9fa77c6dc1e1e606d345b98e8be0877367cd4914439af375c0",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            555,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "0bf431a94947a5a09ddf0968b5be87d28e10bd44aa66140efce3899565ebe90c",
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "name": "transparent.base_v",
+      "type": "number",
+      "value": 0.8,
+      "confidence": 0.95,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0024",
+          "source_seconds": 43.0,
+          "source_time": "00:00:43.000",
+          "frame_sha256": "aec84e38728f9341ed4a989a4176ee4db67a7d8789f2eb1096ccd4d7f5344f82",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            578,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "9c9171eb975f00f670e2e387748007db45ff028a0bad3cbe72691fa49c1d77a9",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0026",
+          "source_seconds": 43.5,
+          "source_time": "00:00:43.500",
+          "frame_sha256": "d968e5da891f7fd442ff5c133c76ab9f7193ec0750dfa3a034a602b15da6330d",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            578,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "f0b27eda12a6cc54494be09c37db3af93e4bb6b9508a3d910d286573b9502962",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0028",
+          "source_seconds": 44.0,
+          "source_time": "00:00:44.000",
+          "frame_sha256": "1a5fb10826feaf9fa77c6dc1e1e606d345b98e8be0877367cd4914439af375c0",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            578,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "2d09155ccc125acb6ccee83963e65d69adaa65be70af8bfd4e457e1921e03c1b",
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "name": "transparent.ior",
+      "type": "number",
+      "value": 1.45,
+      "confidence": 0.95,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "source_seconds": 62.5,
+          "source_time": "00:01:02.500",
+          "frame_sha256": "76f1d2938b16014874feb758c36fe3c15ed62f5e461c57278632cabb45a356e5",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            669,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "7af92c0cb1a10386b6897fec005dbf897b0262b07599e6e38e1d19b9a23512c6",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "source_seconds": 77.5,
+          "source_time": "00:01:17.500",
+          "frame_sha256": "6bdf3bc362333e4b4600c8e8ee4c15e1ed352b8a4a7cd7c33eacfe7f9f4a7aad",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            669,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "dc0b2f908f99792d70ddb4167dab5f538bf25996f56746df4207c42376035ee1",
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "name": "transparent.metallic",
+      "type": "number",
+      "value": 0.0,
+      "confidence": 0.95,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "source_seconds": 62.5,
+          "source_time": "00:01:02.500",
+          "frame_sha256": "76f1d2938b16014874feb758c36fe3c15ed62f5e461c57278632cabb45a356e5",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            441,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "ae387b7d9d31fe945403304c314cdbe83cba69e70b998d917ff801362cdf4cea",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "source_seconds": 77.5,
+          "source_time": "00:01:17.500",
+          "frame_sha256": "6bdf3bc362333e4b4600c8e8ee4c15e1ed352b8a4a7cd7c33eacfe7f9f4a7aad",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            441,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "c0e8a4e45d0886637e96e6fe4728b29620848266e39d026ffd0e0ef3fdef199e",
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "name": "transparent.roughness",
+      "type": "number",
+      "value": 0.0,
+      "confidence": 0.95,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "source_seconds": 62.5,
+          "source_time": "00:01:02.500",
+          "frame_sha256": "76f1d2938b16014874feb758c36fe3c15ed62f5e461c57278632cabb45a356e5",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            509,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "6ab6120e1f670fb2a16e5cb89235a892de974b8a9106d1a1128683da98cf31d0",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "source_seconds": 77.5,
+          "source_time": "00:01:17.500",
+          "frame_sha256": "6bdf3bc362333e4b4600c8e8ee4c15e1ed352b8a4a7cd7c33eacfe7f9f4a7aad",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            509,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "269542bac24177d253325d4f06a2ece6ed639f519fe216a09f58f4fb7a9186ad",
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "name": "transparent.specular",
+      "type": "number",
+      "value": 0.5,
+      "confidence": 0.95,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "source_seconds": 62.5,
+          "source_time": "00:01:02.500",
+          "frame_sha256": "76f1d2938b16014874feb758c36fe3c15ed62f5e461c57278632cabb45a356e5",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            464,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "2fb147b97f37b0c5a520d058f225015e17c2395fb92062d3e3ee80e90ca37046",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "source_seconds": 77.5,
+          "source_time": "00:01:17.500",
+          "frame_sha256": "6bdf3bc362333e4b4600c8e8ee4c15e1ed352b8a4a7cd7c33eacfe7f9f4a7aad",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            464,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "f0818b94eed667859c39e4fa7f8f586da7b2eb68a6eee783d3c27a26b39f0b40",
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "name": "transparent.transmission",
+      "type": "number",
+      "value": 1.0,
+      "confidence": 0.95,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "source_seconds": 62.5,
+          "source_time": "00:01:02.500",
+          "frame_sha256": "76f1d2938b16014874feb758c36fe3c15ed62f5e461c57278632cabb45a356e5",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            692,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "0f10c836915100ce6169d9d8fe658ee2e60333a0b8847b8f665218fa0fc3ca30",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "source_seconds": 77.5,
+          "source_time": "00:01:17.500",
+          "frame_sha256": "6bdf3bc362333e4b4600c8e8ee4c15e1ed352b8a4a7cd7c33eacfe7f9f4a7aad",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            692,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "a547b0828edef4b0394838c4a8fca1c27b2f321d816cedefa83e8511f968be44",
+          "method": "vision"
+        }
+      ]
+    },
+    {
+      "name": "transparent.transmission_roughness",
+      "type": "number",
+      "value": 0.0,
+      "confidence": 0.95,
+      "source_ui_labels": [],
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "source_seconds": 62.5,
+          "source_time": "00:01:02.500",
+          "frame_sha256": "76f1d2938b16014874feb758c36fe3c15ed62f5e461c57278632cabb45a356e5",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            715,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "31f3ebfa64590d3e558a0424e36048f70fcc830f73eec78dfa8935bbfdadbf40",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "source_seconds": 77.5,
+          "source_time": "00:01:17.500",
+          "frame_sha256": "6bdf3bc362333e4b4600c8e8ee4c15e1ed352b8a4a7cd7c33eacfe7f9f4a7aad",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            715,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "3114bb05444e20212440bb133778c6c52dcf35a4e411a361db41f91b0d1cc69a",
+          "method": "vision"
+        }
+      ]
+    }
+  ],
+  "unresolved": [],
+  "errors": [],
+  "history": [
+    {
+      "field": "transparent.base_s",
+      "raw_value": 0.495,
+      "value": 0.495,
+      "phase": "transient",
+      "confidence": 0.9,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0016",
+          "source_seconds": 41.0,
+          "source_time": "00:00:41.000",
+          "frame_sha256": "25d219c9f051085a8afc356a94c18a291152cdb06a2ce0afb0020b9cb209e911",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            555,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "5a07ec01ddf369b5ccd4b2c1aab9b6dbdbcb51528a0c96e9da242c389f824056",
+          "method": "vision"
+        }
+      ],
+      "frame_ids": [
+        "frame-0016"
+      ],
+      "times": [
+        41.0
+      ]
+    },
+    {
+      "field": "transparent.base_s",
+      "raw_value": 0.096,
+      "value": 0.096,
+      "phase": "transient",
+      "confidence": 0.9,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0024",
+          "source_seconds": 43.0,
+          "source_time": "00:00:43.000",
+          "frame_sha256": "aec84e38728f9341ed4a989a4176ee4db67a7d8789f2eb1096ccd4d7f5344f82",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            555,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "5961133e26c5167500364b94e6a01fc465fac6f286d3e79772f80f74152b7acd",
+          "method": "vision"
+        }
+      ],
+      "frame_ids": [
+        "frame-0024"
+      ],
+      "times": [
+        43.0
+      ]
+    },
+    {
+      "field": "transparent.base_h",
+      "raw_value": 0.593,
+      "value": 0.593,
+      "phase": "final",
+      "confidence": 0.95,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0024",
+          "source_seconds": 43.0,
+          "source_time": "00:00:43.000",
+          "frame_sha256": "aec84e38728f9341ed4a989a4176ee4db67a7d8789f2eb1096ccd4d7f5344f82",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            532,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "c8e2a5fecd61389f76868e689421e87d6608c0facedadb92450f6d4d6576bcad",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0026",
+          "source_seconds": 43.5,
+          "source_time": "00:00:43.500",
+          "frame_sha256": "d968e5da891f7fd442ff5c133c76ab9f7193ec0750dfa3a034a602b15da6330d",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            532,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "80f299a1c6afa1f2bf30d432c659b5d8d03dba7d0b5dd9bf2599e6a3d5aba488",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0028",
+          "source_seconds": 44.0,
+          "source_time": "00:00:44.000",
+          "frame_sha256": "1a5fb10826feaf9fa77c6dc1e1e606d345b98e8be0877367cd4914439af375c0",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            532,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "ae226d74f3c8d23fd5c4d0928cdeb2190982f0b377f0bcee5bb674903c533b13",
+          "method": "vision"
+        }
+      ],
+      "frame_ids": [
+        "frame-0024",
+        "frame-0026",
+        "frame-0028"
+      ],
+      "times": [
+        43.0,
+        43.5,
+        44.0
+      ]
+    },
+    {
+      "field": "transparent.base_v",
+      "raw_value": 0.8,
+      "value": 0.8,
+      "phase": "final",
+      "confidence": 0.95,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0024",
+          "source_seconds": 43.0,
+          "source_time": "00:00:43.000",
+          "frame_sha256": "aec84e38728f9341ed4a989a4176ee4db67a7d8789f2eb1096ccd4d7f5344f82",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            578,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "9c9171eb975f00f670e2e387748007db45ff028a0bad3cbe72691fa49c1d77a9",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0026",
+          "source_seconds": 43.5,
+          "source_time": "00:00:43.500",
+          "frame_sha256": "d968e5da891f7fd442ff5c133c76ab9f7193ec0750dfa3a034a602b15da6330d",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            578,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "f0b27eda12a6cc54494be09c37db3af93e4bb6b9508a3d910d286573b9502962",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0028",
+          "source_seconds": 44.0,
+          "source_time": "00:00:44.000",
+          "frame_sha256": "1a5fb10826feaf9fa77c6dc1e1e606d345b98e8be0877367cd4914439af375c0",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            578,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "2d09155ccc125acb6ccee83963e65d69adaa65be70af8bfd4e457e1921e03c1b",
+          "method": "vision"
+        }
+      ],
+      "frame_ids": [
+        "frame-0024",
+        "frame-0026",
+        "frame-0028"
+      ],
+      "times": [
+        43.0,
+        43.5,
+        44.0
+      ]
+    },
+    {
+      "field": "transparent.base_s",
+      "raw_value": 0.0,
+      "value": 0.0,
+      "phase": "final",
+      "confidence": 0.95,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0026",
+          "source_seconds": 43.5,
+          "source_time": "00:00:43.500",
+          "frame_sha256": "d968e5da891f7fd442ff5c133c76ab9f7193ec0750dfa3a034a602b15da6330d",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            555,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "f90b2a664f04f4e80b14edfdd5de059b01a0f9430ad54723150f49233051aad7",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0028",
+          "source_seconds": 44.0,
+          "source_time": "00:00:44.000",
+          "frame_sha256": "1a5fb10826feaf9fa77c6dc1e1e606d345b98e8be0877367cd4914439af375c0",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            555,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "0bf431a94947a5a09ddf0968b5be87d28e10bd44aa66140efce3899565ebe90c",
+          "method": "vision"
+        }
+      ],
+      "frame_ids": [
+        "frame-0026",
+        "frame-0028"
+      ],
+      "times": [
+        43.5,
+        44.0
+      ]
+    },
+    {
+      "field": "distribution",
+      "raw_value": "GGX",
+      "value": "GGX",
+      "phase": "final",
+      "confidence": 0.95,
+      "source_ui_label": "GGX dropdown",
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "source_seconds": 62.5,
+          "source_time": "00:01:02.500",
+          "frame_sha256": "76f1d2938b16014874feb758c36fe3c15ed62f5e461c57278632cabb45a356e5",
+          "ingest_hash_verified": true,
+          "region": [
+            80,
+            252,
+            230,
+            26
+          ],
+          "region_rgba_sha256": "a600ff641a6b749e1ee9dba2d8191361585c31fb0fa0be6330ff9b85f5e1d6ad",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "source_seconds": 77.5,
+          "source_time": "00:01:17.500",
+          "frame_sha256": "6bdf3bc362333e4b4600c8e8ee4c15e1ed352b8a4a7cd7c33eacfe7f9f4a7aad",
+          "ingest_hash_verified": true,
+          "region": [
+            80,
+            252,
+            230,
+            26
+          ],
+          "region_rgba_sha256": "662455cf1bff8d77c90d46fc9fc0dec19d05d029788966366467817460c5f835",
+          "method": "vision"
+        }
+      ],
+      "frame_ids": [
+        "frame-0038",
+        "frame-0041"
+      ],
+      "times": [
+        62.5,
+        77.5
+      ]
+    },
+    {
+      "field": "transparent.metallic",
+      "raw_value": 0.0,
+      "value": 0.0,
+      "phase": "final",
+      "confidence": 0.95,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "source_seconds": 62.5,
+          "source_time": "00:01:02.500",
+          "frame_sha256": "76f1d2938b16014874feb758c36fe3c15ed62f5e461c57278632cabb45a356e5",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            441,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "ae387b7d9d31fe945403304c314cdbe83cba69e70b998d917ff801362cdf4cea",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "source_seconds": 77.5,
+          "source_time": "00:01:17.500",
+          "frame_sha256": "6bdf3bc362333e4b4600c8e8ee4c15e1ed352b8a4a7cd7c33eacfe7f9f4a7aad",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            441,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "c0e8a4e45d0886637e96e6fe4728b29620848266e39d026ffd0e0ef3fdef199e",
+          "method": "vision"
+        }
+      ],
+      "frame_ids": [
+        "frame-0038",
+        "frame-0041"
+      ],
+      "times": [
+        62.5,
+        77.5
+      ]
+    },
+    {
+      "field": "transparent.specular",
+      "raw_value": 0.5,
+      "value": 0.5,
+      "phase": "final",
+      "confidence": 0.95,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "source_seconds": 62.5,
+          "source_time": "00:01:02.500",
+          "frame_sha256": "76f1d2938b16014874feb758c36fe3c15ed62f5e461c57278632cabb45a356e5",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            464,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "2fb147b97f37b0c5a520d058f225015e17c2395fb92062d3e3ee80e90ca37046",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "source_seconds": 77.5,
+          "source_time": "00:01:17.500",
+          "frame_sha256": "6bdf3bc362333e4b4600c8e8ee4c15e1ed352b8a4a7cd7c33eacfe7f9f4a7aad",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            464,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "f0818b94eed667859c39e4fa7f8f586da7b2eb68a6eee783d3c27a26b39f0b40",
+          "method": "vision"
+        }
+      ],
+      "frame_ids": [
+        "frame-0038",
+        "frame-0041"
+      ],
+      "times": [
+        62.5,
+        77.5
+      ]
+    },
+    {
+      "field": "transparent.roughness",
+      "raw_value": 0.0,
+      "value": 0.0,
+      "phase": "final",
+      "confidence": 0.95,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "source_seconds": 62.5,
+          "source_time": "00:01:02.500",
+          "frame_sha256": "76f1d2938b16014874feb758c36fe3c15ed62f5e461c57278632cabb45a356e5",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            509,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "6ab6120e1f670fb2a16e5cb89235a892de974b8a9106d1a1128683da98cf31d0",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "source_seconds": 77.5,
+          "source_time": "00:01:17.500",
+          "frame_sha256": "6bdf3bc362333e4b4600c8e8ee4c15e1ed352b8a4a7cd7c33eacfe7f9f4a7aad",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            509,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "269542bac24177d253325d4f06a2ece6ed639f519fe216a09f58f4fb7a9186ad",
+          "method": "vision"
+        }
+      ],
+      "frame_ids": [
+        "frame-0038",
+        "frame-0041"
+      ],
+      "times": [
+        62.5,
+        77.5
+      ]
+    },
+    {
+      "field": "transparent.ior",
+      "raw_value": 1.45,
+      "value": 1.45,
+      "phase": "final",
+      "confidence": 0.95,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "source_seconds": 62.5,
+          "source_time": "00:01:02.500",
+          "frame_sha256": "76f1d2938b16014874feb758c36fe3c15ed62f5e461c57278632cabb45a356e5",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            669,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "7af92c0cb1a10386b6897fec005dbf897b0262b07599e6e38e1d19b9a23512c6",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "source_seconds": 77.5,
+          "source_time": "00:01:17.500",
+          "frame_sha256": "6bdf3bc362333e4b4600c8e8ee4c15e1ed352b8a4a7cd7c33eacfe7f9f4a7aad",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            669,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "dc0b2f908f99792d70ddb4167dab5f538bf25996f56746df4207c42376035ee1",
+          "method": "vision"
+        }
+      ],
+      "frame_ids": [
+        "frame-0038",
+        "frame-0041"
+      ],
+      "times": [
+        62.5,
+        77.5
+      ]
+    },
+    {
+      "field": "transparent.transmission",
+      "raw_value": 1.0,
+      "value": 1.0,
+      "phase": "final",
+      "confidence": 0.95,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "source_seconds": 62.5,
+          "source_time": "00:01:02.500",
+          "frame_sha256": "76f1d2938b16014874feb758c36fe3c15ed62f5e461c57278632cabb45a356e5",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            692,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "0f10c836915100ce6169d9d8fe658ee2e60333a0b8847b8f665218fa0fc3ca30",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "source_seconds": 77.5,
+          "source_time": "00:01:17.500",
+          "frame_sha256": "6bdf3bc362333e4b4600c8e8ee4c15e1ed352b8a4a7cd7c33eacfe7f9f4a7aad",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            692,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "a547b0828edef4b0394838c4a8fca1c27b2f321d816cedefa83e8511f968be44",
+          "method": "vision"
+        }
+      ],
+      "frame_ids": [
+        "frame-0038",
+        "frame-0041"
+      ],
+      "times": [
+        62.5,
+        77.5
+      ]
+    },
+    {
+      "field": "transparent.transmission_roughness",
+      "raw_value": 0.0,
+      "value": 0.0,
+      "phase": "final",
+      "confidence": 0.95,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0038",
+          "source_seconds": 62.5,
+          "source_time": "00:01:02.500",
+          "frame_sha256": "76f1d2938b16014874feb758c36fe3c15ed62f5e461c57278632cabb45a356e5",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            715,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "31f3ebfa64590d3e558a0424e36048f70fcc830f73eec78dfa8935bbfdadbf40",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0041",
+          "source_seconds": 77.5,
+          "source_time": "00:01:17.500",
+          "frame_sha256": "6bdf3bc362333e4b4600c8e8ee4c15e1ed352b8a4a7cd7c33eacfe7f9f4a7aad",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            715,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "3114bb05444e20212440bb133778c6c52dcf35a4e411a361db41f91b0d1cc69a",
+          "method": "vision"
+        }
+      ],
+      "frame_ids": [
+        "frame-0038",
+        "frame-0041"
+      ],
+      "times": [
+        62.5,
+        77.5
+      ]
+    },
+    {
+      "field": "frosted.roughness",
+      "raw_value": 0.0,
+      "value": 0.0,
+      "phase": "transient",
+      "confidence": 0.9,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0056",
+          "source_seconds": 130.0,
+          "source_time": "00:02:10.000",
+          "frame_sha256": "74c17233d2cb9a2e3bf10d917b8b55affd9aef54c42064d95deaa37236efab16",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            509,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "779ab14ddf8973f87c6878cb62577e1ea0721c4ef2e84b4a1b735228f3de38b1",
+          "method": "vision"
+        }
+      ],
+      "frame_ids": [
+        "frame-0056"
+      ],
+      "times": [
+        130.0
+      ]
+    },
+    {
+      "field": "frosted.roughness",
+      "raw_value": 0.509,
+      "value": 0.509,
+      "phase": "transient",
+      "confidence": 0.9,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0061",
+          "source_seconds": 134.0,
+          "source_time": "00:02:14.000",
+          "frame_sha256": "42cb7a9a15b088a14262c2e3910716a50de72306696223d4716ad4b0a677efcc",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            509,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "f6322bafccd2135cb24cc4485333dc52a9c6c1ea33a0028f7d491a8fcd9bb478",
+          "method": "vision"
+        }
+      ],
+      "frame_ids": [
+        "frame-0061"
+      ],
+      "times": [
+        134.0
+      ]
+    },
+    {
+      "field": "frosted.roughness",
+      "raw_value": 0.491,
+      "value": 0.491,
+      "phase": "transient",
+      "confidence": 0.8,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0066",
+          "source_seconds": 138.0,
+          "source_time": "00:02:18.000",
+          "frame_sha256": "bd4705a1b1d32188442a4965b86a6d1058214d6b4ce5e0f04e493d97e95c473a",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            509,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "198a9573a2077543d35dcfd829ed51ab52bd22b9d77f16a29eb23728267865a7",
+          "method": "vision"
+        }
+      ],
+      "frame_ids": [
+        "frame-0066"
+      ],
+      "times": [
+        138.0
+      ]
+    },
+    {
+      "field": "frosted.roughness",
+      "raw_value": 0.5,
+      "value": 0.5,
+      "phase": "final",
+      "confidence": 0.95,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0067",
+          "source_seconds": 142.5,
+          "source_time": "00:02:22.500",
+          "frame_sha256": "afdf727f8cc2f5e5c9fb478ab52b2358ae8a3494ced1f2fe12bf4812e289fecd",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            509,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "e7f253128947a93b12267de5dba6f63df2a648bcf2c426e75f5c01e11206bbad",
+          "method": "vision"
+        },
+        {
+          "frame_id": "frame-0068",
+          "source_seconds": 147.5,
+          "source_time": "00:02:27.500",
+          "frame_sha256": "bb25dfcacc929e3f67bb1f38c834952e5a83dc29247c43d7a9a835678c83f9ca",
+          "ingest_hash_verified": true,
+          "region": [
+            180,
+            509,
+            130,
+            24
+          ],
+          "region_rgba_sha256": "330b0574932bd740f16812972905cfc14ecd5cca0694783ebfcbeab865b6b1e5",
+          "method": "vision"
+        }
+      ],
+      "frame_ids": [
+        "frame-0067",
+        "frame-0068"
+      ],
+      "times": [
+        142.5,
+        147.5
+      ]
+    },
+    {
+      "field": "tinted.base_h",
+      "raw_value": 0.388,
+      "value": 0.388,
+      "phase": "final",
+      "confidence": 0.95,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0075",
+          "source_seconds": 182.5,
+          "source_time": "00:03:02.500",
+          "frame_sha256": "7cdb61e6017e4ea39c29e01d5196b9d6ef9e5f89d62dd987b55479065e50c57b",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            532,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "34f8845269ee783836b536327041b1cda1d5929d16da78305e6fadb6b5fcb306",
+          "method": "vision"
+        }
+      ],
+      "frame_ids": [
+        "frame-0075"
+      ],
+      "times": [
+        182.5
+      ]
+    },
+    {
+      "field": "tinted.base_s",
+      "raw_value": 0.441,
+      "value": 0.441,
+      "phase": "final",
+      "confidence": 0.95,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0075",
+          "source_seconds": 182.5,
+          "source_time": "00:03:02.500",
+          "frame_sha256": "7cdb61e6017e4ea39c29e01d5196b9d6ef9e5f89d62dd987b55479065e50c57b",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            555,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "3f15a54571d4553743b719fb94076e259a7c1d8faf7aa4fb4dab39656d235a6d",
+          "method": "vision"
+        }
+      ],
+      "frame_ids": [
+        "frame-0075"
+      ],
+      "times": [
+        182.5
+      ]
+    },
+    {
+      "field": "tinted.base_v",
+      "raw_value": 0.8,
+      "value": 0.8,
+      "phase": "final",
+      "confidence": 0.95,
+      "source_ui_label": null,
+      "evidence": [
+        {
+          "frame_id": "frame-0075",
+          "source_seconds": 182.5,
+          "source_time": "00:03:02.500",
+          "frame_sha256": "7cdb61e6017e4ea39c29e01d5196b9d6ef9e5f89d62dd987b55479065e50c57b",
+          "ingest_hash_verified": true,
+          "region": [
+            185,
+            578,
+            150,
+            24
+          ],
+          "region_rgba_sha256": "f1d9e4591c5a4bef712c083c7688fdc3867fc8d5df33af2cf4add791726da5e5",
+          "method": "vision"
+        }
+      ],
+      "frame_ids": [
+        "frame-0075"
+      ],
+      "times": [
+        182.5
+      ]
+    }
+  ],
+  "compilation_fingerprint": "6ebd400a332d6d0c28e9e9141d796edbe73612c2169e32389d6da8f7b447af13"
+}

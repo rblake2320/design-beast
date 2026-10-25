@@ -1,0 +1,133 @@
+{
+  "schema": "beast.watch.typed-target/v1",
+  "application": "Blender",
+  "version": "3.x (Principled BSDF v1 UI: Clearcoat/Specular Tint/Subsurface Radius sockets)",
+  "fields": [
+    {
+      "name": "distribution",
+      "type": "enum",
+      "enum_values": [
+        "GGX",
+        "Multiscatter GGX"
+      ]
+    },
+    {
+      "name": "transparent.base_h",
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "finality": {
+        "min_confirmations": 2,
+        "min_span_seconds": 0.5
+      }
+    },
+    {
+      "name": "transparent.base_s",
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "finality": {
+        "min_confirmations": 2,
+        "min_span_seconds": 0.5
+      }
+    },
+    {
+      "name": "transparent.base_v",
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "finality": {
+        "min_confirmations": 2,
+        "min_span_seconds": 0.5
+      }
+    },
+    {
+      "name": "transparent.metallic",
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "finality": {
+        "min_confirmations": 2,
+        "min_span_seconds": 1.0
+      }
+    },
+    {
+      "name": "transparent.specular",
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "finality": {
+        "min_confirmations": 2,
+        "min_span_seconds": 1.0
+      }
+    },
+    {
+      "name": "transparent.roughness",
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "finality": {
+        "min_confirmations": 2,
+        "min_span_seconds": 1.0
+      }
+    },
+    {
+      "name": "transparent.ior",
+      "type": "number",
+      "minimum": 1.0,
+      "maximum": 3.0,
+      "finality": {
+        "min_confirmations": 2,
+        "min_span_seconds": 1.0
+      }
+    },
+    {
+      "name": "transparent.transmission",
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "finality": {
+        "min_confirmations": 2,
+        "min_span_seconds": 1.0
+      }
+    },
+    {
+      "name": "transparent.transmission_roughness",
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "finality": {
+        "min_confirmations": 2,
+        "min_span_seconds": 1.0
+      }
+    },
+    {
+      "name": "frosted.roughness",
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "finality": {
+        "min_confirmations": 2,
+        "min_span_seconds": 1.0
+      }
+    },
+    {
+      "name": "tinted.base_h",
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    {
+      "name": "tinted.base_s",
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    {
+      "name": "tinted.base_v",
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    }
+  ]
+}

@@ -1,0 +1,1506 @@
+{
+  "schema": "beast.watch.timeline/v3",
+  "source": {
+    "input": "https://www.youtube.com/watch?v=mSplN3TleXk",
+    "is_url": true,
+    "local_video": "video.mp4",
+    "sha256": "a5781b8a25c0eb0d4d8b6adb05690117fbf245f92fd6add99e6894137ec2b5b5",
+    "range": {
+      "start_seconds": 0.0,
+      "end_seconds": 211.654,
+      "start": "00:00:00.000",
+      "end": "00:03:31.654"
+    },
+    "media": {
+      "duration_seconds": 211.654,
+      "width": 1920,
+      "height": 1080,
+      "fps": "30000/1001",
+      "video_codec": "av1",
+      "audio_present": true
+    }
+  },
+  "sampling": {
+    "strategy": "scene+periodic+targeted-dense",
+    "periodic_seconds": 5.0,
+    "scene_threshold": 0.28,
+    "dense_windows": [],
+    "max_frames": 240,
+    "height": 1080
+  },
+  "coverage": {
+    "planned_frames": 43,
+    "extracted_frames": 80,
+    "scene_samples": 1,
+    "dense_samples": 37,
+    "near_duplicates": 30
+  },
+  "frames": [
+    {
+      "id": "frame-0001",
+      "file": "frames/f_000000002500.jpg",
+      "source_seconds": 2.5,
+      "source_time": "00:00:02.500",
+      "clip_seconds": 2.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "80b0a0fcfc2c88f8",
+      "sha256": "25e0c48466ed0fb7bec9a0f156491a57e1822c6606f839b9d075028bab2ee456",
+      "change_from_previous": null,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0002",
+      "file": "frames/f_000000007500.jpg",
+      "source_seconds": 7.5,
+      "source_time": "00:00:07.500",
+      "clip_seconds": 7.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "80b0f8fcfcf8f8f8",
+      "sha256": "e800b2b67b5f1b80d46cf74671bf812ee675f853bc661f7b038422d50498cdc6",
+      "change_from_previous": 10,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0003",
+      "file": "frames/f_000000010010.jpg",
+      "source_seconds": 10.01,
+      "source_time": "00:00:10.010",
+      "clip_seconds": 10.01,
+      "reasons": [
+        "scene_change"
+      ],
+      "perceptual_hash": "7078787878707060",
+      "sha256": "c3ddc47065b577c8d2b56657298d31e9b2e9a1dcff7c929340cb300af8698f05",
+      "change_from_previous": 19,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0004",
+      "file": "frames/f_000000012500.jpg",
+      "source_seconds": 12.5,
+      "source_time": "00:00:12.500",
+      "clip_seconds": 12.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078787878707060",
+      "sha256": "30d6911012f780323f279e0828e603b8cee3ce641becd96f688510bf25e0e28b",
+      "change_from_previous": 0,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0005",
+      "file": "frames/f_000000017500.jpg",
+      "source_seconds": 17.5,
+      "source_time": "00:00:17.500",
+      "clip_seconds": 17.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078787878707060",
+      "sha256": "0b315f56bb4c8a76ff9c78ccf20d737f69815b873b0b172b57de48a76236fb0a",
+      "change_from_previous": 0,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0006",
+      "file": "frames/f_000000022500.jpg",
+      "source_seconds": 22.5,
+      "source_time": "00:00:22.500",
+      "clip_seconds": 22.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078787878707060",
+      "sha256": "4fe58aaebb8a8c28ed5b644544ff91b022797e4f7da0da5c833f57dc3b2b5141",
+      "change_from_previous": 0,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0007",
+      "file": "frames/f_000000027500.jpg",
+      "source_seconds": 27.5,
+      "source_time": "00:00:27.500",
+      "clip_seconds": 27.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078787878707060",
+      "sha256": "38325c3fb6b495775882cf90c26fbab625474e5f4413ce5aaca920aef868c963",
+      "change_from_previous": 0,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0008",
+      "file": "frames/f_000000032500.jpg",
+      "source_seconds": 32.5,
+      "source_time": "00:00:32.500",
+      "clip_seconds": 32.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078787878707060",
+      "sha256": "f52183bc65d5eff93c9fec55792670fffa9bc23971f88b464df772f112aacad2",
+      "change_from_previous": 0,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0009",
+      "file": "frames/f_000000037500.jpg",
+      "source_seconds": 37.5,
+      "source_time": "00:00:37.500",
+      "clip_seconds": 37.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078787878707060",
+      "sha256": "e6e3452351da00d29ec8e641a59203124f4e4db4facea6889bd2d56db5dd15d8",
+      "change_from_previous": 0,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0010",
+      "file": "frames/f_000000039500.jpg",
+      "source_seconds": 39.5,
+      "source_time": "00:00:39.500",
+      "clip_seconds": 39.5,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7078787878707060",
+      "sha256": "b2bf526cf335ad564bc81d263626b070c71afb062bab72e8541c1eb615b0297d",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0011",
+      "file": "frames/f_000000039750.jpg",
+      "source_seconds": 39.75,
+      "source_time": "00:00:39.750",
+      "clip_seconds": 39.75,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7078787878707060",
+      "sha256": "2bba76c04afbda4719f251784e5e1a85953e9db0d03050013e0117a69a7c9926",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0012",
+      "file": "frames/f_000000040000.jpg",
+      "source_seconds": 40.0,
+      "source_time": "00:00:40.000",
+      "clip_seconds": 40.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7078787878707060",
+      "sha256": "26995267af5f9adb81acae16fce754157709487f3b9850918a5d6a204a76514a",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0013",
+      "file": "frames/f_000000040250.jpg",
+      "source_seconds": 40.25,
+      "source_time": "00:00:40.250",
+      "clip_seconds": 40.25,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7078787878707060",
+      "sha256": "1cec45040f5ea2dcfa971b1ee7547c72e1252fba6c507a259bdc6a67fc4b9b85",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0014",
+      "file": "frames/f_000000040500.jpg",
+      "source_seconds": 40.5,
+      "source_time": "00:00:40.500",
+      "clip_seconds": 40.5,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7078787878707060",
+      "sha256": "9c3a272e3f30f71337b4fa363c71711b48a581ecedba724d9118fe357a94433f",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0015",
+      "file": "frames/f_000000040750.jpg",
+      "source_seconds": 40.75,
+      "source_time": "00:00:40.750",
+      "clip_seconds": 40.75,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7078787878707060",
+      "sha256": "db8d8ea4bad77c7404c471b1ffe9174a21f321aeab25ff138fd6e8a693ce1247",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0016",
+      "file": "frames/f_000000041000.jpg",
+      "source_seconds": 41.0,
+      "source_time": "00:00:41.000",
+      "clip_seconds": 41.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7078787878707060",
+      "sha256": "25d219c9f051085a8afc356a94c18a291152cdb06a2ce0afb0020b9cb209e911",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0017",
+      "file": "frames/f_000000041250.jpg",
+      "source_seconds": 41.25,
+      "source_time": "00:00:41.250",
+      "clip_seconds": 41.25,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7078787878707060",
+      "sha256": "bf92ba358fc653a7d32511638b9d022b7e2e72c15b3bcdd0ecb94cccc8ec3396",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0018",
+      "file": "frames/f_000000041500.jpg",
+      "source_seconds": 41.5,
+      "source_time": "00:00:41.500",
+      "clip_seconds": 41.5,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7078787878707060",
+      "sha256": "1468536c604c9b141a8e7e4e84d0fb2d39dbbac979c0604f12c9eb9d3c0b1c58",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0019",
+      "file": "frames/f_000000041750.jpg",
+      "source_seconds": 41.75,
+      "source_time": "00:00:41.750",
+      "clip_seconds": 41.75,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7078787878707060",
+      "sha256": "5bd5a2acd3147a28a43c70978ccc48954a25236503e805088c198dac57ede2c8",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0020",
+      "file": "frames/f_000000042000.jpg",
+      "source_seconds": 42.0,
+      "source_time": "00:00:42.000",
+      "clip_seconds": 42.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7078787878707060",
+      "sha256": "af9fab1a7174e7a9c5c57c840f6f75c2506346db8a4ed3137e5ff642f0cb0740",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0021",
+      "file": "frames/f_000000042250.jpg",
+      "source_seconds": 42.25,
+      "source_time": "00:00:42.250",
+      "clip_seconds": 42.25,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7078787878707060",
+      "sha256": "926f1197a72bece2ed9e08943f4c1dbf4b40a9395235b990cf9fab732dd36b26",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0022",
+      "file": "frames/f_000000042500.jpg",
+      "source_seconds": 42.5,
+      "source_time": "00:00:42.500",
+      "clip_seconds": 42.5,
+      "reasons": [
+        "periodic",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7078787878707060",
+      "sha256": "20eaaec22f7c6d07efcbdf57a65150104c38e960c776fcf04f1b6956c8662823",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0023",
+      "file": "frames/f_000000042750.jpg",
+      "source_seconds": 42.75,
+      "source_time": "00:00:42.750",
+      "clip_seconds": 42.75,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7078707878703040",
+      "sha256": "9d13de6ac1c928a742f7f6d05f6f118dca499bf4acf6911f3090090119345618",
+      "change_from_previous": 3,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0024",
+      "file": "frames/f_000000043000.jpg",
+      "source_seconds": 43.0,
+      "source_time": "00:00:43.000",
+      "clip_seconds": 43.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7078707878787040",
+      "sha256": "aec84e38728f9341ed4a989a4176ee4db67a7d8789f2eb1096ccd4d7f5344f82",
+      "change_from_previous": 2,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0025",
+      "file": "frames/f_000000043250.jpg",
+      "source_seconds": 43.25,
+      "source_time": "00:00:43.250",
+      "clip_seconds": 43.25,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7078707878787000",
+      "sha256": "71fb9add477039cf2a5c2d4b998d606efba56896c6eff03673fd12bc6925bcfe",
+      "change_from_previous": 1,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0026",
+      "file": "frames/f_000000043500.jpg",
+      "source_seconds": 43.5,
+      "source_time": "00:00:43.500",
+      "clip_seconds": 43.5,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7078707878787040",
+      "sha256": "d968e5da891f7fd442ff5c133c76ab9f7193ec0750dfa3a034a602b15da6330d",
+      "change_from_previous": 1,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0027",
+      "file": "frames/f_000000043750.jpg",
+      "source_seconds": 43.75,
+      "source_time": "00:00:43.750",
+      "clip_seconds": 43.75,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7078707878787040",
+      "sha256": "d517f36a2fc26fd1e5290ca27c438abb2cefd8c81e75cfdfb6717a848b4c41f6",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0028",
+      "file": "frames/f_000000044000.jpg",
+      "source_seconds": 44.0,
+      "source_time": "00:00:44.000",
+      "clip_seconds": 44.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7078707878787040",
+      "sha256": "1a5fb10826feaf9fa77c6dc1e1e606d345b98e8be0877367cd4914439af375c0",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0029",
+      "file": "frames/f_000000044250.jpg",
+      "source_seconds": 44.25,
+      "source_time": "00:00:44.250",
+      "clip_seconds": 44.25,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7078707878783040",
+      "sha256": "79918b79340dd307ee098b31f7cab6d2bd74360e7a9158af2ca9b70a9c179de3",
+      "change_from_previous": 1,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0030",
+      "file": "frames/f_000000044500.jpg",
+      "source_seconds": 44.5,
+      "source_time": "00:00:44.500",
+      "clip_seconds": 44.5,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7070607878782040",
+      "sha256": "8b0445830dfb89fb5037b739a5176d4862289fed26fd0a07531870d50276f8d6",
+      "change_from_previous": 3,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0031",
+      "file": "frames/f_000000044750.jpg",
+      "source_seconds": 44.75,
+      "source_time": "00:00:44.750",
+      "clip_seconds": 44.75,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7070607878782040",
+      "sha256": "6f4d11f3cc345336ba6eaca9e6ca7dce068b1767e3871430ab6ccf7a9db1d77f",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0032",
+      "file": "frames/f_000000045000.jpg",
+      "source_seconds": 45.0,
+      "source_time": "00:00:45.000",
+      "clip_seconds": 45.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7070607878782040",
+      "sha256": "189fbb2cbcbe714a2f29897272ec0b7f86cef93f33d146fdbc6d4f9ad492d967",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0033",
+      "file": "frames/f_000000045250.jpg",
+      "source_seconds": 45.25,
+      "source_time": "00:00:45.250",
+      "clip_seconds": 45.25,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7070607878782040",
+      "sha256": "4336f839c844c925c9723955ded7dc5b9fd1fab2e65a5e6e7cca0b5df4853672",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0034",
+      "file": "frames/f_000000045500.jpg",
+      "source_seconds": 45.5,
+      "source_time": "00:00:45.500",
+      "clip_seconds": 45.5,
+      "reasons": [
+        "targeted_dense",
+        "seek_l2"
+      ],
+      "perceptual_hash": "7070607878782040",
+      "sha256": "400fd4c82b57604b658a45c23c3f012159d5161d1b88bb077ec953744a3ca502",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0035",
+      "file": "frames/f_000000047500.jpg",
+      "source_seconds": 47.5,
+      "source_time": "00:00:47.500",
+      "clip_seconds": 47.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078707878787060",
+      "sha256": "9897d5ce3065273117e6dce5c56c9281b4b754867881e18f312c84e031bb443c",
+      "change_from_previous": 5,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0036",
+      "file": "frames/f_000000052500.jpg",
+      "source_seconds": 52.5,
+      "source_time": "00:00:52.500",
+      "clip_seconds": 52.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078707878787060",
+      "sha256": "6fbffdfc21ddd46f2d8b7bb48ee25959319f23a1cc1a7db146e7b09b41e25c53",
+      "change_from_previous": 0,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0037",
+      "file": "frames/f_000000057500.jpg",
+      "source_seconds": 57.5,
+      "source_time": "00:00:57.500",
+      "clip_seconds": 57.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7070607878782040",
+      "sha256": "c1433af720d019b8a84d2aee576a8cd5e3f48fe51219afc0ef3f6609e478dab4",
+      "change_from_previous": 5,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0038",
+      "file": "frames/f_000000062500.jpg",
+      "source_seconds": 62.5,
+      "source_time": "00:01:02.500",
+      "clip_seconds": 62.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078707878787060",
+      "sha256": "76f1d2938b16014874feb758c36fe3c15ed62f5e461c57278632cabb45a356e5",
+      "change_from_previous": 5,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0039",
+      "file": "frames/f_000000067500.jpg",
+      "source_seconds": 67.5,
+      "source_time": "00:01:07.500",
+      "clip_seconds": 67.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078707878787060",
+      "sha256": "95a6d48c334f71d24b1537da541a1337c1acc82141a2b6c031bd7bf239c54694",
+      "change_from_previous": 0,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0040",
+      "file": "frames/f_000000072500.jpg",
+      "source_seconds": 72.5,
+      "source_time": "00:01:12.500",
+      "clip_seconds": 72.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7070607878782040",
+      "sha256": "794e2527d6a94f2892a098facc13189f39c1a0fe6fc64c81c87e3cab6f26a903",
+      "change_from_previous": 5,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0041",
+      "file": "frames/f_000000077500.jpg",
+      "source_seconds": 77.5,
+      "source_time": "00:01:17.500",
+      "clip_seconds": 77.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078707878787060",
+      "sha256": "6bdf3bc362333e4b4600c8e8ee4c15e1ed352b8a4a7cd7c33eacfe7f9f4a7aad",
+      "change_from_previous": 5,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0042",
+      "file": "frames/f_000000082500.jpg",
+      "source_seconds": 82.5,
+      "source_time": "00:01:22.500",
+      "clip_seconds": 82.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078707878787060",
+      "sha256": "3ad3c850135ce0bd0afa42f04b09c1ca959ec1bf33722b3b06f4ea8eb7dd40df",
+      "change_from_previous": 0,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0043",
+      "file": "frames/f_000000087500.jpg",
+      "source_seconds": 87.5,
+      "source_time": "00:01:27.500",
+      "clip_seconds": 87.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078787878787860",
+      "sha256": "d3f6042e894daf94f34d90749bce9943ec9a704ee9db8a84c086d0d161c944da",
+      "change_from_previous": 2,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0044",
+      "file": "frames/f_000000092500.jpg",
+      "source_seconds": 92.5,
+      "source_time": "00:01:32.500",
+      "clip_seconds": 92.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078787878787860",
+      "sha256": "b65890fd1690498ddad15ca9287c4c630266c2f9b1d5a20b288c29913d484d45",
+      "change_from_previous": 0,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0045",
+      "file": "frames/f_000000097500.jpg",
+      "source_seconds": 97.5,
+      "source_time": "00:01:37.500",
+      "clip_seconds": 97.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078607878782048",
+      "sha256": "b2404392d077c6c948df994aeeab33aa6325493cda73dcc831a601a2b6f24436",
+      "change_from_previous": 7,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0046",
+      "file": "frames/f_000000102500.jpg",
+      "source_seconds": 102.5,
+      "source_time": "00:01:42.500",
+      "clip_seconds": 102.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078707878783040",
+      "sha256": "cba7f3ea0e7766203dbbeede559797092ccbb67598bad73c145b98542c607f5c",
+      "change_from_previous": 3,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0047",
+      "file": "frames/f_000000107500.jpg",
+      "source_seconds": 107.5,
+      "source_time": "00:01:47.500",
+      "clip_seconds": 107.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078707878787000",
+      "sha256": "8d3864c3e09aa619bb4ba216fda9eaec0ff741c8ce981e8983e2ae450bd1218d",
+      "change_from_previous": 2,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0048",
+      "file": "frames/f_000000112500.jpg",
+      "source_seconds": 112.5,
+      "source_time": "00:01:52.500",
+      "clip_seconds": 112.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078707878787060",
+      "sha256": "997b2fe0e01dfbf63aa3945dc335e0ccb959db81764b64d199fd9bbf7959b6eb",
+      "change_from_previous": 2,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0049",
+      "file": "frames/f_000000117500.jpg",
+      "source_seconds": 117.5,
+      "source_time": "00:01:57.500",
+      "clip_seconds": 117.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078707878787060",
+      "sha256": "84b3056ab560f60093bf9449c4b04b73a812ea61fe27f81efef1e450513c2adb",
+      "change_from_previous": 0,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0050",
+      "file": "frames/f_000000122500.jpg",
+      "source_seconds": 122.5,
+      "source_time": "00:02:02.500",
+      "clip_seconds": 122.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078787878787860",
+      "sha256": "cb09bc325ffe630c955b589fdcfc38a6dcd6172844d55463fff4eb19342cf6a6",
+      "change_from_previous": 2,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0051",
+      "file": "frames/f_000000126000.jpg",
+      "source_seconds": 126.0,
+      "source_time": "00:02:06.000",
+      "clip_seconds": 126.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l1"
+      ],
+      "perceptual_hash": "7078787878787860",
+      "sha256": "f8bff9fdf80fad1b92b84e72839f24f3d254094a89a6baa6a6acfbec912570d0",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0052",
+      "file": "frames/f_000000127000.jpg",
+      "source_seconds": 127.0,
+      "source_time": "00:02:07.000",
+      "clip_seconds": 127.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l1"
+      ],
+      "perceptual_hash": "7078707878787040",
+      "sha256": "ea97bf8b103fb64f8f58034edbc989b38dfb36f17f96532431343556a153b851",
+      "change_from_previous": 3,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0053",
+      "file": "frames/f_000000127500.jpg",
+      "source_seconds": 127.5,
+      "source_time": "00:02:07.500",
+      "clip_seconds": 127.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078707878783040",
+      "sha256": "02e36cd5a77c7397271f3838989abe63accf980040ffa5873509b49c020f5133",
+      "change_from_previous": 1,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0054",
+      "file": "frames/f_000000128000.jpg",
+      "source_seconds": 128.0,
+      "source_time": "00:02:08.000",
+      "clip_seconds": 128.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l1"
+      ],
+      "perceptual_hash": "7078707878783040",
+      "sha256": "02cfcb83042b8c12f4ed7620b162010bb1477f04e46c24855c67c770caaa1f23",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0055",
+      "file": "frames/f_000000129000.jpg",
+      "source_seconds": 129.0,
+      "source_time": "00:02:09.000",
+      "clip_seconds": 129.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l1"
+      ],
+      "perceptual_hash": "7070607878782040",
+      "sha256": "12508185c548f453804af2aa8591a833b6159718169ab20780ef333de753cf4b",
+      "change_from_previous": 3,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0056",
+      "file": "frames/f_000000130000.jpg",
+      "source_seconds": 130.0,
+      "source_time": "00:02:10.000",
+      "clip_seconds": 130.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l1"
+      ],
+      "perceptual_hash": "7078707878787000",
+      "sha256": "74c17233d2cb9a2e3bf10d917b8b55affd9aef54c42064d95deaa37236efab16",
+      "change_from_previous": 5,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0057",
+      "file": "frames/f_000000131000.jpg",
+      "source_seconds": 131.0,
+      "source_time": "00:02:11.000",
+      "clip_seconds": 131.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l1"
+      ],
+      "perceptual_hash": "7078707878787040",
+      "sha256": "bd0e990e2ed5eafd0879786272ef23c93b3d20b851693a52172b66aa0fc376e4",
+      "change_from_previous": 1,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0058",
+      "file": "frames/f_000000132000.jpg",
+      "source_seconds": 132.0,
+      "source_time": "00:02:12.000",
+      "clip_seconds": 132.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l1"
+      ],
+      "perceptual_hash": "7078707878787060",
+      "sha256": "28f2f6cbb464f6abf4cb57d518157ea1884434f7e7204c1c4070cd66214ae028",
+      "change_from_previous": 1,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0059",
+      "file": "frames/f_000000132500.jpg",
+      "source_seconds": 132.5,
+      "source_time": "00:02:12.500",
+      "clip_seconds": 132.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078707878787040",
+      "sha256": "0d567e11fe6d845a9bbf0e0ce33eb6714d911514a3d245703a9ed1ab72886684",
+      "change_from_previous": 1,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0060",
+      "file": "frames/f_000000133000.jpg",
+      "source_seconds": 133.0,
+      "source_time": "00:02:13.000",
+      "clip_seconds": 133.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l1"
+      ],
+      "perceptual_hash": "7078707878787040",
+      "sha256": "dd369b18c23a9a4b2125998f58d6d0719b5b6cd5662832e301ccb9035b414294",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0061",
+      "file": "frames/f_000000134000.jpg",
+      "source_seconds": 134.0,
+      "source_time": "00:02:14.000",
+      "clip_seconds": 134.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l1"
+      ],
+      "perceptual_hash": "7078707878787060",
+      "sha256": "42cb7a9a15b088a14262c2e3910716a50de72306696223d4716ad4b0a677efcc",
+      "change_from_previous": 1,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0062",
+      "file": "frames/f_000000135000.jpg",
+      "source_seconds": 135.0,
+      "source_time": "00:02:15.000",
+      "clip_seconds": 135.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l1"
+      ],
+      "perceptual_hash": "7078707878787060",
+      "sha256": "c5a9dc1c5a93782d5a0f4b9bc7dafbf1bbbe553ba456b6fc44d301af0b9c9c66",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0063",
+      "file": "frames/f_000000136000.jpg",
+      "source_seconds": 136.0,
+      "source_time": "00:02:16.000",
+      "clip_seconds": 136.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l1"
+      ],
+      "perceptual_hash": "7078707878783040",
+      "sha256": "fa45876771c63e2baea46bb0601331294dcabe1dc412ce76328c46297b736e0b",
+      "change_from_previous": 2,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0064",
+      "file": "frames/f_000000137000.jpg",
+      "source_seconds": 137.0,
+      "source_time": "00:02:17.000",
+      "clip_seconds": 137.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l1"
+      ],
+      "perceptual_hash": "7078606878782040",
+      "sha256": "289ad70f05653e3991d6c742996020bb0b2fb3b5da5ca6388e98af2431b78002",
+      "change_from_previous": 3,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0065",
+      "file": "frames/f_000000137500.jpg",
+      "source_seconds": 137.5,
+      "source_time": "00:02:17.500",
+      "clip_seconds": 137.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078606878782040",
+      "sha256": "e01f6d14dcac4fb8b1f83c8c13f1d59e18998a926539e23bb6d4f52f73d97148",
+      "change_from_previous": 0,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0066",
+      "file": "frames/f_000000138000.jpg",
+      "source_seconds": 138.0,
+      "source_time": "00:02:18.000",
+      "clip_seconds": 138.0,
+      "reasons": [
+        "targeted_dense",
+        "seek_l1"
+      ],
+      "perceptual_hash": "7078606878782040",
+      "sha256": "bd4705a1b1d32188442a4965b86a6d1058214d6b4ce5e0f04e493d97e95c473a",
+      "change_from_previous": 0,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0067",
+      "file": "frames/f_000000142500.jpg",
+      "source_seconds": 142.5,
+      "source_time": "00:02:22.500",
+      "clip_seconds": 142.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078606878782068",
+      "sha256": "afdf727f8cc2f5e5c9fb478ab52b2358ae8a3494ced1f2fe12bf4812e289fecd",
+      "change_from_previous": 2,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0068",
+      "file": "frames/f_000000147500.jpg",
+      "source_seconds": 147.5,
+      "source_time": "00:02:27.500",
+      "clip_seconds": 147.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078707878787060",
+      "sha256": "bb25dfcacc929e3f67bb1f38c834952e5a83dc29247c43d7a9a835678c83f9ca",
+      "change_from_previous": 5,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0069",
+      "file": "frames/f_000000152500.jpg",
+      "source_seconds": 152.5,
+      "source_time": "00:02:32.500",
+      "clip_seconds": 152.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7878787878783000",
+      "sha256": "2f1c0fc9c1b54d3a58c1a3f71fa987af3b37549b32d9332f670720ca597fb77b",
+      "change_from_previous": 5,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0070",
+      "file": "frames/f_000000157500.jpg",
+      "source_seconds": 157.5,
+      "source_time": "00:02:37.500",
+      "clip_seconds": 157.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078707878787000",
+      "sha256": "bca92f25193edd179f1524e3dfecc1b4aad6c38e8d245842247325c84122e6f6",
+      "change_from_previous": 3,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0071",
+      "file": "frames/f_000000162500.jpg",
+      "source_seconds": 162.5,
+      "source_time": "00:02:42.500",
+      "clip_seconds": 162.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078707878787000",
+      "sha256": "982ffc39ebbc9b4e632879cd2d0bbc43f14870cf110894a9fcdb4afafd90c1aa",
+      "change_from_previous": 0,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0072",
+      "file": "frames/f_000000167500.jpg",
+      "source_seconds": 167.5,
+      "source_time": "00:02:47.500",
+      "clip_seconds": 167.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078707878787000",
+      "sha256": "cbf760ea04ed4299d5e207b5fbb0a5595b71eb22b1cab8f7cd2112e73230c4d2",
+      "change_from_previous": 0,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0073",
+      "file": "frames/f_000000172500.jpg",
+      "source_seconds": 172.5,
+      "source_time": "00:02:52.500",
+      "clip_seconds": 172.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078707878787040",
+      "sha256": "4ab8e8fbc818028161c27703497963fc4742d12fffbcf55f24b3349325f16f4b",
+      "change_from_previous": 1,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0074",
+      "file": "frames/f_000000177500.jpg",
+      "source_seconds": 177.5,
+      "source_time": "00:02:57.500",
+      "clip_seconds": 177.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078707878787000",
+      "sha256": "dfe451a0cb5e84aca24045e1c7d7e7fdaf7c5a6f6fd38060a7eb330ac77c44c4",
+      "change_from_previous": 1,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0075",
+      "file": "frames/f_000000182500.jpg",
+      "source_seconds": 182.5,
+      "source_time": "00:03:02.500",
+      "clip_seconds": 182.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078707878787060",
+      "sha256": "7cdb61e6017e4ea39c29e01d5196b9d6ef9e5f89d62dd987b55479065e50c57b",
+      "change_from_previous": 2,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0076",
+      "file": "frames/f_000000187500.jpg",
+      "source_seconds": 187.5,
+      "source_time": "00:03:07.500",
+      "clip_seconds": 187.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "7078707878787060",
+      "sha256": "8cd50f24c02eed5cee6359e94088a596ec64f2f1fb0b5f04b4cfbafb08c56d5d",
+      "change_from_previous": 0,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0077",
+      "file": "frames/f_000000192500.jpg",
+      "source_seconds": 192.5,
+      "source_time": "00:03:12.500",
+      "clip_seconds": 192.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "3f3f3f3f7878787f",
+      "sha256": "89b1f20ae52d2bd0851186a0a583a7a460ca97ca1ad58e6ce8515b81a8ba2a55",
+      "change_from_previous": 24,
+      "near_duplicate": false
+    },
+    {
+      "id": "frame-0078",
+      "file": "frames/f_000000197500.jpg",
+      "source_seconds": 197.5,
+      "source_time": "00:03:17.500",
+      "clip_seconds": 197.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "3f3f3f3f7878787f",
+      "sha256": "8e115fa26dec4a71a883adc8d5b54abe0d03c9ec7f86fb21df10ac4a18faea2d",
+      "change_from_previous": 0,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0079",
+      "file": "frames/f_000000202500.jpg",
+      "source_seconds": 202.5,
+      "source_time": "00:03:22.500",
+      "clip_seconds": 202.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "3f3f3f3f7878787f",
+      "sha256": "f7d7a263cf5b74abe0e641697c6251d2dc8ac2e5e7e6a03e61e8c853b308df87",
+      "change_from_previous": 0,
+      "near_duplicate": true
+    },
+    {
+      "id": "frame-0080",
+      "file": "frames/f_000000207500.jpg",
+      "source_seconds": 207.5,
+      "source_time": "00:03:27.500",
+      "clip_seconds": 207.5,
+      "reasons": [
+        "periodic"
+      ],
+      "perceptual_hash": "3f3f3f3f7878787f",
+      "sha256": "b331c348048a1f5bd0615a1797187d875fd1923cf72135f51c6bc3343bbb45ef",
+      "change_from_previous": 0,
+      "near_duplicate": true
+    }
+  ],
+  "transcript": {
+    "method": "captions",
+    "file": "transcript.txt",
+    "segments": [
+      {
+        "id": "speech-0001",
+        "time_seconds": 0.0,
+        "time": "00:00:00.000",
+        "text": "Hello, this is a video to show how can we make&nbsp;"
+      },
+      {
+        "id": "speech-0002",
+        "time_seconds": 0.0,
+        "time": "00:00:00.000",
+        "text": "transparent glass, frosted glass and colored grass in&nbsp;Blender"
+      },
+      {
+        "id": "speech-0003",
+        "time_seconds": 10.861,
+        "time": "00:00:10.861",
+        "text": "this is a setting we make before,"
+      },
+      {
+        "id": "speech-0004",
+        "time_seconds": 10.861,
+        "time": "00:00:10.861",
+        "text": "we can find this setting in previous video&nbsp;in this channel"
+      },
+      {
+        "id": "speech-0005",
+        "time_seconds": 17.558,
+        "time": "00:00:17.558",
+        "text": "in this setting, we use Cycles&nbsp;as a renderer,"
+      },
+      {
+        "id": "speech-0006",
+        "time_seconds": 21.517,
+        "time": "00:00:21.517",
+        "text": "and we add a area light for the lighting"
+      },
+      {
+        "id": "speech-0007",
+        "time_seconds": 25.143,
+        "time": "00:00:25.143",
+        "text": "a cube for the glass material&nbsp;"
+      },
+      {
+        "id": "speech-0008",
+        "time_seconds": 25.143,
+        "time": "00:00:25.143",
+        "text": "and the plane for the background color"
+      },
+      {
+        "id": "speech-0009",
+        "time_seconds": 32.7,
+        "time": "00:00:32.700",
+        "text": "for the background color,"
+      },
+      {
+        "id": "speech-0010",
+        "time_seconds": 32.7,
+        "time": "00:00:32.700",
+        "text": "in the previous video we&nbsp;set it in blue color"
+      },
+      {
+        "id": "speech-0011",
+        "time_seconds": 38.664,
+        "time": "00:00:38.664",
+        "text": "for this material setting, I go back to make it light grey"
+      },
+      {
+        "id": "speech-0012",
+        "time_seconds": 43.997,
+        "time": "00:00:43.997",
+        "text": "and then I select&nbsp;the glass cube and call it transparent glass"
+      },
+      {
+        "id": "speech-0013",
+        "time_seconds": 57.3,
+        "time": "00:00:57.300",
+        "text": "and this glass cube has already applied the glass&nbsp;material"
+      },
+      {
+        "id": "speech-0014",
+        "time_seconds": 62.153,
+        "time": "00:01:02.153",
+        "text": "I have used the based color in light grey,  the value in 0.8&nbsp;&nbsp;"
+      },
+      {
+        "id": "speech-0015",
+        "time_seconds": 70.14,
+        "time": "00:01:10.140",
+        "text": "and then the roughness, I turn it from 0.5&nbsp;to 0."
+      },
+      {
+        "id": "speech-0016",
+        "time_seconds": 77.628,
+        "time": "00:01:17.628",
+        "text": "and then IOR, we can keep it to 1.45"
+      },
+      {
+        "id": "speech-0017",
+        "time_seconds": 84.24,
+        "time": "00:01:24.240",
+        "text": "and transmission, we can turn it to 1 to make&nbsp;it transparent"
+      },
+      {
+        "id": "speech-0018",
+        "time_seconds": 91.716,
+        "time": "00:01:31.716",
+        "text": "so I call it transparent grass here"
+      },
+      {
+        "id": "speech-0019",
+        "time_seconds": 97.38,
+        "time": "00:01:37.380",
+        "text": "and then I's like to duplicate this cube, copy and&nbsp;"
+      },
+      {
+        "id": "speech-0020",
+        "time_seconds": 97.38,
+        "time": "00:01:37.380",
+        "text": "paste"
+      },
+      {
+        "id": "speech-0021",
+        "time_seconds": 102.3,
+        "time": "00:01:42.300",
+        "text": "and make it invisible and I rename it to"
+      },
+      {
+        "id": "speech-0022",
+        "time_seconds": 111.42,
+        "time": "00:01:51.420",
+        "text": "frosted glass"
+      },
+      {
+        "id": "speech-0023",
+        "time_seconds": 118.14,
+        "time": "00:01:58.140",
+        "text": "and then I will name it to frosted glass"
+      },
+      {
+        "id": "speech-0024",
+        "time_seconds": 124.56,
+        "time": "00:02:04.560",
+        "text": "frosted glass"
+      },
+      {
+        "id": "speech-0025",
+        "time_seconds": 127.98,
+        "time": "00:02:07.980",
+        "text": "if we want to make frosted glass,"
+      },
+      {
+        "id": "speech-0026",
+        "time_seconds": 127.98,
+        "time": "00:02:07.980",
+        "text": "just&nbsp;increase the roughness to 0.5"
+      },
+      {
+        "id": "speech-0027",
+        "time_seconds": 141.12,
+        "time": "00:02:21.120",
+        "text": "so it's looking frosted glass now"
+      },
+      {
+        "id": "speech-0028",
+        "time_seconds": 144.434,
+        "time": "00:02:24.434",
+        "text": "and then we&nbsp;can make it invisible"
+      },
+      {
+        "id": "speech-0029",
+        "time_seconds": 149.117,
+        "time": "00:02:29.117",
+        "text": "I'd like to duplicate transparent glass cube,"
+      },
+      {
+        "id": "speech-0030",
+        "time_seconds": 149.117,
+        "time": "00:02:29.117",
+        "text": "copy and paste, and I'd like to rename"
+      },
+      {
+        "id": "speech-0031",
+        "time_seconds": 160.62,
+        "time": "00:02:40.620",
+        "text": "Tinted Glass"
+      },
+      {
+        "id": "speech-0032",
+        "time_seconds": 164.46,
+        "time": "00:02:44.460",
+        "text": "and then I will name it"
+      },
+      {
+        "id": "speech-0033",
+        "time_seconds": 170.22,
+        "time": "00:02:50.220",
+        "text": "Tinted Glass"
+      },
+      {
+        "id": "speech-0034",
+        "time_seconds": 173.46,
+        "time": "00:02:53.460",
+        "text": "for the Tinted Glass,"
+      },
+      {
+        "id": "speech-0035",
+        "time_seconds": 173.46,
+        "time": "00:02:53.460",
+        "text": "we can change the base&nbsp;color"
+      },
+      {
+        "id": "speech-0036",
+        "time_seconds": 176.674,
+        "time": "00:02:56.674",
+        "text": "for example we can change to Blue or green"
+      },
+      {
+        "id": "speech-0037",
+        "time_seconds": 183.72,
+        "time": "00:03:03.720",
+        "text": "i keep it in green color"
+      },
+      {
+        "id": "speech-0038",
+        "time_seconds": 188.16,
+        "time": "00:03:08.160",
+        "text": "so this is how we can make the&nbsp;transparent glass,"
+      },
+      {
+        "id": "speech-0039",
+        "time_seconds": 192.292,
+        "time": "00:03:12.292",
+        "text": "frosted glass, tinted glass in Blender by using Principled&nbsp;BSDF node"
+      },
+      {
+        "id": "speech-0040",
+        "time_seconds": 198.017,
+        "time": "00:03:18.017",
+        "text": "this is the quick setting to make transparent glass in Blender"
+      },
+      {
+        "id": "speech-0041",
+        "time_seconds": 202.742,
+        "time": "00:03:22.742",
+        "text": "hope&nbsp;this helps"
+      },
+      {
+        "id": "speech-0042",
+        "time_seconds": 204.044,
+        "time": "00:03:24.044",
+        "text": "Please Subscribe this channel, more video will be shared with you"
+      },
+      {
+        "id": "speech-0043",
+        "time_seconds": 208.212,
+        "time": "00:03:28.212",
+        "text": "I'm&nbsp;Artist B, see you in the next video, bye"
+      }
+    ]
+  },
+  "bundle_fingerprint": "d0eb8083792c78a6057dd73facd577db45d595a0891d87e07511bb4a6d97234d",
+  "learning_contract": {
+    "unit": "precondition -> action -> observed_postcondition",
+    "requires_source_evidence": true,
+    "requires_sandbox_execution": true,
+    "requires_validation": [
+      "structural",
+      "behavioral",
+      "visual"
+    ]
+  },
+  "evidence_requests": [
+    {
+      "id": "seek-0001",
+      "created_unix": 1792933070.1342435,
+      "center_seconds": 42.5,
+      "center_time": "00:00:42.500",
+      "level": 2,
+      "level_name": "action",
+      "direction": "both",
+      "before_seconds": 3.0,
+      "after_seconds": 3.0,
+      "fps": 4.0,
+      "reason": "Base colour picker open for transparent glass; need exact HSV values that narration gives only as 'value 0.8'",
+      "requested_frames": 25,
+      "new_frames": 24
+    },
+    {
+      "id": "seek-0002",
+      "created_unix": 1792933072.2448156,
+      "center_seconds": 132.0,
+      "center_time": "00:02:12.000",
+      "level": 1,
+      "level_name": "context",
+      "direction": "both",
+      "before_seconds": 6.0,
+      "after_seconds": 6.0,
+      "fps": 1.0,
+      "reason": "Confirm frosted-glass roughness value on screen (narration says 0.5)",
+      "requested_frames": 13,
+      "new_frames": 13
+    }
+  ],
+  "visual_index_stale": false
+}
