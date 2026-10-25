@@ -1,0 +1,260 @@
+{
+  "classification": "oracle-selected native-frame diagnostic, not autonomous recovery",
+  "manifest_sha256": "36826c293d829b545f7e264e2b9d8cefcd64b47c3d3d91c59c499238bcc2b776",
+  "source_sha256": "c6d4ef0573f10d79ec0ece78a9deec8ae8b313c7434d29477602b6bbfedeb80b",
+  "observation": {
+    "ms": 1360,
+    "sha256": "d95fad59440753a64f7aeb1af159c17980728a296ccc1722665e4a9647d3b2fb",
+    "file": "f-0035.jpg",
+    "modality": "mouse_down",
+    "key": null,
+    "control": "See",
+    "control_bounds": [
+      64,
+      404,
+      132,
+      96
+    ],
+    "control_reference_ms": null,
+    "control_reference_sha256": null,
+    "pointer": [
+      132,
+      454
+    ],
+    "result": "Idle"
+  },
+  "words": [
+    {
+      "text": "Local",
+      "box": [
+        25,
+        29,
+        60,
+        19
+      ],
+      "line": [
+        "1",
+        "1",
+        "1"
+      ],
+      "origin": "global"
+    },
+    {
+      "text": "workflow",
+      "box": [
+        93,
+        29,
+        101,
+        19
+      ],
+      "line": [
+        "1",
+        "1",
+        "1"
+      ],
+      "origin": "global"
+    },
+    {
+      "text": "Be",
+      "box": [
+        60,
+        400,
+        631,
+        105
+      ],
+      "line": [
+        "2",
+        "1",
+        "1"
+      ],
+      "origin": "global"
+    },
+    {
+      "text": "&",
+      "box": [
+        543,
+        343,
+        140,
+        209
+      ],
+      "line": [
+        "2",
+        "1",
+        "1"
+      ],
+      "origin": "global"
+    },
+    {
+      "text": "Status:",
+      "box": [
+        864,
+        168,
+        78,
+        19
+      ],
+      "line": [
+        "3",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        837,
+        137,
+        182,
+        83
+      ]
+    },
+    {
+      "text": "Idle",
+      "box": [
+        953,
+        168,
+        39,
+        19
+      ],
+      "line": [
+        "3",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        837,
+        137,
+        182,
+        83
+      ]
+    },
+    {
+      "text": "See",
+      "box": [
+        96,
+        440,
+        70,
+        23
+      ],
+      "line": [
+        "4",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        67,
+        407,
+        127,
+        91
+      ]
+    },
+    {
+      "text": "Reset",
+      "box": [
+        316,
+        440,
+        82,
+        23
+      ],
+      "line": [
+        "5",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        287,
+        407,
+        138,
+        91
+      ]
+    },
+    {
+      "text": "Inspect",
+      "box": [
+        557,
+        440,
+        101,
+        29
+      ],
+      "line": [
+        "6",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        527,
+        407,
+        157,
+        91
+      ]
+    },
+    {
+      "text": "Mouse",
+      "box": [
+        51,
+        648,
+        75,
+        18
+      ],
+      "line": [
+        "7",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        44,
+        639,
+        277,
+        37
+      ]
+    },
+    {
+      "text": "button",
+      "box": [
+        144,
+        647,
+        89,
+        19
+      ],
+      "line": [
+        "7",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        44,
+        639,
+        277,
+        37
+      ]
+    },
+    {
+      "text": "DOWN",
+      "box": [
+        252,
+        648,
+        59,
+        18
+      ],
+      "line": [
+        "7",
+        "1",
+        "1"
+      ],
+      "origin": "border_free_crop",
+      "panel_box": [
+        44,
+        639,
+        277,
+        37
+      ]
+    }
+  ],
+  "ocr_calls": 1,
+  "wall_seconds": 0.21900000001187436,
+  "publication_allowed": false,
+  "observer_sha256": "ade6b82924f984bf6fd60086acd9e01ec7a875f786447ba2777ff47a41da11c3"
+}

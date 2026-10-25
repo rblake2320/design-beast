@@ -1,0 +1,82 @@
+{
+  "frame": {
+    "source_seconds": 0.1,
+    "file": "frames/f_000000000100.jpg",
+    "sha256": "07f3fe2c20c47a25dfc180b7bb25136e761a1b243da6b7de2bcc9cfe5c65deff"
+  },
+  "words": [
+    {
+      "text": "Training",
+      "box": [
+        24,
+        28,
+        85,
+        23
+      ]
+    },
+    {
+      "text": "workspace",
+      "box": [
+        116,
+        29,
+        115,
+        22
+      ]
+    },
+    {
+      "text": "\u2014",
+      "box": [
+        237,
+        39,
+        26,
+        2
+      ]
+    },
+    {
+      "text": "local",
+      "box": [
+        270,
+        29,
+        47,
+        17
+      ]
+    },
+    {
+      "text": "test",
+      "box": [
+        325,
+        29,
+        39,
+        18
+      ]
+    },
+    {
+      "text": "application",
+      "box": [
+        370,
+        29,
+        114,
+        23
+      ]
+    },
+    {
+      "text": "Status:",
+      "box": [
+        838,
+        188,
+        73,
+        17
+      ]
+    },
+    {
+      "text": "Unsaved",
+      "box": [
+        920,
+        188,
+        92,
+        17
+      ]
+    }
+  ],
+  "input_proposal": null
+}

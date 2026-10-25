@@ -1,0 +1,90 @@
+{
+  "pairs": [
+    {
+      "index": 0,
+      "reverse_order": false,
+      "baseline_seconds": 1.2728192000067793,
+      "rewind_seconds": 1.0620192000060342,
+      "reduction_fraction": 0.1656166091771889,
+      "total_pair_wall_seconds": 2.3917520999966655
+    },
+    {
+      "index": 1,
+      "reverse_order": true,
+      "baseline_seconds": 1.2273092000104953,
+      "rewind_seconds": 1.0336480000114534,
+      "reduction_fraction": 0.15779332542882085,
+      "total_pair_wall_seconds": 2.3160952999896836
+    },
+    {
+      "index": 2,
+      "reverse_order": false,
+      "baseline_seconds": 1.2229666000057478,
+      "rewind_seconds": 1.0317584999720566,
+      "reduction_fraction": 0.15634776945894724,
+      "total_pair_wall_seconds": 2.3111140999826603
+    },
+    {
+      "index": 3,
+      "reverse_order": true,
+      "baseline_seconds": 1.1721374000189826,
+      "rewind_seconds": 1.012747600005241,
+      "reduction_fraction": 0.1359821809381393,
+      "total_pair_wall_seconds": 2.237993799994001
+    },
+    {
+      "index": 4,
+      "reverse_order": false,
+      "baseline_seconds": 1.2715506000095047,
+      "rewind_seconds": 1.0833350999746472,
+      "reduction_fraction": 0.14802045631015448,
+      "total_pair_wall_seconds": 2.4082287999917753
+    },
+    {
+      "index": 5,
+      "reverse_order": true,
+      "baseline_seconds": 1.3274345000099856,
+      "rewind_seconds": 1.086498600023333,
+      "reduction_fraction": 0.1815049254670119,
+      "total_pair_wall_seconds": 2.4732300999748986
+    },
+    {
+      "index": 6,
+      "reverse_order": false,
+      "baseline_seconds": 1.295708099991316,
+      "rewind_seconds": 1.102071800007252,
+      "reduction_fraction": 0.14944438487755207,
+      "total_pair_wall_seconds": 2.45261860001483
+    },
+    {
+      "index": 7,
+      "reverse_order": true,
+      "baseline_seconds": 1.2222439000033773,
+      "rewind_seconds": 1.107849799998803,
+      "reduction_fraction": 0.09359351272218108,
+      "total_pair_wall_seconds": 2.381558799999766
+    },
+    {
+      "index": 8,
+      "reverse_order": false,
+      "baseline_seconds": 1.2375135999755003,
+      "rewind_seconds": 1.0890574000077322,
+      "reduction_fraction": 0.11996328765252129,
+      "total_pair_wall_seconds": 2.377888199989684
+    },
+    {
+      "index": 9,
+      "reverse_order": true,
+      "baseline_seconds": 1.3291248999885283,
+      "rewind_seconds": 1.0952175999991596,
+      "reduction_fraction": 0.17598594382769261,
+      "total_pair_wall_seconds": 2.4752469999948516
+    }
+  ],
+  "native_frames": 60,
+  "faster_pairs": 10,
+  "median_paired_reduction_fraction": 0.15289607716824966,
+  "speed_result": "PASS",
+  "action_result": "awaiting_native_frame_review",
+  "publication_allowed": false
+}

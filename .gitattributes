@@ -1,0 +1,24 @@
+# Evidence hashes refer to exact bytes, not platform-normalized JSON text.
+/proofs/watch-pixel-state/**/*.json -text
+/proofs/watch-repair/**/*.json -text
+/proofs/watch-training/**/*.json -text
+/proofs/watch-narration/**/*.json -text
+# Keep measured implementation bytes stable across Windows/Linux checkouts.
+/watch/visual_state.py text eol=lf
+/watch/pixel_policy.py text eol=lf
+/scripts/watch_perception.py text eol=lf
+/scripts/watch_temporal_encoder.py text eol=lf
+/scripts/watch_ui_regions.py text eol=lf
+/scripts/fuse_watch_state.py text eol=lf
+/proofs/watch-relationships/** -text
+/watch/relationships.py text eol=lf
+/scripts/*watch_relationships.py text eol=lf
+/tests/test_watch_relationships.py text eol=lf
+/tests/fixtures/watch-relationship-lab.html text eol=lf
+/bench/watch-relationships-v1.json text eol=lf
+/proofs/watch-representation-closure/** -text
+/proofs/watch-distribution-audit/** -text
+/scripts/verify_watch_receipt_representations.py text eol=lf
+/scripts/audit_watch_distribution.py text eol=lf
+/tests/test_watch_receipt_representations.py text eol=lf
+/tests/test_watch_distribution_inventory.py text eol=lf

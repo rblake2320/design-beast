@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:23:00.0536482Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"video recording screenshot\",\n  \"view\": \"medium close-up, centered on a man's face and upper torso\",\n  \"content\": \"Man with dark hair, wearing black shirt. Behind him: black desk lamp left, green plant right, light-colored wall.\",\n  \"overlays\": \"\",\n  \"visible_text\": \"\",\n  \"uncertainty\": \"No visible text or overlays. Background elements are partially obscured by lighting and focus.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4457015700,
+  "load_duration": 3468932800,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 412018000,
+  "eval_count": 96,
+  "eval_duration": 534119000
+}

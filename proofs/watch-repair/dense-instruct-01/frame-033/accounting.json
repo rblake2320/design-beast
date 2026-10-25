@@ -1,0 +1,33 @@
+{
+  "frame": {
+    "id": "frame-0034",
+    "file": "frames/f_000000016500.jpg",
+    "source_seconds": 16.5,
+    "source_time": "00:00:16.500",
+    "clip_seconds": 16.5,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "00bf7f3f3f3f3f01",
+    "sha256": "077d242a3abe63c50e991007cf8de44e8c8a4bbacfbbedcf4cbe5f24a23596db",
+    "change_from_previous": 0,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "result": {
+    "source_ms": 16500,
+    "sha256": "077d242a3abe63c50e991007cf8de44e8c8a4bbacfbbedcf4cbe5f24a23596db",
+    "state": {
+      "screen_type": "3D viewport",
+      "view": "User Perspective (Local), centered on a humanoid model",
+      "content": "A stylized humanoid figure with pink torso, green limbs, and purple hands. It's centered in the viewport.",
+      "overlays": "Cursor is an arrow. Selection handles are visible around the model. No active popups or tool overlays.",
+      "visible_text": "User Perspective (Local), Female 2, Object Mode, Sculpting, ViewLayer, Scene Collection, Scene",
+      "uncertainty": "No uncertainty; all elements are clearly rendered and labeled."
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 4.442202499994892,
+    "provider_cost_usd": 0
+  }
+}

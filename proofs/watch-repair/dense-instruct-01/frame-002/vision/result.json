@@ -1,0 +1,15 @@
+{
+  "source_ms": 1000,
+  "sha256": "bdff86f233b398474b4ebe2029b2fa6425417b11b6996355e91d717c156e6f2c",
+  "state": {
+    "screen_type": "3D viewport in Blender",
+    "view": "User Perspective (Local) showing a side view of a humanoid model.",
+    "content": "A low-poly humanoid model with purple torso, green neck, and teal legs. The model is centered in the viewport.",
+    "overlays": "White pencil cursor near the model's midsection. No active selection highlights or drawn marks visible.",
+    "visible_text": "User Perspective (Local), Female 2, Sculpting, Global, Radius: 55 px, Factor: 0.750, Drag: Select Box, Scene Collection, ViewLayer, Scene, Units, Gravity, Simulation, Keying Sets, Rigid Body World, Light Probes, Custom Properties.",
+    "uncertainty": "No uncertainty. All visible elements are clearly defined in the screenshot."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.766661800007569,
+  "provider_cost_usd": 0
+}

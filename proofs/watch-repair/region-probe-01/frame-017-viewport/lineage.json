@@ -1,0 +1,13 @@
+{
+  "original_sha256": "9238ba95413ece0684ad6fd17d5aa45aee09f3dd2d1227eee1c8da8098a6f0de",
+  "bbox_xyxy": [
+    320,
+    140,
+    820,
+    640
+  ],
+  "clip_ms": 8500,
+  "crop_sha256": "03603839e4147e813383d1fea996a5381030f9bb2474797c54cb73389a7ea2ab",
+  "transformation": "deterministic crop; no generated pixels",
+  "label": "viewport"
+}

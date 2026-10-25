@@ -1,0 +1,20 @@
+{
+  "observed_inputs": [
+    {
+      "frame": {
+        "source_seconds": 1.5,
+        "file": "frames/f_000000001500.jpg",
+        "sha256": "fe1ede8d98d7fce2ffce5f6e2cecf3e7b0c556ecd794e6c84c8d75bbaed81844"
+      },
+      "kind": "key_down",
+      "key": "s"
+    }
+  ],
+  "ocr_calls": 14,
+  "elapsed_seconds": 1.547000000020489,
+  "gpu_calls": 0,
+  "model_tokens": 0,
+  "publication_allowed": false,
+  "causal_chains_accepted": 0,
+  "claim": "input indicators recognized from supplied frame pixels only; semantic review required"
+}

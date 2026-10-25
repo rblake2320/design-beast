@@ -1,0 +1,66 @@
+{
+  "schema": "beast.watch.inspection-receipt/v1",
+  "status": "intent",
+  "context": {
+    "source_interval": {
+      "start_ms": 0,
+      "end_ms": 4320
+    },
+    "candidate_interval": {
+      "start_ms": 0,
+      "end_ms": 4320
+    },
+    "confidence": {
+      "perception": 0.0,
+      "transition": 0.0,
+      "procedure": 0.0
+    },
+    "missing_evidence": true,
+    "rapid_action": false,
+    "completed_inspections": 0
+  },
+  "decision": {
+    "schema_version": "beast.watch.inspection/v1",
+    "requested_action": "increase_density",
+    "target_interval": {
+      "start_ms": 1080,
+      "end_ms": 2160
+    },
+    "target_regions": [],
+    "predicted_value_of_inspection": 0.0,
+    "confidence": {
+      "perception": 0.0,
+      "transition": 0.0,
+      "procedure": 0.0
+    },
+    "uncertainty_reasons": [
+      "Bounded relationship experiment",
+      "Zero confidence placeholders are uncalibrated, not evidence scores.",
+      "Forward replay checks sequence, not reproducibility."
+    ],
+    "option_readout": null
+  },
+  "source_sha256": "19bf8da3f98f280a2f812d107f2750413ff04a45ed5c16d1c09bde0ceed790a9",
+  "timeline_before_sha256": "85f570710674833843d804f4623ca5f0cd61b8cb0ac674dbf53cb2e363269558",
+  "plan": {
+    "level": 3,
+    "center_seconds": 1.62,
+    "before_seconds": 0.54,
+    "after_seconds": 0.54,
+    "fps": 7.407407407407407,
+    "direction": "both",
+    "timestamps": [
+      1.08,
+      1.215,
+      1.35,
+      1.485,
+      1.62,
+      1.755,
+      1.89,
+      2.025,
+      2.16
+    ]
+  },
+  "frame_budget": 9,
+  "max_seconds": 118.40700000000652
+}

@@ -1,0 +1,15 @@
+{
+  "source_ms": 21000,
+  "sha256": "b95c2cb2de2597887e19a97205d11d6ccfc14d0b4d52c75a332e4ea5dc50dc7e",
+  "state": {
+    "screen_type": "Instructional slide",
+    "view": "Full-screen text layout on dark background; centered title, bullet points below.",
+    "content": "Black background with yellow title 'HOW TO BLOCK OUT' and white bullet points detailing character blocking techniques. Cursor visible near text.",
+    "overlays": "White arrow cursor pointing to text.",
+    "visible_text": "HOW TO BLOCK OUT, FOLLOW THE SHAPE LANGUAGE, BREAK THE CHARACTER INTO PARTS, USE SIMPLE SHAPES, STRAIGHT VS CURVES, CHECK THE SILHOUETTE, STYLIZED CHARACTER ACADEMY, TELL YOUR OWN STORIES WITH YOUR 3D CHARACTERS.",
+    "uncertainty": "None. Text is fully legible and cursor position is clear."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.712375899995095,
+  "provider_cost_usd": 0
+}

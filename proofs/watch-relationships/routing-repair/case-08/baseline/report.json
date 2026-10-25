@@ -1,0 +1,375 @@
+{
+  "mode": "baseline",
+  "source_sha256": "c6d4ef0573f10d79ec0ece78a9deec8ae8b313c7434d29477602b6bbfedeb80b",
+  "summary": {
+    "events": [],
+    "results": [
+      {
+        "identity": "Idle",
+        "start_ms": 291,
+        "end_ms": 1453,
+        "frame_refs": [
+          {
+            "ms": 291,
+            "sha256": "86b1023a6bd38864161db0ab5770408bf8317de21544d0503fd7c483bab0c9ba",
+            "file": "frames/f_000000000291.jpg"
+          },
+          {
+            "ms": 581,
+            "sha256": "2f392852035407d3efa83d39ac1b78e1681452776ee5b6cb12aa72535caf5a76",
+            "file": "frames/f_000000000581.jpg"
+          },
+          {
+            "ms": 872,
+            "sha256": "cc8c5f826374e697e8fdbd9458be4623891c10b282203d785ba63f4cc35c0c5c",
+            "file": "frames/f_000000000872.jpg"
+          },
+          {
+            "ms": 1163,
+            "sha256": "7417cc64c17ae468474c006c7ddd1a8a71709bfbdcff45e9b882c532456282d1",
+            "file": "frames/f_000000001163.jpg"
+          },
+          {
+            "ms": 1453,
+            "sha256": "d16a62933eb4873d50cc7b2881edf700442fbdd39b1f6301571ecb584d43ce0f",
+            "file": "frames/f_000000001453.jpg"
+          }
+        ]
+      },
+      {
+        "identity": "Saved",
+        "start_ms": 1744,
+        "end_ms": 4360,
+        "frame_refs": [
+          {
+            "ms": 1744,
+            "sha256": "960fc02454f547e87630e6da6c469856697ac6b449dba4aa01a515634b87ab7d",
+            "file": "frames/f_000000001744.jpg"
+          },
+          {
+            "ms": 2035,
+            "sha256": "199012e95bf083129b4559c7aa11064fbf0857aee2f2e87d7bbd9ebd86bf1c22",
+            "file": "frames/f_000000002035.jpg"
+          },
+          {
+            "ms": 2325,
+            "sha256": "199012e95bf083129b4559c7aa11064fbf0857aee2f2e87d7bbd9ebd86bf1c22",
+            "file": "frames/f_000000002325.jpg"
+          },
+          {
+            "ms": 2616,
+            "sha256": "960fc02454f547e87630e6da6c469856697ac6b449dba4aa01a515634b87ab7d",
+            "file": "frames/f_000000002616.jpg"
+          },
+          {
+            "ms": 2907,
+            "sha256": "199012e95bf083129b4559c7aa11064fbf0857aee2f2e87d7bbd9ebd86bf1c22",
+            "file": "frames/f_000000002907.jpg"
+          },
+          {
+            "ms": 3197,
+            "sha256": "960fc02454f547e87630e6da6c469856697ac6b449dba4aa01a515634b87ab7d",
+            "file": "frames/f_000000003197.jpg"
+          },
+          {
+            "ms": 3488,
+            "sha256": "960fc02454f547e87630e6da6c469856697ac6b449dba4aa01a515634b87ab7d",
+            "file": "frames/f_000000003488.jpg"
+          },
+          {
+            "ms": 3779,
+            "sha256": "199012e95bf083129b4559c7aa11064fbf0857aee2f2e87d7bbd9ebd86bf1c22",
+            "file": "frames/f_000000003779.jpg"
+          },
+          {
+            "ms": 4069,
+            "sha256": "960fc02454f547e87630e6da6c469856697ac6b449dba4aa01a515634b87ab7d",
+            "file": "frames/f_000000004069.jpg"
+          },
+          {
+            "ms": 4360,
+            "sha256": "38d388e5f767b5c15ec1dcdc9a5fc2da2e941733e602afe091956b89c45438a9",
+            "file": "frames/f_000000004360.jpg"
+          }
+        ]
+      }
+    ],
+    "temporal_candidates": [],
+    "causal_sufficiency": "unknown",
+    "accepted_causal_chains": [],
+    "publication_allowed": false,
+    "confidence": {
+      "perception": null,
+      "transition": null,
+      "procedure": null
+    }
+  },
+  "observations": [
+    {
+      "ms": 0,
+      "sha256": "6391e85917141a3714307651527bbe8ce965b11abf54cda8c446da8a626fa399",
+      "file": "frames/f_000000000000.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": null,
+      "result": null
+    },
+    {
+      "ms": 291,
+      "sha256": "86b1023a6bd38864161db0ab5770408bf8317de21544d0503fd7c483bab0c9ba",
+      "file": "frames/f_000000000291.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        9,
+        88
+      ],
+      "result": "Idle"
+    },
+    {
+      "ms": 581,
+      "sha256": "2f392852035407d3efa83d39ac1b78e1681452776ee5b6cb12aa72535caf5a76",
+      "file": "frames/f_000000000581.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        10,
+        89
+      ],
+      "result": "Idle"
+    },
+    {
+      "ms": 872,
+      "sha256": "cc8c5f826374e697e8fdbd9458be4623891c10b282203d785ba63f4cc35c0c5c",
+      "file": "frames/f_000000000872.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        9,
+        88
+      ],
+      "result": "Idle"
+    },
+    {
+      "ms": 1163,
+      "sha256": "7417cc64c17ae468474c006c7ddd1a8a71709bfbdcff45e9b882c532456282d1",
+      "file": "frames/f_000000001163.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        9,
+        88
+      ],
+      "result": "Idle"
+    },
+    {
+      "ms": 1453,
+      "sha256": "d16a62933eb4873d50cc7b2881edf700442fbdd39b1f6301571ecb584d43ce0f",
+      "file": "frames/f_000000001453.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "result": "Idle"
+    },
+    {
+      "ms": 1744,
+      "sha256": "960fc02454f547e87630e6da6c469856697ac6b449dba4aa01a515634b87ab7d",
+      "file": "frames/f_000000001744.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "result": "Saved"
+    },
+    {
+      "ms": 2035,
+      "sha256": "199012e95bf083129b4559c7aa11064fbf0857aee2f2e87d7bbd9ebd86bf1c22",
+      "file": "frames/f_000000002035.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "result": "Saved"
+    },
+    {
+      "ms": 2325,
+      "sha256": "199012e95bf083129b4559c7aa11064fbf0857aee2f2e87d7bbd9ebd86bf1c22",
+      "file": "frames/f_000000002325.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "result": "Saved"
+    },
+    {
+      "ms": 2616,
+      "sha256": "960fc02454f547e87630e6da6c469856697ac6b449dba4aa01a515634b87ab7d",
+      "file": "frames/f_000000002616.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "result": "Saved"
+    },
+    {
+      "ms": 2907,
+      "sha256": "199012e95bf083129b4559c7aa11064fbf0857aee2f2e87d7bbd9ebd86bf1c22",
+      "file": "frames/f_000000002907.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "result": "Saved"
+    },
+    {
+      "ms": 3197,
+      "sha256": "960fc02454f547e87630e6da6c469856697ac6b449dba4aa01a515634b87ab7d",
+      "file": "frames/f_000000003197.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "result": "Saved"
+    },
+    {
+      "ms": 3488,
+      "sha256": "960fc02454f547e87630e6da6c469856697ac6b449dba4aa01a515634b87ab7d",
+      "file": "frames/f_000000003488.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "result": "Saved"
+    },
+    {
+      "ms": 3779,
+      "sha256": "199012e95bf083129b4559c7aa11064fbf0857aee2f2e87d7bbd9ebd86bf1c22",
+      "file": "frames/f_000000003779.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "result": "Saved"
+    },
+    {
+      "ms": 4069,
+      "sha256": "960fc02454f547e87630e6da6c469856697ac6b449dba4aa01a515634b87ab7d",
+      "file": "frames/f_000000004069.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "result": "Saved"
+    },
+    {
+      "ms": 4360,
+      "sha256": "38d388e5f767b5c15ec1dcdc9a5fc2da2e941733e602afe091956b89c45438a9",
+      "file": "frames/f_000000004360.jpg",
+      "modality": null,
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "control_reference_ms": null,
+      "control_reference_sha256": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "result": "Saved"
+    }
+  ],
+  "routing": "baseline_full_budget",
+  "frame_requests": 16,
+  "ocr_calls": 16,
+  "wall_seconds": 3.5,
+  "gpu_seconds": 0,
+  "model_tokens": 0,
+  "internal_codec_decodes": null,
+  "status": "completed",
+  "inspection_interval_ms": [
+    0,
+    4360
+  ],
+  "wall_scope": "arm entry through final source verification; final report write excluded"
+}

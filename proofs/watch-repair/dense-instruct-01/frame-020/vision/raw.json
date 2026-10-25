@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:19:06.0130479Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D viewport\",\n  \"view\": \"Right Orthographic (Local), showing 'Female 2' model centered.\",\n  \"content\": \"A humanoid mesh named 'Female 2', mostly pink with green accents, standing vertically. No visible textures or shading applied.\",\n  \"overlays\": \"Selection box cursor, active tool icon (brush), and axis gizmo on the model.\",\n  \"visible_text\": \"Right Orthographic (Local), Female 2, Sculpting, Object Mode, Global, Factor 0.750, Radius 35 px, Scene Collection, ViewLayer, Scene, Camera, Object, Gravity, Units, Simulation, Keying Sets, Audio, Rigid Body World, Light Probes, Animation, Custom Properties.\",\n  \"uncertainty\": \"No uncertainty; all elements clearly visible and labeled.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4668804800,
+  "load_duration": 3237736900,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 408909000,
+  "eval_count": 180,
+  "eval_duration": 982000000
+}

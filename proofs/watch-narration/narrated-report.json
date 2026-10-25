@@ -1,0 +1,87 @@
+{
+  "output_sha256": "241536688fc8834bab908d0a2120ffcae231ca05c98ae796c4190c868710bd63",
+  "segments": [
+    {
+      "output_start_seconds": 0,
+      "output_end_seconds": 12.866666666666667,
+      "audio_seconds": 12.608,
+      "held_seconds": 10.866666666666667,
+      "source": {
+        "output_start_ms": 0,
+        "output_end_ms": 2000,
+        "source_start_ms": 500,
+        "source_end_ms": 2500,
+        "caption": "The viewport view changed from 'User Perspective (Local)' to 'Front Orthographic (Local)', altering the camera angle while keeping the model centered. The input or cause is not established by these frames.",
+        "original_source_start_ms": 500,
+        "original_source_end_ms": 2500,
+        "source_sha256": "46ca6a61fa8cd4802284014fa091570e933403da1767d03f92108a6d4a78b8b1",
+        "segment_sha256": "8a3f7a29c3c1182e6b6f3f2de3a46ee7ecbef1c6014d813e22dbc8d51985d0c9",
+        "review_state": "uncertain",
+        "requires_human_approval": true
+      },
+      "wav_sha256": "aa436ac25ea447c5f9544ab9270bafe4e7b0f5f9038a37e87a1bdd6474c66984",
+      "clip_sha256": "cd8f5470582c970fe3f5402e796f608f12574cd034d2ee238098e2b06b166638"
+    },
+    {
+      "output_start_seconds": 12.866666666666667,
+      "output_end_seconds": 25.833333333333336,
+      "audio_seconds": 12.714666666666666,
+      "held_seconds": 10.966666666666667,
+      "source": {
+        "output_start_ms": 2000,
+        "output_end_ms": 4000,
+        "source_start_ms": 3500,
+        "source_end_ms": 5500,
+        "caption": "The viewport view changed from 'User Perspective (Local)' to 'Right Orthographic (Local)', altering the camera angle while keeping the model centered. The input or cause is not established by these frames.",
+        "original_source_start_ms": 3500,
+        "original_source_end_ms": 5500,
+        "source_sha256": "46ca6a61fa8cd4802284014fa091570e933403da1767d03f92108a6d4a78b8b1",
+        "segment_sha256": "a1dac1230ddc6baf6dd0e87f2c9a5b4c48112b3eb35d9bf0902390c408f1a998",
+        "review_state": "uncertain",
+        "requires_human_approval": true
+      },
+      "wav_sha256": "a413d8f1aa2b4b968e81f2848606c94ddfe05d64c20389efd390e9e7d907c21a",
+      "clip_sha256": "fe337e512292697c518b1343092c9968605e37bdf046636790f057386ff68293"
+    },
+    {
+      "output_start_seconds": 25.833333333333336,
+      "output_end_seconds": 35.266666666666666,
+      "audio_seconds": 9.173333333333334,
+      "held_seconds": 7.433333333333334,
+      "source": {
+        "output_start_ms": 4000,
+        "output_end_ms": 6000,
+        "source_start_ms": 16500,
+        "source_end_ms": 18500,
+        "caption": "The interface switches from a 3D modeling view to a full-screen instructional slide. The input or cause is not established by these frames.",
+        "original_source_start_ms": 16500,
+        "original_source_end_ms": 18500,
+        "source_sha256": "46ca6a61fa8cd4802284014fa091570e933403da1767d03f92108a6d4a78b8b1",
+        "segment_sha256": "1c19a7d535bf2f48f1c89e4252ea0bf1331b091c7014e8c3486a32bc22baafd2",
+        "review_state": "uncertain",
+        "requires_human_approval": true
+      },
+      "wav_sha256": "d0dbbecb981b94006b689ed5793516d9e3488516ec7081bf7c47eac5e07f0c05",
+      "clip_sha256": "6e950981bb09668d3e538b492000ed7692e65d9f0edff3e974c097874d3cd6e4"
+    }
+  ],
+  "probe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_type": "video"
+      },
+      {
+        "codec_type": "audio"
+      }
+    ],
+    "format": {
+      "duration": "35.309333"
+    }
+  },
+  "publication_allowed": false,
+  "verified_procedure": false,
+  "audio": "local Kokoro af_heart synthetic voice; not source speaker",
+  "generated_scene_images": 0
+}

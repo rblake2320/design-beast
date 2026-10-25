@@ -1,0 +1,8 @@
+{
+  "readyState": 0,
+  "error": {
+    "code": 4,
+    "message": "DEMUXER_ERROR_NO_SUPPORTED_STREAMS: FFmpegDemuxer: no supported streams"
+  },
+  "source": "http://127.0.0.1:57341/media/source.mp4"
+}

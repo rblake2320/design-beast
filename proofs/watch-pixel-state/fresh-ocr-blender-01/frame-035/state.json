@@ -1,0 +1,606 @@
+{
+  "schema_version": "beast.watch.pixel-state/v1",
+  "clip_ms": 17500,
+  "frame_sha256": "f09f1b26bb9e6025a0e3e922ff8002f590f12c103358af491b703058c1aed988",
+  "before_sha256": "25b630074aa92179629c520ca8103fb29444d227627996ecb5d6e302a6a878cf",
+  "dimensions": [
+    1280,
+    720
+  ],
+  "text_elements": [
+    {
+      "track_id": 226,
+      "text": "HOW TO BLOCK OUT",
+      "bbox": [
+        505,
+        116,
+        272,
+        19
+      ],
+      "raw_ocr_score": 96.247002,
+      "consecutive_frames": 1
+    },
+    {
+      "track_id": 227,
+      "text": "FOLLOW THE SHAPE LANGUAGE \u2014 Different characters use different shapes. Some are round, some are",
+      "bbox": [
+        79,
+        219,
+        1037,
+        18
+      ],
+      "raw_ocr_score": 91.228165,
+      "consecutive_frames": 1
+    },
+    {
+      "track_id": 228,
+      "text": "angular, and some are boxy. Your blockout should reflect the shape language of your chosen concept.",
+      "bbox": [
+        79,
+        245,
+        1006,
+        19
+      ],
+      "raw_ocr_score": 91.185822,
+      "consecutive_frames": 1
+    },
+    {
+      "track_id": 229,
+      "text": "BREAK THE CHARACTER INTO PARTS \u2014 Before sculpting, divide the character into major sections like the head,",
+      "bbox": [
+        79,
+        294,
+        1114,
+        19
+      ],
+      "raw_ocr_score": 92.040504,
+      "consecutive_frames": 1
+    },
+    {
+      "track_id": 230,
+      "text": "torso, arms, legs, hands, and feet. This makes the blockout process clearer and more organized.",
+      "bbox": [
+        78,
+        321,
+        940,
+        18
+      ],
+      "raw_ocr_score": 93.062019,
+      "consecutive_frames": 1
+    },
+    {
+      "track_id": 231,
+      "text": "USE SIMPLE SHAPES \u2014 Start with very simple primitive shapes in ERender. Keep the resolution low and avoid",
+      "bbox": [
+        79,
+        360,
+        1079,
+        34
+      ],
+      "raw_ocr_score": 85.940079,
+      "consecutive_frames": 1
+    },
+    {
+      "track_id": 232,
+      "text": "details so you can focus on the overall form.",
+      "bbox": [
+        78,
+        396,
+        430,
+        19
+      ],
+      "raw_ocr_score": 96.090202,
+      "consecutive_frames": 1
+    },
+    {
+      "track_id": 233,
+      "text": "STRAIGHT VS CURVES \u2014 Mixing straight and curved forms makes the character more appealing and dynamic.",
+      "bbox": [
+        78,
+        445,
+        1095,
+        18
+      ],
+      "raw_ocr_score": 92.342575,
+      "consecutive_frames": 1
+    },
+    {
+      "track_id": 234,
+      "text": "This helps avoid stiff or boring shapes.",
+      "bbox": [
+        78,
+        471,
+        376,
+        19
+      ],
+      "raw_ocr_score": 95.838783,
+      "consecutive_frames": 1
+    },
+    {
+      "track_id": 235,
+      "text": "STYLIZED CHARACTER ACADEMY",
+      "bbox": [
+        35,
+        674,
+        185,
+        8
+      ],
+      "raw_ocr_score": 96.046341,
+      "consecutive_frames": 1
+    },
+    {
+      "track_id": 236,
+      "text": "L",
+      "bbox": [
+        960,
+        675,
+        1,
+        6
+      ],
+      "raw_ocr_score": 70.349342,
+      "consecutive_frames": 1
+    },
+    {
+      "track_id": 237,
+      "text": "YOUR OWN",
+      "bbox": [
+        977,
+        674,
+        59,
+        7
+      ],
+      "raw_ocr_score": 92.395088,
+      "consecutive_frames": 1
+    }
+  ],
+  "appeared_text_track_ids": [
+    226,
+    227,
+    228,
+    229,
+    230,
+    231,
+    232,
+    233,
+    234,
+    235,
+    236,
+    237
+  ],
+  "disappeared_text_track_ids": [
+    14,
+    23,
+    33,
+    147,
+    170,
+    190,
+    194,
+    201,
+    202,
+    203,
+    204,
+    205,
+    206,
+    207,
+    208,
+    209,
+    210,
+    211,
+    212,
+    213,
+    214,
+    215,
+    216,
+    217,
+    218,
+    219,
+    220,
+    221,
+    222,
+    223,
+    224,
+    225
+  ],
+  "motion_tracks": [],
+  "region_motion": [],
+  "changed_regions": [
+    [
+      1,
+      20,
+      1278,
+      683
+    ],
+    [
+      813,
+      294,
+      245,
+      130
+    ],
+    [
+      505,
+      359,
+      261,
+      32
+    ],
+    [
+      500,
+      320,
+      251,
+      20
+    ],
+    [
+      897,
+      244,
+      187,
+      24
+    ],
+    [
+      302,
+      244,
+      151,
+      24
+    ],
+    [
+      208,
+      248,
+      93,
+      19
+    ],
+    [
+      220,
+      218,
+      72,
+      17
+    ],
+    [
+      234,
+      444,
+      69,
+      19
+    ],
+    [
+      340,
+      218,
+      72,
+      17
+    ],
+    [
+      600,
+      294,
+      74,
+      19
+    ],
+    [
+      290,
+      2,
+      51,
+      15
+    ],
+    [
+      700,
+      217,
+      71,
+      18
+    ],
+    [
+      464,
+      217,
+      67,
+      19
+    ],
+    [
+      333,
+      444,
+      66,
+      21
+    ],
+    [
+      801,
+      446,
+      70,
+      16
+    ],
+    [
+      1057,
+      2,
+      101,
+      15
+    ],
+    [
+      1211,
+      2,
+      66,
+      15
+    ],
+    [
+      817,
+      248,
+      45,
+      19
+    ],
+    [
+      174,
+      218,
+      41,
+      17
+    ],
+    [
+      1024,
+      221,
+      57,
+      14
+    ],
+    [
+      1161,
+      2,
+      49,
+      15
+    ],
+    [
+      404,
+      446,
+      37,
+      15
+    ],
+    [
+      574,
+      219,
+      37,
+      17
+    ],
+    [
+      1040,
+      444,
+      36,
+      17
+    ],
+    [
+      867,
+      248,
+      34,
+      18
+    ],
+    [
+      645,
+      221,
+      36,
+      14
+    ],
+    [
+      154,
+      444,
+      27,
+      17
+    ],
+    [
+      878,
+      448,
+      39,
+      12
+    ],
+    [
+      186,
+      444,
+      27,
+      16
+    ],
+    [
+      155,
+      295,
+      28,
+      15
+    ],
+    [
+      1086,
+      221,
+      30,
+      14
+    ],
+    [
+      1027,
+      2,
+      29,
+      15
+    ],
+    [
+      298,
+      219,
+      26,
+      17
+    ],
+    [
+      799,
+      221,
+      25,
+      17
+    ],
+    [
+      548,
+      217,
+      25,
+      18
+    ],
+    [
+      990,
+      218,
+      24,
+      17
+    ],
+    [
+      997,
+      444,
+      22,
+      17
+    ],
+    [
+      856,
+      218,
+      24,
+      17
+    ],
+    [
+      574,
+      6,
+      40,
+      9
+    ],
+    [
+      825,
+      222,
+      25,
+      13
+    ],
+    [
+      973,
+      448,
+      23,
+      13
+    ],
+    [
+      189,
+      243,
+      15,
+      26
+    ],
+    [
+      488,
+      448,
+      24,
+      12
+    ],
+    [
+      1190,
+      6,
+      42,
+      9
+    ],
+    [
+      1072,
+      294,
+      23,
+      16
+    ],
+    [
+      1076,
+      369,
+      24,
+      16
+    ],
+    [
+      519,
+      6,
+      40,
+      7
+    ],
+    [
+      462,
+      443,
+      20,
+      19
+    ],
+    [
+      245,
+      6,
+      36,
+      9
+    ],
+    [
+      165,
+      248,
+      23,
+      13
+    ],
+    [
+      148,
+      400,
+      22,
+      12
+    ],
+    [
+      695,
+      6,
+      39,
+      9
+    ],
+    [
+      503,
+      294,
+      20,
+      15
+    ],
+    [
+      777,
+      6,
+      35,
+      9
+    ],
+    [
+      472,
+      6,
+      32,
+      9
+    ],
+    [
+      325,
+      218,
+      13,
+      17
+    ],
+    [
+      443,
+      219,
+      15,
+      16
+    ],
+    [
+      752,
+      320,
+      16,
+      16
+    ],
+    [
+      638,
+      342,
+      45,
+      4
+    ],
+    [
+      559,
+      298,
+      21,
+      11
+    ],
+    [
+      116,
+      6,
+      33,
+      7
+    ],
+    [
+      684,
+      342,
+      43,
+      5
+    ],
+    [
+      489,
+      294,
+      13,
+      16
+    ]
+  ],
+  "changed_pixel_fraction": 0.7425509982638889,
+  "motion_scale": null,
+  "affine_inlier_fraction": null,
+  "tracking_reset": true,
+  "uncertainty": [
+    "OCR/flow scores are uncalibrated; no causal action is established",
+    "Unobserved time between samples remains uncertain",
+    "Only largest 64 connected changed regions retained",
+    "No reliable cross-frame feature correspondence"
+  ],
+  "perception_confidence": null,
+  "transition_confidence": null,
+  "procedure_confidence": null,
+  "evidence_class": "pixel_measurement_not_semantic_verdict"
+}

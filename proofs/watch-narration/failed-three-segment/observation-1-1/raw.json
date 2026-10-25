@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-19T07:38:03.5498548Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D viewport\",\n  \"view\": \"Right Orthographic (Local), showing 'Female 2' model centered.\",\n  \"content\": \"A low-poly humanoid model with purple torso, pink limbs, and teal neck/legs. No other objects visible.\",\n  \"overlays\": \"White pencil cursor near model, no active selection or drawn marks.\",\n  \"visible_text\": \"Sculpting mode active, 'Right Orthographic (Local)', 'Female 2', tool settings like 'Radius 35 px'.\",\n  \"uncertainty\": \"No uncertainty; all elements clearly visible and labeled.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 5191880600,
+  "load_duration": 3892782600,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 432496000,
+  "eval_count": 133,
+  "eval_duration": 818565000
+}

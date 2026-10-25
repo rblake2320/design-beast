@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:17:40.6686653Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D modeling software interface\",\n  \"view\": \"Front Orthographic (Local) view, centered on a low-poly human figure.\",\n  \"content\": \"A stylized female torso and legs model with pinkish-purple body, green neck and feet. Headless, no hands or arms.\",\n  \"overlays\": \"White brush cursor near the right hip. No active selection highlights or drawn marks on geometry.\",\n  \"visible_text\": \"Front Orthographic (Local), Female 2, Sculpting mode active, Annotation Draw, Rotate View, Options, Scene Collection, ViewLayer, Gravity, Simulation, Keying Sets, Audio, Rigid Body World, Light Probes, Custom Properties.\",\n  \"uncertainty\": \"No uncertainty; all visible elements are clearly depicted.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4624640200,
+  "load_duration": 3273991600,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 403392000,
+  "eval_count": 166,
+  "eval_duration": 907629000
+}

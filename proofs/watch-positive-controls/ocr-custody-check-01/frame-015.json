@@ -1,0 +1,64 @@
+{
+  "frame": {
+    "source_seconds": 1.75,
+    "file": "frames/f_000000001750.jpg",
+    "sha256": "8feeb34457035a3240e2f7b873192e36850e9b3fdea92818dd3d8e9734008430"
+  },
+  "words": [
+    {
+      "text": "Training",
+      "box": [
+        24,
+        29,
+        85,
+        22
+      ]
+    },
+    {
+      "text": "workspace",
+      "box": [
+        116,
+        29,
+        115,
+        22
+      ]
+    },
+    {
+      "text": "\u2014",
+      "box": [
+        237,
+        39,
+        26,
+        2
+      ]
+    },
+    {
+      "text": "local",
+      "box": [
+        269,
+        29,
+        48,
+        17
+      ]
+    },
+    {
+      "text": "test",
+      "box": [
+        324,
+        29,
+        40,
+        17
+      ]
+    },
+    {
+      "text": "application",
+      "box": [
+        370,
+        29,
+        114,
+        22
+      ]
+    }
+  ],
+  "input_proposal": null
+}

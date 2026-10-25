@@ -1,0 +1,5 @@
+{
+  "frame_sha256": "6be3a2dbbfc2852b3c4c4eb5154bfa390b3088c3d089830bf03b5aa08d52b91c",
+  "tsv": "level\tpage_num\tblock_num\tpar_num\tline_num\tword_num\tleft\ttop\twidth\theight\tconf\ttext\r\n1\t1\t0\t0\t0\t0\t0\t0\t1280\t720\t-1\t\r\n",
+  "evidence_class": "unverified_ocr"
+}

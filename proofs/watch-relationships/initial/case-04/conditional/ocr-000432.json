@@ -1,0 +1,88 @@
+{
+  "observation": {
+    "ms": 432,
+    "sha256": "2ebf34458064564f635ffb0a839e73fd33c9c3b7736cf26a95ab87f7558e4c11",
+    "file": "frames/f_000000000432.jpg",
+    "modality": null,
+    "key": null,
+    "control": null,
+    "control_bounds": null,
+    "pointer": [
+      10,
+      88
+    ],
+    "result": null
+  },
+  "words": [
+    {
+      "text": "Local",
+      "box": [
+        25,
+        29,
+        60,
+        19
+      ],
+      "line": [
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "text": "workflow",
+      "box": [
+        93,
+        29,
+        102,
+        19
+      ],
+      "line": [
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "text": "O",
+      "box": [
+        0,
+        79,
+        20,
+        20
+      ],
+      "line": [
+        "2",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "text": "ef",
+      "box": [
+        60,
+        396,
+        245,
+        149
+      ],
+      "line": [
+        "3",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "text": "Fe",
+      "box": [
+        416,
+        400,
+        274,
+        105
+      ],
+      "line": [
+        "3",
+        "1",
+        "1"
+      ]
+    }
+  ]
+}

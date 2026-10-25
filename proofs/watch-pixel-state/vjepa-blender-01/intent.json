@@ -1,0 +1,21 @@
+{
+  "model": "facebook/vjepa2-vitl-fpc64-256",
+  "revision": "b3c1679b7c34d3255ef3547f27c7b226aefab26f",
+  "timeline_sha256": "3c811e6ea7f62bcf39bd835a97665b84b14d3fdc640532ef657bba914ea4f60d",
+  "starts": [
+    0,
+    8,
+    16,
+    24,
+    32,
+    40,
+    45
+  ],
+  "frames_per_window": 16,
+  "source_sample_rate": 2,
+  "resolution": 256,
+  "max_windows": 7,
+  "gpu_allocator_cap_mib": 6144,
+  "semantic_acceptances": 0,
+  "warning": "Temporal embeddings, not pretrained GUI event labels; sampling differs from training"
+}

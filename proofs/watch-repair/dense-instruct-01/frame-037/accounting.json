@@ -1,0 +1,33 @@
+{
+  "frame": {
+    "id": "frame-0038",
+    "file": "frames/f_000000018500.jpg",
+    "source_seconds": 18.5,
+    "source_time": "00:00:18.500",
+    "clip_seconds": 18.5,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "0000077f7f7f1800",
+    "sha256": "0181c61bfe249995252ee758a8f6a6cba556bd60c1c9449ab0353ffc2712f552",
+    "change_from_previous": 0,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "result": {
+    "source_ms": 18500,
+    "sha256": "0181c61bfe249995252ee758a8f6a6cba556bd60c1c9449ab0353ffc2712f552",
+    "state": {
+      "screen_type": "Instructional slide",
+      "view": "Full-screen text layout on dark background",
+      "content": "Text blocks with headings like 'FOLLOW THE SHAPE LANGUAGE', 'BREAK THE CHARACTER INTO PARTS', etc., against black background.",
+      "overlays": "White cursor arrow pointing at text, no active selection or tool highlights.",
+      "visible_text": "HOW TO BLOCK OUT, STYLIZED CHARACTER ACADEMY, TELL YOUR OWN STORIES WITH YOUR 3D CHARACTERS.",
+      "uncertainty": "None; all elements clearly visible and legible."
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 4.2756386999972165,
+    "provider_cost_usd": 0
+  }
+}

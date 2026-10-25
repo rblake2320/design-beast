@@ -1,0 +1,11 @@
+{
+  "timeline_sha256": "3c811e6ea7f62bcf39bd835a97665b84b14d3fdc640532ef657bba914ea4f60d",
+  "model": "qwen3-vl:8b-instruct",
+  "frames": 61,
+  "max_vision_calls": 61,
+  "output_tokens_per_frame": 600,
+  "frame_binding": "single-image request; timestamp and hash attached only by code",
+  "inference_sample_rate": 2,
+  "comparison": "repair not equal-budget efficiency test",
+  "observer_sha256": "608a4b0fa9fc0d4e95b987cd654a9ab667c2a7a3c847e6b7eae3f1ec8b5e2b43"
+}

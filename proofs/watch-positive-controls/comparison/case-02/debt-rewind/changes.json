@@ -1,0 +1,24 @@
+{
+  "pairs": [
+    {
+      "start_ms": 0,
+      "end_ms": 500,
+      "mean_absolute_difference": 218.78238208912038
+    },
+    {
+      "start_ms": 500,
+      "end_ms": 1000,
+      "mean_absolute_difference": 0.87392578125
+    },
+    {
+      "start_ms": 1000,
+      "end_ms": 1500,
+      "mean_absolute_difference": 0.19428096064814815
+    },
+    {
+      "start_ms": 1500,
+      "end_ms": 2000,
+      "mean_absolute_difference": 1.6745178674768517
+    }
+  ]
+}

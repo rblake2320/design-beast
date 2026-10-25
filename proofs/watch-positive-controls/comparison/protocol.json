@@ -1,0 +1,18 @@
+{
+  "frozen_labels_sha256": "9f7b26a9efc0eb548b514c3f21860b56aaf0a7d1d129ea74e747bd089e324017",
+  "request_cap_per_arm": 16,
+  "decode_cap_per_arm": 16,
+  "ocr_cap_per_arm": 16,
+  "model_token_cap": 0,
+  "sampling_seconds_cap": 60,
+  "ocr_seconds_cap": 60,
+  "cases": 4,
+  "input": "videos, reviewed result anchors; no DOM, private telemetry or blind-label contents",
+  "graduation": "more independently labeled input events recovered than baseline, no additional false input events",
+  "boundary": "explicit input-indicator OCR test; no VLM or causal-chain certification",
+  "code_sha256": {
+    "scripts/compare_watch_positive_controls.py": "63998d2d8669a3846527d37cc2ea6089034292df27ebe3136b86606ea9702d53",
+    "scripts/observe_watch_input_overlays.py": "4989ebd3f14cc62b64642ba9238f06252d88f45d48c4772e16b68a83eee32534",
+    "scripts/evaluate_watch_rewind.py": "94a1177426a4dcfae56c814ba535b5688f28d6b71a5f24d5e49694c7e9e2731f"
+  }
+}

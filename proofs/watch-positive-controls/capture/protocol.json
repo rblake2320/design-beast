@@ -1,0 +1,15 @@
+{
+  "fixture_sha256": "f2427778eb137f4515630c567062bc5b025b3609386a344e437e1944c7e45eea",
+  "kind": "controlled real browser video",
+  "inputs": "Playwright mouse/keyboard events; trusted DOM event telemetry recorded independently of images",
+  "overlay": "test application displays actual down/up events; not added to video afterward",
+  "negative": "matched mouse recording trimmed after input; original full recording retained",
+  "cases": [
+    "case-01",
+    "case-02",
+    "case-03",
+    "case-04"
+  ],
+  "recovery_access": "video only; no DOM or telemetry",
+  "claim": "positive controls, not natural third-party tutorials; browser recorder FPS must be measured"
+}

@@ -1,0 +1,41 @@
+{
+  "events": [
+    {
+      "kind": "down",
+      "time": 1234.800000011921,
+      "trusted": true,
+      "target": "save",
+      "key": null,
+      "x": 130.4600067138672,
+      "y": 452.5
+    },
+    {
+      "kind": "up",
+      "time": 1603.4000000059605,
+      "trusted": true,
+      "target": "save",
+      "key": null,
+      "x": 130.4600067138672,
+      "y": 452.5
+    },
+    {
+      "kind": "activate",
+      "time": 1603.4000000059605,
+      "trusted": true,
+      "target": "save",
+      "key": null,
+      "x": 130,
+      "y": 452
+    },
+    {
+      "kind": "result:Rejected",
+      "time": 1855.800000011921,
+      "trusted": false,
+      "target": null,
+      "key": null,
+      "x": null,
+      "y": null
+    }
+  ],
+  "origin": 1789868280294.6
+}

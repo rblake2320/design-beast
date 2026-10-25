@@ -1,0 +1,14 @@
+{
+  "status": "needs_author_annotation_or_recapture",
+  "reason": "needs_author_annotation_or_recapture: narration exceeds 2s hold or 75% unextended-source floor",
+  "measurements": {
+    "source_seconds": 2.0,
+    "audio_seconds": 12.608,
+    "proposed_duration_seconds": 12.866666666666667,
+    "proposed_hold_seconds": 10.866666666666667,
+    "unextended_source_fraction": 0.15544041450777202,
+    "measured_motion_fraction": null
+  },
+  "publication_allowed": false,
+  "video_completed": false
+}

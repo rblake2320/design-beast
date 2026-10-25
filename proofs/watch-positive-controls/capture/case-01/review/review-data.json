@@ -1,0 +1,67 @@
+{
+  "source_sha256": "dfee73ad430ba6e0a4951232f121f055c6901f50dce0eb84172f2d0e92bd0a05",
+  "end_ms": 2840,
+  "source_offset_ms": 0,
+  "frames": [
+    {
+      "clip_ms": 0,
+      "sha256": "0a8d5c6973910b2fad2db6a9ae7a7ca406643cda7760649d5709c0fd17fb7070",
+      "image": "media/frame-000.jpg"
+    },
+    {
+      "clip_ms": 250,
+      "sha256": "8b797f4fffb8a8fa42863df60d4c619016c7fb35d57fc08506bb46b631cedd7e",
+      "image": "media/frame-001.jpg"
+    },
+    {
+      "clip_ms": 500,
+      "sha256": "d80fe809aa54d38e87ea88b7e7c35198e4403106de03be27e7e8e880d4cdd28a",
+      "image": "media/frame-002.jpg"
+    },
+    {
+      "clip_ms": 750,
+      "sha256": "0f2ac9af65c71d2f5232ab73d1ffc37a31237303725f79ac5083ae4c2e952f41",
+      "image": "media/frame-003.jpg"
+    },
+    {
+      "clip_ms": 1000,
+      "sha256": "0f2ac9af65c71d2f5232ab73d1ffc37a31237303725f79ac5083ae4c2e952f41",
+      "image": "media/frame-004.jpg"
+    },
+    {
+      "clip_ms": 1250,
+      "sha256": "d33a8846a43aa91d10bb348df3ff5a535a9ff070ed8181ede48e5f12ba3917d2",
+      "image": "media/frame-005.jpg"
+    },
+    {
+      "clip_ms": 1500,
+      "sha256": "be109979fdd68939e9d13bfd113c1fdb76281e047205652bcdd8910c66131e13",
+      "image": "media/frame-006.jpg"
+    },
+    {
+      "clip_ms": 1750,
+      "sha256": "8feeb34457035a3240e2f7b873192e36850e9b3fdea92818dd3d8e9734008430",
+      "image": "media/frame-007.jpg"
+    },
+    {
+      "clip_ms": 2000,
+      "sha256": "ca2c82f66468f0b308a7016e773d3467280cef72bf26e30c25156c8d0e704d29",
+      "image": "media/frame-008.jpg"
+    },
+    {
+      "clip_ms": 2250,
+      "sha256": "ca2c82f66468f0b308a7016e773d3467280cef72bf26e30c25156c8d0e704d29",
+      "image": "media/frame-009.jpg"
+    },
+    {
+      "clip_ms": 2500,
+      "sha256": "34eace688f245d7379c6e0b5ab40e3650a2b0f4bd8fd2a1c6cfcac48bc72c52d",
+      "image": "media/frame-010.jpg"
+    },
+    {
+      "clip_ms": 2750,
+      "sha256": "0c543f3508ebd874f36a712a93d56b1539df7099ee1d1a554134bf08f83b8b77",
+      "image": "media/frame-011.jpg"
+    }
+  ]
+}

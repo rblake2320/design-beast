@@ -1,5 +1,132 @@
 # Opportunity Ledger
 
+### OPP-20260918-03 — Replaceable Watch inspection-policy contract
+
+-2026-09-19 relationship continuation: ten real25FPS instrumented browser clips
+  received frozen independent native-frame labels before observer execution.
+  Initial result OCR failed; retained known-case repairs recover10/11inputs,
+  all10associated controls/results and9/10order-compatible pairs with no false
+  final temporal pairs in either arm. Comparative graduation remains FAIL (tie),
+  and causal sufficiency remains unknown. Evidence: `proofs/watch-relationships/PROOF.md`.
+  Border-free crop OCR, source-coordinate mapping and time-bounded control memory
+  could serve Beast or Vigil evidence review; no separate project or Vigil change.
+  Prior art: Tesseract segmentation/cropping and OpenCV connected components,
+  linked in `docs/WATCH-RELATIONSHIPS.md`; no novelty or arbitrary-video claim.
+
+-2026-09-19 visible-input controls: actual isolated browser capture and pixel-only
+  OCR now test recoverable source input indicators. Frozen blind labels cover
+  mouse, keyboard, delayed result and matched missing-input footage. Both Watch
+  arms recover3/3positive cases and abstain on the negative; rewind graduation
+  FAILS because recovery ties. Evidence: `proofs/watch-positive-controls/PROOF.md`.
+  Value is a reusable positive/negative fixture harness for Beast and potentially
+  Vigil; no standalone extraction or general click/causality claim. Playwright
+  event/video capture and Tesseract are existing components, no novelty assertion.
+
+-2026-09-19 consequence-first continuation: separate frontier branch reuses Watch
+  inspection execution to allocate a fixed frame budget around a known visible
+  result. Five coarse samples select a pixel-change interval for dense sampling.
+  Real retained frames refine the named viewport-label transition bracket but
+  expose no initiating input; action debt stays unresolved. Evidence and limits:
+  `proofs/watch-rewind/PROOF.md`. Potential Beast/Vigil value is bounded evidence
+  gathering, not a new visual authority. Prior art and next falsifiable tests:
+  `docs/WATCH-REWIND.md`. No standalone project extraction or novelty claim.
+
+-2026-09-19 teachability continuation: automatic visual proposals now stop at a
+  review queue; class/evidence declarations select draft-only instructional units.
+  The old 2s-source/12.608s-speech segment is rejected by measured pacing limits.
+  A reviewed result-only sentence produces a 2.233s timeline with 0.233s added
+  hold. This contains inflation; it does not prove causal recovery or lower
+  reviewer cost. Evidence: `proofs/watch-teachability/PROOF.md`. Existing local
+  Kokoro/FFmpeg components are reused; no novelty claim. Value inside Watch is
+  preventing unusable drafts; outside it is an inspectable editorial triage
+  contract. Revisit after frozen manual-versus-assisted human-time measurements.
+
+-2026-09-19 measured continuation:automatic visual-change candidates now connect
+  to separate-frame observations, targeted OCR, model-written draft explanations,
+  original-footage assembly and local synthetic narration. Retained3known-case
+  repair follows2/3 semantic failures; exact spoken-word matching does not make
+  a visual explanation true. Evidence:`proofs/watch-narration/PROOF.md` and
+  independent review. No novelty, generalization or publication claim. Upstream
+  Qwen/Kokoro/Tesseract research and limits:`docs/WATCH-NARRATION.md`.
+
+- Source-faithful training follow-up: owner reaffirmed the product target as
+  new training videos using actual source footage/images aligned to explanations,
+  including on-screen information absent from narration. Implement a real-video
+  change-review player and draft segment plan, then a source-only draft renderer.
+  No generated illustration may substitute for observed evidence. Draft captions
+  are editorial claims requiring review, not verified procedures or permission
+  to redistribute the source. Hypothesis: source-linked review makes omissions
+  and narration/visual mismatches inspectable before training-video publication.
+  Measured follow-up: PR37 connects existing Watch to real playback, editorial
+  plans and source-only captioned drafts. Browser playback/seek/export and two
+  rendered segments with9000ms source offset were exercised; decoded source
+  pixels and all11 caption rows checked. Independent artifacts and limitations:
+  `proofs/watch-training/INDEPENDENT-REVIEW.md`. No automatic caption semantics,
+  narration, generalized video comprehension or publication claim. Clipstitch
+  remains a separate spoken-word lane; live-capture PR27 is not silently merged.
+
+- Pixel-state experiment: owner authorized implementation of spatial OCR,
+  tracked image features and temporal state rather than another screenshot
+  description prompt. Hypothesis: measured motion and region-linked text can
+  expose changes missed or mislabeled by the VLM without asserting causal
+  actions. Baseline uses CPU Lucas-Kanade forward/backward tracking, robust
+  affine estimates and spatial OCR; not OmniParser or V-JEPA model inference.
+  Prior art: OpenCV optical-flow/calib3d documentation and Microsoft OmniParser
+  (structured elements), Meta V-JEPA 2 (temporal representation). This is an
+  implementation experiment, not a new semantic competence claim. Possible
+  Vigil reuse is observation provenance only; no Vigil change in this branch.
+
+- Repair research follow-up 2026-09-18: frame-bound single-image inference,
+  all-frame accounting, explicit Instruct model, UTF8 OCR, and byte-custody
+  guards were implemented beside Watch. Independent review found 4/10 supported
+  Blender event representations (4 partial, 2 missed), with at least 15 false
+  frame descriptions. A frozen unseen talking-head/motion-graphic clip had
+  5/5 coarse representations but at least one false icon identification.
+  These are reviewer-derived coverage findings, not autonomous event recovery.
+  All outputs remain unverified; no procedure promotions. The full repair gate
+  still FAILS. Primary-source research and negative alternative probes are in
+  `proofs/watch-repair/RESEARCH.md`; independent grades are retained alongside.
+  Potential value inside Beast and Vigil is more inspectable observation
+  provenance, not a proven general-purpose visual learner. Neither Jev nor
+  SemIf is installed as an evidence authority. Revisit on a perception backend
+  that passes the original semantic challenge and a frozen unseen GUI test.
+
+- Real-video follow-up 2026-09-18: `proofs/watch-real-video/PROOF.md` records
+  a FAILED transcript-free Blender tutorial challenge. The local 8B VLM plus
+  current sampling recovered 0/10 independently referenced events with correct
+  grounding; its sole complete change cited the wrong frame, and detail output
+  truncated. Confidence 1.0 did not establish truth. No procedure promoted.
+  This opens a concrete repair target (frame binding and temporal coverage),
+  not a new proven visual capability. Preserve the failed baseline.
+
+- Status: experiment; measured synthetic extraction controls, not semantic competence.
+- Trigger: owner requested independent perception/transition/procedure confidence,
+  recommendation-only policy and frozen evaluation before Jev integration.
+- New local capability: typed inspection recommendations can enter existing Watch
+  seek execution with bounded frames/time and retained decisions/source custody.
+- Current-project value: compare future attention policies without surrendering
+  evidence authority; outside-project value: the same pattern could govern Vigil
+  inspection scheduling. No Vigil integration is claimed here.
+- Prior art: existing `watch.seek` supplies escalation and extraction. TypeSafe's
+  structured Jev interface and SemIf's conditional-option readout motivate an
+  interchangeable policy boundary, not a new visual engine or novelty claim.
+  Sources: https://typesafe.ai/blog/introducing-system-one-models-and-jev and
+  https://github.com/TheoLeeCJ/SemIf/tree/b9cb32537e78be65f19abfcb1de8fc504b627d84.
+- Smallest experiment: four owner-authored luminance clips; fixed 1-fps versus
+  existing Watch 4-fps schedule, identical 25-frame/one-inspection/60-second caps.
+- Falsifiable gate: exact video/frame hashes and requested timestamps retained;
+  no false pixel-transition acceptance on static control; no causal procedure
+  promotion without independent cause and reproducibility evidence.
+- Evidence: `proofs/watch-inspection/`, `docs/WATCH-INSPECTION.md`, boundary tests.
+- Measured limits: brief change missed by sparse control and found with more
+  frames; this is not an efficiency win, semantic-action recall or calibration.
+- Risks: trusted local validators supply gate references; in-process policy
+  isolation is not a sandbox. Synthetic labels are not real application strata.
+- Decision: ship the contract/baseline/harness through independent draft review.
+  SemIf option-score provenance is included; no upstream code/model is installed.
+- Revisit trigger: frozen real tutorial and separate live-capture sets, isolated
+  model worker, resource admission, and matched evaluation before model claims.
+
 Design Beast treats unexpected capability as a first-class output of engineering and
 research. A discovery must not be discarded merely because it falls outside the
 current task, and it must not be promoted merely because it sounds novel.

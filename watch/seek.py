@@ -78,7 +78,7 @@ def _bundle_fingerprint(frames: list[dict]) -> str:
 def reinspect(bundle: Path, ffmpeg: str, *, center: float, level: int = 2,
               direction: str = "both", before: float | None = None,
               after: float | None = None, fps: float | None = None,
-              reason: str = "uncertain visual action") -> dict:
+              reason: str = "uncertain visual action", deadline: float | None = None) -> dict:
     """Extract missing neighboring evidence and atomically revise timeline.json."""
     timeline_path = bundle / "timeline.json"
     if not timeline_path.exists():
@@ -110,6 +110,10 @@ def reinspect(bundle: Path, ffmpeg: str, *, center: float, level: int = 2,
     frames_dir.mkdir(exist_ok=True)
     height = int(timeline.get("sampling", {}).get("height", 900))
     for source_seconds in requested:
+        remaining = None if deadline is None else deadline - time.monotonic()
+        if remaining is not None and remaining <= 0:
+            raise SeekError("inspection compute deadline exhausted")
+        extraction_options = {} if remaining is None else {"timeout": min(120, remaining)}
         if source_seconds in existing:
             existing_row = existing[source_seconds]
             reasons = existing_row.setdefault("reasons", [])
@@ -124,7 +128,7 @@ def reinspect(bundle: Path, ffmpeg: str, *, center: float, level: int = 2,
                 destination = bundle / existing_row["file"]
                 verify_path = destination.with_name(destination.stem + ".verify.jpg")
                 clip_seconds = source_seconds - source_start
-                if not extract_frame(ffmpeg, video, clip_seconds, verify_path, height):
+                if not extract_frame(ffmpeg, video, clip_seconds, verify_path, height, **extraction_options):
                     raise SeekError(f"could not re-extract frame for hash verification: {source_seconds}")
                 try:
                     if sha256(verify_path) != sha256(destination):
@@ -136,7 +140,7 @@ def reinspect(bundle: Path, ffmpeg: str, *, center: float, level: int = 2,
             continue
         destination = frames_dir / frame_name(source_seconds)
         clip_seconds = source_seconds - source_start
-        if not extract_frame(ffmpeg, video, clip_seconds, destination, height):
+        if not extract_frame(ffmpeg, video, clip_seconds, destination, height, **extraction_options):
             continue
         row = {
             "id": "", "file": destination.relative_to(bundle).as_posix(),

@@ -1,0 +1,17 @@
+{
+  "clip_ms": 0,
+  "source_ms": null,
+  "source_sha256": null,
+  "sha256": "309c565694f81383ed72e93893368e2b237ac7cb7f6559204000ce2ddfb369c1",
+  "state": {
+    "screen_type": "3D modeling software interface (Blender)",
+    "view": "User Perspective (Local); subject is a vertical humanoid figure centered in the viewport",
+    "content": "A low-poly humanoid figure with a pinkish-purple torso and legs, a green neck, and a pinkish head. The figure is shown in profile, facing left. A white pencil-shaped cursor is visible to the right of the figure.",
+    "overlays": "A white pencil-shaped cursor is positioned in the viewport to the right of the figure's torso. No other drawn marks or selection highlights are visible on the geometry.",
+    "visible_text": "Sculpting, Object Mode, User Perspective (Local), (1) Female 2, Scene Collection, Female 1, Female 2, Annotation Draw, Rotate View, Options",
+    "uncertainty": "The exact software version is not visible. The specific sculpting brush settings are not fully legible."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 185.0856550000026,
+  "provider_cost_usd": 0
+}

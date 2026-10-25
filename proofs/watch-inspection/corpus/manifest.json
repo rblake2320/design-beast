@@ -1,0 +1,65 @@
+{
+  "schema": "beast.watch.inspection-corpus/v1",
+  "cases": [
+    {
+      "id": "case-01",
+      "source_kind": "prerecorded",
+      "synthetic": true,
+      "stratum": "silent_action",
+      "file": "case-01.mkv",
+      "sha256": "b5b1814e94716a6a650d0a99d8443b64e3fe88b542e5c36a5a6a8fa91871d831",
+      "ground_truth": {
+        "pixel_transition": true,
+        "causal_procedure": false
+      }
+    },
+    {
+      "id": "case-02",
+      "source_kind": "prerecorded",
+      "synthetic": true,
+      "stratum": "brief_transition",
+      "file": "case-02.mkv",
+      "sha256": "34eab217152db1bf2d29b5014d38aa8b650aa1f37dae27cb98c28f81a216768d",
+      "ground_truth": {
+        "pixel_transition": true,
+        "causal_procedure": false
+      }
+    },
+    {
+      "id": "case-03",
+      "source_kind": "prerecorded",
+      "synthetic": true,
+      "stratum": "ambiguous_cause",
+      "file": "case-03.mkv",
+      "sha256": "52400b3b35c545c1884e5c93a106b9f40094eb6e3f870016433c6a2472cedb69",
+      "ground_truth": {
+        "pixel_transition": true,
+        "causal_procedure": false
+      }
+    },
+    {
+      "id": "case-04",
+      "source_kind": "prerecorded",
+      "synthetic": true,
+      "stratum": "visual_occlusion",
+      "file": "case-04.mkv",
+      "sha256": "3f3f8c1050d2df9d499f8d17c34f790c51d71919272438beb7f0761f540a0477",
+      "ground_truth": {
+        "pixel_transition": false,
+        "causal_procedure": false
+      }
+    }
+  ],
+  "boundary": "Synthetic luminance clips only; no application actions or live telemetry.",
+  "frame_budget": 25,
+  "inspection_budget": 1,
+  "max_seconds_per_case": 60,
+  "unsupported_strata": [
+    "misleading_narration",
+    "version_drift"
+  ],
+  "absent_test_sets": [
+    "live_capture",
+    "real_training_video"
+  ]
+}

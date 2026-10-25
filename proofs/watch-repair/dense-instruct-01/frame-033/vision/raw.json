@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:20:11.8885852Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D viewport\",\n  \"view\": \"User Perspective (Local), centered on a humanoid model\",\n  \"content\": \"A stylized humanoid figure with pink torso, green limbs, and purple hands. It's centered in the viewport.\",\n  \"overlays\": \"Cursor is an arrow. Selection handles are visible around the model. No active popups or tool overlays.\",\n  \"visible_text\": \"User Perspective (Local), Female 2, Object Mode, Sculpting, ViewLayer, Scene Collection, Scene\",\n  \"uncertainty\": \"No uncertainty; all elements are clearly rendered and labeled.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4422387100,
+  "load_duration": 3255381700,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 405597000,
+  "eval_count": 130,
+  "eval_duration": 719161000
+}

@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:25:21.3162096Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"abstract digital interface\",\n  \"view\": \"floating panels on light gray background; main panel centered, others blurred and layered.\",\n  \"content\": \"White rectangular panels with placeholder lines. Icons: Salesforce (blue cloud), red file icon, blue document icon, green icon.\",\n  \"overlays\": \"None visible; all elements are graphical representations without active UI overlays or selections.\",\n  \"visible_text\": \"Salesforce logo text on top-left panel.\",\n  \"uncertainty\": \"No user interaction or context. Objects appear as static illustrations without inferred state or functionality.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4631868200,
+  "load_duration": 3501704800,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 402410000,
+  "eval_count": 123,
+  "eval_duration": 679058000
+}

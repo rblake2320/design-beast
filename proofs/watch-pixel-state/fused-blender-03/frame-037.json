@@ -1,0 +1,69 @@
+{
+  "clip_ms": 18500,
+  "frame_sha256": "0181c61bfe249995252ee758a8f6a6cba556bd60c1c9449ab0353ffc2712f552",
+  "pixel_state_sha256": "facebac51188d3656a2f601662d573c8f6c421334323819ddbf5613449a3a460",
+  "ui_regions_sha256": "1755c4763cc3f95967f8b2b470895093bc96fcbdfd0256a4cfee95166aab0d83",
+  "ui_regions": [
+    {
+      "bbox_xyxy": [
+        1184.12841796875,
+        345.3131408691406,
+        1217.75439453125,
+        384.6230163574219
+      ],
+      "raw_score": 0.2778317332267761
+    }
+  ],
+  "temporal_windows": [
+    {
+      "window": 3,
+      "sha256": "3af17253880667eeda2bd06ba42857d43b2443c6e9755bf2eb8bc1ca2eeb1f85",
+      "start_ms": 12000,
+      "end_ms": 19500,
+      "distance": 0.17482566833496094
+    },
+    {
+      "window": 4,
+      "sha256": "33a4b90026d84d8814fff640d7604f557abffc76b3be84562a7487de1641f4dd",
+      "start_ms": 16000,
+      "end_ms": 23500,
+      "distance": 0.04482549428939819
+    }
+  ],
+  "inspection_recommendation": {
+    "schema_version": "beast.watch.inspection/v1",
+    "requested_action": "request_slow_review",
+    "target_interval": {
+      "start_ms": 18000,
+      "end_ms": 18500
+    },
+    "target_regions": [
+      {
+        "x": 0.93203125,
+        "y": 0.48333333333333334,
+        "width": 0.0140625,
+        "height": 0.03888888888888889
+      },
+      {
+        "x": 0.83125,
+        "y": 0.5097222222222222,
+        "width": 0.0140625,
+        "height": 0.03888888888888889
+      }
+    ],
+    "predicted_value_of_inspection": 0.0,
+    "confidence": {
+      "perception": 0.0,
+      "transition": 0.0,
+      "procedure": 0.0
+    },
+    "uncertainty_reasons": [
+      "OCR/flow scores are uncalibrated; no causal action is established",
+      "Unobserved time between samples remains uncertain",
+      "Scheduling heuristic is uncalibrated; no evidence promotion."
+    ],
+    "option_readout": null
+  },
+  "confidence_status": "zero policy inputs mean not established; not calibrated probabilities",
+  "evidence_class": "unverified_multichannel_visual_state"
+}

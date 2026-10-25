@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:18:50.5776646Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"3D viewport\",\n  \"view\": \"Right Orthographic (Local), showing a human-like model centered on grid.\",\n  \"content\": \"A female humanoid model with segmented purple body, green neck and feet. No facial features visible.\",\n  \"overlays\": \"Cursor is a pencil icon; blue line indicates active sculpting stroke path along the model's torso.\",\n  \"visible_text\": \"Right Orthographic (Local), Female 2, Sculpting, Global, Radius 35 px, Factor 0.750, Drag: Select Box, Scene Collection, ViewLayer, Scene, Units, Gravity, Simulation, Keying Sets, Rigid Body World, Light Probes, Animation, Custom Properties.\",\n  \"uncertainty\": \"No uncertainty; screen state is fully observable and described.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4662789300,
+  "load_duration": 3258173700,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 418453000,
+  "eval_count": 172,
+  "eval_duration": 938516000
+}

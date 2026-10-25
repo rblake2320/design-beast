@@ -1,0 +1,50 @@
+{
+  "schema_version": "beast.watch.pixel-state/v1",
+  "clip_ms": 15000,
+  "frame_sha256": "42380bbd72b206de334e222225e98591ab6992230ae0984a0462db67dd818b47",
+  "before_sha256": "b466dfdcc51dd210cfbc7e0481ff3db50463c1a8de29f0e25db1f6e00c8ceb78",
+  "dimensions": [
+    1280,
+    720
+  ],
+  "text_elements": [
+    {
+      "track_id": 9,
+      "text": "The",
+      "bbox": [
+        310,
+        356,
+        64,
+        36
+      ],
+      "raw_ocr_score": 96.704063,
+      "consecutive_frames": 1
+    }
+  ],
+  "appeared_text_track_ids": [
+    9
+  ],
+  "disappeared_text_track_ids": [],
+  "motion_tracks": [],
+  "changed_regions": [
+    [
+      0,
+      0,
+      1280,
+      720
+    ]
+  ],
+  "changed_pixel_fraction": 0.9998611111111111,
+  "motion_scale": null,
+  "affine_inlier_fraction": null,
+  "tracking_reset": true,
+  "uncertainty": [
+    "OCR/flow scores are uncalibrated; no causal action is established",
+    "Unobserved time between samples remains uncertain",
+    "No reliable cross-frame feature correspondence"
+  ],
+  "perception_confidence": null,
+  "transition_confidence": null,
+  "procedure_confidence": null,
+  "evidence_class": "pixel_measurement_not_semantic_verdict"
+}

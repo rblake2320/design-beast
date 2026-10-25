@@ -1,0 +1,5 @@
+{
+  "type": "CalledProcessError",
+  "error": "Command '['ffmpeg', '-v', 'error', '-nostdin', '-n', '-ss', '9.0', '-i', 'source.mp4', '-t', '2.0', '-an', '-vf', \"pad=ceil(iw/2)*2:ceil(ih/2)*2+156:0:0:color=0x101713,drawtext=font='Segoe UI':textfile=caption-000.txt:expansion=none:fontcolor=white:fontsize=23:x=24:y=740:line_spacing=6\", '-r', '30', '-c:v', 'libx264', '-threads', '2', '-preset', 'fast', '-crf', '18', '-pix_fmt', 'yuv420p', 'segment-000.mp4']' returned non-zero exit status 3221225477.",
+  "stderr": "Fontconfig error: Cannot load default config file: File not found\r\n"
+}

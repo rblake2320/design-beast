@@ -1,0 +1,33 @@
+{
+  "frame": {
+    "id": "frame-0010",
+    "file": "frames/f_000000004500.jpg",
+    "source_seconds": 4.5,
+    "source_time": "00:00:04.500",
+    "clip_seconds": 4.5,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "08bf7f3f3f2f3f01",
+    "sha256": "1ecf9063b874dd08b6342515cb165f05502746cca715a6e874ec125165055a57",
+    "change_from_previous": 7,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "result": {
+    "source_ms": 4500,
+    "sha256": "1ecf9063b874dd08b6342515cb165f05502746cca715a6e874ec125165055a57",
+    "state": {
+      "screen_type": "3D viewport",
+      "view": "User Orthographic (Local), centered on 'Female 2' model.",
+      "content": "Low-poly humanoid model named 'Female 2', colored pink/purple with green neck/legs. No visible textures or shading applied.",
+      "overlays": "White pencil cursor, no active selection highlights or drawn marks visible.",
+      "visible_text": "User Orthographic (Local), Female 2, Sculpting, Global, Radius: 35 px, Factor: 0.750, Drag: Select Box.",
+      "uncertainty": "No uncertainty; all elements are clearly rendered and labeled."
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 4.6104770000092685,
+    "provider_cost_usd": 0
+  }
+}

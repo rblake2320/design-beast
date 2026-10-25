@@ -1,0 +1,33 @@
+{
+  "frame": {
+    "id": "frame-0018",
+    "file": "frames/f_000000008500.jpg",
+    "source_seconds": 8.5,
+    "source_time": "00:00:08.500",
+    "clip_seconds": 8.5,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "00bf7f3f3f3f3f01",
+    "sha256": "9238ba95413ece0684ad6fd17d5aa45aee09f3dd2d1227eee1c8da8098a6f0de",
+    "change_from_previous": 0,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "result": {
+    "source_ms": 8500,
+    "sha256": "9238ba95413ece0684ad6fd17d5aa45aee09f3dd2d1227eee1c8da8098a6f0de",
+    "state": {
+      "screen_type": "3D viewport",
+      "view": "Right Orthographic (Local), showing a human-like model centered on grid.",
+      "content": "A female humanoid model with segmented purple body, green neck and feet. No facial features visible.",
+      "overlays": "Cursor is a pencil icon; blue line indicates active sculpting stroke path along the model's torso.",
+      "visible_text": "Right Orthographic (Local), Female 2, Sculpting, Global, Radius 35 px, Factor 0.750, Drag: Select Box, Scene Collection, ViewLayer, Scene, Units, Gravity, Simulation, Keying Sets, Rigid Body World, Light Probes, Animation, Custom Properties.",
+      "uncertainty": "No uncertainty; screen state is fully observable and described."
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 4.667129800000112,
+    "provider_cost_usd": 0
+  }
+}

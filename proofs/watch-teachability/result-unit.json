@@ -1,0 +1,20 @@
+{
+  "source_sha256": "46ca6a61fa8cd4802284014fa091570e933403da1767d03f92108a6d4a78b8b1",
+  "units": [{
+    "unit_id": "front-view-result",
+    "kind": "observable_result",
+    "start_ms": 500,
+    "end_ms": 2500,
+    "sentence": "Front orthographic view appears.",
+    "frame_refs": [
+      {"clip_ms": 1000, "sha256": "bdff86f233b398474b4ebe2029b2fa6425417b11b6996355e91d717c156e6f2c"},
+      {"clip_ms": 2000, "sha256": "f5a895fb96ba3a770751902b9b8288dc1745d74fc8d68896fcc68c4ed31c02c6"}
+    ],
+    "result_evidence": "At 2000ms the source viewport label reads Front Orthographic (Local), versus User Perspective at 1000ms. See result-review.json; cause is not established.",
+    "reviewer": "independent agent /root/training_review; result-review.json",
+    "verdict": "accepted",
+    "perception_confidence": null,
+    "transition_confidence": null,
+    "procedure_confidence": null
+  }]
+}

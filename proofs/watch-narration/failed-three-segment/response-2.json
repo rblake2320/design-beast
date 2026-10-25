@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-19T07:38:21.3390717Z",
+  "message": {
+    "role": "assistant",
+    "content": "{ \"caption\": \"The screen switches from a 3D modeling view of a character to a full-screen instructional slide.\", \"uncertainty\": \"No uncertainty; the transition is clearly visible and unambiguous.\" }"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 3544315600,
+  "load_duration": 3177584800,
+  "prompt_eval_count": 414,
+  "prompt_eval_duration": 93364000,
+  "eval_count": 44,
+  "eval_duration": 240163000
+}

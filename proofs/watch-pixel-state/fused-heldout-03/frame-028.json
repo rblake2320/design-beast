@@ -1,0 +1,96 @@
+{
+  "clip_ms": 14000,
+  "frame_sha256": "75bd76f22bf2a402b0907699cd2d26e5e18961963f9b37fc589f0e4e2bf7a587",
+  "pixel_state_sha256": "f31a6954ba8d65324e29aff097c2ae9cbb90d5bd5a7c76290bdda5697721d7fb",
+  "ui_regions_sha256": "9aceb6f5c326bf012b6ae87039d775750234d42d0e603e185e2f2e4809c7cb20",
+  "ui_regions": [],
+  "temporal_windows": [
+    {
+      "window": 2,
+      "sha256": "53ea9639a1380f0a7848fb19c78a1c06baf1d2767431a538b0d9dcdfdecf6f0b",
+      "start_ms": 8000,
+      "end_ms": 15500,
+      "distance": 0.13011693954467773
+    },
+    {
+      "window": 3,
+      "sha256": "13b93acdcbe815e13c8809a35c13ab8fa00a514f7395d5c0fa076d84531ac72d",
+      "start_ms": 12000,
+      "end_ms": 19500,
+      "distance": 0.07892990112304688
+    }
+  ],
+  "inspection_recommendation": {
+    "schema_version": "beast.watch.inspection/v1",
+    "requested_action": "request_slow_review",
+    "target_interval": {
+      "start_ms": 13500,
+      "end_ms": 14000
+    },
+    "target_regions": [
+      {
+        "x": 0.39140625,
+        "y": 0.09305555555555556,
+        "width": 0.121875,
+        "height": 0.6361111111111111
+      },
+      {
+        "x": 0.421875,
+        "y": 0.2013888888888889,
+        "width": 0.17578125,
+        "height": 0.1388888888888889
+      },
+      {
+        "x": 0.45390625,
+        "y": 0.36527777777777776,
+        "width": 0.10625,
+        "height": 0.1875
+      },
+      {
+        "x": 0.51171875,
+        "y": 0.05138888888888889,
+        "width": 0.10625,
+        "height": 0.3527777777777778
+      },
+      {
+        "x": 0.4953125,
+        "y": 0.2708333333333333,
+        "width": 0.07421875,
+        "height": 0.14027777777777778
+      },
+      {
+        "x": 0.50625,
+        "y": 0.5777777777777777,
+        "width": 0.1703125,
+        "height": 0.15416666666666667
+      },
+      {
+        "x": 0.4734375,
+        "y": 0.4027777777777778,
+        "width": 0.05625,
+        "height": 0.06388888888888888
+      },
+      {
+        "x": 0.45625,
+        "y": 0.5458333333333333,
+        "width": 0.0828125,
+        "height": 0.05138888888888889
+      }
+    ],
+    "predicted_value_of_inspection": 0.0,
+    "confidence": {
+      "perception": 0.0,
+      "transition": 0.0,
+      "procedure": 0.0
+    },
+    "uncertainty_reasons": [
+      "OCR/flow scores are uncalibrated; no causal action is established",
+      "Unobserved time between samples remains uncertain",
+      "Only largest 64 connected changed regions retained",
+      "Scheduling heuristic is uncalibrated; no evidence promotion."
+    ],
+    "option_readout": null
+  },
+  "confidence_status": "zero policy inputs mean not established; not calibrated probabilities",
+  "evidence_class": "unverified_multichannel_visual_state"
+}

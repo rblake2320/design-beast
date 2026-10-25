@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b-instruct",
+  "created_at": "2026-09-18T20:21:42.0608879Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"screen_type\": \"Instructional slide\",\n  \"view\": \"Full-screen text layout on black background\",\n  \"content\": \"Text blocks with headings like 'FOLLOW THE SHAPE LANGUAGE' and descriptive paragraphs about character blocking techniques.\",\n  \"overlays\": \"White cursor arrow pointing at text, no other overlays\",\n  \"visible_text\": \"HOW TO BLOCK OUT, STYLIZED CHARACTER ACADEMY, TELL YOUR OWN STORIES WITH YOUR 3D CHARACTERS\",\n  \"uncertainty\": \"None; text and layout are clearly visible and unambiguous.\"\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 4251087400,
+  "load_duration": 3119015200,
+  "prompt_eval_count": 1236,
+  "prompt_eval_duration": 417079000,
+  "eval_count": 121,
+  "eval_duration": 673658000
+}

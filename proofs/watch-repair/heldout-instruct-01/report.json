@@ -1,0 +1,3706 @@
+{
+  "frames_accounted": 61,
+  "states": [
+    {
+      "frame": {
+        "id": "frame-0001",
+        "file": "frames/f_000000000000.jpg",
+        "source_seconds": 0.0,
+        "source_time": "00:00:00.000",
+        "clip_seconds": 0.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ef",
+        "sha256": "4ec8ad202c3c25f46f2d94c6fd7bed04fdc85f71826a8e381d1bd21555a47fcd",
+        "change_from_previous": null,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 0,
+        "source_ms": 300000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "4ec8ad202c3c25f46f2d94c6fd7bed04fdc85f71826a8e381d1bd21555a47fcd",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of a man centered in frame",
+          "content": "Man with dark hair and black shirt smiles. Behind him: black desk lamp left, green plant right, plain wall background.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "No uncertainty; all visible elements clearly identifiable."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 3.840570900007151,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0002",
+        "file": "frames/f_000000000500.jpg",
+        "source_seconds": 0.5,
+        "source_time": "00:00:00.500",
+        "clip_seconds": 0.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "6fe90b59d50b0c937c04dfdb605aee470fadd4fe5e7105b6d772752a88051b2e",
+        "change_from_previous": 1,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 500,
+        "source_ms": 300500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "6fe90b59d50b0c937c04dfdb605aee470fadd4fe5e7105b6d772752a88051b2e",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of a man centered in frame, facing camera directly.",
+          "content": "Man with dark hair and black shirt; green plant to right; black desk lamp to left; plain wall background with window blinds partially visible behind plant.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "No uncertainty; all elements clearly identifiable in static frame."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.432348500005901,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0003",
+        "file": "frames/f_000000001000.jpg",
+        "source_seconds": 1.0,
+        "source_time": "00:00:01.000",
+        "clip_seconds": 1.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "eedcc7926c2bc6c59a37a1823b75dd7310d4d7d60aa4880436410934cd314007",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 1000,
+        "source_ms": 301000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "eedcc7926c2bc6c59a37a1823b75dd7310d4d7d60aa4880436410934cd314007",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of a man centered in frame, facing camera directly.",
+          "content": "Man with dark hair and black shirt; green plant to right; black desk lamp to left; plain wall background.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": ""
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.3291849000088405,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0004",
+        "file": "frames/f_000000001500.jpg",
+        "source_seconds": 1.5,
+        "source_time": "00:00:01.500",
+        "clip_seconds": 1.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7f7",
+        "sha256": "f65253027692717c09ca7f0853a49e8d56bc0f00e1d88984fe60fbd478c5c17a",
+        "change_from_previous": 1,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 1500,
+        "source_ms": 301500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "f65253027692717c09ca7f0853a49e8d56bc0f00e1d88984fe60fbd478c5c17a",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of man centered, facing camera",
+          "content": "man with dark hair and black shirt, green plant right, black lamp left, plain wall background",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": ""
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.309723099999246,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0005",
+        "file": "frames/f_000000002000.jpg",
+        "source_seconds": 2.0,
+        "source_time": "00:00:02.000",
+        "clip_seconds": 2.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "dd139e2981d70ae206c0bbab87dc621ea57d8f18ce70a78f3a6f833066cde163",
+        "change_from_previous": 1,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 2000,
+        "source_ms": 302000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "dd139e2981d70ae206c0bbab87dc621ea57d8f18ce70a78f3a6f833066cde163",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of a man centered in frame, facing camera directly.",
+          "content": "Man with dark hair and black shirt. Behind him: a black desk lamp left, green plant right, white wall background. Microphone visible at bottom center.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": ""
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.404219599993667,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0006",
+        "file": "frames/f_000000002500.jpg",
+        "source_seconds": 2.5,
+        "source_time": "00:00:02.500",
+        "clip_seconds": 2.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "3c2e7ad72791cf5320eee449657d7df4659d7a95907d1dd8619a24cd5d610e77",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 2500,
+        "source_ms": 302500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "3c2e7ad72791cf5320eee449657d7df4659d7a95907d1dd8619a24cd5d610e77",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of man centered, facing camera",
+          "content": "man with dark hair and black shirt, green plant right, black lamp left, plain wall background",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": ""
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.331219999992754,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0007",
+        "file": "frames/f_000000003000.jpg",
+        "source_seconds": 3.0,
+        "source_time": "00:00:03.000",
+        "clip_seconds": 3.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "3274340a75bdb4d47f96aa1aed01c4d9ff909d556f808d15513574f9db8299ff",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 3000,
+        "source_ms": 303000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "3274340a75bdb4d47f96aa1aed01c4d9ff909d556f808d15513574f9db8299ff",
+        "state": {
+          "screen_type": "video recording screenshot",
+          "view": "medium close-up, centered on a man's face and upper torso",
+          "content": "Man with dark hair, wearing black shirt. Behind him: black desk lamp left, green plant right, light-colored wall.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "No visible text or overlays. Background elements are partially obscured by lighting and focus."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.461660100001609,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0008",
+        "file": "frames/f_000000003500.jpg",
+        "source_seconds": 3.5,
+        "source_time": "00:00:03.500",
+        "clip_seconds": 3.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "fa3500ac4df7246a5cb7374b72bd208f8a22bb6b3ec363d404febc99cda07dd3",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 3500,
+        "source_ms": 303500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "fa3500ac4df7246a5cb7374b72bd208f8a22bb6b3ec363d404febc99cda07dd3",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of a man centered in frame, facing camera directly",
+          "content": "Man with dark hair and black shirt; black lamp to left; green plant to right; plain wall background; microphone visible at bottom center.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "No discernible movement or action from subjects."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.4138158000132535,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0009",
+        "file": "frames/f_000000004000.jpg",
+        "source_seconds": 4.0,
+        "source_time": "00:00:04.000",
+        "clip_seconds": 4.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "db79f711903f5148919aa7612c483fa4bdddc81c529357de4e9757b8db8c42b1",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 4000,
+        "source_ms": 304000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "db79f711903f5148919aa7612c483fa4bdddc81c529357de4e9757b8db8c42b1",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up, centered on subject",
+          "content": "Man with dark hair and black shirt. Behind: black lamp left, green plant right. Walls light gray.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": ""
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.306474500001059,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0010",
+        "file": "frames/f_000000004500.jpg",
+        "source_seconds": 4.5,
+        "source_time": "00:00:04.500",
+        "clip_seconds": 4.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "b6c71be73367f598e673f9c5377ef917bbedf165c95b624eea3efac7803494c3",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 4500,
+        "source_ms": 304500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "b6c71be73367f598e673f9c5377ef917bbedf165c95b624eea3efac7803494c3",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of a man centered in frame, facing camera directly",
+          "content": "Man with dark hair and black shirt; black desk lamp left, green plant right; plain wall background with blinds visible behind plant",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "No discernible uncertainty in visible elements"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.444873700005701,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0011",
+        "file": "frames/f_000000005000.jpg",
+        "source_seconds": 5.0,
+        "source_time": "00:00:05.000",
+        "clip_seconds": 5.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "57fe0f7c5f152d274086199d533679d68504e809256f223ac8c9f287f0af80d6",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 5000,
+        "source_ms": 305000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "57fe0f7c5f152d274086199d533679d68504e809256f223ac8c9f287f0af80d6",
+        "state": {
+          "screen_type": "video screenshot",
+          "view": "medium close-up, centered on man\u2019s face and upper torso",
+          "content": "man with dark hair and black shirt; black desk lamp left; green plant right; plain wall background",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "no visible uncertainty"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.39974579999398,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0012",
+        "file": "frames/f_000000005500.jpg",
+        "source_seconds": 5.5,
+        "source_time": "00:00:05.500",
+        "clip_seconds": 5.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "83a6e88a38f35bca621fb3629d435358ee901b3f8d6f334e5929668b0a45f79e",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 5500,
+        "source_ms": 305500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "83a6e88a38f35bca621fb3629d435358ee901b3f8d6f334e5929668b0a45f79e",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of man centered, facing camera",
+          "content": "man with dark hair and black shirt, green plant to right, black lamp to left, plain wall background",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "no uncertainty"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.343958599987673,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0013",
+        "file": "frames/f_000000006000.jpg",
+        "source_seconds": 6.0,
+        "source_time": "00:00:06.000",
+        "clip_seconds": 6.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ef",
+        "sha256": "71250e64858745bb8009111d81976fb74f89f34c16062d93153c41ac4d5afe85",
+        "change_from_previous": 1,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 6000,
+        "source_ms": 306000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "71250e64858745bb8009111d81976fb74f89f34c16062d93153c41ac4d5afe85",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of man centered, facing camera",
+          "content": "man with dark hair, wearing black t-shirt. Behind: black lamp left, green plant right. Wall background.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "No visible text or overlays. Background objects partially obscured by depth of field."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.4201465000078315,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0014",
+        "file": "frames/f_000000006500.jpg",
+        "source_seconds": 6.5,
+        "source_time": "00:00:06.500",
+        "clip_seconds": 6.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "bba9e51d6b3c15ebbb6f93601c17bb261a48bd08f592b8248e33042120b85f25",
+        "change_from_previous": 1,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 6500,
+        "source_ms": 306500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "bba9e51d6b3c15ebbb6f93601c17bb261a48bd08f592b8248e33042120b85f25",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of man centered, background elements partially visible",
+          "content": "man with dark hair wearing black shirt, eyes closed, mouth slightly open. Black lamp and green plant behind him.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "no uncertainty"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.323616800000309,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0015",
+        "file": "frames/f_000000007000.jpg",
+        "source_seconds": 7.0,
+        "source_time": "00:00:07.000",
+        "clip_seconds": 7.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "c257588ee9750732cb6a70c8224d1ce8e636af0440b82519e1907cef32a8a0b3",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 7000,
+        "source_ms": 307000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "c257588ee9750732cb6a70c8224d1ce8e636af0440b82519e1907cef32a8a0b3",
+        "state": {
+          "screen_type": "video screenshot",
+          "view": "medium close-up, centered on man\u2019s face and upper torso",
+          "content": "man with dark hair and black shirt; black lamp left, green plant right, plain wall background",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "none"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.692215300005046,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0016",
+        "file": "frames/f_000000007500.jpg",
+        "source_seconds": 7.5,
+        "source_time": "00:00:07.500",
+        "clip_seconds": 7.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "740689e1bbe11080a04a0f7360d31d420990ce8a9300f3b0ef787938501b63fe",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 7500,
+        "source_ms": 307500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "740689e1bbe11080a04a0f7360d31d420990ce8a9300f3b0ef787938501b63fe",
+        "state": {
+          "screen_type": "video screenshot",
+          "view": "medium close-up, centered on man\u2019s upper torso and face",
+          "content": "man with dark hair and black shirt; green plant right, black lamp left, plain wall background",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "none"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.3690824000077555,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0017",
+        "file": "frames/f_000000008000.jpg",
+        "source_seconds": 8.0,
+        "source_time": "00:00:08.000",
+        "clip_seconds": 8.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "099f5ab61a4ad36ffd594a1a99f458027ad2e34c1180625db3b482bbcf98d143",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 8000,
+        "source_ms": 308000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "099f5ab61a4ad36ffd594a1a99f458027ad2e34c1180625db3b482bbcf98d143",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of man centered, facing camera",
+          "content": "man with dark hair and black shirt, green plant right, black lamp left, plain wall background",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": ""
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 3.6880240000027698,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0018",
+        "file": "frames/f_000000008500.jpg",
+        "source_seconds": 8.5,
+        "source_time": "00:00:08.500",
+        "clip_seconds": 8.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "cebe0f002ffa806769b26455041740861e35a6b4cfe22a8330b5c4103f95d0f8",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 8500,
+        "source_ms": 308500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "cebe0f002ffa806769b26455041740861e35a6b4cfe22a8330b5c4103f95d0f8",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of man centered, looking at camera",
+          "content": "Man with dark hair and black shirt. Behind him: black desk lamp left, green plant right. Wall background.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": ""
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.295294900002773,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0019",
+        "file": "frames/f_000000009000.jpg",
+        "source_seconds": 9.0,
+        "source_time": "00:00:09.000",
+        "clip_seconds": 9.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "3cbcd0dcb1390e98d450919d9e6ff1bf8c60a228bbc23c5841de3109774fe6f5",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 9000,
+        "source_ms": 309000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "3cbcd0dcb1390e98d450919d9e6ff1bf8c60a228bbc23c5841de3109774fe6f5",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of a man centered in frame",
+          "content": "Man with dark hair, eyes closed, wearing black shirt. Behind him: black lamp left, green plant right. Wall background.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "None"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.639023600000655,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0020",
+        "file": "frames/f_000000009500.jpg",
+        "source_seconds": 9.5,
+        "source_time": "00:00:09.500",
+        "clip_seconds": 9.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "849d9c3c57d4992ea68c5dce59597b23236d191adcec7343e40a7814ee8ec0f2",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 9500,
+        "source_ms": 309500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "849d9c3c57d4992ea68c5dce59597b23236d191adcec7343e40a7814ee8ec0f2",
+        "state": {
+          "screen_type": "video recording screenshot",
+          "view": "medium close-up of a man facing camera, centered in frame",
+          "content": "Man with dark hair wearing black shirt; black desk lamp left, green plant right; plain wall background",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "No discernible text or overlays present"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.462062999999034,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0021",
+        "file": "frames/f_000000010000.jpg",
+        "source_seconds": 10.0,
+        "source_time": "00:00:10.000",
+        "clip_seconds": 10.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "65c9f2151b12066445ca71a36bd5db96d0ba2f95b2ccb1766806e086271c082c",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 10000,
+        "source_ms": 310000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "65c9f2151b12066445ca71a36bd5db96d0ba2f95b2ccb1766806e086271c082c",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of man centered, facing camera",
+          "content": "man with dark hair and black shirt, green plant to right, black lamp to left, white wall background",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "no visible text or overlays; no inferred actions"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.368734300005599,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0022",
+        "file": "frames/f_000000010500.jpg",
+        "source_seconds": 10.5,
+        "source_time": "00:00:10.500",
+        "clip_seconds": 10.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "6ec83aef2ca9dacb1083bd73bc8b055e01d40cd3241eb2ec21e893f7aa3a1ce8",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 10500,
+        "source_ms": 310500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "6ec83aef2ca9dacb1083bd73bc8b055e01d40cd3241eb2ec21e893f7aa3a1ce8",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of a man centered in frame, facing camera",
+          "content": "man with dark hair, wearing black shirt; black lamp to left, green plant to right; plain wall background",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "none"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.438292200007709,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0023",
+        "file": "frames/f_000000011000.jpg",
+        "source_seconds": 11.0,
+        "source_time": "00:00:11.000",
+        "clip_seconds": 11.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ef",
+        "sha256": "7ca4067e95119e32e5572f8dd8044d09bff5eec63df4bc00308b9ffaeb60e6c4",
+        "change_from_previous": 1,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 11000,
+        "source_ms": 311000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "7ca4067e95119e32e5572f8dd8044d09bff5eec63df4bc00308b9ffaeb60e6c4",
+        "state": {
+          "screen_type": "video screenshot",
+          "view": "medium close-up of man facing camera",
+          "content": "man with dark hair and black shirt; black desk lamp left; green plant right; plain wall background; soft lighting.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "no uncertainty in visible state."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.370474700001068,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0024",
+        "file": "frames/f_000000011500.jpg",
+        "source_seconds": 11.5,
+        "source_time": "00:00:11.500",
+        "clip_seconds": 11.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "9603df97b7e0079987f896b9358a554907e38dbf51c902d561698c79546062b1",
+        "change_from_previous": 1,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 11500,
+        "source_ms": 311500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "9603df97b7e0079987f896b9358a554907e38dbf51c902d561698c79546062b1",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of a man centered in frame, facing camera",
+          "content": "man with dark hair, wearing black shirt, standing in front of light wall with plant and lamp visible behind him",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "none"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.3804037000081735,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0025",
+        "file": "frames/f_000000012000.jpg",
+        "source_seconds": 12.0,
+        "source_time": "00:00:12.000",
+        "clip_seconds": 12.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "0cfa603ff81db3f074c485e67d4af0ea6b29550a18572b1a9298ccf5d005ad75",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 12000,
+        "source_ms": 312000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "0cfa603ff81db3f074c485e67d4af0ea6b29550a18572b1a9298ccf5d005ad75",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of man centered, facing camera",
+          "content": "man with dark hair, wearing black shirt; black desk lamp left; green plant right; plain wall background.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "no uncertainty"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.408914800005732,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0026",
+        "file": "frames/f_000000012500.jpg",
+        "source_seconds": 12.5,
+        "source_time": "00:00:12.500",
+        "clip_seconds": 12.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "a7984a69aa6dee397af738179a8e6375a9ba7ca08a08781b2d76286971db285e",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 12500,
+        "source_ms": 312500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "a7984a69aa6dee397af738179a8e6375a9ba7ca08a08781b2d76286971db285e",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of man centered, facing camera",
+          "content": "man with dark hair and black shirt, green plant right, black lamp left, plain wall background",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": ""
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.272959099995205,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0027",
+        "file": "frames/f_000000013000.jpg",
+        "source_seconds": 13.0,
+        "source_time": "00:00:13.000",
+        "clip_seconds": 13.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ef",
+        "sha256": "4d41b89364770fa8f7b3acd0bf8853f4ab392b8b2a52e9429999a51f9ed55a88",
+        "change_from_previous": 1,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 13000,
+        "source_ms": 313000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "4d41b89364770fa8f7b3acd0bf8853f4ab392b8b2a52e9429999a51f9ed55a88",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of a man centered in frame, facing camera directly.",
+          "content": "Man with dark hair and black shirt. Behind him: black desk lamp left, green plant right. White wall background.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": ""
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.357414700003574,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0028",
+        "file": "frames/f_000000013500.jpg",
+        "source_seconds": 13.5,
+        "source_time": "00:00:13.500",
+        "clip_seconds": 13.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ef",
+        "sha256": "81c84c1d5e446b84dc46200aeb6d9d6cc63234ebe318d565da28b992a62a70fa",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 13500,
+        "source_ms": 313500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "81c84c1d5e446b84dc46200aeb6d9d6cc63234ebe318d565da28b992a62a70fa",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of a man centered in frame",
+          "content": "Man with dark hair and black shirt; black desk lamp left; green plant right; plain wall background.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "No visible uncertainty indicators."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.2873914999945555,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0029",
+        "file": "frames/f_000000014000.jpg",
+        "source_seconds": 14.0,
+        "source_time": "00:00:14.000",
+        "clip_seconds": 14.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "75bd76f22bf2a402b0907699cd2d26e5e18961963f9b37fc589f0e4e2bf7a587",
+        "change_from_previous": 1,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 14000,
+        "source_ms": 314000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "75bd76f22bf2a402b0907699cd2d26e5e18961963f9b37fc589f0e4e2bf7a587",
+        "state": {
+          "screen_type": "video screenshot",
+          "view": "medium close-up of a man centered in frame",
+          "content": "Man with dark hair and black shirt; black desk lamp left, green plant right; plain wall background.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "No visible uncertainty indicators."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.387723300009384,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0030",
+        "file": "frames/f_000000014500.jpg",
+        "source_seconds": 14.5,
+        "source_time": "00:00:14.500",
+        "clip_seconds": 14.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "b466dfdcc51dd210cfbc7e0481ff3db50463c1a8de29f0e25db1f6e00c8ceb78",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 14500,
+        "source_ms": 314500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "b466dfdcc51dd210cfbc7e0481ff3db50463c1a8de29f0e25db1f6e00c8ceb78",
+        "state": {
+          "screen_type": "video screenshot",
+          "view": "medium close-up, centered on man\u2019s face and upper torso",
+          "content": "Man with dark hair wearing black shirt. Black lamp to left, green plant to right. Background is plain wall.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "No visible text or overlays. Subject's exact expression not fully discernible from single frame."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.480933200000436,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0031",
+        "file": "frames/f_000000015000.jpg",
+        "source_seconds": 15.0,
+        "source_time": "00:00:15.000",
+        "clip_seconds": 15.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "ffffffe1e3ffffff",
+        "sha256": "42380bbd72b206de334e222225e98591ab6992230ae0984a0462db67dd818b47",
+        "change_from_previous": 33,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 15000,
+        "source_ms": 315000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "42380bbd72b206de334e222225e98591ab6992230ae0984a0462db67dd818b47",
+        "state": {
+          "screen_type": "static screen",
+          "view": "centered text and graphic on plain background",
+          "content": "Text 'The writing isn't' partially covered by a metallic bookmark-like shape with curved ends.",
+          "overlays": "bookmark-shaped overlay covering part of the text.",
+          "visible_text": "The writing isn't",
+          "uncertainty": "No uncertainty; elements are clearly visible and static."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.4333962999953656,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0032",
+        "file": "frames/f_000000015500.jpg",
+        "source_seconds": 15.5,
+        "source_time": "00:00:15.500",
+        "clip_seconds": 15.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "ffffe7c3c3e7ffff",
+        "sha256": "ee8783201ac8630c4a50be4c08419474a5380682682af988199db11632703137",
+        "change_from_previous": 7,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 15500,
+        "source_ms": 315500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "ee8783201ac8630c4a50be4c08419474a5380682682af988199db11632703137",
+        "state": {
+          "screen_type": "static graphic",
+          "view": "centered composition on plain background",
+          "content": "blue outlined rectangle with pencil icon; light gray fill with horizontal lines inside.",
+          "overlays": "none",
+          "visible_text": "The writing isn't actually the hard part",
+          "uncertainty": "None visible"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.272111799989943,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0033",
+        "file": "frames/f_000000016000.jpg",
+        "source_seconds": 16.0,
+        "source_time": "00:00:16.000",
+        "clip_seconds": 16.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "ffe7e7c3c3e7e7ff",
+        "sha256": "07e7f4158883f0d258c04d0555228df692a2b0c772a248a512902f3bf3f7620a",
+        "change_from_previous": 4,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 16000,
+        "source_ms": 316000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "07e7f4158883f0d258c04d0555228df692a2b0c772a248a512902f3bf3f7620a",
+        "state": {
+          "screen_type": "illustration",
+          "view": "centered illustration on plain background",
+          "content": "blue outlined paper with pencil, horizontal lines, arrows left and right",
+          "overlays": "text overlay with gradient blue font",
+          "visible_text": "The writing isn't actually the hard part",
+          "uncertainty": "None"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.344491600000765,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0034",
+        "file": "frames/f_000000016500.jpg",
+        "source_seconds": 16.5,
+        "source_time": "00:00:16.500",
+        "clip_seconds": 16.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "3e1e1c2038380060",
+        "sha256": "40a87ecc69024e11bae9ea68f1777ad75b7170100a584c1dd0b76ba3bc31d9b4",
+        "change_from_previous": 47,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 16500,
+        "source_ms": 316500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "40a87ecc69024e11bae9ea68f1777ad75b7170100a584c1dd0b76ba3bc31d9b4",
+        "state": {
+          "screen_type": "digital document interface",
+          "view": "top-down view of floating document cards on light background.",
+          "content": "Two card-like documents. Top one has 'The Research' text and red PDF icon. Bottom one blurred with purple lines.",
+          "overlays": "None visible except for document icons and text overlays.",
+          "visible_text": "The Research",
+          "uncertainty": "Text and icon positions are approximate due to image blur and perspective."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.486015100002987,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0035",
+        "file": "frames/f_000000017000.jpg",
+        "source_seconds": 17.0,
+        "source_time": "00:00:17.000",
+        "clip_seconds": 17.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "1f023e027878f0f0",
+        "sha256": "2b00886664087648c626d52ec6ceaf3d02a98646d2157dd6aa1d12456adae602",
+        "change_from_previous": 17,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 17000,
+        "source_ms": 317000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "2b00886664087648c626d52ec6ceaf3d02a98646d2157dd6aa1d12456adae602",
+        "state": {
+          "screen_type": "digital interface mockup",
+          "view": "centered text overlay on floating document icons",
+          "content": "multiple blurred document icons with file format symbols (PDF, cloud, blue icon, green icon). Central document has 'The Research Is' text.",
+          "overlays": "none",
+          "visible_text": "The Research Is",
+          "uncertainty": "no uncertainty"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.43474110000534,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0036",
+        "file": "frames/f_000000017500.jpg",
+        "source_seconds": 17.5,
+        "source_time": "00:00:17.500",
+        "clip_seconds": 17.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0f033c3e78f0f0e0",
+        "sha256": "295459abde5999a1994bc3b94d500c9f71786c3af89177355ebf0b2537f74515",
+        "change_from_previous": 10,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 17500,
+        "source_ms": 317500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "295459abde5999a1994bc3b94d500c9f71786c3af89177355ebf0b2537f74515",
+        "state": {
+          "screen_type": "abstract digital interface",
+          "view": "floating document icons against blurred background; central PDF icon prominent.",
+          "content": "multiple blurred document-like shapes with faint lines; red PDF icon on top center; blue cloud icon left side.",
+          "overlays": "none visible; no cursor or selections.",
+          "visible_text": "PDF label on red icon; other text obscured by blur.",
+          "uncertainty": "blur obscures content details; exact document types unknown."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.474040799992508,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0037",
+        "file": "frames/f_000000018000.jpg",
+        "source_seconds": 18.0,
+        "source_time": "00:00:18.000",
+        "clip_seconds": 18.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0707223c7c70f0e0",
+        "sha256": "6abd1aa24686d1a92473b97fad3463fd83f156814151ffb77263b018f21ed0f1",
+        "change_from_previous": 9,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 18000,
+        "source_ms": 318000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "6abd1aa24686d1a92473b97fad3463fd83f156814151ffb77263b018f21ed0f1",
+        "state": {
+          "screen_type": "abstract digital graphic",
+          "view": "floating document icons on light background, central icon most focused.",
+          "content": "blurred documents with file icons: red PDF, blue Word, green Excel. Light green and purple document areas visible.",
+          "overlays": "none",
+          "visible_text": "PDF",
+          "uncertainty": "low"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.382987999997567,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0038",
+        "file": "frames/f_000000018500.jpg",
+        "source_seconds": 18.5,
+        "source_time": "00:00:18.500",
+        "clip_seconds": 18.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "060e3e4cfcfce8e0",
+        "sha256": "b255ce202b8b79dc19edd468c26dfd2de7d6aa3b7bf9c986dc969df37d3a43c4",
+        "change_from_previous": 15,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 18500,
+        "source_ms": 318500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "b255ce202b8b79dc19edd468c26dfd2de7d6aa3b7bf9c986dc969df37d3a43c4",
+        "state": {
+          "screen_type": "abstract digital interface",
+          "view": "floating panels on light gray background; main panel centered, others blurred and layered.",
+          "content": "White rectangular panels with placeholder lines. Icons: Salesforce (blue cloud), red file icon, blue document icon, green icon.",
+          "overlays": "None visible; all elements are graphical representations without active UI overlays or selections.",
+          "visible_text": "Salesforce logo text on top-left panel.",
+          "uncertainty": "No user interaction or context. Objects appear as static illustrations without inferred state or functionality."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.635227599996142,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0039",
+        "file": "frames/f_000000019000.jpg",
+        "source_seconds": 19.0,
+        "source_time": "00:00:19.000",
+        "clip_seconds": 19.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "020e3e7cf8f8f0e0",
+        "sha256": "a36ebfeb6cf18520c0f757c9e08d8158ca581764e1d05d376a31aaf44049d122",
+        "change_from_previous": 7,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 19000,
+        "source_ms": 319000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "a36ebfeb6cf18520c0f757c9e08d8158ca581764e1d05d376a31aaf44049d122",
+        "state": {
+          "screen_type": "abstract graphic interface",
+          "view": "top-down perspective of floating document-like shapes against light gray background.",
+          "content": "Multiple translucent white rectangles with placeholder lines and small icons: blue cloud, red document, green file, and blue folder.",
+          "overlays": "No active overlays; all elements are static visual representations without interactive indicators or selections.",
+          "visible_text": "No readable text visible on any element or background.",
+          "uncertainty": "No uncertainty; all elements clearly rendered as abstract icons and placeholders without ambiguity."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.622542599987355,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0040",
+        "file": "frames/f_000000019500.jpg",
+        "source_seconds": 19.5,
+        "source_time": "00:00:19.500",
+        "clip_seconds": 19.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "02023f3cfcf8f8c0",
+        "sha256": "6be3a2dbbfc2852b3c4c4eb5154bfa390b3088c3d089830bf03b5aa08d52b91c",
+        "change_from_previous": 7,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 19500,
+        "source_ms": 319500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "6be3a2dbbfc2852b3c4c4eb5154bfa390b3088c3d089830bf03b5aa08d52b91c",
+        "state": {
+          "screen_type": "abstract digital interface",
+          "view": "top-down perspective of floating UI elements against blurred background.",
+          "content": "Faded white rectangular panels with placeholder lines. Blue, green, and red icons float above them. Background is light gray with soft gradients.",
+          "overlays": "None visible; no active selection highlights or popups.",
+          "visible_text": "No readable text present on any element.",
+          "uncertainty": "Low uncertainty: elements are clearly identifiable as UI components despite blurring and lack of context."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.54646819998743,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0041",
+        "file": "frames/f_000000020000.jpg",
+        "source_seconds": 20.0,
+        "source_time": "00:00:20.000",
+        "clip_seconds": 20.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "02023d3c7cd8f8e0",
+        "sha256": "66bd13a74d555008ff58ffeff61c6e020d9bd48efd5a2f81b4bbc17596a5a8f0",
+        "change_from_previous": 4,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 20000,
+        "source_ms": 320000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "66bd13a74d555008ff58ffeff61c6e020d9bd48efd5a2f81b4bbc17596a5a8f0",
+        "state": {
+          "screen_type": "Digital interface screenshot",
+          "view": "Top-down perspective of floating UI elements against a light gray background.",
+          "content": "Three app icons (Google Docs, Google Sheets, Microsoft Teams) float above blurred document-like windows with placeholder text and grid lines.",
+          "overlays": "No visible overlays such as cursors or popups.",
+          "visible_text": "No readable text is present.",
+          "uncertainty": "Icons and windows are intentionally blurred, making precise identification of content difficult."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.618151499991654,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0042",
+        "file": "frames/f_000000020500.jpg",
+        "source_seconds": 20.5,
+        "source_time": "00:00:20.500",
+        "clip_seconds": 20.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "e8e8ffccb60d2304ffd83fd9635fbc02d0711a2b8c8c2bd485594e88d1861965",
+        "change_from_previous": 28,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 20500,
+        "source_ms": 320500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "e8e8ffccb60d2304ffd83fd9635fbc02d0711a2b8c8c2bd485594e88d1861965",
+        "state": {
+          "screen_type": "video recording screenshot",
+          "view": "medium close-up, centered on man's upper torso and face",
+          "content": "Man with dark hair, wearing black t-shirt, facing camera. Behind him: black lamp left, green plant right, white wall background.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "No visible text or overlays. Background elements partially obscured by focus and lighting."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.454330300010042,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0043",
+        "file": "frames/f_000000021000.jpg",
+        "source_seconds": 21.0,
+        "source_time": "00:00:21.000",
+        "clip_seconds": 21.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ef",
+        "sha256": "3792f4cdaa4c7db6490c35fc111ddaf39a3a7d536004708d0b8baecd14e2731b",
+        "change_from_previous": 1,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 21000,
+        "source_ms": 321000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "3792f4cdaa4c7db6490c35fc111ddaf39a3a7d536004708d0b8baecd14e2731b",
+        "state": {
+          "screen_type": "video recording",
+          "view": "medium close-up of a man centered in frame, facing camera directly.",
+          "content": "Man with dark hair and black shirt; green plant to right; black desk lamp to left; plain wall background.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": ""
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.338206300002639,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0044",
+        "file": "frames/f_000000021500.jpg",
+        "source_seconds": 21.5,
+        "source_time": "00:00:21.500",
+        "clip_seconds": 21.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ef",
+        "sha256": "4c33d47cddf27d18c9aa070c1853d1873d20ba3090f12d04f8157cc807418a0f",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 21500,
+        "source_ms": 321500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "4c33d47cddf27d18c9aa070c1853d1873d20ba3090f12d04f8157cc807418a0f",
+        "state": {
+          "screen_type": "video recording screenshot",
+          "view": "medium close-up, centered on a man\u2019s face and upper torso",
+          "content": "Man with dark hair, wearing black shirt, facing camera. Behind him: black lamp to left, green plant to right, plain wall background.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "No visible text or overlays. Subject\u2019s exact expression and posture not fully determinable from single frame."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.7588627000077395,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0045",
+        "file": "frames/f_000000022000.jpg",
+        "source_seconds": 22.0,
+        "source_time": "00:00:22.000",
+        "clip_seconds": 22.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "e9b8f1117080e35b20e26111fbf7ec49e4d0b604bfe5c6b5349b38c64cd96758",
+        "change_from_previous": 1,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 22000,
+        "source_ms": 322000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "e9b8f1117080e35b20e26111fbf7ec49e4d0b604bfe5c6b5349b38c64cd96758",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of a man centered in frame, facing camera directly.",
+          "content": "Man with dark hair and black shirt. Behind him: black lamp on left, green plant on right. Background wall is plain white.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "No visible text or overlays. Lighting and background objects are static. No inferred actions or editing tools present."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.480332899998757,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0046",
+        "file": "frames/f_000000022500.jpg",
+        "source_seconds": 22.5,
+        "source_time": "00:00:22.500",
+        "clip_seconds": 22.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "031ded17c768c456f4f7a13bd127556bf4373171f91ba90e099a8a358594cf23",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 22500,
+        "source_ms": 322500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "031ded17c768c456f4f7a13bd127556bf4373171f91ba90e099a8a358594cf23",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up, centered on man\u2019s head and torso",
+          "content": "Man with dark hair, wearing black shirt. Black lamp to left, green plant to right. Background is plain wall.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "None"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.328164199992898,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0047",
+        "file": "frames/f_000000023000.jpg",
+        "source_seconds": 23.0,
+        "source_time": "00:00:23.000",
+        "clip_seconds": 23.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "8a5ca6a8a4dc6f3ac2399675da2753913f0085a3ef21a9c15472575acfa87074",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 23000,
+        "source_ms": 323000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "8a5ca6a8a4dc6f3ac2399675da2753913f0085a3ef21a9c15472575acfa87074",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up, centered on man\u2019s upper torso and face",
+          "content": "man with dark hair and black shirt; green plant right, black lamp left, plain wall background",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "none"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.279311100006453,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0048",
+        "file": "frames/f_000000023500.jpg",
+        "source_seconds": 23.5,
+        "source_time": "00:00:23.500",
+        "clip_seconds": 23.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "5a38568f35a020ebc5ab333963ef72b17b2d694c7d6be89b8695c7a5ffea32b7",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 23500,
+        "source_ms": 323500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "5a38568f35a020ebc5ab333963ef72b17b2d694c7d6be89b8695c7a5ffea32b7",
+        "state": {
+          "screen_type": "video recording screenshot",
+          "view": "medium close-up of a man facing the camera, centered in frame.",
+          "content": "Man with dark hair and black shirt. Behind him: a black desk lamp left and green plant right. White wall background.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "No visible text or overlays. Background elements are partially obscured by depth of field."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.482140399995842,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0049",
+        "file": "frames/f_000000024000.jpg",
+        "source_seconds": 24.0,
+        "source_time": "00:00:24.000",
+        "clip_seconds": 24.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "c47d633a1ae0c0e1ef05eb43f71acc33019c2a2fcb9a7b82ace4e7be3a8a30f8",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 24000,
+        "source_ms": 324000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "c47d633a1ae0c0e1ef05eb43f71acc33019c2a2fcb9a7b82ace4e7be3a8a30f8",
+        "state": {
+          "screen_type": "video screenshot",
+          "view": "medium close-up of man centered, facing camera",
+          "content": "man with dark hair and black shirt, green plant to right, black lamp to left, plain wall background",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "no visible text or overlays; no inferred actions"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.427630999998655,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0050",
+        "file": "frames/f_000000024500.jpg",
+        "source_seconds": 24.5,
+        "source_time": "00:00:24.500",
+        "clip_seconds": 24.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "155c2abecef3817c0bc7f176b83f72a40ffc4fdab46c1edb9e33cb89d7c6c615",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 24500,
+        "source_ms": 324500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "155c2abecef3817c0bc7f176b83f72a40ffc4fdab46c1edb9e33cb89d7c6c615",
+        "state": {
+          "screen_type": "video screenshot",
+          "view": "medium close-up of man centered in frame, facing camera directly",
+          "content": "Man with dark hair wearing black shirt. Black lamp to left, green plant to right. Background is plain wall.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "No visible text or overlays. Subject's facial expression and exact posture not determinable from single frame."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.474391199997626,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0051",
+        "file": "frames/f_000000025000.jpg",
+        "source_seconds": 25.0,
+        "source_time": "00:00:25.000",
+        "clip_seconds": 25.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "6da764ed6629fdb394f7a044e62ea208ecff41918003dcb5ed581b6b894b3be9",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 25000,
+        "source_ms": 325000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "6da764ed6629fdb394f7a044e62ea208ecff41918003dcb5ed581b6b894b3be9",
+        "state": {
+          "screen_type": "video screenshot",
+          "view": "medium close-up of a man centered in frame, facing camera directly",
+          "content": "Man with dark hair and black shirt; green plant to right; black desk lamp to left; plain wall background.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": ""
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.340506000007736,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0052",
+        "file": "frames/f_000000025500.jpg",
+        "source_seconds": 25.5,
+        "source_time": "00:00:25.500",
+        "clip_seconds": 25.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "37fb56ae5407377fb05589c649130161eec94a37e1c6cdece5ed33b6891a2002",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 25500,
+        "source_ms": 325500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "37fb56ae5407377fb05589c649130161eec94a37e1c6cdece5ed33b6891a2002",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of man centered, facing camera",
+          "content": "man with dark hair and black shirt, green plant right, black lamp left, plain wall background",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": ""
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.315578000008827,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0053",
+        "file": "frames/f_000000026000.jpg",
+        "source_seconds": 26.0,
+        "source_time": "00:00:26.000",
+        "clip_seconds": 26.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "46467c3359b8a2d17687368005a630f329e84a4a6c290b2e297a218c655e5b07",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 26000,
+        "source_ms": 326000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "46467c3359b8a2d17687368005a630f329e84a4a6c290b2e297a218c655e5b07",
+        "state": {
+          "screen_type": "video recording screenshot",
+          "view": "medium close-up, centered on subject's head and torso",
+          "content": "Man with dark hair and black shirt. Black lamp to left. Green plant to right. White wall background.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "No discernible uncertainty in visible elements."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.441700199997285,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0054",
+        "file": "frames/f_000000026500.jpg",
+        "source_seconds": 26.5,
+        "source_time": "00:00:26.500",
+        "clip_seconds": 26.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "d5f923312e397a9a2a21c17fe3bb3c61c0b7773fc68bcfd60d74cfd0c03822e2",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 26500,
+        "source_ms": 326500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "d5f923312e397a9a2a21c17fe3bb3c61c0b7773fc68bcfd60d74cfd0c03822e2",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of man centered, facing camera",
+          "content": "man with dark hair, wearing black shirt. Behind him: black lamp left, green plant right. Wall background.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "none"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.4159271999960765,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0055",
+        "file": "frames/f_000000027000.jpg",
+        "source_seconds": 27.0,
+        "source_time": "00:00:27.000",
+        "clip_seconds": 27.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "f86038a069ea32cbf8937b35efae248539175c41821defbc3088f0b6a281e3e4",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 27000,
+        "source_ms": 327000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "f86038a069ea32cbf8937b35efae248539175c41821defbc3088f0b6a281e3e4",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up, centered on man\u2019s head and torso",
+          "content": "Man with dark hair, wearing black shirt. Background: plain wall, black lamp to left, green plant to right.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "None"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.324864199996227,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0056",
+        "file": "frames/f_000000027500.jpg",
+        "source_seconds": 27.5,
+        "source_time": "00:00:27.500",
+        "clip_seconds": 27.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "c346ad0e13c6c90dc94b22ef9e2024eaa6a17e0b3ae4a47222c880768499fd76",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 27500,
+        "source_ms": 327500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "c346ad0e13c6c90dc94b22ef9e2024eaa6a17e0b3ae4a47222c880768499fd76",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of a man centered in frame, facing camera",
+          "content": "man with dark hair, wearing black shirt; green plant to right; black lamp to left; plain wall background",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "none"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.3676560999883804,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0057",
+        "file": "frames/f_000000028000.jpg",
+        "source_seconds": 28.0,
+        "source_time": "00:00:28.000",
+        "clip_seconds": 28.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ef",
+        "sha256": "e3f2333855246d48069792c12fe206c3a4b5b9c277c578c7379a4cacc8e56d7b",
+        "change_from_previous": 1,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 28000,
+        "source_ms": 328000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "e3f2333855246d48069792c12fe206c3a4b5b9c277c578c7379a4cacc8e56d7b",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of a man centered in frame, facing camera directly.",
+          "content": "Man with dark hair and black shirt; green plant to right; black desk lamp to left; plain wall background with window blinds partially visible behind plant.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "No uncertainty; all elements clearly identifiable in static frame."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.479152100000647,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0058",
+        "file": "frames/f_000000028500.jpg",
+        "source_seconds": 28.5,
+        "source_time": "00:00:28.500",
+        "clip_seconds": 28.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ef",
+        "sha256": "f6a89c76b61f4c7fc149e990b345985f06eb5d47b7233ad9f79a577b7f6528ff",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 28500,
+        "source_ms": 328500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "f6a89c76b61f4c7fc149e990b345985f06eb5d47b7233ad9f79a577b7f6528ff",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of a man centered in frame, facing camera",
+          "content": "man with dark hair wearing black shirt; black lamp to left; green plant to right; plain wall background",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "no discernible uncertainty"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.4050222000078065,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0059",
+        "file": "frames/f_000000029000.jpg",
+        "source_seconds": 29.0,
+        "source_time": "00:00:29.000",
+        "clip_seconds": 29.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "39ded0826528b2d9ca1b5960223e03bdf9ce723106410c972a55c26b36e9a109",
+        "change_from_previous": 1,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 29000,
+        "source_ms": 329000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "39ded0826528b2d9ca1b5960223e03bdf9ce723106410c972a55c26b36e9a109",
+        "state": {
+          "screen_type": "video screenshot",
+          "view": "medium close-up of man centered in frame, looking forward",
+          "content": "man with dark hair wearing black shirt; black desk lamp left, green plant right; plain wall background",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "no visible text or overlays; no inferred actions"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.359321799987811,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0060",
+        "file": "frames/f_000000029500.jpg",
+        "source_seconds": 29.5,
+        "source_time": "00:00:29.500",
+        "clip_seconds": 29.5,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "2f3209eb02e21928347d5951c105b1c219783e4775e08e4729e69c5b740083ad",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 29500,
+        "source_ms": 329500,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "2f3209eb02e21928347d5951c105b1c219783e4775e08e4729e69c5b740083ad",
+        "state": {
+          "screen_type": "video screenshot",
+          "view": "medium close-up of a man centered in frame",
+          "content": "Man with dark hair and black shirt; black desk lamp left; green plant right; plain wall background.",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "No visible uncertainty indicators."
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.333201100002043,
+        "provider_cost_usd": 0
+      }
+    },
+    {
+      "frame": {
+        "id": "frame-0061",
+        "file": "frames/f_000000030000.jpg",
+        "source_seconds": 30.0,
+        "source_time": "00:00:30.000",
+        "clip_seconds": 30.0,
+        "reasons": [
+          "targeted_dense",
+          "seek_l3"
+        ],
+        "perceptual_hash": "0003033fbfbfe7ff",
+        "sha256": "0b503bfd31299cd4eb8f648aa04d38b9bd72ffcadcc29e40973c336c5f7bb280",
+        "change_from_previous": 0,
+        "near_duplicate": false
+      },
+      "status": "observed_unverified",
+      "ocr_status": "observed_unverified",
+      "result": {
+        "clip_ms": 30000,
+        "source_ms": 330000,
+        "source_sha256": "ca865af5c29cf4ee78f9a523880f0dc34c868f3183b9a3e1c02cecd0177b5979",
+        "sha256": "0b503bfd31299cd4eb8f648aa04d38b9bd72ffcadcc29e40973c336c5f7bb280",
+        "state": {
+          "screen_type": "video capture",
+          "view": "medium close-up of a man centered in frame, facing camera",
+          "content": "man with dark hair, wearing black shirt, standing in front of light wall with plant and lamp visible behind him",
+          "overlays": "",
+          "visible_text": "",
+          "uncertainty": "none"
+        },
+        "evidence_class": "unverified_visual_observation",
+        "elapsed_seconds": 4.2975803000008455,
+        "provider_cost_usd": 0
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "before_sha256": "4ec8ad202c3c25f46f2d94c6fd7bed04fdc85f71826a8e381d1bd21555a47fcd",
+      "after_sha256": "6fe90b59d50b0c937c04dfdb605aee470fadd4fe5e7105b6d772752a88051b2e",
+      "before_ms": 0,
+      "after_ms": 500,
+      "pixel_change_fraction": 0.06419704861111111,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame",
+        "content": "Man with dark hair and black shirt smiles. Behind him: black desk lamp left, green plant right, plain wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No uncertainty; all visible elements clearly identifiable."
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera directly.",
+        "content": "Man with dark hair and black shirt; green plant to right; black desk lamp to left; plain wall background with window blinds partially visible behind plant.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No uncertainty; all elements clearly identifiable in static frame."
+      }
+    },
+    {
+      "before_sha256": "6fe90b59d50b0c937c04dfdb605aee470fadd4fe5e7105b6d772752a88051b2e",
+      "after_sha256": "eedcc7926c2bc6c59a37a1823b75dd7310d4d7d60aa4880436410934cd314007",
+      "before_ms": 500,
+      "after_ms": 1000,
+      "pixel_change_fraction": 0.044934895833333335,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera directly.",
+        "content": "Man with dark hair and black shirt; green plant to right; black desk lamp to left; plain wall background with window blinds partially visible behind plant.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No uncertainty; all elements clearly identifiable in static frame."
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera directly.",
+        "content": "Man with dark hair and black shirt; green plant to right; black desk lamp to left; plain wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      }
+    },
+    {
+      "before_sha256": "eedcc7926c2bc6c59a37a1823b75dd7310d4d7d60aa4880436410934cd314007",
+      "after_sha256": "f65253027692717c09ca7f0853a49e8d56bc0f00e1d88984fe60fbd478c5c17a",
+      "before_ms": 1000,
+      "after_ms": 1500,
+      "pixel_change_fraction": 0.039603949652777776,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera directly.",
+        "content": "Man with dark hair and black shirt; green plant to right; black desk lamp to left; plain wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair and black shirt, green plant right, black lamp left, plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      }
+    },
+    {
+      "before_sha256": "f65253027692717c09ca7f0853a49e8d56bc0f00e1d88984fe60fbd478c5c17a",
+      "after_sha256": "dd139e2981d70ae206c0bbab87dc621ea57d8f18ce70a78f3a6f833066cde163",
+      "before_ms": 1500,
+      "after_ms": 2000,
+      "pixel_change_fraction": 0.05194010416666667,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair and black shirt, green plant right, black lamp left, plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera directly.",
+        "content": "Man with dark hair and black shirt. Behind him: a black desk lamp left, green plant right, white wall background. Microphone visible at bottom center.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      }
+    },
+    {
+      "before_sha256": "dd139e2981d70ae206c0bbab87dc621ea57d8f18ce70a78f3a6f833066cde163",
+      "after_sha256": "3c2e7ad72791cf5320eee449657d7df4659d7a95907d1dd8619a24cd5d610e77",
+      "before_ms": 2000,
+      "after_ms": 2500,
+      "pixel_change_fraction": 0.04263671875,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera directly.",
+        "content": "Man with dark hair and black shirt. Behind him: a black desk lamp left, green plant right, white wall background. Microphone visible at bottom center.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair and black shirt, green plant right, black lamp left, plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      }
+    },
+    {
+      "before_sha256": "3c2e7ad72791cf5320eee449657d7df4659d7a95907d1dd8619a24cd5d610e77",
+      "after_sha256": "3274340a75bdb4d47f96aa1aed01c4d9ff909d556f808d15513574f9db8299ff",
+      "before_ms": 2500,
+      "after_ms": 3000,
+      "pixel_change_fraction": 0.042548828125,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair and black shirt, green plant right, black lamp left, plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      },
+      "after_state": {
+        "screen_type": "video recording screenshot",
+        "view": "medium close-up, centered on a man's face and upper torso",
+        "content": "Man with dark hair, wearing black shirt. Behind him: black desk lamp left, green plant right, light-colored wall.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible text or overlays. Background elements are partially obscured by lighting and focus."
+      }
+    },
+    {
+      "before_sha256": "3274340a75bdb4d47f96aa1aed01c4d9ff909d556f808d15513574f9db8299ff",
+      "after_sha256": "fa3500ac4df7246a5cb7374b72bd208f8a22bb6b3ec363d404febc99cda07dd3",
+      "before_ms": 3000,
+      "after_ms": 3500,
+      "pixel_change_fraction": 0.04850151909722222,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video recording screenshot",
+        "view": "medium close-up, centered on a man's face and upper torso",
+        "content": "Man with dark hair, wearing black shirt. Behind him: black desk lamp left, green plant right, light-colored wall.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible text or overlays. Background elements are partially obscured by lighting and focus."
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera directly",
+        "content": "Man with dark hair and black shirt; black lamp to left; green plant to right; plain wall background; microphone visible at bottom center.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No discernible movement or action from subjects."
+      }
+    },
+    {
+      "before_sha256": "fa3500ac4df7246a5cb7374b72bd208f8a22bb6b3ec363d404febc99cda07dd3",
+      "after_sha256": "db79f711903f5148919aa7612c483fa4bdddc81c529357de4e9757b8db8c42b1",
+      "before_ms": 3500,
+      "after_ms": 4000,
+      "pixel_change_fraction": 0.042438151041666664,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera directly",
+        "content": "Man with dark hair and black shirt; black lamp to left; green plant to right; plain wall background; microphone visible at bottom center.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No discernible movement or action from subjects."
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up, centered on subject",
+        "content": "Man with dark hair and black shirt. Behind: black lamp left, green plant right. Walls light gray.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      }
+    },
+    {
+      "before_sha256": "db79f711903f5148919aa7612c483fa4bdddc81c529357de4e9757b8db8c42b1",
+      "after_sha256": "b6c71be73367f598e673f9c5377ef917bbedf165c95b624eea3efac7803494c3",
+      "before_ms": 4000,
+      "after_ms": 4500,
+      "pixel_change_fraction": 0.032841796875,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up, centered on subject",
+        "content": "Man with dark hair and black shirt. Behind: black lamp left, green plant right. Walls light gray.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera directly",
+        "content": "Man with dark hair and black shirt; black desk lamp left, green plant right; plain wall background with blinds visible behind plant",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No discernible uncertainty in visible elements"
+      }
+    },
+    {
+      "before_sha256": "b6c71be73367f598e673f9c5377ef917bbedf165c95b624eea3efac7803494c3",
+      "after_sha256": "57fe0f7c5f152d274086199d533679d68504e809256f223ac8c9f287f0af80d6",
+      "before_ms": 4500,
+      "after_ms": 5000,
+      "pixel_change_fraction": 0.015741102430555556,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera directly",
+        "content": "Man with dark hair and black shirt; black desk lamp left, green plant right; plain wall background with blinds visible behind plant",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No discernible uncertainty in visible elements"
+      },
+      "after_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up, centered on man\u2019s face and upper torso",
+        "content": "man with dark hair and black shirt; black desk lamp left; green plant right; plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "no visible uncertainty"
+      }
+    },
+    {
+      "before_sha256": "57fe0f7c5f152d274086199d533679d68504e809256f223ac8c9f287f0af80d6",
+      "after_sha256": "83a6e88a38f35bca621fb3629d435358ee901b3f8d6f334e5929668b0a45f79e",
+      "before_ms": 5000,
+      "after_ms": 5500,
+      "pixel_change_fraction": 0.04279839409722222,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up, centered on man\u2019s face and upper torso",
+        "content": "man with dark hair and black shirt; black desk lamp left; green plant right; plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "no visible uncertainty"
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair and black shirt, green plant to right, black lamp to left, plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "no uncertainty"
+      }
+    },
+    {
+      "before_sha256": "83a6e88a38f35bca621fb3629d435358ee901b3f8d6f334e5929668b0a45f79e",
+      "after_sha256": "71250e64858745bb8009111d81976fb74f89f34c16062d93153c41ac4d5afe85",
+      "before_ms": 5500,
+      "after_ms": 6000,
+      "pixel_change_fraction": 0.044407552083333336,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair and black shirt, green plant to right, black lamp to left, plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "no uncertainty"
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair, wearing black t-shirt. Behind: black lamp left, green plant right. Wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible text or overlays. Background objects partially obscured by depth of field."
+      }
+    },
+    {
+      "before_sha256": "71250e64858745bb8009111d81976fb74f89f34c16062d93153c41ac4d5afe85",
+      "after_sha256": "bba9e51d6b3c15ebbb6f93601c17bb261a48bd08f592b8248e33042120b85f25",
+      "before_ms": 6000,
+      "after_ms": 6500,
+      "pixel_change_fraction": 0.017561848958333334,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair, wearing black t-shirt. Behind: black lamp left, green plant right. Wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible text or overlays. Background objects partially obscured by depth of field."
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, background elements partially visible",
+        "content": "man with dark hair wearing black shirt, eyes closed, mouth slightly open. Black lamp and green plant behind him.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "no uncertainty"
+      }
+    },
+    {
+      "before_sha256": "bba9e51d6b3c15ebbb6f93601c17bb261a48bd08f592b8248e33042120b85f25",
+      "after_sha256": "c257588ee9750732cb6a70c8224d1ce8e636af0440b82519e1907cef32a8a0b3",
+      "before_ms": 6500,
+      "after_ms": 7000,
+      "pixel_change_fraction": 0.04642686631944445,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, background elements partially visible",
+        "content": "man with dark hair wearing black shirt, eyes closed, mouth slightly open. Black lamp and green plant behind him.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "no uncertainty"
+      },
+      "after_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up, centered on man\u2019s face and upper torso",
+        "content": "man with dark hair and black shirt; black lamp left, green plant right, plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "none"
+      }
+    },
+    {
+      "before_sha256": "c257588ee9750732cb6a70c8224d1ce8e636af0440b82519e1907cef32a8a0b3",
+      "after_sha256": "740689e1bbe11080a04a0f7360d31d420990ce8a9300f3b0ef787938501b63fe",
+      "before_ms": 7000,
+      "after_ms": 7500,
+      "pixel_change_fraction": 0.04104926215277778,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up, centered on man\u2019s face and upper torso",
+        "content": "man with dark hair and black shirt; black lamp left, green plant right, plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "none"
+      },
+      "after_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up, centered on man\u2019s upper torso and face",
+        "content": "man with dark hair and black shirt; green plant right, black lamp left, plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "none"
+      }
+    },
+    {
+      "before_sha256": "740689e1bbe11080a04a0f7360d31d420990ce8a9300f3b0ef787938501b63fe",
+      "after_sha256": "099f5ab61a4ad36ffd594a1a99f458027ad2e34c1180625db3b482bbcf98d143",
+      "before_ms": 7500,
+      "after_ms": 8000,
+      "pixel_change_fraction": 0.020313585069444445,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up, centered on man\u2019s upper torso and face",
+        "content": "man with dark hair and black shirt; green plant right, black lamp left, plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "none"
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair and black shirt, green plant right, black lamp left, plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      }
+    },
+    {
+      "before_sha256": "099f5ab61a4ad36ffd594a1a99f458027ad2e34c1180625db3b482bbcf98d143",
+      "after_sha256": "cebe0f002ffa806769b26455041740861e35a6b4cfe22a8330b5c4103f95d0f8",
+      "before_ms": 8000,
+      "after_ms": 8500,
+      "pixel_change_fraction": 0.028212890625,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair and black shirt, green plant right, black lamp left, plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, looking at camera",
+        "content": "Man with dark hair and black shirt. Behind him: black desk lamp left, green plant right. Wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      }
+    },
+    {
+      "before_sha256": "cebe0f002ffa806769b26455041740861e35a6b4cfe22a8330b5c4103f95d0f8",
+      "after_sha256": "3cbcd0dcb1390e98d450919d9e6ff1bf8c60a228bbc23c5841de3109774fe6f5",
+      "before_ms": 8500,
+      "after_ms": 9000,
+      "pixel_change_fraction": 0.052230902777777775,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, looking at camera",
+        "content": "Man with dark hair and black shirt. Behind him: black desk lamp left, green plant right. Wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame",
+        "content": "Man with dark hair, eyes closed, wearing black shirt. Behind him: black lamp left, green plant right. Wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "None"
+      }
+    },
+    {
+      "before_sha256": "3cbcd0dcb1390e98d450919d9e6ff1bf8c60a228bbc23c5841de3109774fe6f5",
+      "after_sha256": "849d9c3c57d4992ea68c5dce59597b23236d191adcec7343e40a7814ee8ec0f2",
+      "before_ms": 9000,
+      "after_ms": 9500,
+      "pixel_change_fraction": 0.04182074652777778,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame",
+        "content": "Man with dark hair, eyes closed, wearing black shirt. Behind him: black lamp left, green plant right. Wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "None"
+      },
+      "after_state": {
+        "screen_type": "video recording screenshot",
+        "view": "medium close-up of a man facing camera, centered in frame",
+        "content": "Man with dark hair wearing black shirt; black desk lamp left, green plant right; plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No discernible text or overlays present"
+      }
+    },
+    {
+      "before_sha256": "849d9c3c57d4992ea68c5dce59597b23236d191adcec7343e40a7814ee8ec0f2",
+      "after_sha256": "65c9f2151b12066445ca71a36bd5db96d0ba2f95b2ccb1766806e086271c082c",
+      "before_ms": 9500,
+      "after_ms": 10000,
+      "pixel_change_fraction": 0.03526475694444445,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video recording screenshot",
+        "view": "medium close-up of a man facing camera, centered in frame",
+        "content": "Man with dark hair wearing black shirt; black desk lamp left, green plant right; plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No discernible text or overlays present"
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair and black shirt, green plant to right, black lamp to left, white wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "no visible text or overlays; no inferred actions"
+      }
+    },
+    {
+      "before_sha256": "65c9f2151b12066445ca71a36bd5db96d0ba2f95b2ccb1766806e086271c082c",
+      "after_sha256": "6ec83aef2ca9dacb1083bd73bc8b055e01d40cd3241eb2ec21e893f7aa3a1ce8",
+      "before_ms": 10000,
+      "after_ms": 10500,
+      "pixel_change_fraction": 0.019917534722222224,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair and black shirt, green plant to right, black lamp to left, white wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "no visible text or overlays; no inferred actions"
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera",
+        "content": "man with dark hair, wearing black shirt; black lamp to left, green plant to right; plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "none"
+      }
+    },
+    {
+      "before_sha256": "6ec83aef2ca9dacb1083bd73bc8b055e01d40cd3241eb2ec21e893f7aa3a1ce8",
+      "after_sha256": "7ca4067e95119e32e5572f8dd8044d09bff5eec63df4bc00308b9ffaeb60e6c4",
+      "before_ms": 10500,
+      "after_ms": 11000,
+      "pixel_change_fraction": 0.04808702256944444,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera",
+        "content": "man with dark hair, wearing black shirt; black lamp to left, green plant to right; plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "none"
+      },
+      "after_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up of man facing camera",
+        "content": "man with dark hair and black shirt; black desk lamp left; green plant right; plain wall background; soft lighting.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "no uncertainty in visible state."
+      }
+    },
+    {
+      "before_sha256": "7ca4067e95119e32e5572f8dd8044d09bff5eec63df4bc00308b9ffaeb60e6c4",
+      "after_sha256": "9603df97b7e0079987f896b9358a554907e38dbf51c902d561698c79546062b1",
+      "before_ms": 11000,
+      "after_ms": 11500,
+      "pixel_change_fraction": 0.04117730034722222,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up of man facing camera",
+        "content": "man with dark hair and black shirt; black desk lamp left; green plant right; plain wall background; soft lighting.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "no uncertainty in visible state."
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera",
+        "content": "man with dark hair, wearing black shirt, standing in front of light wall with plant and lamp visible behind him",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "none"
+      }
+    },
+    {
+      "before_sha256": "9603df97b7e0079987f896b9358a554907e38dbf51c902d561698c79546062b1",
+      "after_sha256": "0cfa603ff81db3f074c485e67d4af0ea6b29550a18572b1a9298ccf5d005ad75",
+      "before_ms": 11500,
+      "after_ms": 12000,
+      "pixel_change_fraction": 0.046338975694444444,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera",
+        "content": "man with dark hair, wearing black shirt, standing in front of light wall with plant and lamp visible behind him",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "none"
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair, wearing black shirt; black desk lamp left; green plant right; plain wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "no uncertainty"
+      }
+    },
+    {
+      "before_sha256": "0cfa603ff81db3f074c485e67d4af0ea6b29550a18572b1a9298ccf5d005ad75",
+      "after_sha256": "a7984a69aa6dee397af738179a8e6375a9ba7ca08a08781b2d76286971db285e",
+      "before_ms": 12000,
+      "after_ms": 12500,
+      "pixel_change_fraction": 0.021767578125,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair, wearing black shirt; black desk lamp left; green plant right; plain wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "no uncertainty"
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair and black shirt, green plant right, black lamp left, plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      }
+    },
+    {
+      "before_sha256": "a7984a69aa6dee397af738179a8e6375a9ba7ca08a08781b2d76286971db285e",
+      "after_sha256": "4d41b89364770fa8f7b3acd0bf8853f4ab392b8b2a52e9429999a51f9ed55a88",
+      "before_ms": 12500,
+      "after_ms": 13000,
+      "pixel_change_fraction": 0.057317708333333335,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair and black shirt, green plant right, black lamp left, plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera directly.",
+        "content": "Man with dark hair and black shirt. Behind him: black desk lamp left, green plant right. White wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      }
+    },
+    {
+      "before_sha256": "4d41b89364770fa8f7b3acd0bf8853f4ab392b8b2a52e9429999a51f9ed55a88",
+      "after_sha256": "81c84c1d5e446b84dc46200aeb6d9d6cc63234ebe318d565da28b992a62a70fa",
+      "before_ms": 13000,
+      "after_ms": 13500,
+      "pixel_change_fraction": 0.035602213541666664,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera directly.",
+        "content": "Man with dark hair and black shirt. Behind him: black desk lamp left, green plant right. White wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame",
+        "content": "Man with dark hair and black shirt; black desk lamp left; green plant right; plain wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible uncertainty indicators."
+      }
+    },
+    {
+      "before_sha256": "81c84c1d5e446b84dc46200aeb6d9d6cc63234ebe318d565da28b992a62a70fa",
+      "after_sha256": "75bd76f22bf2a402b0907699cd2d26e5e18961963f9b37fc589f0e4e2bf7a587",
+      "before_ms": 13500,
+      "after_ms": 14000,
+      "pixel_change_fraction": 0.05301649305555556,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame",
+        "content": "Man with dark hair and black shirt; black desk lamp left; green plant right; plain wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible uncertainty indicators."
+      },
+      "after_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up of a man centered in frame",
+        "content": "Man with dark hair and black shirt; black desk lamp left, green plant right; plain wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible uncertainty indicators."
+      }
+    },
+    {
+      "before_sha256": "75bd76f22bf2a402b0907699cd2d26e5e18961963f9b37fc589f0e4e2bf7a587",
+      "after_sha256": "b466dfdcc51dd210cfbc7e0481ff3db50463c1a8de29f0e25db1f6e00c8ceb78",
+      "before_ms": 14000,
+      "after_ms": 14500,
+      "pixel_change_fraction": 0.012345920138888888,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up of a man centered in frame",
+        "content": "Man with dark hair and black shirt; black desk lamp left, green plant right; plain wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible uncertainty indicators."
+      },
+      "after_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up, centered on man\u2019s face and upper torso",
+        "content": "Man with dark hair wearing black shirt. Black lamp to left, green plant to right. Background is plain wall.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible text or overlays. Subject's exact expression not fully discernible from single frame."
+      }
+    },
+    {
+      "before_sha256": "b466dfdcc51dd210cfbc7e0481ff3db50463c1a8de29f0e25db1f6e00c8ceb78",
+      "after_sha256": "42380bbd72b206de334e222225e98591ab6992230ae0984a0462db67dd818b47",
+      "before_ms": 14500,
+      "after_ms": 15000,
+      "pixel_change_fraction": 0.9998611111111111,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up, centered on man\u2019s face and upper torso",
+        "content": "Man with dark hair wearing black shirt. Black lamp to left, green plant to right. Background is plain wall.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible text or overlays. Subject's exact expression not fully discernible from single frame."
+      },
+      "after_state": {
+        "screen_type": "static screen",
+        "view": "centered text and graphic on plain background",
+        "content": "Text 'The writing isn't' partially covered by a metallic bookmark-like shape with curved ends.",
+        "overlays": "bookmark-shaped overlay covering part of the text.",
+        "visible_text": "The writing isn't",
+        "uncertainty": "No uncertainty; elements are clearly visible and static."
+      }
+    },
+    {
+      "before_sha256": "42380bbd72b206de334e222225e98591ab6992230ae0984a0462db67dd818b47",
+      "after_sha256": "ee8783201ac8630c4a50be4c08419474a5380682682af988199db11632703137",
+      "before_ms": 15000,
+      "after_ms": 15500,
+      "pixel_change_fraction": 0.04492838541666667,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "static screen",
+        "view": "centered text and graphic on plain background",
+        "content": "Text 'The writing isn't' partially covered by a metallic bookmark-like shape with curved ends.",
+        "overlays": "bookmark-shaped overlay covering part of the text.",
+        "visible_text": "The writing isn't",
+        "uncertainty": "No uncertainty; elements are clearly visible and static."
+      },
+      "after_state": {
+        "screen_type": "static graphic",
+        "view": "centered composition on plain background",
+        "content": "blue outlined rectangle with pencil icon; light gray fill with horizontal lines inside.",
+        "overlays": "none",
+        "visible_text": "The writing isn't actually the hard part",
+        "uncertainty": "None visible"
+      }
+    },
+    {
+      "before_sha256": "ee8783201ac8630c4a50be4c08419474a5380682682af988199db11632703137",
+      "after_sha256": "07e7f4158883f0d258c04d0555228df692a2b0c772a248a512902f3bf3f7620a",
+      "before_ms": 15500,
+      "after_ms": 16000,
+      "pixel_change_fraction": 0.05619683159722222,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "static graphic",
+        "view": "centered composition on plain background",
+        "content": "blue outlined rectangle with pencil icon; light gray fill with horizontal lines inside.",
+        "overlays": "none",
+        "visible_text": "The writing isn't actually the hard part",
+        "uncertainty": "None visible"
+      },
+      "after_state": {
+        "screen_type": "illustration",
+        "view": "centered illustration on plain background",
+        "content": "blue outlined paper with pencil, horizontal lines, arrows left and right",
+        "overlays": "text overlay with gradient blue font",
+        "visible_text": "The writing isn't actually the hard part",
+        "uncertainty": "None"
+      }
+    },
+    {
+      "before_sha256": "07e7f4158883f0d258c04d0555228df692a2b0c772a248a512902f3bf3f7620a",
+      "after_sha256": "40a87ecc69024e11bae9ea68f1777ad75b7170100a584c1dd0b76ba3bc31d9b4",
+      "before_ms": 16000,
+      "after_ms": 16500,
+      "pixel_change_fraction": 0.08899088541666667,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "illustration",
+        "view": "centered illustration on plain background",
+        "content": "blue outlined paper with pencil, horizontal lines, arrows left and right",
+        "overlays": "text overlay with gradient blue font",
+        "visible_text": "The writing isn't actually the hard part",
+        "uncertainty": "None"
+      },
+      "after_state": {
+        "screen_type": "digital document interface",
+        "view": "top-down view of floating document cards on light background.",
+        "content": "Two card-like documents. Top one has 'The Research' text and red PDF icon. Bottom one blurred with purple lines.",
+        "overlays": "None visible except for document icons and text overlays.",
+        "visible_text": "The Research",
+        "uncertainty": "Text and icon positions are approximate due to image blur and perspective."
+      }
+    },
+    {
+      "before_sha256": "40a87ecc69024e11bae9ea68f1777ad75b7170100a584c1dd0b76ba3bc31d9b4",
+      "after_sha256": "2b00886664087648c626d52ec6ceaf3d02a98646d2157dd6aa1d12456adae602",
+      "before_ms": 16500,
+      "after_ms": 17000,
+      "pixel_change_fraction": 0.09083224826388889,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "digital document interface",
+        "view": "top-down view of floating document cards on light background.",
+        "content": "Two card-like documents. Top one has 'The Research' text and red PDF icon. Bottom one blurred with purple lines.",
+        "overlays": "None visible except for document icons and text overlays.",
+        "visible_text": "The Research",
+        "uncertainty": "Text and icon positions are approximate due to image blur and perspective."
+      },
+      "after_state": {
+        "screen_type": "digital interface mockup",
+        "view": "centered text overlay on floating document icons",
+        "content": "multiple blurred document icons with file format symbols (PDF, cloud, blue icon, green icon). Central document has 'The Research Is' text.",
+        "overlays": "none",
+        "visible_text": "The Research Is",
+        "uncertainty": "no uncertainty"
+      }
+    },
+    {
+      "before_sha256": "2b00886664087648c626d52ec6ceaf3d02a98646d2157dd6aa1d12456adae602",
+      "after_sha256": "295459abde5999a1994bc3b94d500c9f71786c3af89177355ebf0b2537f74515",
+      "before_ms": 17000,
+      "after_ms": 17500,
+      "pixel_change_fraction": 0.04948784722222222,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "digital interface mockup",
+        "view": "centered text overlay on floating document icons",
+        "content": "multiple blurred document icons with file format symbols (PDF, cloud, blue icon, green icon). Central document has 'The Research Is' text.",
+        "overlays": "none",
+        "visible_text": "The Research Is",
+        "uncertainty": "no uncertainty"
+      },
+      "after_state": {
+        "screen_type": "abstract digital interface",
+        "view": "floating document icons against blurred background; central PDF icon prominent.",
+        "content": "multiple blurred document-like shapes with faint lines; red PDF icon on top center; blue cloud icon left side.",
+        "overlays": "none visible; no cursor or selections.",
+        "visible_text": "PDF label on red icon; other text obscured by blur.",
+        "uncertainty": "blur obscures content details; exact document types unknown."
+      }
+    },
+    {
+      "before_sha256": "295459abde5999a1994bc3b94d500c9f71786c3af89177355ebf0b2537f74515",
+      "after_sha256": "6abd1aa24686d1a92473b97fad3463fd83f156814151ffb77263b018f21ed0f1",
+      "before_ms": 17500,
+      "after_ms": 18000,
+      "pixel_change_fraction": 0.09929796006944444,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "abstract digital interface",
+        "view": "floating document icons against blurred background; central PDF icon prominent.",
+        "content": "multiple blurred document-like shapes with faint lines; red PDF icon on top center; blue cloud icon left side.",
+        "overlays": "none visible; no cursor or selections.",
+        "visible_text": "PDF label on red icon; other text obscured by blur.",
+        "uncertainty": "blur obscures content details; exact document types unknown."
+      },
+      "after_state": {
+        "screen_type": "abstract digital graphic",
+        "view": "floating document icons on light background, central icon most focused.",
+        "content": "blurred documents with file icons: red PDF, blue Word, green Excel. Light green and purple document areas visible.",
+        "overlays": "none",
+        "visible_text": "PDF",
+        "uncertainty": "low"
+      }
+    },
+    {
+      "before_sha256": "6abd1aa24686d1a92473b97fad3463fd83f156814151ffb77263b018f21ed0f1",
+      "after_sha256": "b255ce202b8b79dc19edd468c26dfd2de7d6aa3b7bf9c986dc969df37d3a43c4",
+      "before_ms": 18000,
+      "after_ms": 18500,
+      "pixel_change_fraction": 0.15116753472222222,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "abstract digital graphic",
+        "view": "floating document icons on light background, central icon most focused.",
+        "content": "blurred documents with file icons: red PDF, blue Word, green Excel. Light green and purple document areas visible.",
+        "overlays": "none",
+        "visible_text": "PDF",
+        "uncertainty": "low"
+      },
+      "after_state": {
+        "screen_type": "abstract digital interface",
+        "view": "floating panels on light gray background; main panel centered, others blurred and layered.",
+        "content": "White rectangular panels with placeholder lines. Icons: Salesforce (blue cloud), red file icon, blue document icon, green icon.",
+        "overlays": "None visible; all elements are graphical representations without active UI overlays or selections.",
+        "visible_text": "Salesforce logo text on top-left panel.",
+        "uncertainty": "No user interaction or context. Objects appear as static illustrations without inferred state or functionality."
+      }
+    },
+    {
+      "before_sha256": "b255ce202b8b79dc19edd468c26dfd2de7d6aa3b7bf9c986dc969df37d3a43c4",
+      "after_sha256": "a36ebfeb6cf18520c0f757c9e08d8158ca581764e1d05d376a31aaf44049d122",
+      "before_ms": 18500,
+      "after_ms": 19000,
+      "pixel_change_fraction": 0.12316623263888889,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "abstract digital interface",
+        "view": "floating panels on light gray background; main panel centered, others blurred and layered.",
+        "content": "White rectangular panels with placeholder lines. Icons: Salesforce (blue cloud), red file icon, blue document icon, green icon.",
+        "overlays": "None visible; all elements are graphical representations without active UI overlays or selections.",
+        "visible_text": "Salesforce logo text on top-left panel.",
+        "uncertainty": "No user interaction or context. Objects appear as static illustrations without inferred state or functionality."
+      },
+      "after_state": {
+        "screen_type": "abstract graphic interface",
+        "view": "top-down perspective of floating document-like shapes against light gray background.",
+        "content": "Multiple translucent white rectangles with placeholder lines and small icons: blue cloud, red document, green file, and blue folder.",
+        "overlays": "No active overlays; all elements are static visual representations without interactive indicators or selections.",
+        "visible_text": "No readable text visible on any element or background.",
+        "uncertainty": "No uncertainty; all elements clearly rendered as abstract icons and placeholders without ambiguity."
+      }
+    },
+    {
+      "before_sha256": "a36ebfeb6cf18520c0f757c9e08d8158ca581764e1d05d376a31aaf44049d122",
+      "after_sha256": "6be3a2dbbfc2852b3c4c4eb5154bfa390b3088c3d089830bf03b5aa08d52b91c",
+      "before_ms": 19000,
+      "after_ms": 19500,
+      "pixel_change_fraction": 0.10721137152777778,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "abstract graphic interface",
+        "view": "top-down perspective of floating document-like shapes against light gray background.",
+        "content": "Multiple translucent white rectangles with placeholder lines and small icons: blue cloud, red document, green file, and blue folder.",
+        "overlays": "No active overlays; all elements are static visual representations without interactive indicators or selections.",
+        "visible_text": "No readable text visible on any element or background.",
+        "uncertainty": "No uncertainty; all elements clearly rendered as abstract icons and placeholders without ambiguity."
+      },
+      "after_state": {
+        "screen_type": "abstract digital interface",
+        "view": "top-down perspective of floating UI elements against blurred background.",
+        "content": "Faded white rectangular panels with placeholder lines. Blue, green, and red icons float above them. Background is light gray with soft gradients.",
+        "overlays": "None visible; no active selection highlights or popups.",
+        "visible_text": "No readable text present on any element.",
+        "uncertainty": "Low uncertainty: elements are clearly identifiable as UI components despite blurring and lack of context."
+      }
+    },
+    {
+      "before_sha256": "6be3a2dbbfc2852b3c4c4eb5154bfa390b3088c3d089830bf03b5aa08d52b91c",
+      "after_sha256": "66bd13a74d555008ff58ffeff61c6e020d9bd48efd5a2f81b4bbc17596a5a8f0",
+      "before_ms": 19500,
+      "after_ms": 20000,
+      "pixel_change_fraction": 0.027824435763888888,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "abstract digital interface",
+        "view": "top-down perspective of floating UI elements against blurred background.",
+        "content": "Faded white rectangular panels with placeholder lines. Blue, green, and red icons float above them. Background is light gray with soft gradients.",
+        "overlays": "None visible; no active selection highlights or popups.",
+        "visible_text": "No readable text present on any element.",
+        "uncertainty": "Low uncertainty: elements are clearly identifiable as UI components despite blurring and lack of context."
+      },
+      "after_state": {
+        "screen_type": "Digital interface screenshot",
+        "view": "Top-down perspective of floating UI elements against a light gray background.",
+        "content": "Three app icons (Google Docs, Google Sheets, Microsoft Teams) float above blurred document-like windows with placeholder text and grid lines.",
+        "overlays": "No visible overlays such as cursors or popups.",
+        "visible_text": "No readable text is present.",
+        "uncertainty": "Icons and windows are intentionally blurred, making precise identification of content difficult."
+      }
+    },
+    {
+      "before_sha256": "66bd13a74d555008ff58ffeff61c6e020d9bd48efd5a2f81b4bbc17596a5a8f0",
+      "after_sha256": "e8e8ffccb60d2304ffd83fd9635fbc02d0711a2b8c8c2bd485594e88d1861965",
+      "before_ms": 20000,
+      "after_ms": 20500,
+      "pixel_change_fraction": 0.9999891493055556,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "Digital interface screenshot",
+        "view": "Top-down perspective of floating UI elements against a light gray background.",
+        "content": "Three app icons (Google Docs, Google Sheets, Microsoft Teams) float above blurred document-like windows with placeholder text and grid lines.",
+        "overlays": "No visible overlays such as cursors or popups.",
+        "visible_text": "No readable text is present.",
+        "uncertainty": "Icons and windows are intentionally blurred, making precise identification of content difficult."
+      },
+      "after_state": {
+        "screen_type": "video recording screenshot",
+        "view": "medium close-up, centered on man's upper torso and face",
+        "content": "Man with dark hair, wearing black t-shirt, facing camera. Behind him: black lamp left, green plant right, white wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible text or overlays. Background elements partially obscured by focus and lighting."
+      }
+    },
+    {
+      "before_sha256": "e8e8ffccb60d2304ffd83fd9635fbc02d0711a2b8c8c2bd485594e88d1861965",
+      "after_sha256": "3792f4cdaa4c7db6490c35fc111ddaf39a3a7d536004708d0b8baecd14e2731b",
+      "before_ms": 20500,
+      "after_ms": 21000,
+      "pixel_change_fraction": 0.03350802951388889,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video recording screenshot",
+        "view": "medium close-up, centered on man's upper torso and face",
+        "content": "Man with dark hair, wearing black t-shirt, facing camera. Behind him: black lamp left, green plant right, white wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible text or overlays. Background elements partially obscured by focus and lighting."
+      },
+      "after_state": {
+        "screen_type": "video recording",
+        "view": "medium close-up of a man centered in frame, facing camera directly.",
+        "content": "Man with dark hair and black shirt; green plant to right; black desk lamp to left; plain wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      }
+    },
+    {
+      "before_sha256": "3792f4cdaa4c7db6490c35fc111ddaf39a3a7d536004708d0b8baecd14e2731b",
+      "after_sha256": "4c33d47cddf27d18c9aa070c1853d1873d20ba3090f12d04f8157cc807418a0f",
+      "before_ms": 21000,
+      "after_ms": 21500,
+      "pixel_change_fraction": 0.02575737847222222,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video recording",
+        "view": "medium close-up of a man centered in frame, facing camera directly.",
+        "content": "Man with dark hair and black shirt; green plant to right; black desk lamp to left; plain wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      },
+      "after_state": {
+        "screen_type": "video recording screenshot",
+        "view": "medium close-up, centered on a man\u2019s face and upper torso",
+        "content": "Man with dark hair, wearing black shirt, facing camera. Behind him: black lamp to left, green plant to right, plain wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible text or overlays. Subject\u2019s exact expression and posture not fully determinable from single frame."
+      }
+    },
+    {
+      "before_sha256": "4c33d47cddf27d18c9aa070c1853d1873d20ba3090f12d04f8157cc807418a0f",
+      "after_sha256": "e9b8f1117080e35b20e26111fbf7ec49e4d0b604bfe5c6b5349b38c64cd96758",
+      "before_ms": 21500,
+      "after_ms": 22000,
+      "pixel_change_fraction": 0.04955078125,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video recording screenshot",
+        "view": "medium close-up, centered on a man\u2019s face and upper torso",
+        "content": "Man with dark hair, wearing black shirt, facing camera. Behind him: black lamp to left, green plant to right, plain wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible text or overlays. Subject\u2019s exact expression and posture not fully determinable from single frame."
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera directly.",
+        "content": "Man with dark hair and black shirt. Behind him: black lamp on left, green plant on right. Background wall is plain white.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible text or overlays. Lighting and background objects are static. No inferred actions or editing tools present."
+      }
+    },
+    {
+      "before_sha256": "e9b8f1117080e35b20e26111fbf7ec49e4d0b604bfe5c6b5349b38c64cd96758",
+      "after_sha256": "031ded17c768c456f4f7a13bd127556bf4373171f91ba90e099a8a358594cf23",
+      "before_ms": 22000,
+      "after_ms": 22500,
+      "pixel_change_fraction": 0.04217664930555556,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera directly.",
+        "content": "Man with dark hair and black shirt. Behind him: black lamp on left, green plant on right. Background wall is plain white.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible text or overlays. Lighting and background objects are static. No inferred actions or editing tools present."
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up, centered on man\u2019s head and torso",
+        "content": "Man with dark hair, wearing black shirt. Black lamp to left, green plant to right. Background is plain wall.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "None"
+      }
+    },
+    {
+      "before_sha256": "031ded17c768c456f4f7a13bd127556bf4373171f91ba90e099a8a358594cf23",
+      "after_sha256": "8a5ca6a8a4dc6f3ac2399675da2753913f0085a3ef21a9c15472575acfa87074",
+      "before_ms": 22500,
+      "after_ms": 23000,
+      "pixel_change_fraction": 0.036566840277777776,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up, centered on man\u2019s head and torso",
+        "content": "Man with dark hair, wearing black shirt. Black lamp to left, green plant to right. Background is plain wall.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "None"
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up, centered on man\u2019s upper torso and face",
+        "content": "man with dark hair and black shirt; green plant right, black lamp left, plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "none"
+      }
+    },
+    {
+      "before_sha256": "8a5ca6a8a4dc6f3ac2399675da2753913f0085a3ef21a9c15472575acfa87074",
+      "after_sha256": "5a38568f35a020ebc5ab333963ef72b17b2d694c7d6be89b8695c7a5ffea32b7",
+      "before_ms": 23000,
+      "after_ms": 23500,
+      "pixel_change_fraction": 0.05300130208333333,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up, centered on man\u2019s upper torso and face",
+        "content": "man with dark hair and black shirt; green plant right, black lamp left, plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "none"
+      },
+      "after_state": {
+        "screen_type": "video recording screenshot",
+        "view": "medium close-up of a man facing the camera, centered in frame.",
+        "content": "Man with dark hair and black shirt. Behind him: a black desk lamp left and green plant right. White wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible text or overlays. Background elements are partially obscured by depth of field."
+      }
+    },
+    {
+      "before_sha256": "5a38568f35a020ebc5ab333963ef72b17b2d694c7d6be89b8695c7a5ffea32b7",
+      "after_sha256": "c47d633a1ae0c0e1ef05eb43f71acc33019c2a2fcb9a7b82ace4e7be3a8a30f8",
+      "before_ms": 23500,
+      "after_ms": 24000,
+      "pixel_change_fraction": 0.032419704861111114,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video recording screenshot",
+        "view": "medium close-up of a man facing the camera, centered in frame.",
+        "content": "Man with dark hair and black shirt. Behind him: a black desk lamp left and green plant right. White wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible text or overlays. Background elements are partially obscured by depth of field."
+      },
+      "after_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair and black shirt, green plant to right, black lamp to left, plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "no visible text or overlays; no inferred actions"
+      }
+    },
+    {
+      "before_sha256": "c47d633a1ae0c0e1ef05eb43f71acc33019c2a2fcb9a7b82ace4e7be3a8a30f8",
+      "after_sha256": "155c2abecef3817c0bc7f176b83f72a40ffc4fdab46c1edb9e33cb89d7c6c615",
+      "before_ms": 24000,
+      "after_ms": 24500,
+      "pixel_change_fraction": 0.03323133680555555,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair and black shirt, green plant to right, black lamp to left, plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "no visible text or overlays; no inferred actions"
+      },
+      "after_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up of man centered in frame, facing camera directly",
+        "content": "Man with dark hair wearing black shirt. Black lamp to left, green plant to right. Background is plain wall.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible text or overlays. Subject's facial expression and exact posture not determinable from single frame."
+      }
+    },
+    {
+      "before_sha256": "155c2abecef3817c0bc7f176b83f72a40ffc4fdab46c1edb9e33cb89d7c6c615",
+      "after_sha256": "6da764ed6629fdb394f7a044e62ea208ecff41918003dcb5ed581b6b894b3be9",
+      "before_ms": 24500,
+      "after_ms": 25000,
+      "pixel_change_fraction": 0.04910915798611111,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up of man centered in frame, facing camera directly",
+        "content": "Man with dark hair wearing black shirt. Black lamp to left, green plant to right. Background is plain wall.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible text or overlays. Subject's facial expression and exact posture not determinable from single frame."
+      },
+      "after_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up of a man centered in frame, facing camera directly",
+        "content": "Man with dark hair and black shirt; green plant to right; black desk lamp to left; plain wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      }
+    },
+    {
+      "before_sha256": "6da764ed6629fdb394f7a044e62ea208ecff41918003dcb5ed581b6b894b3be9",
+      "after_sha256": "37fb56ae5407377fb05589c649130161eec94a37e1c6cdece5ed33b6891a2002",
+      "before_ms": 25000,
+      "after_ms": 25500,
+      "pixel_change_fraction": 0.031830512152777775,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up of a man centered in frame, facing camera directly",
+        "content": "Man with dark hair and black shirt; green plant to right; black desk lamp to left; plain wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair and black shirt, green plant right, black lamp left, plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      }
+    },
+    {
+      "before_sha256": "37fb56ae5407377fb05589c649130161eec94a37e1c6cdece5ed33b6891a2002",
+      "after_sha256": "46467c3359b8a2d17687368005a630f329e84a4a6c290b2e297a218c655e5b07",
+      "before_ms": 25500,
+      "after_ms": 26000,
+      "pixel_change_fraction": 0.032866753472222225,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair and black shirt, green plant right, black lamp left, plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": ""
+      },
+      "after_state": {
+        "screen_type": "video recording screenshot",
+        "view": "medium close-up, centered on subject's head and torso",
+        "content": "Man with dark hair and black shirt. Black lamp to left. Green plant to right. White wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No discernible uncertainty in visible elements."
+      }
+    },
+    {
+      "before_sha256": "46467c3359b8a2d17687368005a630f329e84a4a6c290b2e297a218c655e5b07",
+      "after_sha256": "d5f923312e397a9a2a21c17fe3bb3c61c0b7773fc68bcfd60d74cfd0c03822e2",
+      "before_ms": 26000,
+      "after_ms": 26500,
+      "pixel_change_fraction": 0.03438802083333333,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video recording screenshot",
+        "view": "medium close-up, centered on subject's head and torso",
+        "content": "Man with dark hair and black shirt. Black lamp to left. Green plant to right. White wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No discernible uncertainty in visible elements."
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair, wearing black shirt. Behind him: black lamp left, green plant right. Wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "none"
+      }
+    },
+    {
+      "before_sha256": "d5f923312e397a9a2a21c17fe3bb3c61c0b7773fc68bcfd60d74cfd0c03822e2",
+      "after_sha256": "f86038a069ea32cbf8937b35efae248539175c41821defbc3088f0b6a281e3e4",
+      "before_ms": 26500,
+      "after_ms": 27000,
+      "pixel_change_fraction": 0.03786458333333333,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of man centered, facing camera",
+        "content": "man with dark hair, wearing black shirt. Behind him: black lamp left, green plant right. Wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "none"
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up, centered on man\u2019s head and torso",
+        "content": "Man with dark hair, wearing black shirt. Background: plain wall, black lamp to left, green plant to right.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "None"
+      }
+    },
+    {
+      "before_sha256": "f86038a069ea32cbf8937b35efae248539175c41821defbc3088f0b6a281e3e4",
+      "after_sha256": "c346ad0e13c6c90dc94b22ef9e2024eaa6a17e0b3ae4a47222c880768499fd76",
+      "before_ms": 27000,
+      "after_ms": 27500,
+      "pixel_change_fraction": 0.023078342013888888,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up, centered on man\u2019s head and torso",
+        "content": "Man with dark hair, wearing black shirt. Background: plain wall, black lamp to left, green plant to right.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "None"
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera",
+        "content": "man with dark hair, wearing black shirt; green plant to right; black lamp to left; plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "none"
+      }
+    },
+    {
+      "before_sha256": "c346ad0e13c6c90dc94b22ef9e2024eaa6a17e0b3ae4a47222c880768499fd76",
+      "after_sha256": "e3f2333855246d48069792c12fe206c3a4b5b9c277c578c7379a4cacc8e56d7b",
+      "before_ms": 27500,
+      "after_ms": 28000,
+      "pixel_change_fraction": 0.05552517361111111,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera",
+        "content": "man with dark hair, wearing black shirt; green plant to right; black lamp to left; plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "none"
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera directly.",
+        "content": "Man with dark hair and black shirt; green plant to right; black desk lamp to left; plain wall background with window blinds partially visible behind plant.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No uncertainty; all elements clearly identifiable in static frame."
+      }
+    },
+    {
+      "before_sha256": "e3f2333855246d48069792c12fe206c3a4b5b9c277c578c7379a4cacc8e56d7b",
+      "after_sha256": "f6a89c76b61f4c7fc149e990b345985f06eb5d47b7233ad9f79a577b7f6528ff",
+      "before_ms": 28000,
+      "after_ms": 28500,
+      "pixel_change_fraction": 0.04552951388888889,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera directly.",
+        "content": "Man with dark hair and black shirt; green plant to right; black desk lamp to left; plain wall background with window blinds partially visible behind plant.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No uncertainty; all elements clearly identifiable in static frame."
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera",
+        "content": "man with dark hair wearing black shirt; black lamp to left; green plant to right; plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "no discernible uncertainty"
+      }
+    },
+    {
+      "before_sha256": "f6a89c76b61f4c7fc149e990b345985f06eb5d47b7233ad9f79a577b7f6528ff",
+      "after_sha256": "39ded0826528b2d9ca1b5960223e03bdf9ce723106410c972a55c26b36e9a109",
+      "before_ms": 28500,
+      "after_ms": 29000,
+      "pixel_change_fraction": 0.04913736979166667,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera",
+        "content": "man with dark hair wearing black shirt; black lamp to left; green plant to right; plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "no discernible uncertainty"
+      },
+      "after_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up of man centered in frame, looking forward",
+        "content": "man with dark hair wearing black shirt; black desk lamp left, green plant right; plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "no visible text or overlays; no inferred actions"
+      }
+    },
+    {
+      "before_sha256": "39ded0826528b2d9ca1b5960223e03bdf9ce723106410c972a55c26b36e9a109",
+      "after_sha256": "2f3209eb02e21928347d5951c105b1c219783e4775e08e4729e69c5b740083ad",
+      "before_ms": 29000,
+      "after_ms": 29500,
+      "pixel_change_fraction": 0.044970703125,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up of man centered in frame, looking forward",
+        "content": "man with dark hair wearing black shirt; black desk lamp left, green plant right; plain wall background",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "no visible text or overlays; no inferred actions"
+      },
+      "after_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up of a man centered in frame",
+        "content": "Man with dark hair and black shirt; black desk lamp left; green plant right; plain wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible uncertainty indicators."
+      }
+    },
+    {
+      "before_sha256": "2f3209eb02e21928347d5951c105b1c219783e4775e08e4729e69c5b740083ad",
+      "after_sha256": "0b503bfd31299cd4eb8f648aa04d38b9bd72ffcadcc29e40973c336c5f7bb280",
+      "before_ms": 29500,
+      "after_ms": 30000,
+      "pixel_change_fraction": 0.048841145833333335,
+      "evidence_class": "unverified_transition_candidate",
+      "procedure_confidence": null,
+      "before_state": {
+        "screen_type": "video screenshot",
+        "view": "medium close-up of a man centered in frame",
+        "content": "Man with dark hair and black shirt; black desk lamp left; green plant right; plain wall background.",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "No visible uncertainty indicators."
+      },
+      "after_state": {
+        "screen_type": "video capture",
+        "view": "medium close-up of a man centered in frame, facing camera",
+        "content": "man with dark hair, wearing black shirt, standing in front of light wall with plant and lamp visible behind him",
+        "overlays": "",
+        "visible_text": "",
+        "uncertainty": "none"
+      }
+    }
+  ],
+  "complete_observations": 61,
+  "procedure_promotions": 0,
+  "awaiting_independent_review": true
+}

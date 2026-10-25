@@ -1,0 +1,33 @@
+{
+  "frame": {
+    "id": "frame-0001",
+    "file": "frames/f_000000000000.jpg",
+    "source_seconds": 0.0,
+    "source_time": "00:00:00.000",
+    "clip_seconds": 0.0,
+    "reasons": [
+      "targeted_dense",
+      "seek_l3"
+    ],
+    "perceptual_hash": "08bf2d2d3d2d2f01",
+    "sha256": "309c565694f81383ed72e93893368e2b237ac7cb7f6559204000ce2ddfb369c1",
+    "change_from_previous": null,
+    "near_duplicate": false
+  },
+  "status": "observed_unverified",
+  "result": {
+    "source_ms": 0,
+    "sha256": "309c565694f81383ed72e93893368e2b237ac7cb7f6559204000ce2ddfb369c1",
+    "state": {
+      "screen_type": "3D viewport",
+      "view": "User Perspective (Local), showing a low-poly humanoid figure centered in view.",
+      "content": "A stylized female figure with purple torso, green neck and teal legs. Geometry is faceted, no facial features visible.",
+      "overlays": "White pencil cursor near the figure\u2019s hip. No active selection highlights or annotations.",
+      "visible_text": "Sculpting mode active. Tool settings: Radius 35 px, Factor 0.750. Collections list 'Female 2'. Scene properties show 'Gravity' enabled.",
+      "uncertainty": "No visible uncertainty indicators."
+    },
+    "evidence_class": "unverified_visual_observation",
+    "elapsed_seconds": 4.410434899997199,
+    "provider_cost_usd": 0
+  }
+}

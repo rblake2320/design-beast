@@ -1,0 +1,17 @@
+{
+  "clip_ms": 18000,
+  "source_ms": null,
+  "source_sha256": null,
+  "sha256": "478a9a299cb4867715501e9b17edf3e52d5a4158c532226888988f56a07a1fc5",
+  "state": {
+    "screen_type": "Instructional slide",
+    "view": "Full-screen text layout on dark background; centered title and four bullet points.",
+    "content": "Black background with yellow title 'HOW TO BLOCK OUT' and white bullet points detailing character blockout techniques.",
+    "overlays": "White cursor arrow pointing to the word 'low' in the third bullet point.",
+    "visible_text": "HOW TO BLOCK OUT, FOLLOW THE SHAPE LANGUAGE, BREAK THE CHARACTER INTO PARTS, USE SIMPLE SHAPES, STRAIGHT VS CURVES, STYLIZED CHARACTER ACADEMY, TELL YOUR OWN STORIES WITH YOUR 3D CHARACTERS",
+    "uncertainty": "None; all text and cursor are clearly visible and legible."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 5.109627699974226,
+  "provider_cost_usd": 0
+}

@@ -1,0 +1,390 @@
+{
+  "schema_version": 1,
+  "reviewer": "independent agent /root/training_review",
+  "phase": "blind visual labels frozen before scheduler comparison",
+  "scope": "Only four permitted review directories read for case evidence; no telemetry-private, trim-private, recorder code, or scheduler output inspected.",
+  "method": "All 50 supplied sparse full-frame JPEGs individually viewed at 1280x720; source bytes and all frame hashes verified. Source videos hashed, not exhaustively decoded or watched. Times are supplied clip_ms extraction-request coordinates, not measured native onset PTS. Dataset described by builder as 25 fps; not independently probed here.",
+  "regions_inspected": [
+    "entire frame",
+    "Save control around x90..262 y430..523",
+    "status panel x799..1205 y145..249",
+    "input indicator bottom-left x79..400 y658..690",
+    "circular pointer"
+  ],
+  "algorithm_recovery_claim": false,
+  "causal_procedure_verified": false,
+  "cases": [
+    {
+      "case_id": "case-01",
+      "source_sha256": "dfee73ad430ba6e0a4951232f121f055c6901f50dce0eb84172f2d0e92bd0a05",
+      "review_sha256": "8013147da1d37868b21cbd9e9775e04833e6e2a75e7938916496eea1263346d7",
+      "source_offset_ms": 0,
+      "clip_end_ms": 2840,
+      "inspected_frames": [
+        {
+          "clip_ms": 0,
+          "sha256": "0a8d5c6973910b2fad2db6a9ae7a7ca406643cda7760649d5709c0fd17fb7070",
+          "image": "media/frame-000.jpg"
+        },
+        {
+          "clip_ms": 250,
+          "sha256": "8b797f4fffb8a8fa42863df60d4c619016c7fb35d57fc08506bb46b631cedd7e",
+          "image": "media/frame-001.jpg"
+        },
+        {
+          "clip_ms": 500,
+          "sha256": "d80fe809aa54d38e87ea88b7e7c35198e4403106de03be27e7e8e880d4cdd28a",
+          "image": "media/frame-002.jpg"
+        },
+        {
+          "clip_ms": 750,
+          "sha256": "0f2ac9af65c71d2f5232ab73d1ffc37a31237303725f79ac5083ae4c2e952f41",
+          "image": "media/frame-003.jpg"
+        },
+        {
+          "clip_ms": 1000,
+          "sha256": "0f2ac9af65c71d2f5232ab73d1ffc37a31237303725f79ac5083ae4c2e952f41",
+          "image": "media/frame-004.jpg"
+        },
+        {
+          "clip_ms": 1250,
+          "sha256": "d33a8846a43aa91d10bb348df3ff5a535a9ff070ed8181ede48e5f12ba3917d2",
+          "image": "media/frame-005.jpg"
+        },
+        {
+          "clip_ms": 1500,
+          "sha256": "be109979fdd68939e9d13bfd113c1fdb76281e047205652bcdd8910c66131e13",
+          "image": "media/frame-006.jpg"
+        },
+        {
+          "clip_ms": 1750,
+          "sha256": "8feeb34457035a3240e2f7b873192e36850e9b3fdea92818dd3d8e9734008430",
+          "image": "media/frame-007.jpg"
+        },
+        {
+          "clip_ms": 2000,
+          "sha256": "ca2c82f66468f0b308a7016e773d3467280cef72bf26e30c25156c8d0e704d29",
+          "image": "media/frame-008.jpg"
+        },
+        {
+          "clip_ms": 2250,
+          "sha256": "ca2c82f66468f0b308a7016e773d3467280cef72bf26e30c25156c8d0e704d29",
+          "image": "media/frame-009.jpg"
+        },
+        {
+          "clip_ms": 2500,
+          "sha256": "34eace688f245d7379c6e0b5ab40e3650a2b0f4bd8fd2a1c6cfcac48bc72c52d",
+          "image": "media/frame-010.jpg"
+        },
+        {
+          "clip_ms": 2750,
+          "sha256": "0c543f3508ebd874f36a712a93d56b1539df7099ee1d1a554134bf08f83b8b77",
+          "image": "media/frame-011.jpg"
+        }
+      ],
+      "first_sampled_saved_ms": 1750,
+      "result_onset_request_bracket": {
+        "after_ms": 1500,
+        "by_ms": 1750
+      },
+      "visible_input_kind": "mouse_down_indicator_over_save",
+      "visible_input_sample_ms": [
+        1250
+      ],
+      "input_onset_request_bracket": {
+        "after_ms": 1000,
+        "by_ms": 1250
+      },
+      "input_end_request_bracket": {
+        "after_ms": 1250,
+        "by_ms": 1500
+      },
+      "missing_input_status": "visible_indicator_present",
+      "visible_control": "Save",
+      "control_activation_visible": true,
+      "result_verdict": "accepted_observable_result",
+      "causal_verdict": "not_verified_by_pixels_alone",
+      "findings": "At 1250 ms the Save button is yellow, the circular pointer is over Save, and Mouse button DOWN is displayed. At 1500 ms the indicator is gone and button blue while Status remains Unsaved. Status Saved first appears at sampled 1750 ms."
+    },
+    {
+      "case_id": "case-02",
+      "source_sha256": "8ebaf216d63f7ba302ab767b1222fe60b275a564cd03df0f48a80f14df12ab68",
+      "review_sha256": "8dc6b68326228c0e221363758b74129dbfef6add67993050bf935072133ae32b",
+      "source_offset_ms": 0,
+      "clip_end_ms": 2960,
+      "inspected_frames": [
+        {
+          "clip_ms": 0,
+          "sha256": "6391e85917141a3714307651527bbe8ce965b11abf54cda8c446da8a626fa399",
+          "image": "media/frame-000.jpg"
+        },
+        {
+          "clip_ms": 250,
+          "sha256": "ab148ddf5489926d61fe28d0f1129ec6e73db19532315188c467e468e8fad457",
+          "image": "media/frame-001.jpg"
+        },
+        {
+          "clip_ms": 500,
+          "sha256": "6f425bfa1841949025ca9d336efa64db4a14aa3f3df1944c5fdf429816926210",
+          "image": "media/frame-002.jpg"
+        },
+        {
+          "clip_ms": 750,
+          "sha256": "be79165cb32340716c0f9cdcf93038d7b745aaa060dee08ee2b30df1ca088872",
+          "image": "media/frame-003.jpg"
+        },
+        {
+          "clip_ms": 1000,
+          "sha256": "f0fd905b3a51d084ffb9a9c1ee922181e975f5d5f427ae2c2d60ba502589d906",
+          "image": "media/frame-004.jpg"
+        },
+        {
+          "clip_ms": 1250,
+          "sha256": "fe1ede8d98d7fce2ffce5f6e2cecf3e7b0c556ecd794e6c84c8d75bbaed81844",
+          "image": "media/frame-005.jpg"
+        },
+        {
+          "clip_ms": 1500,
+          "sha256": "fe1ede8d98d7fce2ffce5f6e2cecf3e7b0c556ecd794e6c84c8d75bbaed81844",
+          "image": "media/frame-006.jpg"
+        },
+        {
+          "clip_ms": 1750,
+          "sha256": "759a2e9e73f0c65987d7a35977fe5429bf6715109762b64437db708fed840990",
+          "image": "media/frame-007.jpg"
+        },
+        {
+          "clip_ms": 2000,
+          "sha256": "ee228ba04470d138e2eece38511299a8d96bd042a1433d7cc054f4f73bccb47e",
+          "image": "media/frame-008.jpg"
+        },
+        {
+          "clip_ms": 2250,
+          "sha256": "6dff4c96178c1fa028ebffbb86a265202515d06721d4c2603c5916c4d90e2052",
+          "image": "media/frame-009.jpg"
+        },
+        {
+          "clip_ms": 2500,
+          "sha256": "6dff4c96178c1fa028ebffbb86a265202515d06721d4c2603c5916c4d90e2052",
+          "image": "media/frame-010.jpg"
+        },
+        {
+          "clip_ms": 2750,
+          "sha256": "6dff4c96178c1fa028ebffbb86a265202515d06721d4c2603c5916c4d90e2052",
+          "image": "media/frame-011.jpg"
+        }
+      ],
+      "first_sampled_saved_ms": 2000,
+      "result_onset_request_bracket": {
+        "after_ms": 1750,
+        "by_ms": 2000
+      },
+      "visible_input_kind": "key_s_down_indicator",
+      "visible_input_sample_ms": [
+        1250,
+        1500
+      ],
+      "input_onset_request_bracket": {
+        "after_ms": 1000,
+        "by_ms": 1250
+      },
+      "input_end_request_bracket": {
+        "after_ms": 1500,
+        "by_ms": 1750
+      },
+      "missing_input_status": "visible_indicator_present",
+      "visible_control": "Save",
+      "control_activation_visible": false,
+      "result_verdict": "accepted_observable_result",
+      "causal_verdict": "not_verified_by_pixels_alone",
+      "findings": "Key S DOWN is displayed at sampled 1250 and 1500 ms; pointer remains away from Save and no Save-button depression is visible. At 1750 ms indicator is absent and Status Unsaved; Status Saved first appears at sampled 2000 ms. The pixels identify an S-key indicator, not the internal key-to-save binding."
+    },
+    {
+      "case_id": "case-03",
+      "source_sha256": "1c72f39a4655ad2f568da96cce5347d88658dfcea6c47185e339e4e48ae92b57",
+      "review_sha256": "e543720985f172c92342bdaf4f45dee86b6fbe56cad22a8aa7a0d875df199a2b",
+      "source_offset_ms": 0,
+      "clip_end_ms": 4280,
+      "inspected_frames": [
+        {
+          "clip_ms": 0,
+          "sha256": "6391e85917141a3714307651527bbe8ce965b11abf54cda8c446da8a626fa399",
+          "image": "media/frame-000.jpg"
+        },
+        {
+          "clip_ms": 250,
+          "sha256": "ab148ddf5489926d61fe28d0f1129ec6e73db19532315188c467e468e8fad457",
+          "image": "media/frame-001.jpg"
+        },
+        {
+          "clip_ms": 500,
+          "sha256": "6f425bfa1841949025ca9d336efa64db4a14aa3f3df1944c5fdf429816926210",
+          "image": "media/frame-002.jpg"
+        },
+        {
+          "clip_ms": 750,
+          "sha256": "be79165cb32340716c0f9cdcf93038d7b745aaa060dee08ee2b30df1ca088872",
+          "image": "media/frame-003.jpg"
+        },
+        {
+          "clip_ms": 1000,
+          "sha256": "f0fd905b3a51d084ffb9a9c1ee922181e975f5d5f427ae2c2d60ba502589d906",
+          "image": "media/frame-004.jpg"
+        },
+        {
+          "clip_ms": 1250,
+          "sha256": "7134a604a47f61ade8bc902ecc99980f09cdd9857ed7673dc34cbeec8770d788",
+          "image": "media/frame-005.jpg"
+        },
+        {
+          "clip_ms": 1500,
+          "sha256": "44278fdbd7309838da9f9315fa93ab5511042857c6dde187a18662440fd96556",
+          "image": "media/frame-006.jpg"
+        },
+        {
+          "clip_ms": 1750,
+          "sha256": "e2c46cebfe61d7ffdd8a10f09047965603a62103cb170eacc88ec30f1d3e8c38",
+          "image": "media/frame-007.jpg"
+        },
+        {
+          "clip_ms": 2000,
+          "sha256": "b3ad86e1c0ff9ea9ee2389a42a0a5a7189356f470d182f5131e878a8db7cdc8f",
+          "image": "media/frame-008.jpg"
+        },
+        {
+          "clip_ms": 2250,
+          "sha256": "baed737b517da67a4600ef2e44d06527b372a0b3841eb63c84db84d3adb15482",
+          "image": "media/frame-009.jpg"
+        },
+        {
+          "clip_ms": 2500,
+          "sha256": "baed737b517da67a4600ef2e44d06527b372a0b3841eb63c84db84d3adb15482",
+          "image": "media/frame-010.jpg"
+        },
+        {
+          "clip_ms": 2750,
+          "sha256": "baed737b517da67a4600ef2e44d06527b372a0b3841eb63c84db84d3adb15482",
+          "image": "media/frame-011.jpg"
+        },
+        {
+          "clip_ms": 3000,
+          "sha256": "baed737b517da67a4600ef2e44d06527b372a0b3841eb63c84db84d3adb15482",
+          "image": "media/frame-012.jpg"
+        },
+        {
+          "clip_ms": 3250,
+          "sha256": "a3a558e8a38fc6d5c89b1b9de3e1941795ff431b8e6c9d8775b29757607f7b30",
+          "image": "media/frame-013.jpg"
+        },
+        {
+          "clip_ms": 3500,
+          "sha256": "a3a558e8a38fc6d5c89b1b9de3e1941795ff431b8e6c9d8775b29757607f7b30",
+          "image": "media/frame-014.jpg"
+        },
+        {
+          "clip_ms": 3750,
+          "sha256": "a3a558e8a38fc6d5c89b1b9de3e1941795ff431b8e6c9d8775b29757607f7b30",
+          "image": "media/frame-015.jpg"
+        },
+        {
+          "clip_ms": 4000,
+          "sha256": "a3a558e8a38fc6d5c89b1b9de3e1941795ff431b8e6c9d8775b29757607f7b30",
+          "image": "media/frame-016.jpg"
+        }
+      ],
+      "first_sampled_saved_ms": 3250,
+      "result_onset_request_bracket": {
+        "after_ms": 3000,
+        "by_ms": 3250
+      },
+      "visible_input_kind": "mouse_down_indicator_over_save",
+      "visible_input_sample_ms": [
+        1250,
+        1500
+      ],
+      "input_onset_request_bracket": {
+        "after_ms": 1000,
+        "by_ms": 1250
+      },
+      "input_end_request_bracket": {
+        "after_ms": 1500,
+        "by_ms": 1750
+      },
+      "missing_input_status": "visible_indicator_present",
+      "visible_control": "Save",
+      "control_activation_visible": true,
+      "result_verdict": "accepted_observable_result",
+      "causal_verdict": "not_verified_by_pixels_alone",
+      "findings": "Mouse button DOWN and yellow Save control with pointer over it appear at sampled 1250 and 1500 ms. At 1750 ms button blue and indicator absent. Status remains Unsaved through sampled 3000 ms; Saved first appears at 3250 ms. The longer delay does not itself establish causality."
+    },
+    {
+      "case_id": "case-04",
+      "source_sha256": "dc815bd2fb0e2070af2ad3f1501e713dfef764b26f57ca524599f655a53334f6",
+      "review_sha256": "c006e33ec7beef346fc33816a769faacca8d36af21214cbe48add900c936f8f3",
+      "source_offset_ms": 2000,
+      "clip_end_ms": 2280,
+      "inspected_frames": [
+        {
+          "clip_ms": 0,
+          "sha256": "bfcdc50058b7f8596bcdde0ae3690da2cb982cbaa67b6d690b6ae19ee033703a",
+          "image": "media/frame-000.jpg"
+        },
+        {
+          "clip_ms": 250,
+          "sha256": "4b1b69e375119b2f85125ad883684bd6dd4947b8f636f823becef6584824487b",
+          "image": "media/frame-001.jpg"
+        },
+        {
+          "clip_ms": 500,
+          "sha256": "e67bf95775c8edba1c5a94969a9cb315cd72e17c53b1c53cf9bd4eed9ca4d741",
+          "image": "media/frame-002.jpg"
+        },
+        {
+          "clip_ms": 750,
+          "sha256": "e67bf95775c8edba1c5a94969a9cb315cd72e17c53b1c53cf9bd4eed9ca4d741",
+          "image": "media/frame-003.jpg"
+        },
+        {
+          "clip_ms": 1000,
+          "sha256": "e67bf95775c8edba1c5a94969a9cb315cd72e17c53b1c53cf9bd4eed9ca4d741",
+          "image": "media/frame-004.jpg"
+        },
+        {
+          "clip_ms": 1250,
+          "sha256": "f1c790672d42e1902e7f35b607d887e7d116abd8826b53f7e6a97c48f433eb8b",
+          "image": "media/frame-005.jpg"
+        },
+        {
+          "clip_ms": 1500,
+          "sha256": "fb8b9c983aed91398a384c542dc9f188741fe1b3f22dd12c8d46d4a84d1fb71b",
+          "image": "media/frame-006.jpg"
+        },
+        {
+          "clip_ms": 1750,
+          "sha256": "fb8b9c983aed91398a384c542dc9f188741fe1b3f22dd12c8d46d4a84d1fb71b",
+          "image": "media/frame-007.jpg"
+        },
+        {
+          "clip_ms": 2000,
+          "sha256": "407af98493939c86fd7cae4dbcf3445074573925443d8bd907020f5d5460567f",
+          "image": "media/frame-008.jpg"
+        }
+      ],
+      "first_sampled_saved_ms": 1250,
+      "result_onset_request_bracket": {
+        "after_ms": 1000,
+        "by_ms": 1250
+      },
+      "visible_input_kind": "not_observed_in_sparse_samples",
+      "visible_input_sample_ms": [],
+      "input_onset_request_bracket": null,
+      "input_end_request_bracket": null,
+      "missing_input_status": "not_observed_preserve_uncertainty",
+      "visible_control": "Save",
+      "control_activation_visible": false,
+      "result_verdict": "accepted_observable_result",
+      "causal_verdict": "not_verified_by_pixels_alone",
+      "findings": "No down indicator or Save-button depression appears in any of the nine reviewed samples; circular pointer is already over Save. Status changes from Unsaved at sampled 1000 ms to Saved at 1250 ms. Missing input in these samples is not proof that no input occurred, including outside the clip or between samples."
+    }
+  ]
+}

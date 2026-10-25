@@ -1,0 +1,34 @@
+{
+  "events": [
+    {
+      "start_ms": 2160,
+      "end_ms": 2160,
+      "modality": "mouse_down",
+      "key": null,
+      "control": null,
+      "control_bounds": null,
+      "pointer": [
+        132,
+        454
+      ],
+      "frame_refs": [
+        {
+          "ms": 2160,
+          "sha256": "ab9f0fcf556712d4d3ad6238b0de173afd1fadc7fd42a369f0006b239ed0fc23",
+          "file": "frames/f_000000002160.jpg"
+        }
+      ],
+      "unsampled_continuity": "unknown"
+    }
+  ],
+  "results": [],
+  "temporal_candidates": [],
+  "causal_sufficiency": "unknown",
+  "accepted_causal_chains": [],
+  "publication_allowed": false,
+  "confidence": {
+    "perception": null,
+    "transition": null,
+    "procedure": null
+  }
+}

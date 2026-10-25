@@ -1,0 +1,15 @@
+{
+  "source_ms": 500,
+  "sha256": "8b972e20da55c960f9427a93c776c72b61d4228f20af1898685cb5a5f6c3f030",
+  "state": {
+    "screen_type": "3D modeling software interface",
+    "view": "User Perspective (Local) showing side view of a humanoid figure.",
+    "content": "A low-poly female character model with purple torso, green neck, and teal legs. No other objects visible.",
+    "overlays": "White pencil cursor near the model. Selection box dropdown menu visible. Scene Collection panel on right.",
+    "visible_text": "User Perspective (Local), Female 2, Sculpting, Object Mode, Global, Radius: 35 px, Factor: 0.750, Drag: Select Box, Scene Collection, ViewLayer, Scene, Gravity, Simulation, Keying Sets, Rigid Body World, Light Probes, Animation, Custom Properties.",
+    "uncertainty": "No uncertainty. All visible elements are accurately described based on this single frame."
+  },
+  "evidence_class": "unverified_visual_observation",
+  "elapsed_seconds": 4.746975100002601,
+  "provider_cost_usd": 0
+}

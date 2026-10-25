@@ -1,0 +1,14 @@
+{
+  "output_sha256": "f1b0c84b3fefc4e81508a56f2edce8045f23798a5cc26188a22e4a0a1fd67695",
+  "segments": 2,
+  "source_offset_ms": 9000,
+  "decoded_source_mean_absolute_pixel_error": [
+    0.19878255208333334,
+    0.1686111111111111
+  ],
+  "long_caption_characters": 500,
+  "generated_visuals": 0,
+  "publication_allowed": false,
+  "visible_nonempty_caption_lines": 11,
+  "fixture_boundary": "two-second 1280x720 real Blender source; captions operator-authored"
+}

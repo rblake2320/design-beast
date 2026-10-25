@@ -1,0 +1,67 @@
+{
+  "source_sha256": "8ebaf216d63f7ba302ab767b1222fe60b275a564cd03df0f48a80f14df12ab68",
+  "end_ms": 2960,
+  "source_offset_ms": 0,
+  "frames": [
+    {
+      "clip_ms": 0,
+      "sha256": "6391e85917141a3714307651527bbe8ce965b11abf54cda8c446da8a626fa399",
+      "image": "media/frame-000.jpg"
+    },
+    {
+      "clip_ms": 250,
+      "sha256": "ab148ddf5489926d61fe28d0f1129ec6e73db19532315188c467e468e8fad457",
+      "image": "media/frame-001.jpg"
+    },
+    {
+      "clip_ms": 500,
+      "sha256": "6f425bfa1841949025ca9d336efa64db4a14aa3f3df1944c5fdf429816926210",
+      "image": "media/frame-002.jpg"
+    },
+    {
+      "clip_ms": 750,
+      "sha256": "be79165cb32340716c0f9cdcf93038d7b745aaa060dee08ee2b30df1ca088872",
+      "image": "media/frame-003.jpg"
+    },
+    {
+      "clip_ms": 1000,
+      "sha256": "f0fd905b3a51d084ffb9a9c1ee922181e975f5d5f427ae2c2d60ba502589d906",
+      "image": "media/frame-004.jpg"
+    },
+    {
+      "clip_ms": 1250,
+      "sha256": "fe1ede8d98d7fce2ffce5f6e2cecf3e7b0c556ecd794e6c84c8d75bbaed81844",
+      "image": "media/frame-005.jpg"
+    },
+    {
+      "clip_ms": 1500,
+      "sha256": "fe1ede8d98d7fce2ffce5f6e2cecf3e7b0c556ecd794e6c84c8d75bbaed81844",
+      "image": "media/frame-006.jpg"
+    },
+    {
+      "clip_ms": 1750,
+      "sha256": "759a2e9e73f0c65987d7a35977fe5429bf6715109762b64437db708fed840990",
+      "image": "media/frame-007.jpg"
+    },
+    {
+      "clip_ms": 2000,
+      "sha256": "ee228ba04470d138e2eece38511299a8d96bd042a1433d7cc054f4f73bccb47e",
+      "image": "media/frame-008.jpg"
+    },
+    {
+      "clip_ms": 2250,
+      "sha256": "6dff4c96178c1fa028ebffbb86a265202515d06721d4c2603c5916c4d90e2052",
+      "image": "media/frame-009.jpg"
+    },
+    {
+      "clip_ms": 2500,
+      "sha256": "6dff4c96178c1fa028ebffbb86a265202515d06721d4c2603c5916c4d90e2052",
+      "image": "media/frame-010.jpg"
+    },
+    {
+      "clip_ms": 2750,
+      "sha256": "6dff4c96178c1fa028ebffbb86a265202515d06721d4c2603c5916c4d90e2052",
+      "image": "media/frame-011.jpg"
+    }
+  ]
+}
