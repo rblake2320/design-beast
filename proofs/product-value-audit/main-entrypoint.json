@@ -1,0 +1,6 @@
+{
+  "seconds": 0.4743021000176668,
+  "returncode": 0,
+  "stdout": "beast doctor    verify the whole stack (Blender bridge, UE, Higgsfield, ffmpeg, disk)\r\nbeast sync      clone/update all linked repos (repos.yml)\r\nbeast judge     score generated images vs a brief (local llava)  <imgs> --brief \"...\"\r\nbeast replay    name env drift vs a recorded run  <run-id> | --save-baseline | --check\r\nbeast ledger    verify the hash-chained provenance ledger (tamper-evident history)\r\nbeast validate  validate the Beast capability graph, packs, benchmark, and policy\r\nbeast status    show evidence levels and live GPU admission state\r\nbeast resource-check WORKLOAD   test a workload against live VRAM + protected reserve\r\nbeast checkpoint ...            write an atomic crash-recovery checkpoint\r\nbeast recover CHECKPOINT        verify Git state and evidence hashes before resuming\r\nbeast watch-validate PROCEDURE TIMELINE  prove visual-only and reinspection links\r\nbeast watch     video URL/file -> frames+transcript bundle an agent can \"watch\"\r\nbeast watch-index BUNDLE [\"query\"] -> build/search semantic visual memory\r\nbeast watch-seek BUNDLE --at TIME [--level 1|2|3] -> rewind/forward for missing evidence\r\nbeast recipes   list prompt recipe cards\r\n",
+  "stderr": ""
+}

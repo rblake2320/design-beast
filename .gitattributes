@@ -25,3 +25,5 @@
 /scripts/benchmark_vjepa_selection.py text eol=lf
 /watch/tests/test_vjepa_selection.py text eol=lf
 /proofs/vjepa-selection/** -text
+/proofs/product-value-audit/** -text
+/scripts/audit_product_*.py text eol=lf
