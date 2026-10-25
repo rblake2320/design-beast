@@ -1,0 +1,8 @@
+{
+  "source_sha256": "46ca6a61fa8cd4802284014fa091570e933403da1767d03f92108a6d4a78b8b1",
+  "research_head": "5f13b24efc4ecf3d4b5831bd770e15d664d0d64e",
+  "main_head": "1a7f7aba07be3616a5091a8d038a661c6845941a",
+  "goal": "source -> review -> operator caption -> export -> playback; no product changes",
+  "real_users_recruited": 0,
+  "publication_allowed": false
+}
