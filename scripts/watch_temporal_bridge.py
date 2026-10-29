@@ -50,7 +50,8 @@ def load_observations(bundle: str | Path) -> list[Observation]:
             raise EvidenceError("Invalid frame record")
         frame_id = row.get("id") or row.get("frame_id")
         rel = row.get("file") or row.get("path")
-        source_ms = row.get("source_ms")
+        seconds = row.get("source_seconds")
+        source_ms = round(seconds * 1000) if isinstance(seconds, (int, float)) and not isinstance(seconds, bool) else None
         expected = row.get("sha256")
         if not isinstance(frame_id, str) or not frame_id or frame_id in seen:
             raise EvidenceError("Missing or duplicate frame ID")
